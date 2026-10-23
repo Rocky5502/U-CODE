@@ -84,3 +84,32 @@ background work. Reminders only happen if a supported automation is created.**
   Recheck CI for any newer documentation commit before calling the newest head green.
 - Next read-only stratum: fourth entry in each discovery-language group
   (IDs 4, 14, ..., 114). Issue #1 stays open; no external code execution.
+
+
+## Fourth-stratum resumption update — 2026-10-24
+
+- Continued Issue #1: screened 12 additional actual PRs, one fourth-position
+  candidate in each of 12 discovery-language groups (IDs 4, 14, ..., 114).
+- **Cumulative 48/120 metadata-screened**. Categories: **26 production source
+  paths**, **4 test-only source**, **17 non-source**, **1 empty-file-list needs
+  review**. **72 candidates remain**.
+- 26 recognized repository SPDX tags, 22 unknown/NOASSERTION; five forks and
+  five source-language/primary-language mismatches. None is rights-cleared,
+  independently AI-line-attributed, runnable with an independent oracle, or
+  approved as an experimental dataset unit.
+- Fixed false positive: app/build.gradle.kts must not be treated as Kotlin
+  application source. PR #3 of DicedPingu/Raks- reports zero changed paths
+  and requires review, not automatic config-only classification.
+- Performed limited read-only single-file diff shape checks of php-spider #172
+  (PHP), forem #24047 (Ruby), and onnx-light-viewer #120 (Python example).
+  No external code executed; no model trials.
+- Full log: docs/logs/2026-10-24_issue1_fourth_stratified_batch.md
+- Four stratified JSONL files:
+  data/audits/2026-10-24/stratified_offset3_ids*.jsonl
+- Reproducible, fail-closed rollup:
+  python -m scripts.summarize_audit --audit-dir data/audits/2026-10-24
+- New tests in tests/test_screening_summary.py and tests/test_audit.py;
+  check latest GitHub Actions before reporting final test count.
+- Next: screen 12 fifth-position candidates IDs 5, 15, ..., 115, then
+  manually inspect trace provenance, file-level licenses and executable oracle
+  feasibility for actual source-bearing candidates. Keep Issue #1 OPEN.
