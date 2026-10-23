@@ -21,13 +21,18 @@ def main(argv=None) -> int:
     audit.add_argument("--input", default="data/discovery/agent_pr_candidates_120.csv")
     audit.add_argument("--output", default="data/derived/pr_audit.jsonl")
     audit.add_argument("--limit", type=int, default=0,
-                       help="0=all; use 1-3 for an initial rate-limit-safe pilot")
+                       help="0=all within chosen cohort; start with a small pilot")
+    audit.add_argument("--per-language", type=int, default=0,
+                       help="sample N in each original GitHub query-language group")
+    audit.add_argument("--language-offset", type=int, default=0,
+                       help="0-based starting position within each language group")
     args = parser.parse_args(argv)
     if args.command == "simulate":
         result = asdict(run_synthetic_episode(args.policy, args.seed, args.budget))
         result["warning"] = "SYNTHETIC ONLY; not evidence of accuracy or search gains"
     else:
-        result = audit_manifest(args.input, args.output, args.limit)
+        result = audit_manifest(args.input, args.output, args.limit,
+                                args.per_language, args.language_offset)
         result["warning"] = "PR metadata triage ONLY; test/AI attribution not verified"
     print(json.dumps(result, indent=2, sort_keys=True))
     return 0
