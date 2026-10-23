@@ -58,7 +58,8 @@ def is_source_path(path: str) -> bool:
     return (
         parsed.suffix.lower() in SOURCE_SUFFIXES
         and not any(part.lower() in EXCLUDED_PARTS for part in parsed.parts)
-        and not parsed.name.lower().endswith((".min.js", ".generated.ts"))
+        and not parsed.name.lower().endswith((".min.js", ".generated.ts",
+                                                   ".gradle.kts"))
     )
 
 
@@ -74,6 +75,8 @@ def audit_pr_metadata(pr: dict, files: list[dict], license_spdx: str | None) -> 
     test_files = [f for f in code_files if is_test_path(str(f.get("filename", "")))]
     if not (merged and agent_match):
         status = "agent_or_merge_mismatch"
+    elif not files:
+        status = "empty_file_list_needs_review"
     elif production_files:
         status = "production_source_path_detected"
     elif test_files:
