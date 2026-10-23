@@ -26,6 +26,8 @@ class ActionEstimate:
                       self.expected_security_gain, self.cost):
             if not isfinite(value) or value < 0:
                 raise ValueError("action estimates must be finite and nonnegative")
+        if self.action != "abstain" and self.cost == 0:
+            raise ValueError("non-abstain actions must have positive costs")
 
 
 @dataclass(frozen=True)
