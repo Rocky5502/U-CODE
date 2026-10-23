@@ -1,0 +1,99 @@
+% U-CODE PROSPECTIVE MANUSCRIPT SHELL — NOT SUBMISSION READY
+% Official Springer Nature class must be obtained from the official template:
+% https://www.overleaf.com/latex/templates/springer-nature-latex-template/myxmhdsbzkyd
+% Journal requirement: \documentclass{sn-jnl}
+\documentclass[pdflatex,sn-basic]{sn-jnl}
+
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+
+\begin{document}
+
+\title[U-CODE]{U-CODE: Uncertainty-Guided Search for Reliable AI-Generated Software}
+
+% Known intended corresponding author; coauthors/affiliations must be approved
+% by the actual human research team before submission.
+\author*[1]{\fnm{Chandan Kumar} \sur{Sah}}\email{sahchandan98@buaa.edu.cn}
+\affil*[1]{\orgdiv{School of Computer Science and Engineering},
+  \orgname{Beihang University},
+  \orgaddress{\city{Beijing}, \country{China}}}
+
+\abstract{%
+% PLACEHOLDER: Replace with a factual 150--250-word abstract AFTER empirical
+% results are complete. Do not invent numerical improvements or data sizes.
+This manuscript shell defines a prospective research study of uncertainty-guided
+search for AI-generated software. The research will investigate whether
+calibrated pre-verification uncertainty can guide the allocation of finite
+inference and software verification budgets across candidate generation,
+retrieval, testing, static analysis, repair, and abstention. The proposed
+evaluation will distinguish naturally occurring agent-authored patches from
+new model generations on executable software engineering tasks. No empirical
+results are claimed in this initial manuscript scaffold.
+}
+
+\keywords{AI-generated software, uncertainty calibration,
+search-based software engineering, agentic code verification}
+
+\maketitle
+
+\section{Introduction}\label{sec:introduction}
+% TODO: motivating instance with verified source and independent test.
+% TODO: problem gap and contributions AFTER evidence and novelty audit.
+
+\section{Related Work}\label{sec:related}
+% TODO: 20--30 verified scholarly references and original contribution map.
+
+\section{Problem Formulation}\label{sec:formulation}
+Given observable state $s_t$, an agent chooses intervention $a_t$ under
+budget $B$, seeking measurable improvements in independently verified
+reliability, safety and resource use. The selected action may maximize a
+predicted acquisition objective based on feasible multi-objective gain:
+\begin{equation}
+  a_t^\star =
+  \arg\max_{a \in \mathcal A_t,\; c(a)\le B_t}
+  \frac{\mathbb E[\Delta HV \mid s_t,a]}{c(a)}.
+  \label{eq:ehvi}
+\end{equation}
+% This is a research hypothesis and example acquisition, not an established
+% novel or empirically validated algorithm. Specify assumptions in final text.
+
+\section{U-CODE Method}\label{sec:method}
+% TODO: agent architecture, risk calibration, exploration/exploitation,
+% policy ablations and exact search algorithm.
+
+\section{Dataset Provenance and Experimental Design}\label{sec:dataset}
+% TODO: screened naturalistic agent PR cohort; distinguish PR/file/line/task.
+% TODO: model-generated benchmark cohort and independent evaluation oracles.
+% TODO: sampling and rights checks, data splits, model revisions and budgets.
+
+\section{Results}\label{sec:results}
+% NO RESULTS YET. Fill only from executable, version-pinned trace manifests.
+% TODO: RQ1--RQ6, effect estimates, CIs, calibration, risk--coverage,
+% language/model heterogeneity, budget curves, comparisons and negative cases.
+
+\section{Discussion and Threats to Validity}\label{sec:discussion}
+% TODO: bot authorship uncertainty, selection bias, code/license restrictions,
+% hidden test incompleteness, contamination and practical impact.
+
+\section{Conclusions}\label{sec:conclusions}
+% TODO: only conclusions actually supported by completed experiments.
+
+\section*{Statements and Declarations}
+\textbf{Funding.} To be completed and verified by the authors.
+
+\textbf{Competing interests.} To be declared by the authors.
+
+\textbf{Data and code availability.} Source-code and metadata releases are
+subject to source licenses and data-sharing approvals. Final URLs and
+reproducibility statements will be provided after artifact validation.
+
+\textbf{Author contributions.} To be completed and approved by all authors.
+
+\textbf{Use of AI tools.} Any non-copy-editing AI assistance in research or
+manuscript preparation must be disclosed as required by the publisher.
+
+% Add verified references to references.bib and uncomment ONLY when cited:
+% \bibliography{references}
+
+\end{document}
