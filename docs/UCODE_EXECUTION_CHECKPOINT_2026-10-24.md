@@ -12,6 +12,26 @@
 - This planning update does NOT make the 120 candidate PRs verified, grant
   external data rights, launch hosted GPU jobs, or create a real Overleaf project.
 
+## Additional verified 2026-10-24 session
+
+- Issue #1 read-only Github audit progressed to **24/120 metadata screens**, two
+  PRs from each of 12 original GitHub query-language discovery groups.
+- Source-path triage: **13 production-source candidates**, **2 test-only**,
+  **9 non-source**. These are NOT verified AI-line attribution or runnable tasks.
+- Repository SPDX metadata: 12 recognized license identifiers, 12 missing or
+  NOASSERTION; 3 forks. All file-level rights remain pending.
+- Three PRs had production-code languages different from the discovery label.
+- Full exact base/head/merge SHA snapshots and paths:
+  data/audits/2026-10-24/stratified_24_verified_metadata_with_triage.jsonl
+- Dated human-readable evidence:
+  docs/logs/2026-10-24_issue1_stratified_pr_audit.md
+- Source auditor fixed to classify production/test/config, detect changed-file
+  languages, preserve fork metadata, require rights review, support deterministic
+  strata and halt on HTTP 403/429.
+- Overleaf sources remain tracked under paper/overleaf/; no authenticated
+  Overleaf project edits have been performed. No GPU trials executed.
+- CI must be rechecked for the very latest main commit before reporting tests.
+
 ## Resumption protocol
 
 1. Read main SHA and Issues 1--6 (never assume frozen file is the latest).
