@@ -6,11 +6,11 @@
 
 U-CODE studies **when a software engineering agent should test, retrieve context, generate another patch, repair, or abstain** under a fixed execution and inference budget. The target is the Springer *Automated Software Engineering* special issue **Search-Based Software Engineering in the Era of LLMs and Agentic Systems** (30 January 2027): https://link.springer.com/collections/jjcfecffai.
 
-## Current status (24 October 2026, audit block 1)
+## Current status (24 October 2026, audit blocks 1–2)
 
 - **120 discovery candidates across 12 GitHub primary-language search categories**, each with a PR link returned for `author:copilot-swe-agent[bot] is:pr is:merged`. **These are NOT 120 verified AI-generated repositories.** GitHub bot attribution alone does not establish what fraction of source code is AI-authored.
 - Public dataset leads: [AIDev](https://huggingface.co/datasets/hao-li/AIDev), [SWE-chat](https://huggingface.co/datasets/SALT-NLP/SWE-chat) (gated), [DroidCollection](https://huggingface.co/datasets/project-droid/DroidCollection), [SWE-rebench](https://proceedings.mlr.press/v306/badertdinov26a.html), [EffiBench-X](https://huggingface.co/datasets/EffiBench/effibench-x). They have **distinct units of analysis** and must not be naively merged.
-- **Issue #1 initial screen:** 24/120 PRs checked (2 per GitHub discovery category): 13 production-source-path candidates, 2 test-only, 9 non-source. 12 with recognized repository-level SPDX metadata, 3 forks; **0 fully eligible** pending code attribution, rights and independent tests. [Full evidence](docs/logs/2026-10-24_issue1_stratified_pr_audit.md). GitHub language is not necessarily changed-source language.
+- **Issue #1 cumulative read-only screen:** 36/120 PRs checked: 21 production-source-path candidates, 2 test-only, 13 non-source. 19 have recognized repository-level SPDX metadata; 4 forks; **0 fully eligible** pending independent AI-line attribution, file rights and safe independent oracles. [Initial 24-PR evidence](docs/logs/2026-10-24_issue1_stratified_pr_audit.md) · [12-PR follow-up evidence](docs/logs/2026-10-24_issue1_second_stratified_batch.md). GitHub discovery language is not necessarily the changed-source language.
 - The project initially offers a **pure-Python research scaffold** and **offline toy environment**, not a trained/calibrated uncertainty model or model-driven code repair engine.
 
 ## Research thesis
