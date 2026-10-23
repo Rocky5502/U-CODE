@@ -61,3 +61,26 @@
 
 **A 30-minute work block is a planning cycle, not independent ongoing
 background work. Reminders only happen if a supported automation is created.**
+
+## Follow-up 12-PR audit — 2026-10-24
+
+- Another **12 distinct PRs** (third candidate in each discovery-language
+  group; IDs 3, 13, ..., 113) were read-only screened and committed in four
+  JSONL batches under `data/audits/2026-10-24/`.
+- New batch: 12/12 reachable, merged with API login `Copilot`;
+  **8 production-source-path**, **0 test-only**, **4 non-source**.
+  Seven had recognized repository SPDX metadata; one was a fork; one
+  had a changed-production-language mismatch. No rate-limit failures.
+- Cumulative: **36/120 metadata-screened**, **21 production-source-path**,
+  **2 test-only**, **13 non-source**, **19 recognized repository SPDX**,
+  **4 forks**, **4 language mismatches**.
+- **0** independently attributed AI-line patches, **0** file-rights-cleared,
+  **0** independent safely runnable oracles and **0** eligible study units.
+- [Detailed follow-up ledger](logs/2026-10-24_issue1_second_stratified_batch.md)
+  records immutable SHAs, per-PR URLs, evidence, limits and CI.
+- Last CI observed after the four new data commits:
+  [run 40002837559](https://github.com/Rocky5502/U-CODE/actions/runs/40002837559)
+  passed **46 offline tests** on each of Python 3.10 and 3.12.
+  Recheck CI for any newer documentation commit before calling the newest head green.
+- Next read-only stratum: fourth entry in each discovery-language group
+  (IDs 4, 14, ..., 114). Issue #1 stays open; no external code execution.
