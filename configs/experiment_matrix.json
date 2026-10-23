@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0",
+  "state": "PLANNED_NOT_EXECUTED",
+  "target": "Springer Automated Software Engineering special issue, January 30 2027",
+  "languages": [
+    "Python",
+    "JavaScript",
+    "TypeScript",
+    "Java",
+    "Go",
+    "Rust",
+    "C++",
+    "C",
+    "C#",
+    "Kotlin",
+    "PHP",
+    "Ruby"
+  ],
+  "candidate_repositories": 120,
+  "verified_repositories": 0,
+  "source_download_gb": 0,
+  "cohorts": [
+    "GitHub AIDev-linked PR candidates",
+    "SWE-chat gated traces",
+    "DroidCollection controlled labels",
+    "new model generations on SWE-rebench tasks",
+    "EffiBench-X efficiency"
+  ],
+  "arms": [
+    "single_candidate_no_search",
+    "random",
+    "fixed_test",
+    "cost_first",
+    "quality_only",
+    "search_without_uncertainty",
+    "uncertainty_pareto"
+  ],
+  "budget_constraints": [
+    "generated tokens",
+    "tests called",
+    "GPU seconds",
+    "wall-clock seconds"
+  ],
+  "primary_estimand": "paired independent verified success difference at precommitted budget",
+  "secondary": [
+    "Brier",
+    "ECE",
+    "risk_coverage",
+    "AURC",
+    "time",
+    "security_warnings",
+    "attained Pareto hypervolume"
+  ],
+  "evaluation": "repository/fork-group holdout with chronological cutoff, multiple seeds, independent verification, no gold patch leakage",
+  "pilot": "40 executable tasks and 3 models only after dataset/ethics audit",
+  "warning": "Config is a prospective matrix, not a report of executed studies."
+}

@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.0",
+  "status": "PROPOSED_NOT_DOWNLOADED",
+  "purpose": "open_weight_multifamily_code_reliability_pilot",
+  "models": [
+    {
+      "id": "Qwen/Qwen2.5-Coder-7B-Instruct",
+      "family": "Qwen2.5 Coder",
+      "role": "coding_specialist",
+      "license": "apache-2.0",
+      "access": "public",
+      "priority": 1
+    },
+    {
+      "id": "Qwen/Qwen3-8B",
+      "family": "Qwen3",
+      "role": "general_reasoning",
+      "license": "apache-2.0",
+      "access": "public",
+      "priority": 2
+    },
+    {
+      "id": "meta-llama/Llama-3.1-8B-Instruct",
+      "family": "Llama3.1",
+      "role": "cross_family_control",
+      "license": "llama3.1",
+      "access": "gated_user_reports_accepted_verify",
+      "priority": 3
+    },
+    {
+      "id": "ibm-granite/granite-3.3-8b-instruct",
+      "family": "Granite",
+      "role": "independent_family",
+      "license": "apache-2.0",
+      "access": "public",
+      "priority": 4
+    },
+    {
+      "id": "deepseek-ai/deepseek-coder-6.7b-instruct",
+      "family": "DeepSeek Coder",
+      "role": "second_coding_specialist",
+      "license": "model_specific_verify",
+      "access": "public",
+      "priority": 5
+    },
+    {
+      "id": "google/gemma-3-4b-it",
+      "family": "Gemma",
+      "role": "cross_family_control",
+      "license": "gemma_license",
+      "access": "gated_user_reports_accepted_verify",
+      "priority": 6
+    }
+  ],
+  "not_primary": [
+    {
+      "id": "Idavidrein/gpqa",
+      "reason": "question-answering benchmark rather than AI-generated software corpus"
+    },
+    {
+      "id": "CohereLabs/aya-expanse-8b",
+      "reason": "useful multilingual general baseline but not prioritized for code generation"
+    }
+  ],
+  "requirements": {
+    "pin_checkpoint_revision": true,
+    "report_quantization": true,
+    "model_weights_committed": false,
+    "compute": "16 GB VRAM may require quantization of 7-8B checkpoints; GPU 80 GB for expanded runs",
+    "log_inference_tokens": true,
+    "token_entropy": "ONLY if underlying engine exposes token distributions; otherwise unavailable, not zero"
+  }
+}

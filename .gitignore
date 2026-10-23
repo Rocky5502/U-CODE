@@ -1,0 +1,26 @@
+# No downloaded corpora, model weights, tokens or generated results in git
+data/derived/
+data/raw/
+data/cache/
+outputs/
+runs/
+checkpoints/
+models/
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.env
+.env.*
+!.env.example
+*.safetensors
+*.gguf
+*.pt
+*.pth
+*.ckpt
+.DS_Store
