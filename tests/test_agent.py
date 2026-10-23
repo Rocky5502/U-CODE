@@ -26,6 +26,24 @@ class AgentTests(unittest.TestCase):
         self.assertEqual(outcome.total_spent, 3)
         self.assertTrue(outcome.trace[-1].verifier_passed)
 
+    def test_static_analysis_alone_never_counts_as_functional_success(self):
+        def proposals(state, evidence):
+            if not state.has_candidate:
+                return [ActionEstimate("generate", 1, 0, 0, 1)]
+            return [ActionEstimate("static_analysis", 0, 1, 1, 1)]
+        runner = AgentRunner(
+            lambda task, previous, feedback: "patch",
+            lambda patch: Verification(True, "hidden tests passed", "hidden-oracle"),
+            lambda patch, evidence: .3,
+            proposals,
+            static_analyzer=lambda patch: Verification(True, "lint passed", "static-linter"),
+        )
+        result = runner.run("task", budget=2, policy="cost_first")
+        self.assertEqual(result.status, "abstained_or_budget_exhausted")
+        self.assertEqual([step.action for step in result.trace],
+                         ["generate", "static_analysis"])
+        self.assertIsNone(result.trace[-1].verifier_passed)
+
     def test_budget_limits_agent(self):
         runner = AgentRunner(lambda task, prior, feedback: "patch",
                              lambda patch: Verification(True, "pass", "oracle"),
