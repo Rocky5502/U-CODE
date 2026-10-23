@@ -6,10 +6,11 @@
 
 U-CODE studies **when a software engineering agent should test, retrieve context, generate another patch, repair, or abstain** under a fixed execution and inference budget. The target is the Springer *Automated Software Engineering* special issue **Search-Based Software Engineering in the Era of LLMs and Agentic Systems** (30 January 2027): https://link.springer.com/collections/jjcfecffai.
 
-## Current status (24 October 2026)
+## Current status (24 October 2026, audit block 1)
 
 - **120 discovery candidates across 12 GitHub primary-language search categories**, each with a PR link returned for `author:copilot-swe-agent[bot] is:pr is:merged`. **These are NOT 120 verified AI-generated repositories.** GitHub bot attribution alone does not establish what fraction of source code is AI-authored.
 - Public dataset leads: [AIDev](https://huggingface.co/datasets/hao-li/AIDev), [SWE-chat](https://huggingface.co/datasets/SALT-NLP/SWE-chat) (gated), [DroidCollection](https://huggingface.co/datasets/project-droid/DroidCollection), [SWE-rebench](https://proceedings.mlr.press/v306/badertdinov26a.html), [EffiBench-X](https://huggingface.co/datasets/EffiBench/effibench-x). They have **distinct units of analysis** and must not be naively merged.
+- **Issue #1 initial screen:** 24/120 PRs checked (2 per GitHub discovery category): 13 production-source-path candidates, 2 test-only, 9 non-source. 12 with recognized repository-level SPDX metadata, 3 forks; **0 fully eligible** pending code attribution, rights and independent tests. [Full evidence](docs/logs/2026-10-24_issue1_stratified_pr_audit.md). GitHub language is not necessarily changed-source language.
 - The project initially offers a **pure-Python research scaffold** and **offline toy environment**, not a trained/calibrated uncertainty model or model-driven code repair engine.
 
 ## Research thesis
@@ -43,11 +44,24 @@ python -m unittest discover -s tests -v
 ucode simulate --seed 7
 python examples/ehvi_smoke.py
 ucode audit --limit 3 --output data/derived/pr_audit.jsonl
+# Next balanced cohort: entries 3–4 in each of the 12 original query-language groups
+ucode audit --per-language 2 --language-offset 2 --output data/derived/batch02.jsonl
 ```
 
 The `audit` command makes **read-only** GitHub REST requests and may hit rate limits; set `GITHUB_TOKEN` in your environment for higher limits. Do not commit the token. No GitHub repository is cloned or executed by the audit command. The demo uses synthetic, explicitly labeled data; its scores are **not experimental evidence**.
 
 See the protocol before drawing any conclusions. Code in this repository may be redistributed according to its own license; third-party code and data retain their source licenses.
+
+## 2026-10-24 research execution snapshot
+
+The complete GitHub-derived PR metadata with immutable SHAs is in
+[data/audits/2026-10-24/](data/audits/2026-10-24/), including the
+[24-record normalized manifest](data/audits/2026-10-24/stratified_24_verified_metadata_with_triage.jsonl).
+The read-only audit CLI now supports deterministic query-language stratum
+offsets, distinguishes production-source / test-only / non-source changes,
+and halts immediately on GitHub HTTP 403/429 instead of retrying in a loop.
+**Metadata approval is not dataset eligibility.** No runnable third-party
+code was executed for this research block.
 
 ## Evidence and next milestones
 
