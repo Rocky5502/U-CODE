@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ucode-research"
+version = "0.1.0"
+description = "Research scaffold for uncertainty-guided search on AI-authored software"
+requires-python = ">=3.10"
+authors = [{name = "U-CODE Research"}]
+dependencies = []
+classifiers = ["Development Status :: 2 - Pre-Alpha", "Programming Language :: Python :: 3"]
+
+[project.scripts]
+ucode = "ucode.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
