@@ -1,7 +1,8 @@
 import unittest
 from unittest.mock import patch
 
-from ucode.audit import audit_pr_metadata, inspect_candidate, is_source_path, read_candidates
+from ucode.audit import (audit_pr_metadata, inspect_candidate, is_source_path,
+                         is_test_path, source_language, read_candidates)
 
 
 class AuditTests(unittest.TestCase):
@@ -21,7 +22,7 @@ class AuditTests(unittest.TestCase):
         changed = [{"filename": "src/x.py", "additions": 15, "deletions": 3},
                    {"filename": "README.md", "additions": 200, "deletions": 0}]
         result = audit_pr_metadata(pr, changed, "MIT")
-        self.assertEqual(result["status"], "metadata_supported_needs_manual_validation")
+        self.assertEqual(result["status"], "production_source_path_detected")
         self.assertEqual(result["source_additions"], 15)
         self.assertFalse(result["functional_correctness_known"])
         self.assertFalse(result["test_verification_done"])
@@ -37,17 +38,17 @@ class AuditTests(unittest.TestCase):
         pr = {"user": {"login": "copilot-swe-agent[bot]"},
               "merged_at": "2026-10-01T00:00:00Z"}
         result = audit_pr_metadata(pr, [{"filename": "README.md"}], None)
-        self.assertEqual(result["status"], "triage_reject_or_needs_review")
+        self.assertEqual(result["status"], "non_source_change")
 
     def test_reject_non_bot_or_unmerged(self):
         changed = [{"filename": "src/mod.py", "additions": 1, "deletions": 0}]
         p = {"user": {"login": "person"}, "merged_at": "2026-10-01"}
         self.assertEqual(audit_pr_metadata(p, changed, "MIT")["status"],
-                         "triage_reject_or_needs_review")
+                         "agent_or_merge_mismatch")
         p["user"]["login"] = "copilot-swe-agent[bot]"
         p["merged_at"] = None
         self.assertEqual(audit_pr_metadata(p, changed, "MIT")["status"],
-                         "triage_reject_or_needs_review")
+                         "agent_or_merge_mismatch")
 
     @patch("ucode.audit.github_json")
     def test_no_source_checkout_in_auditor(self, api):
@@ -63,6 +64,44 @@ class AuditTests(unittest.TestCase):
         self.assertEqual(result["source_additions"], 4)
         self.assertEqual(result["base_sha"], "abc")
         self.assertFalse(result["manual_patch_review_done"])
+
+    def test_test_only_changes_not_production(self):
+        pr = {"user": {"login": "Copilot"}, "merged_at": "2026-10-01"}
+        files = [{"filename": "tests/test_dependency_security.py",
+                  "additions": 9, "deletions": 1},
+                 {"filename": "test/search.test.mjs", "additions": 1, "deletions": 0}]
+        r = audit_pr_metadata(pr, files, "MIT")
+        self.assertEqual(r["status"], "test_only_source_change")
+        self.assertEqual(r["production_file_count"], 0)
+        self.assertEqual(r["test_file_count"], 2)
+        self.assertTrue(r["license_review_required"])
+
+    def test_changed_language_not_repository_primary(self):
+        pr = {"user": {"login": "Copilot"}, "merged_at": "2026-10-01"}
+        paths = [{"filename": "ios/NIKNOLIG/App/HomeView.swift", "additions": 4},
+                 {"filename": "ios/NIKNOLIGCore/Tests/CoreTests.swift", "additions": 3}]
+        r = audit_pr_metadata(pr, paths, None)
+        self.assertEqual(r["changed_production_languages"], ["Swift"])
+        self.assertEqual(r["production_file_count"], 1)
+        self.assertTrue(is_test_path("Core/MCPhappey.Tests/OpenXmlWordTests.cs"))
+        self.assertEqual(source_language("src/lib/matcher.ts"), "TypeScript")
+
+    def test_fork_and_license_are_not_clearance(self):
+        pr = {"user": {"login": "Copilot"}, "merged_at": "2026-10-01"}
+        r = audit_pr_metadata(pr, [{"filename": "main.c", "additions": 3}], "Apache-2.0")
+        self.assertEqual(r["status"], "production_source_path_detected")
+        self.assertTrue(r["license_review_required"])
+        self.assertFalse(r["repository_spdx_is_rights_clearance"])
+        self.assertFalse(r["functional_correctness_known"])
+
+    def test_code_and_test_separation(self):
+        pr = {"user": {"login": "Copilot"}, "merged_at": "2026-10-01"}
+        paths = [{"filename": "src/math/exp_log_avx2_fma.cc", "additions": 10},
+                 {"filename": "unittests/cc/math/test_exp_log_kernel.cc", "additions": 12}]
+        r = audit_pr_metadata(pr, paths, "Apache-2.0")
+        self.assertEqual(r["production_file_count"], 1)
+        self.assertEqual(r["test_file_count"], 1)
+        self.assertEqual(r["changed_production_languages"], ["C++"])
 
     def test_manifest_has_120_unique_candidates(self):
         from pathlib import Path
