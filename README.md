@@ -67,3 +67,16 @@ for the current head commit status.
 Track the six research gates in [GitHub Issues](https://github.com/Rocky5502/U-CODE/issues).
 No model weights or 2–5 GB repository corpus have been downloaded,
 and no real model accuracy/reliability experiment is claimed.
+
+
+## Research command center — 24 October 2026
+
+- **[Principal Investigator Master Superprompt (dated)](docs/UCODE_MASTER_SUPERPROMPT_2026-10-24.md)** — all senior research roles, Mermaid dependency graph, G0–G13 gates, six RQs, multiobjective search, dataset/model matrices, 30-minute work-block checklist, and journal milestones.
+- **[Execution checkpoint](docs/UCODE_EXECUTION_CHECKPOINT_2026-10-24.md)** — exact next issue, status and evidence-led session ledger.
+- **[Official Springer/Overleaf LaTeX shell](paper/overleaf/main.tex)** — sn-jnl manuscript skeleton, **not submission-ready**.
+- **[Overleaf setup instructions](paper/overleaf/README.md)** — use publisher class from official Springer template.
+- **[Six GitHub research issues](https://github.com/Rocky5502/U-CODE/issues)** — persistent acceptance gates.
+
+**Reminder limitation:** the 30-minute schedule is a work-session *timebox*;
+a one-time reminder, if created, does not establish an always-on research agent.
+Every task requires real execution evidence and a current-state check.
