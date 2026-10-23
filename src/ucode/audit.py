@@ -22,7 +22,7 @@ EXCLUDED_PARTS = {
     "generated", ".git", "target", "__pycache__", "site-packages",
 }
 PR_URL = re.compile(r"^https://github\.com/([\w.-]+/[\w.-]+)/pull/(\d+)$")
-EXPECTED_AGENT = "copilot-swe-agent[bot]"
+EXPECTED_AGENTS = {"copilot-swe-agent[bot]", "copilot"}  # API login may be Copilot
 
 
 def is_source_path(path: str) -> bool:
@@ -38,7 +38,7 @@ def is_source_path(path: str) -> bool:
 def audit_pr_metadata(pr: dict, files: list[dict], license_spdx: str | None) -> dict:
     """Pure metadata triage; NEVER claim full provenance or functional correctness."""
     account = str((pr.get("user") or {}).get("login") or "")
-    agent_match = account.casefold() == EXPECTED_AGENT.casefold()
+    agent_match = account.casefold() in EXPECTED_AGENTS
     merged = bool(pr.get("merged_at"))
     code_files = [f for f in files if is_source_path(str(f.get("filename", "")))]
     additions = sum(max(0, int(f.get("additions", 0))) for f in code_files)
