@@ -1,0 +1,11 @@
+dataset,unit_of_analysis,source_url,access,planned_use,local_status,caveat
+"AIDev v5","agent-authored PR metadata","https://huggingface.co/datasets/hao-li/AIDev","public","PR metadata; source discovery","not_downloaded","Check license, schema and snapshot pin"
+"SWE-chat","agent-session traces","https://huggingface.co/datasets/SALT-NLP/SWE-chat","gated","source attribution and session provenance","not_downloaded","Gated access must be approved separately"
+"DroidCollection","human/AI/mixed code snippets","https://huggingface.co/datasets/project-droid/DroidCollection","public","controlled code attribution benchmarks","not_downloaded","Not repository-level functional oracle"
+"SWE-rebench V2","multilingual runnable SE tasks","https://proceedings.mlr.press/v306/badertdinov26a.html","public","tasks for our models to generate code","not_downloaded","Task is not itself AI-authored"
+"SWE-bench Multilingual","multilingual SE tasks","https://www.swebench.com/multilingual.html","public","out-of-domain runnable tasks","not_downloaded","Pin release and task licenses"
+"Multi-SWE-bench","multilingual SE tasks","https://multi-swe-bench.github.io/","public","cross-language task evaluation","not_downloaded","Version-dependent count; pin edition"
+"SWE-PolyBench","multilingual benchmark","https://huggingface.co/datasets/AmazonScience/SWE-PolyBench","public","optional task transfer evaluation","not_downloaded","Verify artifact availability and license"
+"EffiBench-X","efficiency benchmark","https://huggingface.co/datasets/EffiBench/effibench-x","public","runtime/memory efficiency objective","not_downloaded","Independent runtime normalization"
+"MultiAIGCD","AI-generated snippet attribution","https://huggingface.co/papers/2507.21693","verify","optional attribution sensitivity","not_downloaded","Verify current link to actual downloadable data"
+"HumanVsAI Code Dataset","human/AI code classification","https://data.mendeley.com/datasets/kjh95n54f8/1","verify","optional matched-code classifier control","not_downloaded","Verify licensing and schema"
