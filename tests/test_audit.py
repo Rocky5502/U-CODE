@@ -1,8 +1,13 @@
 import unittest
 from unittest.mock import patch
+from pathlib import Path
+from tempfile import TemporaryDirectory
+from urllib.error import HTTPError
+import json
 
 from ucode.audit import (audit_pr_metadata, inspect_candidate, is_source_path,
-                         is_test_path, source_language, read_candidates)
+                         is_test_path, source_language, read_candidates,
+                         select_candidates, audit_manifest)
 
 
 class AuditTests(unittest.TestCase):
@@ -102,6 +107,39 @@ class AuditTests(unittest.TestCase):
         self.assertEqual(r["production_file_count"], 1)
         self.assertEqual(r["test_file_count"], 1)
         self.assertEqual(r["changed_production_languages"], ["C++"])
+
+    def test_stratified_batch_selection(self):
+        manifest = Path(__file__).resolve().parents[1] / "data/discovery/agent_pr_candidates_120.csv"
+        rows = read_candidates(manifest)
+        first = select_candidates(rows, per_language=2, language_offset=0)
+        second = select_candidates(rows, per_language=2, language_offset=2)
+        self.assertEqual(len(first), 24)
+        self.assertEqual(len(second), 24)
+        self.assertEqual(len({r["repository"] for r in first + second}), 48)
+        self.assertEqual(first[0]["id"], "1")
+        self.assertEqual(second[0]["id"], "3")
+        with self.assertRaises(ValueError):
+            select_candidates(rows, language_offset=2)
+
+    @patch("ucode.audit.inspect_candidate")
+    @patch("ucode.audit.read_candidates")
+    def test_rate_limit_halts_remaining_requests(self, read, inspect):
+        read.return_value = [
+            {"repository": "a/a", "agent_pr_url": "https://github.com/a/a/pull/1"},
+            {"repository": "b/b", "agent_pr_url": "https://github.com/b/b/pull/2"},
+            {"repository": "c/c", "agent_pr_url": "https://github.com/c/c/pull/3"},
+        ]
+        inspect.side_effect = HTTPError("https://api.github.com", 429,
+                                        "secondary rate limit", None, None)
+        with TemporaryDirectory() as directory:
+            path = Path(directory) / "audit.jsonl"
+            report = audit_manifest("ignored.csv", path)
+            records = [json.loads(s) for s in path.read_text().splitlines()]
+        self.assertEqual(inspect.call_count, 1)
+        self.assertTrue(report["halted_for_rate_limit"])
+        self.assertEqual([r["status"] for r in records],
+                         ["rate_limited", "not_attempted_rate_limit",
+                          "not_attempted_rate_limit"])
 
     def test_manifest_has_120_unique_candidates(self):
         from pathlib import Path
