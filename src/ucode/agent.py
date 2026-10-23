@@ -49,12 +49,14 @@ class AgentRunner:
         risk_model: Callable[[str | None, str], float],
         estimates: Callable[[SearchState, Verification | None], Sequence[ActionEstimate]],
         retriever: Callable[[str], str] | None = None,
+        static_analyzer: Callable[[str], Verification] | None = None,
     ) -> None:
         self.generator = generator
         self.verifier = verifier
         self.risk_model = risk_model
         self.estimates = estimates
         self.retriever = retriever
+        self.static_analyzer = static_analyzer
 
     def run(self, task: str, budget: float = 20, max_steps: int = 20,
             policy: str = "uncertainty_pareto", seed: int = 0) -> AgentRun:
@@ -87,12 +89,19 @@ class AgentRunner:
                 if self.retriever is None:
                     raise ValueError("retrieve selected but no retriever provided")
                 evidence = self.retriever(task)
-            elif action.action in ("test", "static_analysis"):
+            elif action.action == "test":
                 if patch is None:
                     raise ValueError("verifier selected without a candidate")
                 previous_verification = self.verifier(patch)
                 outcome = previous_verification.passed
                 evidence = previous_verification.summary
+            elif action.action == "static_analysis":
+                if patch is None or self.static_analyzer is None:
+                    raise ValueError("static analysis requires candidate and analyzer")
+                # Static checks are diagnostic only; they NEVER establish functional pass.
+                analysis_result = self.static_analyzer(patch)
+                evidence = analysis_result.summary
+                previous_verification = None
             history.append(AgentTrace(index, action.action, action.cost, remaining, outcome))
             if outcome is True:
                 return AgentRun("verified_by_provided_oracle", patch,
