@@ -20,13 +20,18 @@ Our testable hypothesis is that **calibrated uncertainty signals, integrated int
 
 | Path | Purpose |
 |---|---|
-| `data/discovery/agent_pr_candidates_120.csv` | Candidate list, not a vetted corpus |
+| `data/discovery/agent_pr_candidates_120.csv` | 120 discovery links, not vetted code |
+| `data/discovery/dataset_source_registry.csv` | 10 dataset leads, all not downloaded |
+| `data/discovery/pilot_pr_metadata_triage_4.jsonl` | Four real PR metadata checks; no code execution |
 | `src/ucode/audit.py` | Read-only GitHub PR metadata/changed-file screening |
 | `src/ucode/uncertainty.py` | Probability quality, entropy, disagreement, calibration metrics |
 | `src/ucode/search.py` | Explicit Pareto frontier and cost-aware intervention controller |
+| `src/ucode/acquisition.py` | Monte Carlo expected hypervolume improvement per unit cost (prototype) |
 | `src/ucode/simulation.py` | Deterministic *synthetic* environment for unit tests and debugging |
 | `docs/RESEARCH_PROTOCOL.md` | Design, RQs, experiment matrix, rigor and leakage rules |
 | `docs/DATA_GOVERNANCE.md` | Evidence and redistribution gates |
+| `docs/PROJECT_BOUNDARIES.md` | Novelty and overlap safeguards |
+| `paper/OUTLINE.md` | Journal manuscript blueprint, no fabricated results |
 | `configs/models.json` | 6 model candidates, not downloaded |
 | `tests/` | Offline tests |
 
@@ -36,9 +41,29 @@ Our testable hypothesis is that **calibrated uncertainty signals, integrated int
 python -m pip install -e .
 python -m unittest discover -s tests -v
 ucode simulate --seed 7
+python examples/ehvi_smoke.py
 ucode audit --limit 3 --output data/derived/pr_audit.jsonl
 ```
 
 The `audit` command makes **read-only** GitHub REST requests and may hit rate limits; set `GITHUB_TOKEN` in your environment for higher limits. Do not commit the token. No GitHub repository is cloned or executed by the audit command. The demo uses synthetic, explicitly labeled data; its scores are **not experimental evidence**.
 
 See the protocol before drawing any conclusions. Code in this repository may be redistributed according to its own license; third-party code and data retain their source licenses.
+
+## Evidence and next milestones
+
+A four-PR API metadata spot-check found two source-bearing candidates
+(MLflow #27058 is a JavaScript module under a tooling directory and
+forem #24047 has Ruby source/tests) and two build/CI-only candidates
+(Quantinuum/zixy #270 and boot-ui #1549). These are *initial* path checks,
+not completed source attribution/license/functional verification. GitHub's
+API identifies the author as `Copilot`, so the auditor accepts that
+confirmed API alias as well as the discovery query name.
+
+The initial offline CI suite passed on Python 3.10 and 3.12 for
+the pre-acquisition commit; subsequent commits are checked by the
+same workflow. Check [Actions](https://github.com/Rocky5502/U-CODE/actions)
+for the current head commit status.
+
+Track the six research gates in [GitHub Issues](https://github.com/Rocky5502/U-CODE/issues).
+No model weights or 2–5 GB repository corpus have been downloaded,
+and no real model accuracy/reliability experiment is claimed.
