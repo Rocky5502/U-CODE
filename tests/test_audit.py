@@ -26,6 +26,13 @@ class AuditTests(unittest.TestCase):
         self.assertFalse(result["functional_correctness_known"])
         self.assertFalse(result["test_verification_done"])
 
+    def test_copilot_api_login_alias(self):
+        pr = {"user": {"login": "Copilot"}, "merged_at": "2026-10-01"}
+        files = [{"filename": "app/a.mjs", "additions": 10, "deletions": 1}]
+        result = audit_pr_metadata(pr, files, "MIT")
+        self.assertTrue(result["agent_account_matches_search"])
+        self.assertEqual(result["code_file_count"], 1)
+
     def test_reject_docs_only(self):
         pr = {"user": {"login": "copilot-swe-agent[bot]"},
               "merged_at": "2026-10-01T00:00:00Z"}
