@@ -54,6 +54,8 @@ class SearchTests(unittest.TestCase):
             ActionEstimate("test", -1, 1, 1, 1)
         with self.assertRaises(ValueError):
             choose_action(SearchState(1, .5), [], "unknown")
+        with self.assertRaises(ValueError):
+            ActionEstimate("test", .1, .1, .1, 0)
 
     def test_synthetic_episode_is_labeled(self):
         a = run_synthetic_episode("uncertainty_pareto", 7)
