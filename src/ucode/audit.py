@@ -182,29 +182,76 @@ def inspect_candidate(row: dict, token: str | None = None) -> dict:
     }
 
 
-def audit_manifest(input_path: str | Path, output_path: str | Path, limit: int = 0) -> dict:
-    """Explicitly requested reproducible audit; output is overwritten idempotently."""
-    if limit < 0:
-        raise ValueError("limit must be >=0")
+def select_candidates(
+    rows: list[dict], limit: int = 0, per_language: int = 0,
+    language_offset: int = 0,
+) -> list[dict]:
+    """Select a deterministic slice; source discovery ordering remains preserved.
+
+    `per_language=2, language_offset=2` selects the third and fourth record
+    in each original language group, without conflating the group with
+    changed-file language.
+    """
+    if limit < 0 or per_language < 0 or language_offset < 0:
+        raise ValueError("selection parameters must be nonnegative")
+    if per_language == 0 and language_offset:
+        raise ValueError("language_offset requires per_language")
+    if per_language:
+        seen: dict[str, int] = {}
+        selected: list[dict] = []
+        for row in rows:
+            language = str(row.get("query_language", ""))
+            position = seen.get(language, 0)
+            seen[language] = position + 1
+            if language_offset <= position < language_offset + per_language:
+                selected.append(row)
+    else:
+        selected = rows
+    return selected[:limit] if limit else selected
+
+
+def audit_manifest(
+    input_path: str | Path, output_path: str | Path, limit: int = 0,
+    per_language: int = 0, language_offset: int = 0,
+) -> dict:
+    """Read-only deterministic audit; output overwritten, never appended.
+
+    Respect GitHub 403/429 rate-limit signals by stopping the batch immediately,
+    without retry bursts. Unattempted candidates are distinct from retrieval
+    failures; proceed in a later authorized session.
+    """
     token = os.getenv("GITHUB_TOKEN") or os.getenv("GH_TOKEN")
     rows = read_candidates(input_path)
-    selected = rows[:limit] if limit else rows
+    selected = select_candidates(rows, limit, per_language, language_offset)
     output = Path(output_path)
     output.parent.mkdir(parents=True, exist_ok=True)
     counts: dict[str, int] = {}
+    halted = False
     with open(output, "w", encoding="utf-8") as f:
         for row in selected:
-            try:
-                result = inspect_candidate(row, token)
-            except (ValueError, urllib.error.HTTPError, urllib.error.URLError,
-                    TimeoutError, OSError) as exc:
-                # Never report failed lookups as clean or verified.
+            if halted:
                 result = {"repository": row["repository"],
                           "agent_pr_url": row["agent_pr_url"],
-                          "status": "retrieval_failed",
-                          "error_type": type(exc).__name__,
-                          "error": str(exc)[:220]}
+                          "status": "not_attempted_rate_limit"}
+            else:
+                try:
+                    result = inspect_candidate(row, token)
+                except urllib.error.HTTPError as exc:
+                    limited = exc.code in (403, 429)
+                    result = {"repository": row["repository"],
+                              "agent_pr_url": row["agent_pr_url"],
+                              "status": "rate_limited" if limited else "retrieval_failed",
+                              "error_type": type(exc).__name__,
+                              "http_status": exc.code}
+                    if limited:
+                        halted = True
+                except (ValueError, urllib.error.URLError, TimeoutError, OSError) as exc:
+                    result = {"repository": row["repository"],
+                              "agent_pr_url": row["agent_pr_url"],
+                              "status": "retrieval_failed",
+                              "error_type": type(exc).__name__,
+                              "error": str(exc)[:220]}
             f.write(json.dumps(result, ensure_ascii=False, sort_keys=True) + "\n")
             counts[result["status"]] = counts.get(result["status"], 0) + 1
     return {"candidates_requested": len(selected), "statuses": counts,
-            "output": str(output)}
+            "halted_for_rate_limit": halted, "output": str(output)}
