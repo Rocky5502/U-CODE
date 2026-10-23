@@ -22,7 +22,34 @@ EXCLUDED_PARTS = {
     "generated", ".git", "target", "__pycache__", "site-packages",
 }
 PR_URL = re.compile(r"^https://github\.com/([\w.-]+/[\w.-]+)/pull/(\d+)$")
-EXPECTED_AGENTS = {"copilot-swe-agent[bot]", "copilot"}  # API login may be Copilot
+EXPECTED_AGENTS = {"copilot-swe-agent[bot]", "copilot"}  # GitHub API may report Copilot
+TEST_DIRS = {"test", "tests", "spec", "specs", "unittests", "__tests__"}
+SOURCE_LANGUAGES = {
+    ".py": "Python", ".js": "JavaScript", ".mjs": "JavaScript",
+    ".cjs": "JavaScript", ".jsx": "JavaScript", ".ts": "TypeScript",
+    ".tsx": "TypeScript", ".java": "Java", ".go": "Go", ".rs": "Rust",
+    ".cc": "C++", ".cpp": "C++", ".cxx": "C++", ".hpp": "C++",
+    ".c": "C", ".h": "C/C++ Header", ".cs": "C#", ".kt": "Kotlin",
+    ".kts": "Kotlin", ".rb": "Ruby", ".php": "PHP",
+    ".swift": "Swift", ".dart": "Dart",
+}
+
+
+def is_test_path(path: str) -> bool:
+    """Classify source used only for tests/specifications from its path."""
+    parts = [p.lower() for p in Path(path).parts]
+    if not parts:
+        return False
+    name = parts[-1]
+    return (any(p in TEST_DIRS or p.endswith(".tests") for p in parts[:-1])
+            or name.startswith("test_")
+            or name.endswith(("_test.py", "_test.go", "tests.swift", "tests.cs"))
+            or ".test." in name or ".spec." in name)
+
+
+def source_language(path: str) -> str | None:
+    """Language of the *changed file*, never the repository's GitHub language."""
+    return SOURCE_LANGUAGES.get(Path(path).suffix.lower())
 
 
 def is_source_path(path: str) -> bool:
@@ -43,10 +70,20 @@ def audit_pr_metadata(pr: dict, files: list[dict], license_spdx: str | None) -> 
     code_files = [f for f in files if is_source_path(str(f.get("filename", "")))]
     additions = sum(max(0, int(f.get("additions", 0))) for f in code_files)
     deletions = sum(max(0, int(f.get("deletions", 0))) for f in code_files)
-    ready = merged and agent_match and bool(code_files)
+    production_files = [f for f in code_files if not is_test_path(str(f.get("filename", "")))]
+    test_files = [f for f in code_files if is_test_path(str(f.get("filename", "")))]
+    if not (merged and agent_match):
+        status = "agent_or_merge_mismatch"
+    elif production_files:
+        status = "production_source_path_detected"
+    elif test_files:
+        status = "test_only_source_change"
+    else:
+        status = "non_source_change"
+    actual_languages = sorted({source_language(str(f.get("filename", "")))
+                               for f in production_files if source_language(str(f.get("filename", "")))})
     return {
-        "status": "metadata_supported_needs_manual_validation" if ready
-                  else "triage_reject_or_needs_review",
+        "status": status,
         "agent_account": account,
         "agent_account_matches_search": agent_match,
         "merged": merged,
@@ -55,10 +92,17 @@ def audit_pr_metadata(pr: dict, files: list[dict], license_spdx: str | None) -> 
         "merge_commit_sha": pr.get("merge_commit_sha"),
         "code_files": [f.get("filename") for f in code_files],
         "code_file_count": len(code_files),
+        "production_file_count": len(production_files),
+        "test_file_count": len(test_files),
+        "production_code_files": [f.get("filename") for f in production_files],
+        "test_code_files": [f.get("filename") for f in test_files],
+        "changed_production_languages": actual_languages,
         "source_additions": additions,
         "source_deletions": deletions,
         "repository_license_spdx": license_spdx or "UNKNOWN",
-        "license_review_required": not bool(license_spdx and license_spdx not in ("NOASSERTION", "UNKNOWN")),
+        # Repo-level SPDX never guarantees rights on every changed source file.
+        "license_review_required": True,
+        "repository_spdx_is_rights_clearance": False,
         "manual_patch_review_done": False,
         "file_level_license_review_done": False,
         "test_verification_done": False,
@@ -104,7 +148,9 @@ def _files_for_pr(repo: str, number: int, token: str | None) -> list[dict]:
         files.extend(chunk)
         if len(chunk) < 100:
             return files
-    return files
+    # GitHub REST returns at most 3000 changed files for a PR.
+    # Do not silently treat an ambiguous boundary as a complete audit.
+    raise ValueError("PR changed-file list reached GitHub's 3000-file cap")
 
 
 def inspect_candidate(row: dict, token: str | None = None) -> dict:
@@ -129,12 +175,15 @@ def inspect_candidate(row: dict, token: str | None = None) -> dict:
         "pr_number": number,
         "repo_default_branch": repodata.get("default_branch"),
         "repo_archived": repodata.get("archived"),
+        "repo_is_fork": repodata.get("fork"),
+        "repo_parent_full_name": (repodata.get("parent") or {}).get("full_name"),
+        "language_label_is_repository_primary_not_patch_label": True,
         **metadata,
     }
 
 
 def audit_manifest(input_path: str | Path, output_path: str | Path, limit: int = 0) -> dict:
-    """Explicitly requested audit; append-only results; failures are recorded."""
+    """Explicitly requested reproducible audit; output is overwritten idempotently."""
     if limit < 0:
         raise ValueError("limit must be >=0")
     token = os.getenv("GITHUB_TOKEN") or os.getenv("GH_TOKEN")
