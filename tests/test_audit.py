@@ -17,7 +17,9 @@ class AuditTests(unittest.TestCase):
             self.assertTrue(is_source_path(path), path)
         for path in ("README.md", "package-lock.json", "vendor/a.py",
                      "node_modules/index.ts", "dist/a.js", "out/image.png",
-                     "js/app.min.js", "target/release/a.rs"):
+                     "js/app.min.js", "target/release/a.rs",
+                     "app/build.gradle.kts", "settings.gradle.kts",
+                     "buildSrc/tooling.gradle.kts"):
             self.assertFalse(is_source_path(path), path)
 
     def test_metadata_not_correctness(self):
@@ -44,6 +46,21 @@ class AuditTests(unittest.TestCase):
               "merged_at": "2026-10-01T00:00:00Z"}
         result = audit_pr_metadata(pr, [{"filename": "README.md"}], None)
         self.assertEqual(result["status"], "non_source_change")
+
+    def test_empty_pr_file_list_is_not_a_confirmed_non_source_change(self):
+        pr = {"user": {"login": "Copilot"}, "merged_at": "2026-10-01"}
+        result = audit_pr_metadata(pr, [], "MIT")
+        self.assertEqual(result["status"], "empty_file_list_needs_review")
+        self.assertFalse(result["functional_correctness_known"])
+
+    def test_gradle_kotlin_script_does_not_count_as_kotlin_production(self):
+        pr = {"user": {"login": "Copilot"}, "merged_at": "2026-10-01"}
+        result = audit_pr_metadata(pr, [
+            {"filename": "app/build.gradle.kts", "additions": 19}
+        ], "MIT")
+        self.assertEqual(result["status"], "non_source_change")
+        self.assertEqual(result["production_file_count"], 0)
+        self.assertEqual(result["changed_production_languages"], [])
 
     def test_reject_non_bot_or_unmerged(self):
         changed = [{"filename": "src/mod.py", "additions": 1, "deletions": 0}]
