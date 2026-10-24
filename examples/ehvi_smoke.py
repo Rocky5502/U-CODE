@@ -9,9 +9,9 @@ def main():
     archive = [ParetoPoint(.55, .8), ParetoPoint(.8, .5)]
     proposals = [
         AcquisitionProposal("generate", .72, .08, .65, .1, .8, 3),
-        AcquisitionProposal("test", .65, .04, .7, .05, .95, 1),
         AcquisitionProposal("repair", .82, .1, .55, .07, .75, 2),
     ]
+    # Tests/static analysis are *information* actions; model separately via voi.py.
     chosen = select_ehvi_action(archive, proposals, remaining_budget=4,
                                 samples=256, seed=7)
     print(json.dumps({
