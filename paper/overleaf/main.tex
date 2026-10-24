@@ -644,6 +644,40 @@ search/reuse where faithful replication is feasible. We will
 disclose comparator deviations rather than relabeling simplified
 implementations as exact reproductions of published agents.
 
+\paragraph{Researcher-selected six-model panel.}
+The prospective study now includes all six researcher-selected
+open-weight checkpoints: Qwen2.5-Coder-7B-Instruct,
+Qwen3-Coder-30B-A3B-Instruct,
+Devstral-Small-2-24B-Instruct-2512,
+DeepSeek-Coder-V2-Lite-Instruct,
+CodeGemma-1.1-7b-it and Llama-3.1-8B-Instruct.
+These constitute six checkpoints from \emph{five} publisher
+families, since two are from Qwen. They represent code-focused,
+repository-agent, mixture-of-experts and general-instruction
+contrasts, rather than six independent training organizations.
+The exact Hugging Face model identifiers and provider-license
+metadata are maintained in a versioned experiment manifest.
+
+Researcher agreement to include a model does \emph{not}
+imply acceptance of a provider's license, access to gated
+weights or a verified runnable checkpoint. The experiment
+must freeze each full model/tokenizer revision, chat template,
+inference engine, precision or quantization, tool-call
+settings, prompt configuration, random seeds, and hardware
+measurements before inspecting held-out outcomes.
+The CodeGemma and Llama checkpoints require separate
+gated-terms/access checks, DeepSeek's distribution terms
+require independent review, and larger MoE/dense checkpoints
+need measured memory feasibility. In particular, a model's
+\emph{active} MoE parameters are not its stored weight count.
+The resource-feasibility pilot may start with smaller
+approved checkpoints, but all six remain designated for
+the later confirmatory comparison; unexecuted or excluded
+models must be disclosed instead of quietly omitted.
+Currently \emph{none} of the six checkpoints has been
+frozen, downloaded or executed within U-CODE, and no
+effectiveness outcome is reported.
+
 \paragraph{Pilot and sample size.}
 A prospective feasibility pilot of approximately 40--60
 \emph{independently executable} tasks across multiple repositories,
