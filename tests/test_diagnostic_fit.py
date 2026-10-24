@@ -8,7 +8,10 @@ from ucode.diagnostic_fit import (
     DiagnosticTrainingRecord, FrozenDiagnosticLikelihood,
     GroupPartitions, fit_diagnostic_likelihood,
 )
-from ucode.vector_policy import ResourceVector
+from ucode.vector_policy import (
+    ResourceVector, ResourcePrices, choose_next_intervention,
+)
+from ucode.voi import ReleaseRule
 
 
 def record(i, group, good, observed, model="pinned-model", action="test",
@@ -127,6 +130,18 @@ class TrainOnlyDiagnosticFitting(unittest.TestCase):
         self.assertEqual(forecast.action, "test")
         self.assertAlmostEqual(forecast.sensitivity, 0.75)
         self.assertEqual(forecast.cost.test_calls, 1)
+
+    def test_frozen_training_likelihood_feeds_budgeted_planner(self):
+        fitted = fit_diagnostic_likelihood(self.rows, self.groups,
+                                           "pinned-model", "test")
+        forecast = fitted.forecast(ResourceVector(test_calls=1))
+        decision = choose_next_intervention(
+            .85, [forecast],
+            ResourceVector(tokens=5, test_calls=1, wall_seconds=5),
+            ResourcePrices(test_calls=.05), ReleaseRule(.1))
+        self.assertEqual(decision.action, "test")
+        self.assertEqual(decision.budget_after.test_calls, 0)
+        self.assertGreater(decision.predicted_net_improvement, 0)
 
     def test_invalid_minimum_and_smoothing(self):
         for kwargs in ({"minimum_per_class": 0},
