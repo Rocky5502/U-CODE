@@ -33,6 +33,10 @@ jobs:
         run: python -m scripts.triage_review_queue --limit 12
       - name: Check real PR task-admission dossiers against immutable audit (no execution)
         run: python -m scripts.check_task_admission
+      - name: Validate prospectively unsealed evaluator-only metadata (no oracle execution)
+        run: python -m scripts.check_evaluator_boundary
+      - name: Reproduce independent mathematical odd-payout ambiguity witness
+        run: python -m examples.pilot_oracle_boundary_smoke
       - name: Validate candidate model and dataset registries
         run: python -m scripts.validate_research_registries
       - name: Compile original source only
