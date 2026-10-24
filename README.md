@@ -137,6 +137,46 @@ nonprivileged/network-disabled sandbox. The proposed 40–60-task
 pilot and 250–400-task confirmatory range are **conditional plans**,
 not observed samples or fixed power targets.
 
+## Algorithm milestone: Bounded Evidence Search (2026-10-24)
+
+We now maintain an explicitly defined and tested `BES` **finite-horizon
+look-ahead algorithm** rather than relying solely on the existing heuristic
+and one-step vector selector.
+
+- [Finite-depth BES](src/ucode/budgeted_belief_search.py) compares visible
+  testing/static-analysis/retrieval outcomes with possible next candidate
+  generation/repair outcomes under **five hard resource budgets**. It
+  explicitly represents uncertain branch consequences and a terminal
+  predicted-risk release or abstention decision. Up to 10 actions and depth
+  4 are permitted in the bounded reference; search fails closed if it
+  exceeds its state cap.
+- [Closed-loop visible-evidence adapter](src/ucode/belief_session.py)
+  incorporates an actual visible diagnostic sign or a predicted
+  generated-candidate risk, deducts the measured budget, prevents action
+  replay and replans. Hidden correctness-oracle results are **not policy
+  inputs**.
+- [Fully mathematical protocol](docs/BES_ALGORITHM_METHOD_AND_FALSIFIERS_2026-10-24.md)
+  provides the bounded Bellman recursion, **restricted** backward-induction
+  argument, hard-budget invariant and a toy two-test example showing
+  positive *sequential option value* despite zero one-step gain.
+- [First-party demonstration](examples/bes_lookahead_smoke.py) can be run
+  with `python -m examples.bes_lookahead_smoke`. It prints explicit
+  **SYNTHETIC** warnings; no third-party code/model/oracle is run.
+- [Springer LaTeX](paper/overleaf/main.tex) includes an additional BES
+  algorithm subsection with exact scope and toy caveats; the CI-generated
+  `ucode-overleaf-sources` ZIP contains the current GitHub manuscript,
+  but **does not sync a live Overleaf project**.
+
+**Critical research limitation:** BES presently models **one active code
+candidate**, not a joint multiobjective Pareto archive; it assumes declared
+conditional independence between separate diagnostic probes if more than one
+is planned and uses frozen externally supplied scenario probabilities.
+Both the Bellman algorithm and value-of-information reasoning are established
+prior mathematical ideas. Our implementation is new to this repository,
+but publication-level **algorithmic novelty and actual performance gains
+are NOT demonstrated** until a controlled multi-model, sealed-oracle
+study with strong budget-matched baselines is completed.
+
 ## Research thesis
 
 Our testable hypothesis is that **calibrated uncertainty signals, integrated into budget-constrained multi-objective search, can improve independently verified code reliability** against matched-cost baselines. Null and negative results are publishable.
