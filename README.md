@@ -232,6 +232,16 @@ The discovery metadata screen is now **120 of 120 attempted, 119 retrieved,
 first-pass human leads from experimental admission. It **cannot** mark a
 PR as AI-line-attributed, rights-cleared or independently oracle-verified.
 
+## Real-task pilot admission: two pinned PR candidates (25 October 2026)
+
+Following the completed 120-link metadata screen, we have opened **two real pre-fix pilot dossiers**: [PHP file-persistence and cache layout (PR #172)](https://github.com/mvdbos/php-spider/pull/172) and [Go settlement/scoring and rank rules (PR #30)](https://github.com/PlayHuai/eighty-point-huai-an/pull/30). The [research report](docs/PILOT_ADMISSION_EVIDENCE_GATE_2026-10-25.md) records original issue timing, immutable base/head/merge revisions, source/test paths, observed license files and unresolved evaluator constraints.
+
+- [Eight-gate admission contract](src/ucode/task_admission.py): immutable pre-fix snapshot, AI/human line attribution, file-specific reuse rights, independent functional oracle, hidden-oracle split, sandbox isolation, pinned toolchain and enforceable resource limits.
+- [Two original evidence dossiers](data/admission/2026-10-25/pilot_dossiers.jsonl): **16/16 gates currently PENDING**; neither candidate is an admitted research experiment. Even fully self-reported evidence requires **external independent adjudication**, never automatic promotion.
+- [Offline metadata-linked validation](scripts/check_task_admission.py): `python -m scripts.check_task_admission`. CI verifies unchanged PR identities/hashes/paths; no external program is cloned or executed.
+
+**This is provenance and task-admission engineering, not model-task benchmarking.** PR-added test files are not independent correctness oracles. License tags and human/bot co-author trailers do not establish changed-line provenance. Both candidates need independently attested file rights, sealed tests, and audited network-off non-root execution before any six-model study is possible.
+
 ## Research thesis
 
 Our testable hypothesis is that **calibrated uncertainty signals, integrated into budget-constrained multi-objective search, can improve independently verified code reliability** against matched-cost baselines. Null and negative results are publishable.
