@@ -2,13 +2,18 @@
 
 This is a reproducible search acquisition *algorithm* built on predictive
 distributions supplied by an external, separately calibrated estimator.
-The 2D hypervolume uses reliability and safety utility; execution cost is
+The 2D hypervolume uses reliability and safety utility on newly generated
+candidate patches ONLY. Verification-only actions must use evidence value
+(see voi.py) and never hallucinate a new Pareto point. Execution cost is
 a hard constraint and denominator. No real-model results are asserted.
 """
 from dataclasses import dataclass
 from math import isfinite
 from random import Random
 from typing import Sequence
+
+# EHVI expands a *candidate patch* frontier; tests and retrieval do not.
+CANDIDATE_PRODUCING_ACTIONS = frozenset({"generate", "repair"})
 
 
 @dataclass(frozen=True)
@@ -33,8 +38,8 @@ class AcquisitionProposal:
     cost: float
 
     def __post_init__(self):
-        if not self.action:
-            raise ValueError("action must be named")
+        if self.action not in CANDIDATE_PRODUCING_ACTIONS:
+            raise ValueError("EHVI requires a candidate-producing action: generate or repair")
         for x in (self.mean_reliability, self.mean_safety, self.probability_valid):
             if not isfinite(x) or not 0 <= x <= 1:
                 raise ValueError("prediction or probability must be in [0,1]")
