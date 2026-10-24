@@ -58,6 +58,14 @@ class SixModelPreflightTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "conflicts"):
             self.check()
 
+    def test_restricted_licenses_cannot_be_relabelled_apache(self):
+        for index in (3, 4, 5):
+            model = deepcopy(self.plan)
+            model["models"][index]["card_license"] = "apache-2.0"
+            with self.subTest(index=index), self.assertRaisesRegex(
+                    ValueError, "official card"):
+                validate_selected_manifest(model, self.v2)
+
     def test_fake_successful_runs_before_inference_blocked(self):
         self.plan["models"][2]["independently_verified_task_runs"] = 200
         with self.assertRaisesRegex(ValueError, "nonzero"):
