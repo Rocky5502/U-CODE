@@ -118,12 +118,12 @@
 <rect x="1340" y="334" width="210" height="39" rx="7" fill="#f7fafc" stroke="#e3edf7" stroke-width="1.4" />
 <circle cx="1355" cy="354" r="6" fill="#2075c9"/>
 <text x="1369" y="359" fill="#173457" font-family="Arial,Helvetica,sans-serif" font-size="14.5" font-weight="600" >Continue if feasible</text>
-<path d="M269 320 H278" fill="none" stroke="#1e6bb3" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arr)" />
-<path d="M529 320 H538" fill="none" stroke="#1e6bb3" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arr)" />
-<path d="M789 320 H798" fill="none" stroke="#1e6bb3" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arr)" />
-<path d="M1049 320 H1058" fill="none" stroke="#1e6bb3" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arr)" />
-<path d="M1309 320 H1318" fill="none" stroke="#1e6bb3" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arr)" />
-<path d="M1185 516 V552 Q1185 568 1169 568 H943 Q927 568 927 552 V517" fill="none" stroke="#0d8c91" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"  />
+<path id="policy-flow-1-2" data-from="1" data-to="2" d="M269 320 H278" fill="none" stroke="#1e6bb3" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arr)" />
+<path id="policy-flow-2-3" data-from="2" data-to="3" d="M529 320 H538" fill="none" stroke="#1e6bb3" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arr)" />
+<path id="policy-flow-3-4" data-from="3" data-to="4" d="M789 320 H798" fill="none" stroke="#1e6bb3" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arr)" />
+<path id="policy-flow-4-5" data-from="4" data-to="5" d="M1049 320 H1058" fill="none" stroke="#1e6bb3" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arr)" />
+<path id="policy-flow-5-6" data-from="5" data-to="6" d="M1309 320 H1318" fill="none" stroke="#1e6bb3" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arr)" />
+<path id="execution-to-BES-feedback" d="M1185 516 V552 Q1185 568 1169 568 H943 Q927 568 927 552 V517" fill="none" stroke="#0d8c91" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"  />
 <path d="M918 527 L927 513 L936 527" fill="none" stroke="#0d8c91" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
 <rect x="964" y="538" width="179" height="24" rx="3" fill="#ffffff" stroke="none" stroke-width="1.4" />
 <text x="1053" y="555" fill="#086e74" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="750" text-anchor="middle">replan under budget</text>
@@ -174,11 +174,11 @@
 <text x="1242" y="805" fill="#284364" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="500" >Ablations &amp; uncertainty</text>
 <circle cx="1227" cy="827" r="4.3" fill="#098e98"/>
 <text x="1242" y="832" fill="#284364" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="500" >Reproducible manuscript</text>
-<path d="M395 796 H419" fill="none" stroke="#1e6bb3" stroke-width="3.7" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arr)" />
-<path d="M784 796 H808" fill="none" stroke="#1e6bb3" stroke-width="3.7" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arr)" />
-<path d="M1173 796 H1197" fill="none" stroke="#1e6bb3" stroke-width="3.7" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arr)" />
-<path d="M145 514 V683" fill="none" stroke="#1e6bb3" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arr)" />
-<path d="M1446 514 V601 H603 V683" fill="none" stroke="#0d8c91" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arr)" />
+<path id="evaluation-flow-A-B" d="M395 796 H419" fill="none" stroke="#1e6bb3" stroke-width="3.7" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arr)" />
+<path id="evaluation-flow-B-C" d="M784 796 H808" fill="none" stroke="#1e6bb3" stroke-width="3.7" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arr)" />
+<path id="evaluation-flow-C-D" d="M1173 796 H1197" fill="none" stroke="#1e6bb3" stroke-width="3.7" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arr)" />
+<path id="task-to-admission" d="M145 514 V683" fill="none" stroke="#1e6bb3" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arr)" />
+<path id="release-to-evaluator" d="M1446 514 V601 H603 V683" fill="none" stroke="#0d8c91" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arr)" />
 <rect x="944" y="586" width="204" height="23" rx="4" fill="#ffffff" stroke="none" stroke-width="1.4" />
 <text x="1046" y="603" fill="#087d81" font-family="Arial,Helvetica,sans-serif" font-size="12" font-weight="700" text-anchor="middle">terminal patch only → sealed eval</text>
 <rect x="25" y="914" width="1550" height="34" rx="8" fill="#f4f8fc" stroke="#e2ebf3" stroke-width="1.4" />
