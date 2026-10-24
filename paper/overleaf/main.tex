@@ -430,6 +430,69 @@ adaptive testing and repository distribution shift require
 specific analysis rather than assuming exchangeability or
 distribution-free risk control.
 
+\subsection{Confirmatory evaluation design and estimands}
+
+Our primary endpoint is independently verified \emph{full-task}
+success, including abstentions and unsuccessful tool runs in the
+task denominator (Eq.~\eqref{eq:success}). For each frozen
+task--model--seed--budget instance $i$, treatment and control policies
+start at the same pre-fix snapshot and receive identical hard
+resource limits. Denote the final binary success indicators
+$Y_i^{(U)}$ for U-CODE and $Y_i^{(B)}$ for a preregistered
+baseline. The paired treatment contrast is
+\begin{equation}
+ \widehat{\Delta}_{U,B}
+ =\frac{1}{N}\sum_{i=1}^N
+ \left(Y_i^{(U)}-Y_i^{(B)}\right),
+ \label{eq:paired}
+\end{equation}
+where $N$ counts matched attempts, \emph{not} released patches
+or seeds as independent repository instances. We will report
+discordant pairs, repository/fork-lineage cluster bootstrap intervals,
+the fraction of released patches, and the conditional error rate
+among releases. When coverage is zero, conditional wrong-release
+risk is \emph{undefined}, not zero.
+
+For the confirmatory study, a single primary budget regime and
+primary U-CODE-versus-no-uncertainty-search contrast must be frozen
+before inspecting independent held-out results. Secondary baseline
+policies include single generation, predetermined testing,
+cost-first selection, uncertainty-triggered regeneration,
+selective verifier triggering, and resource-matched trajectory
+search/reuse where faithful replication is feasible. We will
+disclose comparator deviations rather than relabeling simplified
+implementations as exact reproductions of published agents.
+
+\paragraph{Pilot and sample size.}
+A prospective feasibility pilot of approximately 40--60
+\emph{independently executable} tasks across multiple repositories,
+at least three model families, and languages actually supported
+by the tested harness will measure runtime, discordant success
+pairs, oracle attrition and clustering. These targets are
+\emph{conditional}, not observed sample sizes. A larger
+approximately 250--400 distinct-task confirmatory cohort is
+only a provisional planning range: final power and sample size
+must follow measured pilot discordance, grouping and available
+compute. Repeated model seeds remain correlated within tasks.
+Proposed budget multipliers of 1, 2 and 4 are not fixed until
+the pilot establishes a measured \emph{vector} budget and one
+primary level is preregistered. No GPU or monetary expense is
+inferred from these prospective numbers.
+
+\paragraph{Frozen evaluation and integrity.}
+A separately sequestered evaluator must record patch SHA,
+task/repository/fork lineage, pre-fix base SHA, model/decoding
+revision, seed, policy, measured token/test/GPU/CPU/wall
+budgets, terminal release decision and the independent
+correctness result. The policy sees neither hidden test
+inputs/labels nor post-run evaluation summaries. The offline
+evaluation module validates pairing and computes coverage,
+wrong-release risk and a deterministic lineage-cluster
+bootstrap from supplied observations, but its fixture tests
+are synthetic and provide \emph{no} U-CODE effectiveness
+estimate. Real empirical results require genuinely sealed
+and replayed oracles before any table can be filled.
+
 \section{Results}\label{sec:results}
 % NO EMPIRICAL RQ RESULTS EXIST AT THIS MANUSCRIPT STATE.
 % Add tables and figures ONLY after executable, revision-pinned runs and
