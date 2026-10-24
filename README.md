@@ -36,7 +36,7 @@ All six recommended models have been **accepted by the researcher for the U-CODE
 
 ## Scientific novelty and mathematical formulation (24 October 2026)
 
-**Reviewed close competitors:** 23 primary-source links and potential baseline threats
+**Reviewed close competitors:** 24 primary-source links and potential baseline threats
 in [the dated novelty matrix](literature/novelty_matrix_2026-10-24.csv).
 Key comparison papers include SWE-Search (MCTS), GA4GC (multiobjective
 configuration search), SWE-Replay (trajectory reuse), SWE-Verifier (2026-10-21
@@ -66,7 +66,7 @@ fully tested search controller** and are not empirically validated.
 
 **Manuscript:** [paper/overleaf/main.tex](paper/overleaf/main.tex)
 now has properly separated objectives, resource-constrained Bellman/EVSI
-formulations, 14 source-verified BibTeX entries, and no fabricated results.
+formulations, 16 source-linked BibTeX entries, and no fabricated results.
 The official Springer publisher class is still required for a real compile.
 
 ## Version-controlled Springer/Overleaf workflow (updated 2026-10-24)
