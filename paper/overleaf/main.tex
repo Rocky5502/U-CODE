@@ -632,6 +632,59 @@ and human--agent metadata are archived separately
 from the 120-link discovery screen. Neither case
 is yet an executable evaluation unit.
 
+\paragraph{Prospective policy--evaluator information boundary.}
+To prevent evaluation contamination, we register
+prospective pilots with an immutable pre-fix task
+identifier and separate policy-visible specification
+references $E_i^{\mathrm{vis}}$ and evaluator-only
+oracle references $H_i^{\mathrm{eval}}$.
+The agent-facing metadata serializer uses an
+explicit field allowlist and omits private
+oracle references, oracle commitments, reviewer
+metadata and tests authored in the candidate PR.
+Such PR-authored tests must never be presented
+as independent held-out evaluation oracles.
+Distinct training and evaluation repository/fork
+lineages must also be verified independently:
+two different group-name strings do not prove
+independence of repository ancestry. Neither
+a hash nor a self-reported reviewer role
+authenticates oracle secrecy. Currently our two
+pilot registrations contain no sealed oracle
+files, oracle commitments, signed runner
+attestations or executable-task authorizations.
+Software tests check metadata separation, not
+host-level security isolation.
+
+\paragraph{Specification ambiguity and nonunique gold outputs.}
+Further analysis of the Go task's pre-fix
+requirements reveals a threat to scientific
+correctness labels. The specifications prohibit
+negative loser balances and demand zero-sum
+settlement, but do not uniquely determine the
+winner of an indivisible point. For an illustrative
+state with capped loser deltas $(0,-5)$,
+the recovered payout pool is $P=5$.
+Even if we add the \emph{hypothetical stronger}
+fairness condition $|w_1-w_2|\leq 1$, both
+$(w_1,w_2)=(2,3)$ and $(3,2)$ satisfy
+\begin{equation}
+w_1+w_2=P,\quad
+w_1,w_2\geq0,\quad |w_1-w_2|\leq1.
+\label{eq:oracle-ambiguity}
+\end{equation}
+For even $P$ the near-equal allocation is
+unique, while for odd $P$ two allocations
+remain possible. This basic analytical witness,
+also covered by first-party exhaustive property
+tests, is not a correctness finding about
+the external Go patch. An independent domain
+reviewer must authorize whether either output
+is valid or a particular tie-break is required.
+Any score-only microtask must also be disclosed
+as a narrower evaluation than the original
+PR's transactional database settlement.
+
 \subsection{Evidence-qualified task admission}\label{sec:admission}
 
 \paragraph{Two pinned task-admission dossiers.}
