@@ -94,6 +94,49 @@ The official Springer publisher class is still required for a real compile.
   **ucode-overleaf-sources** source-only artifact; no direct Overleaf-account
   write is claimed.
 
+## Deep Research continuation — 2026-10-24
+
+The [dated Deep Research synthesis](docs/DEEP_RESEARCH_SYNTHESIS_2026-10-24.md)
+reconciles new papers and model/dataset leads with the **canonical 84-PR
+screening checkpoint**. The older 24-PR stratified screen is an initial
+subset, not the total screened count. No naturalistic source is fully
+oracle-qualified yet.
+
+**Manuscript:** [Springer/Overleaf main.tex](paper/overleaf/main.tex)
+has a stronger citation-grounded related-work and novelty-falsifier
+section, plus a prospective matched-task evaluation subsection.
+[references.bib](paper/overleaf/references.bib) includes recent 2026
+verification papers, correctly marked as preprints.
+[Novelty matrix](literature/novelty_matrix_2026-10-24.csv) currently
+includes 24 source-linked comparisons, not an exhaustive systematic review.
+
+**Reproducible pilot inputs:** [model candidates v2](configs/models_v2_2026-10-24.json)
+(six leads, none license/revision/memory-approved), and
+[dataset candidate registry v2](data/discovery/dataset_source_registry_v2_2026-10-24.csv)
+(13 leads, not downloaded or independently executed).
+Old v1 inventories remain version-controlled for transparency.
+
+**Evaluator-only metrics:** [src/ucode/evaluation.py](src/ucode/evaluation.py)
+calculates full-task verified success, release coverage and wrong-release
+risk, and a strict task/model/seed/budget paired contrast with a
+repository-lineage cluster bootstrap. All related regression tests are
+**synthetic engineering tests**, not U-CODE success results.
+[CI registry guard](scripts/validate_research_registries.py) prevents
+candidate manifests from silently asserting approved rights, pinned
+model revisions or verified execution.
+
+**Latest CI:** [GitHub Actions](https://github.com/Rocky5502/U-CODE/actions)
+executes the offline tests on Python 3.10 and 3.12, runs the candidate
+manifest guard and produces an `ucode-overleaf-sources` manuscript
+ZIP artifact. The GitHub paper source is canonical; **no authenticated
+live Overleaf editor write or LaTeX compilation is claimed**.
+
+**Next scientific blocker:** a source-rights reviewed, immutable,
+independently oracle-tested **real** task in a truly isolated
+nonprivileged/network-disabled sandbox. The proposed 40–60-task
+pilot and 250–400-task confirmatory range are **conditional plans**,
+not observed samples or fixed power targets.
+
 ## Research thesis
 
 Our testable hypothesis is that **calibrated uncertainty signals, integrated into budget-constrained multi-objective search, can improve independently verified code reliability** against matched-cost baselines. Null and negative results are publishable.
