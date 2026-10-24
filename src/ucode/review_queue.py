@@ -7,6 +7,8 @@ independent oracle. Inputs are repository metadata, not executable source.
 from dataclasses import dataclass
 from typing import Sequence
 
+from .audit import is_source_path, is_test_path
+
 LICENSE_UNKNOWN = {None, "", "NOASSERTION", "UNKNOWN"}
 SENSITIVE_FRAGMENTS = (
     "auth", "oauth", "saml", "crypto", "credential", "secret", "token",
@@ -45,6 +47,14 @@ def rank_candidate(record: dict) -> ReviewLead | None:
         return None
     prod = record.get("production_files")
     tests = record.get("test_files")
+    if tests is None:
+        # Legacy initial 24 records stored changed filenames and source files
+        # but not a separate test list. Infer only conservative PATH hints.
+        changed = record.get("changed_paths")
+        if not isinstance(changed, list):
+            raise ValueError("cannot reconstruct missing legacy test paths")
+        tests = [path for path in changed
+                 if is_source_path(path) and is_test_path(path)]
     if not isinstance(prod, list) or not prod or not isinstance(tests, list):
         raise ValueError("source candidate has inconsistent production/test paths")
     reasons = ["source_path_only", "ai_line_authorship_unverified",
