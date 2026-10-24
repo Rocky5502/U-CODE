@@ -302,6 +302,64 @@ oracles, task-paired policy runs and measured token/test/GPU/CPU/wall
 budgets. Model revisions and calibration datasets must be pinned.
 Only runnable, rights-cleared and leakage-safe tasks will be used.
 
+\subsection{Evidence-qualified task admission}\label{sec:admission}
+
+Admission is \emph{not} implied by a Copilot-authored or merged pull
+request. Before considering a task for controlled execution, we require
+identifiers for an immutable base/patch pair, changed production-source
+files, actual programming language, repository/fork lineage,
+file-level rights review, independently reviewed functional oracle and
+a pinned execution environment. For testing the data contract,
+a static fail-closed checker verifies that these \emph{references and
+safety declarations} are present. Its passing state is explicitly
+\emph{declared complete, pending independent verification};
+it never confers permission to execute code. Trusted rights review and
+replay inside a genuinely isolated, network-disabled sandbox remain
+separate conditions. No uncontrolled third-party code is run in our
+ordinary repository CI.
+
+\subsection{Training-only diagnostic likelihoods}\label{sec:diag-fit}
+
+Let $O_i^a\in\{+,-\}$ represent one visible diagnostic result for
+action $a$, recorded \emph{before} the evaluator-only acceptable-patch
+outcome $Z_i\in\{0,1\}$. The same predeclared target must be used
+throughout a comparison; in the absence of a validated security oracle,
+$Z_i$ represents functional correctness only. For a given pinned
+model and action, training-only smoothed diagnostic estimates are
+\begin{align}
+\widehat{\mathrm{Se}}_a
+&=\frac{n(Z=1,O^a=+)+\eta}{n(Z=1)+2\eta},
+\label{eq:sensitivity}\\
+\widehat{\mathrm{Sp}}_a
+&=\frac{n(Z=0,O^a=-)+\eta}{n(Z=0)+2\eta}.
+\label{eq:specificity}
+\end{align}
+These class-conditional frequencies are distinct from a calibrated
+\emph{prior} probability that the patch is correct. A pretrained or
+fitted prior must be assessed independently before Bayes updating.
+No conditional independence is assumed between successive diagnostics.
+
+The present training-only implementation rejects overlapping
+train/validation/evaluation repository-lineage groups,
+cross-model or cross-action pooling, duplicated task identifiers,
+underrepresented binary classes, and diagnostics timestamped after
+the independent oracle. These are \emph{engineering leakage checks},
+not proof that a third-party test was hidden or independently run.
+The current defaults (smoothing $\eta=1$, five training instances per
+class and at least two training lineages) are software validation
+settings, not an empirical-power determination. We have not fitted
+this method to observed coding-agent data or established calibration.
+
+\paragraph{Evaluation contract.}
+Train and freeze the conditional diagnostic likelihoods and
+patch-success prior without held-out labels, compare matched
+token/test/GPU/CPU/time budgets and report both unconditional
+independent verified success and wrong-release risk at a
+pre-registered minimum release coverage. Selection bias from
+adaptive testing and repository distribution shift require
+specific analysis rather than assuming exchangeability or
+distribution-free risk control.
+
 \section{Results}\label{sec:results}
 % NO EMPIRICAL RQ RESULTS EXIST AT THIS MANUSCRIPT STATE.
 % Add tables and figures ONLY after executable, revision-pinned runs and
