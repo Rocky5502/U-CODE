@@ -24,6 +24,17 @@ EXCLUDED_PARTS = {
 PR_URL = re.compile(r"^https://github\.com/([\w.-]+/[\w.-]+)/pull/(\d+)$")
 EXPECTED_AGENTS = {"copilot-swe-agent[bot]", "copilot"}  # GitHub API may report Copilot
 TEST_DIRS = {"test", "tests", "spec", "specs", "unittests", "__tests__"}
+# Conservative path-level hint, not proof of ownership or an automatic exclusion.
+# Example quirc patch has upstream Daniel Beer copyright/license header.
+SUSPECT_THIRD_PARTY_PREFIXES = ("components/quirc/lib/",)
+
+
+def suspected_third_party_path(path: str) -> bool:
+    """Indicate likely bundled external code requiring file-level review."""
+    normalized = path.replace("\\", "/").lower().lstrip("./")
+    return any(normalized.startswith(prefix) for prefix in SUSPECT_THIRD_PARTY_PREFIXES)
+
+
 SOURCE_LANGUAGES = {
     ".py": "Python", ".js": "JavaScript", ".mjs": "JavaScript",
     ".cjs": "JavaScript", ".jsx": "JavaScript", ".ts": "TypeScript",
@@ -100,6 +111,11 @@ def audit_pr_metadata(pr: dict, files: list[dict], license_spdx: str | None) -> 
         "production_code_files": [f.get("filename") for f in production_files],
         "test_code_files": [f.get("filename") for f in test_files],
         "changed_production_languages": actual_languages,
+        "suspected_third_party_paths": [f.get("filename") for f in code_files
+                                        if suspected_third_party_path(str(f.get("filename", "")))],
+        "third_party_attribution_review_required": any(
+            suspected_third_party_path(str(f.get("filename", ""))) for f in code_files
+        ),
         "source_additions": additions,
         "source_deletions": deletions,
         "repository_license_spdx": license_spdx or "UNKNOWN",
