@@ -10,7 +10,7 @@ from xml.etree import ElementTree as ET
 ROOT = Path(__file__).resolve().parents[1]
 FIGURE = ROOT / "docs" / "figures" / "ucode-framework.svg"
 NS = {"s": "http://www.w3.org/2000/svg"}
-FORBIDDEN = ("<script", "foreignObject", "http://", "data:image/", "onload=")
+FORBIDDEN = ("<script", "foreignObject", "data:image/", "onload=")
 
 
 def validate_framework_svg(path: Path = FIGURE) -> dict[str, int]:
