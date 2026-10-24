@@ -80,6 +80,20 @@ class ManualLeadQueueTests(unittest.TestCase):
                             or q[i+1].priority_class == "second_pass_manual_review"
                             for i in range(len(q)-1)))
 
+    def test_legacy_first_batch_reconstructs_only_test_path_hints(self):
+        record = fixture(
+            test_files=None,
+            changed_paths=["src/worker.py", "tests/test_worker.py", "README.md"],
+        )
+        lead = rank_candidate(record)
+        self.assertEqual(lead.test_path_count, 1)
+        self.assertEqual(lead.production_path_count, 1)
+        self.assertFalse(lead.eligible)
+
+    def test_legacy_missing_file_listing_fails_closed(self):
+        with self.assertRaisesRegex(ValueError, "reconstruct"):
+            rank_candidate(fixture(test_files=None, changed_paths=None))
+
     def test_csv_explicitly_marks_every_row_not_eligible(self):
         text = output_csv(select_review_queue([fixture()]))
         rows = list(csv.DictReader(io.StringIO(text)))
