@@ -1,0 +1,7 @@
+candidate_id,repository,pr_number,changed_source_languages,review_priority,preliminary_reason,required_next_evidence,rights_cleared,ai_line_attribution
+"7","fgagarin/framecover","5","Python","P1","application code and test paths; MIT repo metadata","author-line evidence; verify original tests and external dependency licenses","unknown","unverified"
+"77","chompehh/botnav","190","C;C/C++ Header;Python","P2","substantive bot AI tuning; GPL-2.0 metadata; potentially complex game oracle","GPL compliance and independent game regression oracle","unknown","unverified"
+"117","unhookd/we-have-oidc-at-home","1","Ruby","P2","new SAML implementation and test; MIT repo metadata; authentication security sensitive","human source attribution; adversarial XML/SAML security oracle; approved sandbox","unknown","unverified"
+"87","RodriguesCesar/Ats","5","C#","P3","1538 files; 1339 obj/bin/.vs paths; directory cleanup with real source paths","rename detection and generator vs human/AI contribution; per-file rights","unknown","unverified"
+"107","ticketsupport-spec/extracted","137","PHP;embedded JavaScript possible","P3","inline JavaScript changed within PHP shortcodes path; no repo license metadata","embedded-code language review; per-file rights; PHP/web test oracle","unknown","unverified"
+"67","Z3Prover/z3","11287","Python script under C++ query","P3","distribution build tooling rather than product behavior; SPDX NOASSERTION","tooling cohort separation; independent build oracle and licensing","unknown","unverified"
