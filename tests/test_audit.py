@@ -37,6 +37,30 @@ class AuditTests(unittest.TestCase):
         self.assertFalse(result["file_level_license_review_done"])
         self.assertFalse(result["functional_correctness_known"])
 
+    def test_dotnet_build_artifacts_never_count_as_csharp_source(self):
+        generated = (
+            "Banck-End/src/Api/obj/Debug/net6.0/Api.AssemblyInfo.cs",
+            "backend/src/Api/bin/Debug/net6.0/Api.dll",
+            "Banck-End/.vs/Totvs.Ats/FileContentIndex/index.cs",
+            "backend/src/Application/obj/Release/net6.0/GlobalUsings.g.cs",
+        )
+        for path in generated:
+            self.assertFalse(is_source_path(path), path)
+        self.assertTrue(is_source_path("backend/src/Api/Program.cs"))
+
+    def test_bulk_dotnet_build_output_excluded_without_removing_real_code(self):
+        pr = {"user": {"login": "Copilot"}, "merged_at": "2026-10-01"}
+        changed = [
+            {"filename": "Banck-End/src/Api/obj/Debug/net6.0/Api.AssemblyInfo.cs",
+             "additions": 10},
+            {"filename": "backend/src/Api/Program.cs", "additions": 2},
+        ]
+        result = audit_pr_metadata(pr, changed, None)
+        self.assertEqual(result["production_file_count"], 1)
+        self.assertEqual(result["production_code_files"],
+                         ["backend/src/Api/Program.cs"])
+        self.assertFalse(result["functional_correctness_known"])
+
     def test_metadata_not_correctness(self):
         pr = {"user": {"login": "copilot-swe-agent[bot]"},
               "merged_at": "2026-10-01T00:00:00Z",
