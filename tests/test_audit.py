@@ -22,6 +22,21 @@ class AuditTests(unittest.TestCase):
                      "buildSrc/tooling.gradle.kts"):
             self.assertFalse(is_source_path(path), path)
 
+    def test_quirc_bundled_third_party_requires_manual_rights_review(self):
+        pr = {"user": {"login": "Copilot"}, "merged_at": "2026-10-01"}
+        paths = [
+            {"filename": "main/camera.c", "additions": 9},
+            {"filename": "components/quirc/lib/quirc.c", "additions": 160},
+        ]
+        result = audit_pr_metadata(pr, paths, None)
+        self.assertEqual(result["status"], "production_source_path_detected")
+        self.assertEqual(result["production_file_count"], 2)
+        self.assertEqual(result["suspected_third_party_paths"],
+                         ["components/quirc/lib/quirc.c"])
+        self.assertTrue(result["third_party_attribution_review_required"])
+        self.assertFalse(result["file_level_license_review_done"])
+        self.assertFalse(result["functional_correctness_known"])
+
     def test_metadata_not_correctness(self):
         pr = {"user": {"login": "copilot-swe-agent[bot]"},
               "merged_at": "2026-10-01T00:00:00Z",
