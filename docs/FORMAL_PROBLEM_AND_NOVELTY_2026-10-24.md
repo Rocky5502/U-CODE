@@ -125,6 +125,31 @@ For multiobjective candidate generation (not evidence-only diagnostics), an opti
 \]
 with precommitted reference point, consistent objective scales and an explicitly modeled joint distribution for correlated objectives; do not claim exact EHVI or calibrated outcomes when independent Gaussian marginals are arbitrarily assumed.
 
+### Non-obvious counterexample: more evidence need not help a hard release gate
+
+An *unconstrained* Bayes decision maker can ignore a signal and therefore the
+ordinary EVSI is nonnegative. But a release controller that **must apply a strict
+posterior-risk threshold** can lose admissibility when additional evidence is
+received. With prior (p=0.91), release threshold (p\ge0.9), correctness reward
+(+1), error penalty (-1), and a noisy diagnostic with sensitivity and
+specificity both (0.8):
+
+- pre-test expected release utility (=2(0.91)-1=0.82);
+- positive observation probability (=0.746), posterior (=0.728/0.746);
+- negative observation probability (=0.254), posterior (=0.182/0.254);
+- positive branch is releasable, negative branch fails the risk gate;
+- post-test expected utility (=0.746[2(0.728/0.746)-1]=0.71);
+- **signed EVSI (=0.71-0.82=-0.11)** before paying for the diagnostic.
+
+These numbers are **pure analytical inputs**, not observed repository outcomes.
+Negative signed EVSI does not refute the ordinary value-of-information theorem:
+the constrained hard-threshold terminal decision makes the payoff discontinuous,
+and our setup obliges the decision maker to respect newly acquired evidence
+rather than pretend it was never observed. Consequently, `src/ucode/voi.py`
+reports negative values instead of clipping them, and a policy may skip such
+a diagnostic in advance. A reviewer must inspect threshold semantics and
+possible optional-information policies before generalizing this result.
+
 ### Diagnostic example (pure mathematics, NOT measured data)
 
 Current joint-acceptability belief \(p=0.5\). Set admissible max predicted release-failure threshold \(\alpha=0.1\), correct release utility +1, incorrect release utility -1 and abstention 0. The current policy abstains. A hypothetical *perfect* independent test reveals the true event: with probability 0.5, the posterior becomes 1 and a correct candidate can be released; with probability 0.5, posterior becomes 0 and the system abstains. Thus expected post-test terminal utility is 0.5, EVSI=0.5; if fixed test-cost penalty is 0.1, net gain=0.4. This is **a sanity-check example**, not evidence that such tests exist in any observed repository. An uninformative test with identical pass likelihood for correct and incorrect code has EVSI=0.
