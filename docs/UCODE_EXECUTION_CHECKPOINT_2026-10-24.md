@@ -130,3 +130,14 @@ data/audits/2026-10-24/stratified_offset4_ids*.jsonl.
 docs/logs/2026-10-24_issue1_fifth_stratified_batch.md. The summary tool's output is generated dynamically; historical GitHub Actions test counts must not be mistaken for external test results.
 
 **Next:** balanced read-only sixth-position PR screen (IDs 6, 16, ..., 116); continue human/trace authorship provenance, file-level rights and independent oracle review. Keep issue #1 OPEN. This block did not run GPU models, download 2–5 GB of sources, validate any empirical correctness metrics or edit an authenticated Overleaf project.
+
+## Sixth-stratum continuation — 2026-10-24 UTC+08
+
+- **72/120 discovery links attempted; 71 PR metadata records verified; 1 GitHub 404** (candidate 26). **48 links unattempted**.
+- Cumulative successfully retrieved PRs: **33 source-bearing production-path**, **6 test-only**, **31 non-source**, **1 empty-file-list unresolved**. Recognized repository-level SPDX: **37**, unknown/NOASSERTION: **34**. **8 forks**; **5 production-language mismatches**.
+- **0 independently verified AI-authored-line sets, file-level license clearances, reproducible independent software oracles, or approved experimental samples**.
+- Sixth cohort canonical files: data/audits/2026-10-24/stratified_offset5_ids*.jsonl; report: docs/logs/2026-10-24_issue1_sixth_stratified_batch.md.
+- Confirmed GitHub 404 separately at the candidate 26 repository and PR API URLs, without inferring deletion/private status.
+- Read-only spot checks inspected Java ConfidenceCalculator, Kotlin daily scheduling worker, C# appearance settings store and JavaScript SharePoint conflict control patches. All correctness, code authorship and rights remain unverified.
+- Repaired scripts/summarize_audit.py so discovery links **attempted** are distinct from metadata **successfully retrieved**; tests/test_screening_summary.py guards against inflating screening counts on 404.
+- **Next:** read-only seventh-position candidates IDs 7,17,...,117; prioritize vetted open-source patches for actual independent build/test feasibility. Confirm latest CI for active main SHA.
