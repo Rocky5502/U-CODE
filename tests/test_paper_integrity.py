@@ -27,6 +27,15 @@ class PaperIntegrityTests(unittest.TestCase):
         self.assertTrue(used)
         self.assertFalse(used - set(entries), sorted(used - set(entries)))
 
+    def test_bes_method_references_its_equations_and_conservative_scope(self):
+        main = (PAPER / "main.tex").read_text(encoding="utf-8")
+        self.assertIn(r"\\subsection{Bounded Evidence Search}", main)
+        self.assertIn(r"\\label{eq:bes}", main)
+        self.assertIn(r"\\label{eq:beszero}", main)
+        self.assertIn("single active patch", main)
+        self.assertIn("hypothetical", main)
+        self.assertIn("conditionally independent", main)
+
     def test_prospective_abstract_and_no_fabricated_rq_results(self):
         main = (PAPER / "main.tex").read_text(encoding="utf-8")
         m = re.search(r"\\abstract\{%\s*(.*?)\s*\}\s*\\keywords", main, re.S)
