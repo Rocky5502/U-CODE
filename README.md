@@ -48,6 +48,24 @@ now has properly separated objectives, resource-constrained Bellman/EVSI
 formulations, 14 source-verified BibTeX entries, and no fabricated results.
 The official Springer publisher class is still required for a real compile.
 
+## Version-controlled Springer/Overleaf workflow (updated 2026-10-24)
+
+- **Directly updated GitHub sources:** [paper/overleaf/main.tex](paper/overleaf/main.tex)
+  and [paper/overleaf/references.bib](paper/overleaf/references.bib).
+- **New honest methodological reference:** [src/ucode/vector_policy.py](src/ucode/vector_policy.py)
+  checks five independent resource budgets and compares modeled diagnostic
+  evidence against generation/repair forecasts on one terminal-value scale.
+  These forecasts are *hypothetical*, not fitted performance results.
+- **Safe manuscript export:** `python -m scripts.export_overleaf --output
+  dist/UCODE_Overleaf_sources.zip` creates a checksum-verified, deterministic
+  paper-only ZIP. The CI workflow attaches that ZIP as an artifact named
+  `ucode-overleaf-sources` on successful runs.
+- **Live Overleaf is NOT directly connected.** The bundle is for importing into
+  the [official Springer Nature template](https://www.overleaf.com/latex/templates/springer-nature-latex-template/myxmhdsbzkyd);
+  the publisher class is intentionally not included. Overleaf Git/GitHub
+  sync is a separate authenticated user-side operation.
+  [Details](paper/overleaf/README.md).
+
 ## Research thesis
 
 Our testable hypothesis is that **calibrated uncertainty signals, integrated into budget-constrained multi-objective search, can improve independently verified code reliability** against matched-cost baselines. Null and negative results are publishable.
