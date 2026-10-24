@@ -19,7 +19,9 @@ class PaperIntegrityTests(unittest.TestCase):
         bib = (PAPER / "references.bib").read_text(encoding="utf-8")
         entries = re.findall(r"@\w+\{\s*([^,\s]+)\s*,", bib)
         self.assertEqual(len(entries), len(set(entries)))
-        self.assertGreaterEqual(len(entries), 14)
+        self.assertGreaterEqual(len(entries), 16)
+        self.assertIn("mohsin2026teachingagents", entries)
+        self.assertIn("hu2026swecritix", entries)
         cites = re.findall(r"\\cite(?:\[[^]]*\])?\{([^}]+)\}", main)
         used = {key.strip() for group in cites for key in group.split(",")}
         self.assertTrue(used)
