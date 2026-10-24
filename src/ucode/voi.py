@@ -104,12 +104,10 @@ def value_of_diagnostic(
     before = terminal_value(p, rule)
     after = (prob_pos * terminal_value(post_pos, rule)
              + prob_neg * terminal_value(post_neg, rule))
+    # A strict threshold on *posterior* risk makes terminal payoff nonconvex:
+    # unlike ordinary unconstrained Bayes value, post-diagnostic value can
+    # be LOWER. Preserve that negative result rather than clipping it.
     gain = after - before
-    # Optimal contingent decision makes information nonnegative in exact
-    # arithmetic; tolerate small floating point cancellation only.
-    if gain < -1e-10:
-        raise ArithmeticError("inconsistent Bayesian diagnostic model")
-    gain = max(0.0, gain)
     return DiagnosticValue(
         action=action.name, positive_probability=prob_pos,
         negative_probability=prob_neg, posterior_positive=post_pos,
