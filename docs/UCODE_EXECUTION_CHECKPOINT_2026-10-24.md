@@ -113,3 +113,20 @@ background work. Reminders only happen if a supported automation is created.**
 - Next: screen 12 fifth-position candidates IDs 5, 15, ..., 115, then
   manually inspect trace provenance, file-level licenses and executable oracle
   feasibility for actual source-bearing candidates. Keep Issue #1 OPEN.
+
+
+## Fifth-stratum continuation checkpoint — 2026-10-24
+
+**GitHub Issue #1 G2:** 12 fifth-position PRs read-only screened (IDs 5, 15, ..., 115). All 12 returned merged with API account "Copilot" and base/head/merge commit SHAs. Canonical snapshots:
+data/audits/2026-10-24/stratified_offset4_ids*.jsonl.
+
+**New 12:** 2 production-source-path PRs, 1 test-only, 9 non-source, 7 recognized repo SPDX, 1 fork. No retrieval failures.
+
+**Cumulative:** **60/120** screened, **60 remain**; **28** production-source-path candidates, **5** test-only, **26** non-source, **1** unresolved empty file list; **33** recognized repo SPDX and **27** missing/NOASSERTION, **6** forks, **5** discovery-vs-actual-source language mismatches. **0** AI-line-verified, rights-cleared, independently runnable, fully eligible units.
+
+**Critical research-integrity finding:** Bokbacken/MyPi-Hotspot PR #23 includes six bundled quirc QR-library files; read-only patch inspection of quirc.c found upstream Daniel Beer copyright/license text. These files are marked suspected third-party to avoid falsely counting as AI-generated patch lines. Read-only patch-shape inspections also covered Rust route_manager PR #56 and Ruby test-only rolldown-ruby PR #20. No external code executed.
+
+**Engineering:** Added suspected-third-party audit fields and regression test in src/ucode/audit.py and tests/test_audit.py; added GitHub Actions step invoking scripts/summarize_audit.py as a manifest/duplicate/PR consistency gate. Full issue ledger:
+docs/logs/2026-10-24_issue1_fifth_stratified_batch.md. The summary tool's output is generated dynamically; historical GitHub Actions test counts must not be mistaken for external test results.
+
+**Next:** balanced read-only sixth-position PR screen (IDs 6, 16, ..., 116); continue human/trace authorship provenance, file-level rights and independent oracle review. Keep issue #1 OPEN. This block did not run GPU models, download 2–5 GB of sources, validate any empirical correctness metrics or edit an authenticated Overleaf project.
