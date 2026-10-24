@@ -227,6 +227,60 @@ and repair interventions update the candidate set. Any release threshold
 is a policy preference until the entire adaptive procedure receives an
 appropriate independent risk analysis.
 
+\subsection{One-step vector-budget planning reference}\label{sec:planner}
+
+We separate \emph{information-producing} actions
+$\mathcal{A}_{\mathrm{obs}}=\{\mathrm{test},\mathrm{static\_analysis},
+\mathrm{retrieve}\}$ from \emph{candidate-producing} actions
+$\mathcal{A}_{\mathrm{gen}}=\{\mathrm{generate},\mathrm{repair}\}$.
+The latter category creates or changes a patch; the former only
+updates the beliefs about existing patches in this simplified reference
+implementation. In a real coding workflow, retrieval may instead update
+the prompt context for subsequent generation; those transitions require
+an additional model and must not be silently assumed.
+
+Let $\widehat U_0(h)$ be the terminal release-or-abstain value induced
+by a frozen pre-outcome risk model and its risk threshold. A one-step
+action forecast on the \emph{same terminal utility scale} is
+\begin{equation}
+ \widehat{\Delta}(a\mid h)=
+ \begin{cases}
+ \mathbb{E}_{o\mid h,a}
+  [\widehat U_0(T(h,a,o))]-\widehat U_0(h),
+ & a\in\mathcal{A}_{\mathrm{obs}},\\
+ \mathbb{E}_{h'\mid h,a}
+  [\widehat U_0(h')]-\widehat U_0(h),
+ & a\in\mathcal{A}_{\mathrm{gen}}.
+ \end{cases}
+ \label{eq:one_step_gain}
+\end{equation}
+The reference controller considers only actions whose predicted gain
+exceeds preregistered resource prices and obeys \emph{every} hard
+budget component:
+\begin{equation}
+ a_t^\star=\arg\max_{\substack{a\in\mathcal A_t\\
+ \mathbf c(a)\preceq\mathbf b_t}}
+ \left[\widehat{\Delta}(a\mid h_t)
+ -\boldsymbol\lambda^\top\mathbf c(a)\right].
+ \label{eq:myopic}
+\end{equation}
+If this maximum is not strictly positive, it performs a terminal
+release only if the predictive release gate and expected utility admit
+one; otherwise it abstains. A missing candidate makes test, static
+analysis and repair inadmissible. Action cost is charged exactly once,
+and an action violating any one resource budget is not rescued by a
+favorable scalarized price.
+
+Our version-controlled \texttt{vector\_policy.py} is a deterministic
+one-step \emph{analytical test harness} for these definitions. It accepts
+hypothetical binary diagnostic likelihoods and externally supplied
+generation-value forecasts; it does not learn either from real software
+traces, deploy a production agent, prove Bayes optimality, or implement
+the full Bellman controller in Eq.~\eqref{eq:bellman}. The visible
+diagnostic test and independent held-out outcome remain separate
+channels. A gate based on \emph{predicted} failure probability does not
+certify conditional population risk.
+
 Strong equal-budget baselines include no search, fixed testing, random
 tools, cost-only allocation, uncertainty-only regeneration,
 search without uncertainty, raw-risk and calibrated-risk ablations,
