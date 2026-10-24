@@ -20,6 +20,8 @@ SOURCE_SUFFIXES = {
 EXCLUDED_PARTS = {
     "vendor", "node_modules", "dist", "build", "third_party", "third-party",
     "generated", ".git", "target", "__pycache__", "site-packages",
+    # Tool outputs and tracked IDE/build caches are not original runtime source.
+    "obj", "bin", ".vs", ".idea", ".gradle",
 }
 PR_URL = re.compile(r"^https://github\.com/([\w.-]+/[\w.-]+)/pull/(\d+)$")
 EXPECTED_AGENTS = {"copilot-swe-agent[bot]", "copilot"}  # GitHub API may report Copilot
