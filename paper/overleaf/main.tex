@@ -318,6 +318,23 @@ replay inside a genuinely isolated, network-disabled sandbox remain
 separate conditions. No uncontrolled third-party code is run in our
 ordinary repository CI.
 
+\paragraph{Illustrative commit-level authorship ambiguity.}
+A read-only inspection of two public PR histories demonstrates why
+the PR-level bot account cannot be taken as a line-authorship label.
+In dependabot-core PR~16665, three commits have a human account in
+the commit-author field and Copilot co-author trailers. In
+onnx-light-cpu PR~1005, the commit authors are the Copilot coding
+agent, while two substantive commits also have human co-author trailers.
+The repositories display root MIT and Apache-2.0 license files,
+respectively. These are descriptive repository metadata observations,
+\emph{not} evidence of per-line autonomous generation, file-level
+redistribution clearance or independent patch correctness. We retain
+both as candidates requiring deeper review; neither was executed.
+The frozen commit identifiers and raw provenance fields are documented
+in the version-controlled data ledger. Our evaluation therefore
+distinguishes PR account, commit author, co-author trailers, changed
+production file and independently reviewed authorship scope.
+
 \subsection{Training-only diagnostic likelihoods}\label{sec:diag-fit}
 
 Let $O_i^a\in\{+,-\}$ represent one visible diagnostic result for
