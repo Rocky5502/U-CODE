@@ -242,6 +242,14 @@ Following the completed 120-link metadata screen, we have opened **two real pre-
 
 **This is provenance and task-admission engineering, not model-task benchmarking.** PR-added test files are not independent correctness oracles. License tags and human/bot co-author trailers do not establish changed-line provenance. Both candidates need independently attested file rights, sealed tests, and audited network-off non-root execution before any six-model study is possible.
 
+## Prospective sealed evaluation boundary and oracle ambiguity (25 October 2026)
+
+The experimental-policy/evaluator interface is now specified and regression-tested in first-party code. The [boundary module](src/ucode/evaluator_boundary.py) serializes only the **agent-visible** pre-fix task/specification references and explicitly omits evaluator-only oracle references, oracle commitments, reviewer metadata and PR-authored test paths. The [offline checker](scripts/check_evaluator_boundary.py) binds both registrations to the original frozen task-admission dossiers. The [prospective registration JSONL](data/evaluation/2026-10-25/prospective_oracle_registrations.jsonl) has **zero private oracle files and zero execution approvals**; this is metadata segregation, not a validated operating-system security boundary.
+
+For the Go settlement pilot, a new [pre-fix specification ambiguity witness](src/ucode/spec_ambiguity.py) demonstrates that capped loser deltas `(0,-5)` imply a recovered pool of `5`; both nearly equal winner awards `(2,3)` and `(3,2)` meet zero-sum, nonnegativity and the **extra hypothetical** fairness rule. Neither output is established as the unique domain-approved gold answer. [Reproduce only first-party metadata and arithmetic](examples/pilot_oracle_boundary_smoke.py) with `python -m examples.pilot_oracle_boundary_smoke`. Real independent specification sign-off, task rights and sealed execution remain blocked.
+
+**Scientific constraint:** The two real PR candidates are still unapproved, the six-model study has not executed, and no observed model success-rate improvement or risk certificate is claimed.
+
 ## Research thesis
 
 Our testable hypothesis is that **calibrated uncertainty signals, integrated into budget-constrained multi-objective search, can improve independently verified code reliability** against matched-cost baselines. Null and negative results are publishable.
