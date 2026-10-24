@@ -334,6 +334,95 @@ diagnostic test and independent held-out outcome remain separate
 channels. A gate based on \emph{predicted} failure probability does not
 certify conditional population risk.
 
+\subsection{Bounded Evidence Search}\label{sec:bes}
+
+The preceding one-step policy cannot value a diagnostic that makes
+no candidate immediately releasable but enables an informative
+second observation. To capture this \emph{option value}, we have
+implemented \emph{Bounded Evidence Search} (BES): a
+finite-horizon, branch-enumerating dynamic program over a
+single active patch, a frozen pre-outcome acceptability belief
+$p$, unused intervention identifiers $\mathcal A$, a five-resource
+budget $\mathbf b$, and planning depth $d$. BES is an
+\emph{algorithmic reference implementation}, not a fitted
+repository-agent controller or a claimed first-of-kind method.
+
+Let $U_0(p)$ be the frozen risk-gated expected
+release-or-abstain utility, and let $K_a(o,p'\mid p)$ be an
+externally supplied distribution over admissible visible
+action observations and successor \emph{predicted} patch
+acceptability. Generation and repair can replace the active
+candidate; diagnostics alter its belief without creating
+another code candidate. An unusable generation result keeps
+the incumbent candidate, when one exists. We compute
+\begin{align}
+V_0(p,\mathbf b,\mathcal A)
+&=U_0(p),\label{eq:beszero}\\
+V_d(p,\mathbf b,\mathcal A)
+&=\max\Bigl\{U_0(p),\nonumber\\[-1mm]
+&\quad\max_{\substack{a\in\mathcal A\\
+ \mathbf c(a)\preceq\mathbf b}}
+\Bigl[-\boldsymbol\lambda^\top\mathbf c(a)
+ +\sum_{o,p'}K_a(o,p'\mid p)
+ V_{d-1}(p',\mathbf b-\mathbf c(a),
+ \mathcal A\setminus\{a\})\Bigr]\Bigr\}.
+\label{eq:bes}
+\end{align}
+At each replanning step, BES purchases the chosen feasible
+action only after the input probabilities and cost vector
+have been fixed. The subsequent visible observation updates
+the local posterior and removes the spent action ID. Hidden
+evaluation outcomes are never valid policy inputs.
+
+\paragraph{Bounded correctness property.}
+For finite, correctly specified transition scenarios and
+the stated one-candidate and one-use restrictions,
+Eq.~\eqref{eq:bes} is the optimal finite-horizon expected
+terminal utility \emph{within that restricted decision model}
+by backward induction. Likewise, budget nonnegativity
+holds branchwise: the recursion subtracts a resource
+vector only when each of its components is affordable.
+Neither statement establishes general POMDP optimality,
+model calibration or statistical risk control. Worst-case
+tree enumeration grows exponentially with planning depth.
+The software currently limits the action set to ten,
+horizon to four, and memoized states to $30{,}000$.
+
+\paragraph{Analytical need for look-ahead.}
+Consider a hypothetical patch with $p=0.5$ and a release
+gate requiring $p\ge0.9$; correct/incorrect releases have
+utilities $+1$ and $-1$. Two conditionally independent
+tests each have sensitivity and specificity $0.8$
+and a scalar planning price of $0.01$. A single positive
+test yields posterior $0.8$, still below the release
+threshold; the one-step policy abstains. Two positive
+tests yield posterior $16/17$ and occur jointly with
+probability $0.34$. Their expected positive terminal
+utility is $0.30$; testing a second time only following
+a first positive costs $0.01+0.5(0.01)=0.015$ in
+expectation. BES accordingly attains \emph{hypothetical}
+two-step expected net utility $0.285$ within this
+specified toy model. This is an analytical regression
+fixture, \emph{not} a real coding-agent result.
+
+\paragraph{Critical assumptions and limits.}
+Multiple binary diagnostic results are assumed
+conditionally independent given latent acceptability
+\emph{only when the caller explicitly enables this
+simplification}; correlated tests require a genuinely
+history-conditional observation model. Generation and
+repair currently replace, rather than archive, candidate
+patches. Retrieval is modeled as evidence on an existing
+candidate, not as a pre-generation context-improvement
+action. Every action ID is usable at most once in a
+planning session. These are explicit methodological
+limits. Strong comparable baselines include the existing
+one-step controller, an uncertainty-removed look-ahead
+planner, and externally established selective verifier
+and search methods \cite{antoniades2025swesearch,zou2026sweverifier}.
+We will not claim an algorithmic improvement until
+sealed-oracle evaluation on actual code establishes one.
+
 Strong equal-budget baselines include no search, fixed testing, random
 tools, cost-only allocation, uncertainty-only regeneration,
 search without uncertainty, raw-risk and calibrated-risk ablations,
