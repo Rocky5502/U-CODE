@@ -6,11 +6,11 @@
 
 U-CODE studies **when a software engineering agent should test, retrieve context, generate another patch, repair, or abstain** under a fixed execution and inference budget. The target is the Springer *Automated Software Engineering* special issue **Search-Based Software Engineering in the Era of LLMs and Agentic Systems** (30 January 2027): https://link.springer.com/collections/jjcfecffai.
 
-## Current status (24 October 2026, six PR screening positions per language)
+## Current status (24 October 2026, seven PR screening positions per language)
 
 - **120 discovery candidates across 12 GitHub primary-language search categories**, each with a PR link returned for `author:copilot-swe-agent[bot] is:pr is:merged`. **These are NOT 120 verified AI-generated repositories.** GitHub bot attribution alone does not establish what fraction of source code is AI-authored.
 - Public dataset leads: [AIDev](https://huggingface.co/datasets/hao-li/AIDev), [SWE-chat](https://huggingface.co/datasets/SALT-NLP/SWE-chat) (gated), [DroidCollection](https://huggingface.co/datasets/project-droid/DroidCollection), [SWE-rebench](https://proceedings.mlr.press/v306/badertdinov26a.html), [EffiBench-X](https://huggingface.co/datasets/EffiBench/effibench-x). They have **distinct units of analysis** and must not be naively merged.
-- **Issue #1 cumulative read-only screen:** **72/120 links attempted; 71/120 successfully retrieved**, with **1 GitHub 404 retrieval failure**. Among the 71: **33** production-source-path candidates, **6** test-only, **31** non-source, **1** empty file-list requiring review. **37** have recognized repository-level SPDX metadata; **8** forks; **0 fully eligible** pending independent AI-line attribution, file rights and safe independent test oracles. [Initial 24-PR evidence](docs/logs/2026-10-24_issue1_stratified_pr_audit.md) · [Third-entry screening](docs/logs/2026-10-24_issue1_second_stratified_batch.md) · [Fourth-entry screening](docs/logs/2026-10-24_issue1_fourth_stratified_batch.md) · [Fifth-entry screening](docs/logs/2026-10-24_issue1_fifth_stratified_batch.md) · [Sixth-entry screening](docs/logs/2026-10-24_issue1_sixth_stratified_batch.md). GitHub discovery language is not necessarily the changed-source language.
+- **Issue #1 cumulative read-only screen:** **84/120 links attempted; 83/120 successfully retrieved**, with **1 GitHub 404 retrieval failure**. Among the 83: **39** production-source-path candidates, **8** test-only, **35** non-source, **1** empty file-list requiring review. **43** have recognized repository-level SPDX metadata; **9** forks; **0 fully eligible** pending independently verified AI-line attribution, file rights and safe independent test oracles. The 39 are path-level candidates, not 39 verified AI-generated patches. [Initial 24-PR evidence](docs/logs/2026-10-24_issue1_stratified_pr_audit.md) · [Third-entry screening](docs/logs/2026-10-24_issue1_second_stratified_batch.md) · [Fourth-entry screening](docs/logs/2026-10-24_issue1_fourth_stratified_batch.md) · [Fifth-entry screening](docs/logs/2026-10-24_issue1_fifth_stratified_batch.md) · [Sixth-entry screening](docs/logs/2026-10-24_issue1_sixth_stratified_batch.md) · [Seventh-entry screening and .NET generated-artifact correction](docs/logs/2026-10-24_issue1_seventh_stratified_batch.md). GitHub discovery language is not necessarily the changed-source language.
 - The project initially offers a **pure-Python research scaffold** and **offline toy environment**, not a trained/calibrated uncertainty model or model-driven code repair engine.
 
 ## Research thesis
@@ -47,8 +47,8 @@ python examples/ehvi_smoke.py
 ucode audit --limit 3 --output data/derived/pr_audit.jsonl
 # Summarize the canonical GitHub-audited candidates and validate provenance
 python -m scripts.summarize_audit --audit-dir data/audits/2026-10-24 --output data/derived/screening_summary.json
-# Next *unattempted* balanced cohort: seventh entry in each of 12 query-language groups
-ucode audit --per-language 1 --language-offset 6 --output data/derived/batch07.jsonl
+# Next *unattempted* balanced cohort: eighth entry in each of 12 query-language groups
+ucode audit --per-language 1 --language-offset 7 --output data/derived/batch08.jsonl
 ```
 
 The `audit` command makes **read-only** GitHub REST requests and may hit rate limits; set `GITHUB_TOKEN` in your environment for higher limits. Do not commit the token. No GitHub repository is cloned or executed by the audit command. The demo uses synthetic, explicitly labeled data; its scores are **not experimental evidence**.
