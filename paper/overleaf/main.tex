@@ -607,6 +607,31 @@ exact attrition table and a separate conservative
 manual-review queue. That queue \emph{cannot}
 mark a task eligible for experimental execution.
 
+\paragraph{Limits of the source-and-test-path filter.}
+A further read-only patch/commit inspection of two
+first-pass manual leads illustrated why test file
+presence is not an independently validated oracle.
+In Skell PR~88, a Go source change concerned
+archive symlink/path validation and a modified
+unit test replaced a host-specific directory
+literal. That source change warrants a security
+review and independently replayed cross-platform
+checks before admission. In onnx-light-viewer
+PR~120, a Python example generator changed ONNX
+helper imports and a JavaScript test examined
+source-text patterns: this verifies the import
+alias pattern, \emph{not} independent functional
+correctness of generated ONNX graphs. Public
+commit metadata in both cases included bot
+authorship with human co-author trailers.
+Both repositories exposed root Apache-2.0
+license texts, but we did not approve
+changed-file rights or execute either PR.
+Their immutable source paths, commit identifiers
+and human--agent metadata are archived separately
+from the 120-link discovery screen. Neither case
+is yet an executable evaluation unit.
+
 \subsection{Evidence-qualified task admission}\label{sec:admission}
 
 Admission is \emph{not} implied by a Copilot-authored or merged pull
