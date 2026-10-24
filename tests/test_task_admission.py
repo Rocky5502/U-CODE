@@ -114,6 +114,13 @@ class TaskAdmissionTests(unittest.TestCase):
                 replace(obj, changed_production_paths=("src/fake/new.py",)),
                 self.by_id[obj.candidate_id], self.manifest)
 
+    def test_dossier_cannot_omit_pr_authored_tests(self):
+        obj = self.dossiers[0]
+        with self.assertRaisesRegex(ValueError, "test file set"):
+            validate_dossier_against_metadata(
+                replace(obj, changed_test_paths=()),
+                self.by_id[obj.candidate_id], self.manifest)
+
     def test_path_escape_rejected_prior_to_sandbox(self):
         obj = self.dossiers[0]
         for path in ("../secret.py", "/var/run/secret", "C:/Windows/file.go",
