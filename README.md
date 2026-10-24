@@ -12,6 +12,21 @@ U-CODE studies **when a software engineering agent should test, retrieve context
 
 <sub>Figure 1. Proposed U-CODE architecture. The top row is the risk-aware agent policy (task → interventions → evidence modeling → BES → controlled execution → release/abstention); the curved teal arrow returns **visible** execution feedback from the execution stage to BES. The lower research lane independently admits tasks, seals the functional oracle, evaluates released artifacts, and summarizes evidence. **Architectural design, not a completed or validated experimental result.** [View scalable SVG](docs/figures/ucode-framework.svg).</sub>
 
+## Six LLMs selected for the planned study (25 October 2026)
+
+All six recommended models have been **accepted by the researcher for the U-CODE study plan**. The [version-controlled six-model configuration](configs/accepted_six_model_study_2026-10-25.json), [model preflight code](src/ucode/model_readiness.py), and [experiment/reproducibility protocol](docs/SIX_MODEL_STUDY_PLAN_2026-10-25.md) preserve every checkpoint—none is silently excluded for being larger or gated.
+
+| Selected model | Research role | Current status |
+|---|---|---|
+| [Qwen2.5-Coder-7B-Instruct](https://huggingface.co/Qwen/Qwen2.5-Coder-7B-Instruct) | Local-feasibility coding baseline | Planning selected; no pinned weights |
+| [Qwen3-Coder-30B-A3B-Instruct](https://huggingface.co/Qwen/Qwen3-Coder-30B-A3B-Instruct) | Larger mixture-of-experts coding agent | Planning selected; high-memory gate |
+| [Devstral Small 2 24B](https://huggingface.co/mistralai/Devstral-Small-2-24B-Instruct-2512) | Repository-agent specialist | Planning selected; runtime/memory gate |
+| [DeepSeek-Coder-V2-Lite-Instruct](https://huggingface.co/deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct) | Independent code-specialist publisher | Planning selected; model-license/security gate |
+| [CodeGemma 1.1 7B IT](https://huggingface.co/google/codegemma-1.1-7b-it) | Smaller code-specific control | Planning selected; gated terms/access |
+| [Llama 3.1 8B Instruct](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct) | General-instruct control | Planning selected; gated terms/access |
+
+**Planning approval is not provider authorization or a benchmark result.** All six currently fail the inference-readiness gate until their provider terms, full model/tokenizer revisions, weights, compatible execution environment, memory profile, and sandbox have been verified. We will compare **six checkpoints from five publisher families**. No inference, paid GPU, or independently verified repository task run has been performed.
+
 ## Current status (24 October 2026, seven PR screening positions per language)
 
 - **120 discovery candidates across 12 GitHub primary-language search categories**, each with a PR link returned for `author:copilot-swe-agent[bot] is:pr is:merged`. **These are NOT 120 verified AI-generated repositories.** GitHub bot attribution alone does not establish what fraction of source code is AI-authored.
