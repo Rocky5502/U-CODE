@@ -69,15 +69,17 @@ class VisibleBeliefSessionTests(unittest.TestCase):
         gen = CandidateAction("gen", "generate",
                               (CandidateScenario(1, .5),),
                               ResourceVector(tokens=40))
+        perfect = EvidenceAction("strong-test", "test", 1, 1,
+                                 ResourceVector(test_calls=1))
         visible = BeliefSession(None, self.budget)
-        plan = plan_session(visible, [gen, self.a], self.prices,
+        plan = plan_session(visible, [gen, perfect], self.prices,
                             self.rule, horizon=2)
         self.assertEqual(plan.first_action, "gen")
         next_state = record_candidate(visible, gen, .5)
         self.assertEqual(next_state.remaining.tokens, 10)
         self.assertEqual(
-            plan_session(next_state, [gen, self.a], self.prices,
-                         self.rule, horizon=1).first_action, "test-one")
+            plan_session(next_state, [gen, perfect], self.prices,
+                         self.rule, horizon=1).first_action, "strong-test")
 
     def test_failed_repair_preserves_prior_candidate(self):
         repair = CandidateAction("repair", "repair",
