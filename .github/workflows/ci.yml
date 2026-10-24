@@ -21,6 +21,8 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Reproduce synthetic BES look-ahead example (no external code)
         run: python -m examples.bes_lookahead_smoke
+      - name: Reproduce dependent-versus-independent diagnostic example
+        run: python -m examples.conditional_dependence_smoke
       - name: Validate canonical GitHub audit ledger (metadata only)
         run: python -m scripts.summarize_audit --audit-dir data/audits/2026-10-24 --manifest data/discovery/agent_pr_candidates_120.csv
       - name: Validate candidate model and dataset registries
