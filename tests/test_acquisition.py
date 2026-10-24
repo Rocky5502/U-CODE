@@ -26,17 +26,23 @@ class AcquisitionTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             ParetoPoint(1.2, .3)
 
+    def test_diagnostics_do_not_create_candidate_pareto_points(self):
+        for action in ("test", "retrieve", "static_analysis", "abstain"):
+            with self.subTest(action=action):
+                with self.assertRaises(ValueError):
+                    AcquisitionProposal(action, .8, 0, .5, 0, 1, 1)
+
     def test_ehvi_exact_when_sd_zero(self):
         p = AcquisitionProposal("generate", .8, 0, .5, 0, 1, 2)
         self.assertAlmostEqual(expected_hvi_per_cost([], p, 8), .2)
 
     def test_ehvi_zero_probability(self):
-        p = AcquisitionProposal("test", .8, 0, .5, 0, 0, 1)
+        p = AcquisitionProposal("generate", .8, 0, .5, 0, 0, 1)
         self.assertEqual(expected_hvi_per_cost([], p, 8), 0)
 
     def test_selection_budget(self):
         expensive = AcquisitionProposal("generate", .8, 0, .9, 0, 1, 10)
-        cheap = AcquisitionProposal("test", .6, 0, .5, 0, 1, 1)
+        cheap = AcquisitionProposal("repair", .6, 0, .5, 0, 1, 1)
         self.assertEqual(select_ehvi_action([], [expensive, cheap], 2, 8), cheap)
         self.assertIsNone(select_ehvi_action([], [expensive], 2, 8))
 
