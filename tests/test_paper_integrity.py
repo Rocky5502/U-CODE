@@ -22,7 +22,7 @@ class PaperIntegrityTests(unittest.TestCase):
         self.assertGreaterEqual(len(entries), 16)
         self.assertIn("mohsin2026teachingagents", entries)
         self.assertIn("hu2026swecritix", entries)
-        cites = re.findall(r"\cite(?:\[[^]]*\])?\{([^}]+)\}", main)
+        cites = re.findall(r"\\cite(?:\[[^]]*\])?\{([^}]+)\}", main)
         used = {key.strip() for group in cites for key in group.split(",")}
         self.assertTrue(used)
         self.assertFalse(used - set(entries), sorted(used - set(entries)))
@@ -38,7 +38,7 @@ class PaperIntegrityTests(unittest.TestCase):
 
     def test_prospective_abstract_and_no_fabricated_rq_results(self):
         main = (PAPER / "main.tex").read_text(encoding="utf-8")
-        m = re.search(r"\abstract\{%\s*(.*?)\s*\}\s*\\keywords", main, re.S)
+        m = re.search(r"\\abstract\{%\s*(.*?)\s*\}\s*\\keywords", main, re.S)
         self.assertIsNotNone(m)
         # Strip comment-only lines before counting actual abstract words.
         abstract = re.sub(r"(?m)^\s*%.*$", "", m.group(1))
