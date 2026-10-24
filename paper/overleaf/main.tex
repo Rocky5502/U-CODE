@@ -70,34 +70,87 @@ of measured improvements.
 
 \section{Related Work and Novelty Boundary}\label{sec:related}
 
-\paragraph{Search and optimization.}
-SWE-Search incorporates search and agent evaluation into issue resolution
-\cite{antoniades2025swesearch}; GA4GC searches prompt/configuration
-trade-offs \cite{gong2025ga4gc}; SWE-Replay exploits existing trajectories
-to reduce redundant exploration \cite{ding2026swereplay}.
-Multiobjective repository-scale optimization has also been evaluated in
-FormulaCode \cite{sehgal2026formulacode}. U-CODE's proposed contribution is
-\emph{not} their individual ingredients but a separately testable
-decision problem coupling observation quality, error risk and resource use.
+\subsection{Repository-level agents and search}
+We distinguish \emph{generating additional candidate patches} from
+\emph{acquiring evidence} about existing candidates. SWE-bench provides
+issue-resolution tasks with programmatic evaluation, and SWE-agent
+establishes an interface for repository editing and test execution
+\cite{jimenez2024swebench,yang2024sweagent}. These precede U-CODE.
 
-\paragraph{Confidence and verification.}
-AdaDec directs decoding with token uncertainty \cite{he2025adadec}.
-Recent empirical investigations warn that confidence can be misleading for
-incorrect code \cite{rathnasuriya2026overconfidence}, and uncertainty-based
-self-correction may underperform execution-based correction
-\cite{rakasi2026uncertainty}. Test-writing frequency alone is not sufficient
-evidence of stronger repair \cite{chen2026rethinktests}; independently
-qualified testing has been explored by ExecCritic \cite{tao2026execcritic}.
-SWE-Verifier already selectively verifies agent actions
-\cite{zou2026sweverifier}, making it a mandatory close comparator.
+SWE-Search applies Monte Carlo tree search and iterative refinement to
+software repair \cite{antoniades2025swesearch}. SWE-Replay reuses
+trajectories and intermediate search states to reduce redundant
+test-time computation \cite{ding2026swereplay}. GA4GC performs
+multi-objective optimization of agent prompts/configuration
+\cite{gong2025ga4gc}; FormulaCode benchmarks optimization over
+large codebases \cite{sehgal2026formulacode}. These methods
+establish that agent search, compute allocation, and Pareto
+optimization are not individually novel. U-CODE must beat
+cost-matched search and score-free reuse, not merely a single
+generation baseline.
 
-\paragraph{Statistical risk and executable evaluation.}
-Conformal risk control provides specific guarantees under specified loss and
-data assumptions \cite{angelopoulos2024crc}. An arbitrary confidence
-threshold in an adaptively selected coding-agent trajectory does not inherit
-these guarantees. The task protocol can draw on established executable
-benchmarks \cite{jimenez2024swebench,badertdinov2026swerebench} while keeping
-held-out labels from the agent and its learned intervention policy.
+\subsection{Selective and trained verification}
+SWE-Verifier selects when to verify coding-agent actions, making
+selective verification a close comparator \cite{zou2026sweverifier}.
+ExecCritic trains testing and repair agents
+\cite{tao2026execcritic}; independent work questions whether more
+agent-generated tests improve resolution \cite{chen2026rethinktests}.
+The number of tests and their independent diagnostic quality are
+different quantities.
+
+The 2026 preprint \emph{Teaching Agents to Code Reliably} studies
+search diversity and erroneous self-written test acceptance, then
+trains agents to improve verification \cite{mohsin2026teachingagents}.
+SWE-Critix post-trains a generalist verifier to assess an entire
+coding-agent trajectory and explain its completion prediction
+\cite{hu2026swecritix}. These approaches reinforce the need
+to test the incremental value of choosing \emph{which} diagnostic
+to buy next, rather than claiming first use of verification or
+agent trajectory scoring. Their reported benchmark results are
+external findings, not U-CODE findings.
+
+\subsection{Uncertainty, miscalibration and evidence}
+AdaDec uses token uncertainty for adaptive decoding
+\cite{he2025adadec}; this is distinct from post-generation,
+repository-level action selection. Studies identify overconfidence
+on incorrect code \cite{rathnasuriya2026overconfidence} and
+cases where uncertainty-triggered self-correction is worse than
+execution-feedback correction \cite{rakasi2026uncertainty}.
+U-CODE consequently requires pre-outcome calibration across held-out
+repositories, an uncertainty-only negative control, and a
+\emph{search-without-calibration} control with identical tools and
+resource budgets. A self-reported confidence is not a probability
+of independent functional correctness.
+
+\subsection{Selective risk and executable evaluation}
+Conformal risk control offers statistical risk analysis under
+specified loss and data conditions \cite{angelopoulos2024crc}.
+A fixed predictive release threshold cannot be asserted to
+certify population risk after adaptive agent decisions. We measure
+both conditional wrong-release risk and release coverage and reserve
+formal guarantee language for a separately justified frozen
+end-to-end procedure.
+
+SWE-rebench V2 offers multilingual repository issue tasks
+\cite{badertdinov2026swerebench}. Such tasks are \emph{not}
+automatically AI-authored source artifacts: fresh controlled
+model-generated solutions and naturalistic agent-authored PRs
+require distinct provenance, licensing and denominator definitions.
+Our evaluator-only hidden tests must be unavailable to
+generation, retrieval, risk estimation or search policies.
+
+\subsection{Proposed contribution and its falsifier}
+The proposed contribution is a calibrated, vector-budgeted decision
+problem uniting information-producing diagnostics, candidate-producing
+generation/repair, and a terminal release/abstain policy. We do not
+claim first uncertainty-aware coding, first multiobjective coding
+agent, first verifier-triggering controller or first use of EHVI.
+The claim remains unverified until a held-out, independent oracle
+shows that the resulting action policy improves verified task
+success and the risk--coverage tradeoff against matched-budget
+selective verification, MCTS/reuse search and no-uncertainty search.
+Equal or worse performance on these comparisons is a legitimate
+negative outcome, not a reason to change the benchmark after the fact.
 
 \section{Problem Formulation}\label{sec:formulation}
 
