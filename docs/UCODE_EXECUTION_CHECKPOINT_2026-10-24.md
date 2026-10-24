@@ -141,3 +141,17 @@ docs/logs/2026-10-24_issue1_fifth_stratified_batch.md. The summary tool's output
 - Read-only spot checks inspected Java ConfidenceCalculator, Kotlin daily scheduling worker, C# appearance settings store and JavaScript SharePoint conflict control patches. All correctness, code authorship and rights remain unverified.
 - Repaired scripts/summarize_audit.py so discovery links **attempted** are distinct from metadata **successfully retrieved**; tests/test_screening_summary.py guards against inflating screening counts on 404.
 - **Next:** read-only seventh-position candidates IDs 7,17,...,117; prioritize vetted open-source patches for actual independent build/test feasibility. Confirm latest CI for active main SHA.
+
+
+## Seventh-stratum continuation — 2026-10-24 UTC+08
+
+- **84/120 discovery PR links attempted; 83 GitHub PR metadata screens succeeded; one prior link still returned GitHub 404.** **36 links remain unattempted**.
+- Among 83 retrieved PRs: **39 production-source-path**, **8 test-only**, **35 non-source**, **1 empty changed-file list**. Recognized repo SPDX: **43**; unknown/NOASSERTION: **40**. Forks: **9**. Changed-production-language mismatch vs search category: **6**.
+- **No AI-line attribution verified, no file-level license clearance, no independently verified runnable software oracles, and no eligible experimental units.**
+- Seventh-batch evidence: data/audits/2026-10-24/stratified_offset6_ids*.jsonl and docs/logs/2026-10-24_issue1_seventh_stratified_batch.md.
+- Critical code/data correction: a 1,538-file .NET repository-reorganization PR had **1,339 paths under obj/bin/.vs**, which had caused source inflation; src/ucode/audit.py now excludes those generated build/IDE directory trees. Candidate 87's canonical metadata was recomputed: 97 remaining C# production-source paths and 35 test paths, all still unverified as AI-authored; move/rename risk explicitly flagged.
+- Added two regression tests in tests/test_audit.py to prevent such false positives.
+- Added data/audits/2026-10-24/seventh_batch_manual_review_queue.csv with six deeper provenance/right/oracle leads, not an approved dataset.
+- Read-only source-patch checks covered framecover Python TLS logic, Z3 Python build tooling, botnav C game logic, Ruby SAML auth code, and embedded JavaScript in a PHP source path.
+- **Next:** eighth discovery-position IDs **8,18,28,...,118**; do not infer quality from patch shape or GitHub account author.
+- **Go/no-go:** GO metadata triage and human forensic review; HOLD empirical sample enrollment and untrusted third-party execution. Confirm latest GitHub Actions after these commits before reporting a pass.
