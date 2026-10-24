@@ -79,6 +79,15 @@ def summarize(records: list[dict], manifest: dict[int, dict]) -> dict:
         raise ValueError("screened more than discovery manifest")
     statuses = dict(sorted(Counter(x["triage_status"] for x in records).items()))
     languages = dict(sorted(Counter(x["discovery_language"] for x in records).items()))
+    # A 404 is a genuine *attempt*, but it is not a successfully screened PR.
+    # Records skipped after rate limiting were not attempted at all.
+    not_attempted_rate_limit = statuses.get("not_attempted_rate_limit", 0)
+    failures = (statuses.get("retrieval_failed", 0)
+                + statuses.get("rate_limited", 0))
+    attempted = len(records) - not_attempted_rate_limit
+    retrieved = attempted - failures
+    if attempted > len(manifest) or retrieved < 0:
+        raise ValueError("inconsistent attempt/retrieval accounting")
     missing_shas = [
         x["candidate_id"] for x in records if x.get("triage_status") not in
         ("retrieval_failed", "rate_limited", "not_attempted_rate_limit")
@@ -89,18 +98,32 @@ def summarize(records: list[dict], manifest: dict[int, dict]) -> dict:
         if x.get("production_files")
         and x["discovery_language"] not in x.get("production_languages", [])
     ]
+    observed = [
+        x for x in records
+        if x["triage_status"] not in
+        ("retrieval_failed", "rate_limited", "not_attempted_rate_limit")
+    ]
     known_spdx = sum(bool(x.get("repository_license_spdx") and
                           x["repository_license_spdx"] not in
-                          ("NOASSERTION", "UNKNOWN")) for x in records)
+                          ("NOASSERTION", "UNKNOWN")) for x in observed)
     return {
         "status": "metadata_screening_only_not_dataset_approval",
         "discovery_pool": len(manifest),
-        "screened": len(records),
-        "not_screened": len(manifest) - len(records),
+        "screened": retrieved,  # Legacy-compatible: successful metadata reads only.
+        "not_screened": len(manifest) - retrieved,  # Includes failed attempts.
+        "discovery_links_recorded": len(records),
+        "discovery_links_attempted": attempted,
+        "metadata_retrieved": retrieved,
+        "metadata_retrieval_failed": failures,
+        "unattempted_manifest_links": len(manifest) - attempted,
+        "retrieval_failure_candidate_ids": [
+            x["candidate_id"] for x in records
+            if x["triage_status"] in ("retrieval_failed", "rate_limited")
+        ],
         "source_status_counts": statuses,
-        "by_discovery_language_screened": languages,
+        "by_discovery_language_recorded": languages,
         "recognized_repository_spdx": known_spdx,
-        "unknown_or_noassertion_repository_spdx": len(records) - known_spdx,
+        "unknown_or_noassertion_repository_spdx": len(observed) - known_spdx,
         "forks": sum(bool(x.get("fork")) for x in records),
         "language_mismatch_candidate_ids": mismatches,
         "missing_immutable_sha_candidate_ids": missing_shas,
