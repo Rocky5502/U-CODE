@@ -31,6 +31,8 @@ jobs:
         run: python -m scripts.summarize_audit --audit-dir data/audits/2026-10-24 --manifest data/discovery/agent_pr_candidates_120.csv
       - name: Display noneligible source-path leads for human review (no network)
         run: python -m scripts.triage_review_queue --limit 12
+      - name: Check real PR task-admission dossiers against immutable audit (no execution)
+        run: python -m scripts.check_task_admission
       - name: Validate candidate model and dataset registries
         run: python -m scripts.validate_research_registries
       - name: Compile original source only
