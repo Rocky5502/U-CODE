@@ -634,6 +634,47 @@ is yet an executable evaluation unit.
 
 \subsection{Evidence-qualified task admission}\label{sec:admission}
 
+\paragraph{Two pinned task-admission dossiers.}
+We instantiated a prospective, \emph{nonexecutable}
+admission record for two first-pass source-bearing PRs:
+a PHP file-persistence/cache-layout change
+(\texttt{mvdbos/php-spider}, PR~172) and Go game-settlement
+scoring/rank/persistence changes
+(\texttt{PlayHuai/eighty-point-huai-an}, PR~30).
+For each, read-only public metadata provided the PR
+base, head and merge commit identifiers, changed source
+and test paths, root MIT license file and observable
+bot/human co-author trailers. We also verified the
+chronology of pre-PR issue descriptions; in the Go
+case, an independently pre-existing repository design
+document at the immutable pre-fix revision describes
+score and rank requirements. The PHP pre-fix Composer
+manifest specifies PHP and PHPUnit dependencies;
+their installability and transitive version closure
+remain untested. PR-authored unit tests are
+\emph{not} evaluator-only held-out test oracles.
+Neither candidate has been built or executed.
+
+Each dossier explicitly tracks eight distinct
+pre-execution evidence gates: immutable pre-fix task
+snapshot, changed-line authorship, file-specific
+rights, independent functional oracle, oracle
+secrecy and split, sandbox isolation, reproducible
+toolchain, and enforceable resource limits.
+Our static checker cross-validates dossier identity,
+commit hashes and changed paths against the frozen
+120-link discovery ledger. It cannot confirm
+a reviewer signature or the scientific validity of
+supplied evidence. Even when all fields are
+\emph{claimed} present, the current pre-execution
+contract requires \emph{external independent
+adjudication}; it never authorizes third-party
+execution. Both real dossiers remain at
+\emph{eight open gates each}, with no admissible
+benchmark task and no observed model-policy result.
+
+
+
 Admission is \emph{not} implied by a Copilot-authored or merged pull
 request. Before considering a task for controlled execution, we require
 identifiers for an immutable base/patch pair, changed production-source
