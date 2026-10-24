@@ -1,0 +1,186 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 960" role="img" aria-labelledby="ttl desc">
+<title id="ttl">U-CODE framework, official pipeline overview</title>
+<desc id="desc">Six-stage policy pipeline from issue and repository inputs to generated and verified code, uncertainty estimates, bounded evidence search, controlled execution, and risk-gated release. A separate four-stage independent evaluation lane preserves a sealed oracle; a return arrow runs from controlled execution to search.</desc>
+<defs>
+  <marker id="arr" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L8 4.5 L0 9 Z" fill="#1e6bb3"/></marker>
+  <marker id="teal-arr" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L8 4.5 L0 9 Z" fill="#0d8c91"/></marker>
+  <filter id="shadow" x="-5%" y="-10%" width="110%" height="130%"><feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity=".065"/></filter>
+</defs>
+<rect width="1600" height="960" fill="#ffffff"/>
+<text x="800" y="44" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="29" font-weight="750" letter-spacing=".5" fill="#0d254c">U-CODE · Framework</text>
+<text x="800" y="71" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="16" fill="#496783">Uncertainty-guided search for reliable AI-generated software</text>
+<path d="M35 89 H1565" stroke="#d5e3f1" stroke-width="1.5"/>
+<rect x="25" y="112" width="240" height="402" rx="12" fill="#ffffff" stroke="#c8ddee" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="26" y="113" width="238" height="84" rx="11" fill="#f7fbff" stroke="none" stroke-width="1.4" />
+<rect x="40" y="132" width="45" height="45" rx="23" fill="#2075c9" stroke="#2075c9" stroke-width="1.4" />
+<text x="62.5" y="162" fill="#ffffff" font-family="Arial,Helvetica,sans-serif" font-size="23" font-weight="700" text-anchor="middle">1</text>
+<text x="95" y="155" fill="#12284e" font-family="Arial,Helvetica,sans-serif" font-size="17" font-weight="700" >Task &amp; repository</text>
+<text x="95" y="176" fill="#12284e" font-family="Arial,Helvetica,sans-serif" font-size="17" font-weight="700" >inputs</text>
+<rect x="40" y="218" width="210" height="39" rx="7" fill="#f7fafc" stroke="#e3edf7" stroke-width="1.4" />
+<circle cx="55" cy="238" r="6" fill="#2075c9"/>
+<text x="69" y="243" fill="#173457" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="600" >Bug-fix / coding task</text>
+<rect x="40" y="276" width="210" height="39" rx="7" fill="#f7fafc" stroke="#e3edf7" stroke-width="1.4" />
+<circle cx="55" cy="296" r="6" fill="#2075c9"/>
+<text x="69" y="301" fill="#173457" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="600" >Immutable snapshot</text>
+<rect x="40" y="334" width="210" height="39" rx="7" fill="#f7fafc" stroke="#e3edf7" stroke-width="1.4" />
+<circle cx="55" cy="354" r="6" fill="#2075c9"/>
+<text x="69" y="359" fill="#173457" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="600" >Five-part resource budget</text>
+<rect x="40" y="392" width="210" height="39" rx="7" fill="#f7fafc" stroke="#e3edf7" stroke-width="1.4" />
+<circle cx="55" cy="412" r="6" fill="#2075c9"/>
+<text x="69" y="417" fill="#173457" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="600" >Open-weight model pool</text>
+<rect x="285" y="112" width="240" height="402" rx="12" fill="#ffffff" stroke="#c8ddee" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="286" y="113" width="238" height="84" rx="11" fill="#f7fbff" stroke="none" stroke-width="1.4" />
+<rect x="300" y="132" width="45" height="45" rx="23" fill="#168e8d" stroke="#168e8d" stroke-width="1.4" />
+<text x="322.5" y="162" fill="#ffffff" font-family="Arial,Helvetica,sans-serif" font-size="23" font-weight="700" text-anchor="middle">2</text>
+<text x="355" y="155" fill="#12284e" font-family="Arial,Helvetica,sans-serif" font-size="17" font-weight="700" >Available</text>
+<text x="355" y="176" fill="#12284e" font-family="Arial,Helvetica,sans-serif" font-size="17" font-weight="700" >interventions</text>
+<rect x="300" y="218" width="210" height="39" rx="7" fill="#eff7ff" stroke="#e3edf7" stroke-width="1.4" />
+<circle cx="315" cy="238" r="6" fill="#168e8d"/>
+<text x="329" y="243" fill="#173457" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="600" >Generate patch</text>
+<rect x="300" y="266" width="210" height="39" rx="7" fill="#e9f8f4" stroke="#e3edf7" stroke-width="1.4" />
+<circle cx="315" cy="286" r="6" fill="#168e8d"/>
+<text x="329" y="291" fill="#173457" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="600" >Retrieve context</text>
+<rect x="300" y="314" width="210" height="39" rx="7" fill="#fff4ea" stroke="#e3edf7" stroke-width="1.4" />
+<circle cx="315" cy="334" r="6" fill="#168e8d"/>
+<text x="329" y="339" fill="#173457" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="600" >Run diagnostics</text>
+<rect x="300" y="362" width="210" height="39" rx="7" fill="#f5effe" stroke="#e3edf7" stroke-width="1.4" />
+<circle cx="315" cy="382" r="6" fill="#168e8d"/>
+<text x="329" y="387" fill="#173457" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="600" >Static analysis</text>
+<rect x="300" y="410" width="210" height="39" rx="7" fill="#fff0f0" stroke="#e3edf7" stroke-width="1.4" />
+<circle cx="315" cy="430" r="6" fill="#168e8d"/>
+<text x="329" y="435" fill="#173457" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="600" >Repair / refine</text>
+<rect x="545" y="112" width="240" height="402" rx="12" fill="#ffffff" stroke="#c8ddee" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="546" y="113" width="238" height="84" rx="11" fill="#f7fbff" stroke="none" stroke-width="1.4" />
+<rect x="560" y="132" width="45" height="45" rx="23" fill="#6752c8" stroke="#6752c8" stroke-width="1.4" />
+<text x="582.5" y="162" fill="#ffffff" font-family="Arial,Helvetica,sans-serif" font-size="23" font-weight="700" text-anchor="middle">3</text>
+<text x="615" y="155" fill="#12284e" font-family="Arial,Helvetica,sans-serif" font-size="17" font-weight="700" >Uncertainty &amp;</text>
+<text x="615" y="176" fill="#12284e" font-family="Arial,Helvetica,sans-serif" font-size="17" font-weight="700" >evidence</text>
+<rect x="559" y="229" width="212" height="89" rx="8" fill="#f2f8ff" stroke="#d9e9fb" stroke-width="1.4" />
+<text x="569" y="259" fill="#164d8b" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="750" >p(correct patch)</text>
+<text x="569" y="282" fill="#43647e" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="500" >Prior predictor</text>
+<path d="M569 301 h170" stroke="#2c78c7" stroke-width="3" stroke-linecap="round"/>
+<rect x="559" y="332" width="212" height="89" rx="8" fill="#f2fbfb" stroke="#d5eeeb" stroke-width="1.4" />
+<text x="569" y="362" fill="#164d8b" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="750" >P(test result | history)</text>
+<text x="569" y="385" fill="#43647e" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="500" >Diagnostic model</text>
+<path d="M569 404 h148" stroke="#23a1a0" stroke-width="3" stroke-linecap="round"/>
+<text x="561" y="460" fill="#385778" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="650" >Fit on training groups only</text>
+<text x="561" y="482" fill="#385778" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="650" >No held-out labels</text>
+<rect x="805" y="112" width="240" height="402" rx="12" fill="#ffffff" stroke="#8ab7ec" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="806" y="113" width="238" height="84" rx="11" fill="#edf5ff" stroke="none" stroke-width="1.4" />
+<rect x="820" y="132" width="45" height="45" rx="23" fill="#255cae" stroke="#255cae" stroke-width="1.4" />
+<text x="842.5" y="162" fill="#ffffff" font-family="Arial,Helvetica,sans-serif" font-size="23" font-weight="700" text-anchor="middle">4</text>
+<text x="875" y="155" fill="#12284e" font-family="Arial,Helvetica,sans-serif" font-size="17" font-weight="700" >Search &amp;</text>
+<text x="875" y="176" fill="#12284e" font-family="Arial,Helvetica,sans-serif" font-size="17" font-weight="700" >decision core</text>
+<rect x="818" y="219" width="214" height="56" rx="8" fill="#deedff" stroke="#b7d3f7" stroke-width="1.4" />
+<text x="831" y="242" fill="#11509a" font-family="Arial,Helvetica,sans-serif" font-size="19" font-weight="800" >BES</text>
+<text x="831" y="263" fill="#19518c" font-family="Arial,Helvetica,sans-serif" font-size="12" font-weight="650" >Bounded Evidence Search</text>
+<circle cx="833" cy="305" r="5" fill="#255cae"/>
+<text x="846" y="310" fill="#183454" font-family="Arial,Helvetica,sans-serif" font-size="15" font-weight="600" >Myopic VOI control</text>
+<circle cx="833" cy="345" r="5" fill="#255cae"/>
+<text x="846" y="350" fill="#183454" font-family="Arial,Helvetica,sans-serif" font-size="15" font-weight="600" >Multi-step look-ahead</text>
+<circle cx="833" cy="385" r="5" fill="#255cae"/>
+<text x="846" y="390" fill="#183454" font-family="Arial,Helvetica,sans-serif" font-size="15" font-weight="600" >History-aware evidence</text>
+<circle cx="833" cy="425" r="5" fill="#255cae"/>
+<text x="846" y="430" fill="#183454" font-family="Arial,Helvetica,sans-serif" font-size="15" font-weight="600" >Hard vector budgets</text>
+<rect x="819" y="477" width="212" height="24" rx="6" fill="#eef5ff" stroke="#d4e7fa" stroke-width="1.4" />
+<text x="925" y="493" fill="#25599e" font-family="Arial,Helvetica,sans-serif" font-size="12" font-weight="650" text-anchor="middle">Action · stop · abstain</text>
+<rect x="1065" y="112" width="240" height="402" rx="12" fill="#ffffff" stroke="#c8ddee" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="1066" y="113" width="238" height="84" rx="11" fill="#ecfaf8" stroke="none" stroke-width="1.4" />
+<rect x="1080" y="132" width="45" height="45" rx="23" fill="#138a79" stroke="#138a79" stroke-width="1.4" />
+<text x="1102.5" y="162" fill="#ffffff" font-family="Arial,Helvetica,sans-serif" font-size="23" font-weight="700" text-anchor="middle">5</text>
+<text x="1135" y="155" fill="#12284e" font-family="Arial,Helvetica,sans-serif" font-size="17" font-weight="700" >Controlled</text>
+<text x="1135" y="176" fill="#12284e" font-family="Arial,Helvetica,sans-serif" font-size="17" font-weight="700" >execution loop</text>
+<rect x="1080" y="218" width="210" height="39" rx="7" fill="#f7fafc" stroke="#e3edf7" stroke-width="1.4" />
+<circle cx="1095" cy="238" r="6" fill="#138a79"/>
+<text x="1109" y="243" fill="#173457" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="600" >Run permitted action</text>
+<rect x="1080" y="276" width="210" height="39" rx="7" fill="#f7fafc" stroke="#e3edf7" stroke-width="1.4" />
+<circle cx="1095" cy="296" r="6" fill="#138a79"/>
+<text x="1109" y="301" fill="#173457" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="600" >Observe visible result</text>
+<rect x="1080" y="334" width="210" height="39" rx="7" fill="#f7fafc" stroke="#e3edf7" stroke-width="1.4" />
+<circle cx="1095" cy="354" r="6" fill="#138a79"/>
+<text x="1109" y="359" fill="#173457" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="600" >Update belief / budget</text>
+<rect x="1080" y="392" width="210" height="39" rx="7" fill="#f7fafc" stroke="#e3edf7" stroke-width="1.4" />
+<circle cx="1095" cy="412" r="6" fill="#138a79"/>
+<text x="1109" y="417" fill="#173457" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="600" >Replan or terminate</text>
+<text x="1081" y="476" fill="#138a79" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="750" >Feedback to BES ↩</text>
+<rect x="1325" y="112" width="240" height="402" rx="12" fill="#ffffff" stroke="#c8ddee" stroke-width="1.4" filter="url(#shadow)"/>
+<rect x="1326" y="113" width="238" height="84" rx="11" fill="#f7fbff" stroke="none" stroke-width="1.4" />
+<rect x="1340" y="132" width="45" height="45" rx="23" fill="#2075c9" stroke="#2075c9" stroke-width="1.4" />
+<text x="1362.5" y="162" fill="#ffffff" font-family="Arial,Helvetica,sans-serif" font-size="23" font-weight="700" text-anchor="middle">6</text>
+<text x="1395" y="155" fill="#12284e" font-family="Arial,Helvetica,sans-serif" font-size="17" font-weight="700" >Risk-gated</text>
+<text x="1395" y="176" fill="#12284e" font-family="Arial,Helvetica,sans-serif" font-size="17" font-weight="700" >release</text>
+<rect x="1340" y="218" width="210" height="39" rx="7" fill="#f7fafc" stroke="#e3edf7" stroke-width="1.4" />
+<circle cx="1355" cy="238" r="6" fill="#2075c9"/>
+<text x="1369" y="243" fill="#173457" font-family="Arial,Helvetica,sans-serif" font-size="14.5" font-weight="600" >Release candidate</text>
+<rect x="1340" y="276" width="210" height="39" rx="7" fill="#f7fafc" stroke="#e3edf7" stroke-width="1.4" />
+<circle cx="1355" cy="296" r="6" fill="#2075c9"/>
+<text x="1369" y="301" fill="#173457" font-family="Arial,Helvetica,sans-serif" font-size="14.5" font-weight="600" >Abstain if unsafe</text>
+<rect x="1340" y="334" width="210" height="39" rx="7" fill="#f7fafc" stroke="#e3edf7" stroke-width="1.4" />
+<circle cx="1355" cy="354" r="6" fill="#2075c9"/>
+<text x="1369" y="359" fill="#173457" font-family="Arial,Helvetica,sans-serif" font-size="14.5" font-weight="600" >Continue if feasible</text>
+<path d="M269 320 H278" fill="none" stroke="#1e6bb3" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arr)" />
+<path d="M529 320 H538" fill="none" stroke="#1e6bb3" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arr)" />
+<path d="M789 320 H798" fill="none" stroke="#1e6bb3" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arr)" />
+<path d="M1049 320 H1058" fill="none" stroke="#1e6bb3" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arr)" />
+<path d="M1309 320 H1318" fill="none" stroke="#1e6bb3" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arr)" />
+<path d="M1185 516 V552 Q1185 568 1169 568 H943 Q927 568 927 552 V517" fill="none" stroke="#0d8c91" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"  />
+<path d="M918 527 L927 513 L936 527" fill="none" stroke="#0d8c91" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="964" y="538" width="179" height="24" rx="3" fill="#ffffff" stroke="none" stroke-width="1.4" />
+<text x="1053" y="555" fill="#086e74" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="750" text-anchor="middle">replan under budget</text>
+<rect x="25" y="628" width="1550" height="266" rx="15" fill="#f9fcfd" stroke="#a7dcd9" stroke-width="1.4" />
+<rect x="25" y="628" width="1550" height="47" rx="14" fill="#eef9f7" stroke="none" stroke-width="1.4" />
+<text x="800" y="658" fill="#104965" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="750" text-anchor="middle">Independent evaluation · sealed oracle</text>
+<rect x="39" y="696" width="352" height="177" rx="11" fill="#ffffff" stroke="#b8ead5" stroke-width="1.4" />
+<rect x="40" y="697" width="350" height="49" rx="9" fill="#e8f8f2" stroke="none" stroke-width="1.4" />
+<rect x="53" y="707" width="35" height="35" rx="18" fill="#087e61" stroke="#087e61" stroke-width="1.4" />
+<text x="70.5" y="731" fill="#fff" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="800" text-anchor="middle">A</text>
+<text x="99" y="730" fill="#142f50" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="700" >Task admission</text>
+<circle cx="60" cy="773" r="4.3" fill="#087e61"/>
+<text x="75" y="778" fill="#284364" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="500" >Provenance &amp; attribution</text>
+<circle cx="60" cy="800" r="4.3" fill="#087e61"/>
+<text x="75" y="805" fill="#284364" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="500" >File rights / licensing</text>
+<circle cx="60" cy="827" r="4.3" fill="#087e61"/>
+<text x="75" y="832" fill="#284364" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="500" >Sandbox prerequisites</text>
+<rect x="428" y="696" width="352" height="177" rx="11" fill="#ffffff" stroke="#bddcf8" stroke-width="1.4" />
+<rect x="429" y="697" width="350" height="49" rx="9" fill="#ecf6ff" stroke="none" stroke-width="1.4" />
+<rect x="442" y="707" width="35" height="35" rx="18" fill="#1769b4" stroke="#1769b4" stroke-width="1.4" />
+<text x="459.5" y="731" fill="#fff" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="800" text-anchor="middle">B</text>
+<text x="488" y="730" fill="#142f50" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="700" >Independent evaluator</text>
+<circle cx="449" cy="773" r="4.3" fill="#1769b4"/>
+<text x="464" y="778" fill="#284364" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="500" >Sealed functional oracle</text>
+<circle cx="449" cy="800" r="4.3" fill="#1769b4"/>
+<text x="464" y="805" fill="#284364" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="500" >No policy-side gold labels</text>
+<circle cx="449" cy="827" r="4.3" fill="#1769b4"/>
+<text x="464" y="832" fill="#284364" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="500" >Independent replay</text>
+<rect x="817" y="696" width="352" height="177" rx="11" fill="#ffffff" stroke="#d8ccfd" stroke-width="1.4" />
+<rect x="818" y="697" width="350" height="49" rx="9" fill="#f4f0ff" stroke="none" stroke-width="1.4" />
+<rect x="831" y="707" width="35" height="35" rx="18" fill="#6951b7" stroke="#6951b7" stroke-width="1.4" />
+<text x="848.5" y="731" fill="#fff" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="800" text-anchor="middle">C</text>
+<text x="877" y="730" fill="#142f50" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="700" >Research metrics</text>
+<circle cx="838" cy="773" r="4.3" fill="#6951b7"/>
+<text x="853" y="778" fill="#284364" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="500" >Verified task success</text>
+<circle cx="838" cy="800" r="4.3" fill="#6951b7"/>
+<text x="853" y="805" fill="#284364" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="500" >Release coverage &amp; risk</text>
+<circle cx="838" cy="827" r="4.3" fill="#6951b7"/>
+<text x="853" y="832" fill="#284364" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="500" >Costs, calibration &amp; CIs</text>
+<rect x="1206" y="696" width="352" height="177" rx="11" fill="#ffffff" stroke="#b9e8ea" stroke-width="1.4" />
+<rect x="1207" y="697" width="350" height="49" rx="9" fill="#eafbfc" stroke="none" stroke-width="1.4" />
+<rect x="1220" y="707" width="35" height="35" rx="18" fill="#098e98" stroke="#098e98" stroke-width="1.4" />
+<text x="1237.5" y="731" fill="#fff" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="800" text-anchor="middle">D</text>
+<text x="1266" y="730" fill="#142f50" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="700" >Evidence outputs</text>
+<circle cx="1227" cy="773" r="4.3" fill="#098e98"/>
+<text x="1242" y="778" fill="#284364" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="500" >Comparative baselines</text>
+<circle cx="1227" cy="800" r="4.3" fill="#098e98"/>
+<text x="1242" y="805" fill="#284364" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="500" >Ablations &amp; uncertainty</text>
+<circle cx="1227" cy="827" r="4.3" fill="#098e98"/>
+<text x="1242" y="832" fill="#284364" font-family="Arial,Helvetica,sans-serif" font-size="16" font-weight="500" >Reproducible manuscript</text>
+<path d="M395 796 H419" fill="none" stroke="#1e6bb3" stroke-width="3.7" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arr)" />
+<path d="M784 796 H808" fill="none" stroke="#1e6bb3" stroke-width="3.7" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arr)" />
+<path d="M1173 796 H1197" fill="none" stroke="#1e6bb3" stroke-width="3.7" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arr)" />
+<path d="M145 514 V683" fill="none" stroke="#1e6bb3" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arr)" />
+<path d="M1446 514 V601 H603 V683" fill="none" stroke="#0d8c91" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arr)" />
+<rect x="944" y="586" width="204" height="23" rx="4" fill="#ffffff" stroke="none" stroke-width="1.4" />
+<text x="1046" y="603" fill="#087d81" font-family="Arial,Helvetica,sans-serif" font-size="12" font-weight="700" text-anchor="middle">terminal patch only → sealed eval</text>
+<rect x="25" y="914" width="1550" height="34" rx="8" fill="#f4f8fc" stroke="#e2ebf3" stroke-width="1.4" />
+<text x="800" y="937" fill="#425e78" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="650" text-anchor="middle">Principles   •   budget-matched comparisons   •   oracle isolation   •   source provenance   •   reproducibility   •   multi-model analysis</text>
+</svg>
