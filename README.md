@@ -177,6 +177,38 @@ but publication-level **algorithmic novelty and actual performance gains
 are NOT demonstrated** until a controlled multi-model, sealed-oracle
 study with strong budget-matched baselines is completed.
 
+## Research continuation: dependency-aware evidence (2026-10-24)
+
+- [History-conditioned BES](src/ucode/conditional_bes.py) makes
+  the next diagnostic likelihood depend explicitly on the sequence
+  of *visible* prior test results, rather than multiplying marginal
+  independent-test probabilities. Missing contexts or impossible
+  reported outcomes fail closed. It currently handles **one existing
+  candidate and diagnostic actions only**, not generation/repair.
+- [Training-only conditional kernel fitter](src/ucode/conditional_fit.py)
+  requires a precommitted complete diagnostic panel, segregated
+  repository/fork train/validation/evaluation groups, monotonic
+  evidence-before-training-oracle times and context-specific class
+  support. Merely declaring these properties does not attest
+  independently verified data collection or prevent upstream leakage.
+- [Independence versus redundancy demo](examples/conditional_dependence_smoke.py)
+  shows, with **synthetic** probabilities and identical marginal test
+  accuracies, that an independent two-test plan can have positive
+  option value while a perfectly redundant test pair does not.
+  Reproduce with `python -m examples.conditional_dependence_smoke`.
+- [Research protocol and elementary non-identifiability proof](docs/CONDITIONAL_DIAGNOSTIC_EVIDENCE_2026-10-24.md).
+  [Springer LaTeX](paper/overleaf/main.tex) now includes explicit
+  history-conditional posterior equations and a correlated-test
+  counterexample. The `ucode-overleaf-sources` CI artifact contains
+  this GitHub source; authenticated live Overleaf is not connected.
+
+**Research status:** These are training-contract and algorithmic
+engineering achievements, not real fitted test kernels, executable
+external benchmark tasks or evidence of an empirical improvement.
+The path-level PR screen remains **84 of 120 attempted, 83 retrieved,
+zero fully study-eligible** pending attribution, file rights and sealed
+independent oracles.
+
 ## Research thesis
 
 Our testable hypothesis is that **calibrated uncertainty signals, integrated into budget-constrained multi-objective search, can improve independently verified code reliability** against matched-cost baselines. Null and negative results are publishable.
