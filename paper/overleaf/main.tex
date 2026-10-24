@@ -536,6 +536,77 @@ oracles, task-paired policy runs and measured token/test/GPU/CPU/wall
 budgets. Model revisions and calibration datasets must be pinned.
 Only runnable, rights-cleared and leakage-safe tasks will be used.
 
+\subsection{Completed PR-discovery metadata screen}\label{sec:prscreen}
+
+For feasibility assessment, we froze a search-derived list of
+$120$ GitHub pull-request links, sampled as ten results in
+each of twelve \emph{repository-primary-language} search
+strata under the query condition
+\texttt{author:copilot-swe-agent[bot]}, merged PRs.
+All $120$ links were attempted through read-only public
+metadata interfaces on 24--25 October 2026. Of these,
+$119$ had retrievable PR and changed-file metadata;
+one link returned an inaccessible/404 PR. The discovered
+search account identifies the public PR association,
+\emph{not} a verified percentage of autonomously
+generated lines or the language actually changed.
+
+\begin{table}[t]
+\centering
+\caption{Read-only U-CODE discovery screen, 120 PR links.
+Categories describe changed-file \emph{paths}, not
+agent-authored or independently correct patches.
+No repository source was executed.}
+\label{tab:pr-screen}
+\begin{tabular}{lr}
+\toprule
+Metadata screen outcome & PR links\\
+\midrule
+Production-source paths detected & 62\\
+Test-only source changes & 10\\
+Non-source changes & 45\\
+Empty changed-file list; further review & 2\\
+Unretrievable PR link & 1\\
+\midrule
+Total discovery links attempted & 120\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Sixty-two of the $119$ retrieved PRs had at least
+one changed file with an eligible production-source
+\emph{suffix and path}; this weak signal can include
+word lists, moved source, generated artifacts, or
+mixed human--agent edits. Repository-level SPDX
+metadata was recognized for $62$ of the $119$
+retrieved PRs; such metadata cannot authorize reuse
+of each changed file. Twelve observed repository
+records were forks. Excluding IDE/build outputs
+and differentiating changed-file from repository
+language are therefore necessary even for an
+initial screening estimate. These observations
+are descriptive evidence about the \emph{fixed
+discovery sample}; they are not a representative
+rate of correctness, autonomous coding, or
+distribution-wide agent success.
+
+\emph{No PR in this discovery pool has yet passed}
+line-level generation attribution, file-rights
+review, independently reconstructed pre-fix task,
+isolated execution and evaluator-only sealed
+correctness tests. Accordingly, the number of
+independently qualified experimental tasks
+remains \textbf{zero}. The count of metadata
+source-path candidates must never be reused as the
+denominator for model-effectiveness claims.
+The timestamped changed-file and immutable
+revision records, including the retrieval failure,
+are maintained as versioned JSONL artifacts; an
+offline aggregation command recomputes the
+exact attrition table and a separate conservative
+manual-review queue. That queue \emph{cannot}
+mark a task eligible for experimental execution.
+
 \subsection{Evidence-qualified task admission}\label{sec:admission}
 
 Admission is \emph{not} implied by a Copilot-authored or merged pull
