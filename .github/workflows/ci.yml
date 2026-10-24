@@ -23,6 +23,10 @@ jobs:
         run: python -m examples.bes_lookahead_smoke
       - name: Reproduce dependent-versus-independent diagnostic example
         run: python -m examples.conditional_dependence_smoke
+      - name: Validate publication-quality U-CODE SVG geometry and arrows
+        run: python -m scripts.validate_framework_figure
+      - name: Print six-model selected planning roster with hard readiness blockers
+        run: python -m ucode.model_readiness
       - name: Validate canonical GitHub audit ledger (metadata only)
         run: python -m scripts.summarize_audit --audit-dir data/audits/2026-10-24 --manifest data/discovery/agent_pr_candidates_120.csv
       - name: Validate candidate model and dataset registries
