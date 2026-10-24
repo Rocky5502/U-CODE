@@ -32,6 +32,14 @@ Read-only diff inspection identified proposed scoring/rank functions and PR-auth
 
 Root MIT LICENSE blob SHA **c15f68715092a3b55253f80bd1fa6af08d6b0879**; file-specific rights remain PENDING. Four commits use bot author metadata, three contain human co-author trailers; fraction of lines autonomously AI-authored cannot be inferred.
 
+## A concrete independent-oracle ambiguity discovered
+
+The Go pre-fix design specifies two constraints simultaneously: **loser balances cannot become negative** and **the sum of winner and loser balance changes must remain zero**. The proposed PR patch, inspected read-only, reconciles them by collecting the losses actually affordable after balance caps, dividing the pool between two winners, then distributing a one-point odd remainder in a deterministic user-ID order.
+
+This is not established as a bug. It exposes an **underspecified acceptance criterion**: the pre-fix human-facing requirements did not unambiguously prescribe who receives an indivisible residual point, or whether alternative tie-breaks are equally acceptable. Using the agent's chosen tie-break as the held-out answer would make the oracle circular. A genuinely independent business-rule reviewer must decide an acceptable family of outcomes (or an authorized tie-break rule) **before** the final evaluator is sealed. Therefore the candidate remains blocked; the observed implementation is not ground truth.
+
+A related distinction is that checking only individual scoring formulae would miss real database transaction/idempotency regressions in the full PR. We will explicitly record any **microtask scope reduction** and must not count a narrow mathematical reference test as verifying the whole original repository fix.
+
 ## Go/no-go
 
 Both leads remain MANUAL_REVIEW_ONLY with **8/8 open admission gates each**. Relative ease of running PHP scratch-path tests vs Go pure numeric tests is a feasibility hypothesis, not empirical success. The next real milestone is independently verified file-level rights, task/oracle authorship separation, a sealed evaluator not visible to agent policy, and rootless/network-off resource-capped execution. No routine GitHub CI should execute third-party source.
