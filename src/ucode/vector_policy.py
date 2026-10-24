@@ -47,12 +47,28 @@ class ResourceVector:
         return ResourceVector(**{field: getattr(self, field) - getattr(cost, field)
                                  for field in RESOURCE_FIELDS})
 
-    def total_price(self, unit_prices: "ResourceVector") -> float:
+    def total_price(self, unit_prices: "ResourcePrices") -> float:
         return sum(getattr(self, field) * getattr(unit_prices, field)
                    for field in RESOURCE_FIELDS)
 
     def is_free(self) -> bool:
         return all(getattr(self, field) == 0 for field in RESOURCE_FIELDS)
+
+
+@dataclass(frozen=True)
+class ResourcePrices:
+    """Predeclared scalarization weights; fractional per-unit prices allowed."""
+    tokens: float = 0.0
+    test_calls: float = 0.0
+    gpu_seconds: float = 0.0
+    cpu_seconds: float = 0.0
+    wall_seconds: float = 0.0
+
+    def __post_init__(self) -> None:
+        for field in RESOURCE_FIELDS:
+            value = getattr(self, field)
+            if not isinstance(value, (int, float)) or not isfinite(value) or value < 0:
+                raise ValueError(f"{field} price must be finite nonnegative")
 
 
 @dataclass(frozen=True)
@@ -100,7 +116,7 @@ def choose_next_intervention(
     prior_acceptable: float | None,
     proposals: Sequence[DiagnosticForecast | GenerativeForecast],
     remaining_budget: ResourceVector,
-    unit_prices: ResourceVector,
+    unit_prices: ResourcePrices,
     release_rule: ReleaseRule,
 ) -> PlanDecision:
     """Pick the best *strictly positive* marginal utility action, or stop.
