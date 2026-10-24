@@ -1,7 +1,7 @@
-% U-CODE PROSPECTIVE MANUSCRIPT SHELL — NOT SUBMISSION READY
-% Official Springer Nature class must be obtained from the official template:
+% U-CODE prospective journal manuscript; scientific protocol only (2026-10-24).
+% NOT SUBMISSION READY: no independent execution data, risk certificates or RQ results.
+% Obtain sn-jnl.cls and publisher BST files from official Springer Nature template.
 % https://www.overleaf.com/latex/templates/springer-nature-latex-template/myxmhdsbzkyd
-% Journal requirement: \documentclass{sn-jnl}
 \documentclass[pdflatex,sn-basic]{sn-jnl}
 
 \usepackage{amsmath,amssymb}
@@ -12,72 +12,260 @@
 
 \title[U-CODE]{U-CODE: Uncertainty-Guided Search for Reliable AI-Generated Software}
 
-% Known intended corresponding author; coauthors/affiliations must be approved
-% by the actual human research team before submission.
+% Authors/coauthors/affiliations require approval from actual human research team.
 \author*[1]{\fnm{Chandan Kumar} \sur{Sah}}\email{sahchandan98@buaa.edu.cn}
 \affil*[1]{\orgdiv{School of Computer Science and Engineering},
   \orgname{Beihang University},
   \orgaddress{\city{Beijing}, \country{China}}}
 
+% PROSPECTIVE ABSTRACT ONLY. Replace with a supported results abstract after
+% verified experiments. Never present a proposed evaluation as completed.
 \abstract{%
-% PLACEHOLDER: Replace with a factual 150--250-word abstract AFTER empirical
-% results are complete. Do not invent numerical improvements or data sizes.
-This manuscript shell defines a prospective research study of uncertainty-guided
-search for AI-generated software. The research will investigate whether
-calibrated pre-verification uncertainty can guide the allocation of finite
-inference and software verification budgets across candidate generation,
-retrieval, testing, static analysis, repair, and abstention. The proposed
-evaluation will distinguish naturally occurring agent-authored patches from
-new model generations on executable software engineering tasks. No empirical
-results are claimed in this initial manuscript scaffold.
+Coding agents may generate plausible software patches while missing defects that
+are costly to discover after deployment. Under bounded computing resources, an
+agent must decide whether to generate another patch, retrieve relevant context,
+run diagnostic tests, inspect code statically, attempt a repair, or stop.
+Existing research has examined uncertainty-based code revision, software-agent
+search, selective action verification, and multi-objective configuration
+optimization. What remains to be established is whether jointly modeling the
+value of acquiring different forms of verification evidence improves the
+reliability of patches ultimately released at matched resource budgets.
+We formulate this question as a risk-constrained partially observed sequential
+decision problem, distinguishing the information value of diagnostics from the
+candidate-space gains of generation and repair. We specify selective-error and
+coverage estimands, budget-matched policy controls, and a leakage-resistant
+evaluation using independently checked repository tasks. This version presents
+a research protocol and an analytical reference implementation only; real-world
+reliability gains and statistical risk guarantees have not yet been established.
 }
 
-\keywords{AI-generated software, uncertainty calibration,
-search-based software engineering, agentic code verification}
+\keywords{search-based software engineering, coding agents,
+uncertainty calibration, evidence acquisition, selective verification,
+budget-constrained optimization}
 
 \maketitle
 
 \section{Introduction}\label{sec:introduction}
-% TODO: motivating instance with verified source and independent test.
-% TODO: problem gap and contributions AFTER evidence and novelty audit.
 
-\section{Related Work}\label{sec:related}
-% TODO: 20--30 verified scholarly references and original contribution map.
+Repository-level coding agents are evaluated on executable software tasks,
+including real-world issue resolution \cite{jimenez2024swebench,yang2024sweagent}.
+However, a tool call that consumes tokens or test execution time may produce
+new code, reveal diagnostic evidence about existing code, or both. Treating
+every call as additional candidate search obscures these different
+causal and computational effects.
+
+The relevant prior methods already include Monte Carlo tree search for repair
+\cite{antoniades2025swesearch}, multi-objective optimization of agent
+configurations \cite{gong2025ga4gc}, replay-based test-time scaling
+\cite{ding2026swereplay}, and selective action verification
+\cite{zou2026sweverifier}. We therefore do \emph{not} claim the first
+uncertainty-aware or multi-objective coding-agent search.
+
+Our falsifiable question is whether a \emph{calibrated, risk-aware allocation
+across heterogeneous diagnostics and generative interventions} can improve
+independently verified full-task success under the same vector resource
+budget, without concealing failures through excessive abstention.
+The present paper is a \emph{pre-experimental research draft}, not a report
+of measured improvements.
+
+\section{Related Work and Novelty Boundary}\label{sec:related}
+
+\paragraph{Search and optimization.}
+SWE-Search incorporates search and agent evaluation into issue resolution
+\cite{antoniades2025swesearch}; GA4GC searches prompt/configuration
+trade-offs \cite{gong2025ga4gc}; SWE-Replay exploits existing trajectories
+to reduce redundant exploration \cite{ding2026swereplay}.
+Multiobjective repository-scale optimization has also been evaluated in
+FormulaCode \cite{sehgal2026formulacode}. U-CODE's proposed contribution is
+\emph{not} their individual ingredients but a separately testable
+decision problem coupling observation quality, error risk and resource use.
+
+\paragraph{Confidence and verification.}
+AdaDec directs decoding with token uncertainty \cite{he2025adadec}.
+Recent empirical investigations warn that confidence can be misleading for
+incorrect code \cite{rathnasuriya2026overconfidence}, and uncertainty-based
+self-correction may underperform execution-based correction
+\cite{rakasi2026uncertainty}. Test-writing frequency alone is not sufficient
+evidence of stronger repair \cite{chen2026rethinktests}; independently
+qualified testing has been explored by ExecCritic \cite{tao2026execcritic}.
+SWE-Verifier already selectively verifies agent actions
+\cite{zou2026sweverifier}, making it a mandatory close comparator.
+
+\paragraph{Statistical risk and executable evaluation.}
+Conformal risk control provides specific guarantees under specified loss and
+data assumptions \cite{angelopoulos2024crc}. An arbitrary confidence
+threshold in an adaptively selected coding-agent trajectory does not inherit
+these guarantees. The task protocol can draw on established executable
+benchmarks \cite{jimenez2024swebench,badertdinov2026swerebench} while keeping
+held-out labels from the agent and its learned intervention policy.
 
 \section{Problem Formulation}\label{sec:formulation}
-Given observable state $s_t$, an agent chooses intervention $a_t$ under
-budget $B$, seeking measurable improvements in independently verified
-reliability, safety and resource use. The selected action may maximize a
-predicted acquisition objective based on feasible multi-objective gain:
-\begin{equation}
-  a_t^\star =
-  \arg\max_{a \in \mathcal A_t,\; c(a)\le B_t}
-  \frac{\mathbb E[\Delta HV \mid s_t,a]}{c(a)}.
-  \label{eq:ehvi}
-\end{equation}
-% This is a research hypothesis and example acquisition, not an established
-% novel or empirically validated algorithm. Specify assumptions in final text.
 
-\section{U-CODE Method}\label{sec:method}
-% TODO: agent architecture, risk calibration, exploration/exploitation,
-% policy ablations and exact search algorithm.
+\subsection{Tasks, latent acceptance and admissible observations}
+
+Let $i$ index an immutable issue and repository snapshot. A candidate
+patch $x$ has an evaluation-only correctness outcome
+$Y_i(x)\in\{0,1\}$ from a sealed functional oracle. When validated
+separately, a security acceptability label $G_i(x)\in\{0,1\}$
+may define joint acceptability $Z_i(x)=Y_i(x)G_i(x)$; we do not assume
+independence. Without a trustworthy security oracle, correctness and
+scanner alerts remain separate estimands.
+
+At step $t$, the controller sees a history
+\begin{equation}
+ h_t=(d_i,\mathcal{C}_t,e_t,\mathcal{F}_t,\mathbf b_t,
+       \mathcal H_{<t}),
+ \label{eq:state}
+\end{equation}
+comprising the issue, candidate patches, publicly visible qualified
+diagnostics, candidate frontier, remaining resource budget, and legal
+previous observations. The gold patch, independent test outputs and
+evaluator-only labels $Y_i$ and $G_i$ do not occur in $h_t$.
+
+A frozen predictor forms pre-outcome estimates
+$p_t(x)=\Pr(Z_i(x)=1\mid h_t)$ and action-conditional diagnostic
+observation kernels $K_a(o,h'\mid h_t)$. These are hypotheses requiring
+independent calibration, not asserted probabilities of fact.
+
+\subsection{Interventions and vector-valued budgets}
+
+Nonterminal interventions are generation, retrieval, testing, static
+analysis and repair. Terminal decisions are $\mathrm{release}(x)$ and
+$\mathrm{abstain}$. In particular, abstention is not a patch.
+
+For action $a$, let
+$\mathbf c(a)\in\mathbb R^5_{\ge 0}$ encode measured token,
+test-call, GPU-time, CPU-time and wall-time consumption.
+A policy is feasible only if
+\begin{equation}
+ \sum_{t<T}c_j(a_t)\le B_j,\qquad j=1,\ldots,5.
+ \label{eq:budget}
+\end{equation}
+A weighted cost penalty may be used for choosing between feasible
+actions, but it never substitutes for these independently enforced
+resource limits. Conversion rates must be preregistered.
+
+\subsection{Selective reliability, coverage and success}
+
+For policy $\pi$, let $D_i^\pi$ be its released patch or the abstention
+symbol $\bot$. Define independent full-task success
+\begin{equation}
+ S(\pi)=\mathbb E\!\left[
+  \mathbf 1\{D_i^\pi\ne\bot\}\,Y_i(D_i^\pi)\right],
+ \label{eq:success}
+\end{equation}
+coverage $C(\pi)=\Pr(D_i^\pi\ne\bot)$, and selective
+wrong-release risk, when $C(\pi)>0$,
+\begin{equation}
+ R(\pi)=
+ \frac{\mathbb E[
+  \mathbf 1\{D_i^\pi\ne\bot\}(1-Y_i(D_i^\pi))]}
+ {C(\pi)}.
+ \label{eq:risk}
+\end{equation}
+Any proposed $\alpha$-risk comparison must also enforce a
+nontrivial preregistered coverage floor $C_{\min}>0$.
+The core optimization problem is
+\begin{align}
+ \max_{\pi}\quad & S(\pi) \nonumber\\
+ \mathrm{s.t.}\quad &
+ \sum_{t<T}c_j(a_t)\le B_j\quad\forall j,\nonumber\\
+ & R(\pi)\le\alpha,\quad C(\pi)\ge C_{\min}.
+ \label{eq:objective}
+\end{align}
+These constraints describe a scientific target; satisfying them
+statistically has not been established in this draft.
+
+\subsection{Evidence value versus candidate-generation value}
+
+For admissible terminal utility $V_0(h)$ (including option to abstain),
+the ideal budget-constrained value function is
+\begin{equation}
+\begin{split}
+ V(h,\mathbf b)=\max\bigl\{V_0(h),\quad
+  \max_{a:\mathbf c(a)\preceq\mathbf b}
+ \bigl[-\boldsymbol\lambda^\top\mathbf c(a)\\
+ +\mathbb E_{(o,h')\sim K_a(\cdot\mid h)}
+ V(h',\mathbf b-\mathbf c(a))\bigr]\bigr\}.
+\end{split}
+\label{eq:bellman}
+\end{equation}
+This is a \emph{reference formulation}, not a claim that the implemented
+controller optimally solves a POMDP.
+
+A verification-only action changes beliefs about existing patches;
+its one-step expected value of sample information is
+\begin{equation}
+ \mathrm{EVSI}(a\mid h)=
+ \mathbb E_o[V_0(T(h,a,o))]-V_0(h).
+ \label{eq:evsi}
+\end{equation}
+By contrast, generate/repair actions may add or alter candidate patches
+and must model those transition outcomes to value them.
+Calculating new-candidate hypervolume improvement for a diagnostic
+that adds no candidate is conceptually incorrect.
+
+Under a strict, posterior-dependent hard risk threshold, this signed
+one-step EVSI may even be negative because the restricted terminal
+release rule is discontinuous; a diagnostic may move an initially
+releasable candidate below the gate. The reference code preserves
+negative results rather than clipping them.
+
+The currently implemented one-step diagnostic model supports only
+hypothetical binary evidence channels; it has neither estimated the
+kernels from coding-agent traces nor solved the joint action-allocation
+problem. Predicted Pareto hypervolume is an optional auxiliary ranking
+criterion for actual candidate-producing interventions, not a proxy
+for verified software correctness.
+
+\section{U-CODE Method: Prospective Design}\label{sec:method}
+The planned architecture separates generation and retrieval adapters,
+an independently trained uncertainty model, an action-outcome kernel,
+a cost-feasible intervention planner, a verifier in a sandbox and a
+release/abstention gate. Diagnostic observations update beliefs; generate
+and repair interventions update the candidate set. Any release threshold
+is a policy preference until the entire adaptive procedure receives an
+appropriate independent risk analysis.
+
+Strong equal-budget baselines include no search, fixed testing, random
+tools, cost-only allocation, uncertainty-only regeneration,
+search without uncertainty, raw-risk and calibrated-risk ablations,
+and comparators resembling SWE-Search and SWE-Verifier as resources permit.
+A credible cross-policy experiment must isolate the predictor,
+candidate pool and held-out evaluation oracles.
 
 \section{Dataset Provenance and Experimental Design}\label{sec:dataset}
-% TODO: screened naturalistic agent PR cohort; distinguish PR/file/line/task.
-% TODO: model-generated benchmark cohort and independent evaluation oracles.
-% TODO: sampling and rights checks, data splits, model revisions and budgets.
+The discovery pool contains 120 GitHub PR candidate links, not 120
+independently attributable or executable AI-authored patches.
+The current repository ledger records ongoing path-level provenance
+screening. No naturalistic sample is promoted to a correct
+AI-generated patch on merge status alone. Rights and independent
+execution checks are mandatory.
+
+For a controlled experiment, we plan repository/fork-lineage splits,
+immutable pre-fix snapshots, separately sealed post-policy evaluation
+oracles, task-paired policy runs and measured token/test/GPU/CPU/wall
+budgets. Model revisions and calibration datasets must be pinned.
+Only runnable, rights-cleared and leakage-safe tasks will be used.
 
 \section{Results}\label{sec:results}
-% NO RESULTS YET. Fill only from executable, version-pinned trace manifests.
-% TODO: RQ1--RQ6, effect estimates, CIs, calibration, risk--coverage,
-% language/model heterogeneity, budget curves, comparisons and negative cases.
+% NO EMPIRICAL RQ RESULTS EXIST AT THIS MANUSCRIPT STATE.
+% Add tables and figures ONLY after executable, revision-pinned runs and
+% independently recomputed metrics are committed. Do NOT cite toy VOI as
+% empirical proof of improvement.
 
 \section{Discussion and Threats to Validity}\label{sec:discussion}
-% TODO: bot authorship uncertainty, selection bias, code/license restrictions,
-% hidden test incompleteness, contamination and practical impact.
+Leading threats are unreliable PR authorship inference, repository-primary
+versus patch-language mismatches, optional stopping, nonexchangeable
+repository groups, correlated diagnostic errors, benchmark contamination,
+incomplete hidden tests, distribution shift, source licensing, selective
+coverage collapse and cross-study overlap. Positive and negative effects,
+including false-acceptance failures, must remain visible.
 
 \section{Conclusions}\label{sec:conclusions}
-% TODO: only conclusions actually supported by completed experiments.
+No reliability improvement, generalization effect or certified selective
+risk can presently be concluded. The contribution at this stage is a
+falsifiable, budget-aware evidence-acquisition research protocol.
 
 \section*{Statements and Declarations}
 \textbf{Funding.} To be completed and verified by the authors.
@@ -90,10 +278,8 @@ reproducibility statements will be provided after artifact validation.
 
 \textbf{Author contributions.} To be completed and approved by all authors.
 
-\textbf{Use of AI tools.} Any non-copy-editing AI assistance in research or
-manuscript preparation must be disclosed as required by the publisher.
+\textbf{Use of AI tools.} AI assistance in the research or manuscript must be
+disclosed as required by the publisher.
 
-% Add verified references to references.bib and uncomment ONLY when cited:
-% \bibliography{references}
-
+\bibliography{references}
 \end{document}
