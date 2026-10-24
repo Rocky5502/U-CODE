@@ -178,6 +178,12 @@ def validate_dossier_against_metadata(
         raise ValueError("dossier cites changed source absent from PR file list")
     if set(dossier.changed_production_paths) != set(record.get("production_files") or []):
         raise ValueError("production file set differs from canonical metadata")
+    recorded_tests = record.get("test_files")
+    if recorded_tests is not None and (
+            set(dossier.changed_test_paths) != set(recorded_tests)):
+        raise ValueError("test file set differs from canonical metadata")
+    if len(dossier.changed_test_paths) != len(set(dossier.changed_test_paths)):
+        raise ValueError("duplicate changed test path")
     if record.get("triage_status") != "production_source_path_detected":
         raise ValueError("dossier PR is not even a production-source-path lead")
     if dossier.repository_spdx != record.get("repository_license_spdx"):
