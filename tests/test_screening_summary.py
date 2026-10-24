@@ -32,9 +32,35 @@ class ScreeningSummaryTests(unittest.TestCase):
         rows = load_records(AUDIT_DIR, manifest)
         out = summarize(rows, manifest)
         self.assertEqual(out["screened"] + out["not_screened"], 120)
-        self.assertEqual(sum(out["source_status_counts"].values()), out["screened"])
+        self.assertEqual(sum(out["source_status_counts"].values()),
+                         out["discovery_links_recorded"])
+        self.assertEqual(out["discovery_links_attempted"]
+                         + out["unattempted_manifest_links"], 120)
+        self.assertEqual(out["metadata_retrieved"]
+                         + out["metadata_retrieval_failed"],
+                         out["discovery_links_attempted"])
+        self.assertEqual(out["screened"], out["metadata_retrieved"])
+        self.assertEqual(out["recognized_repository_spdx"]
+                         + out["unknown_or_noassertion_repository_spdx"],
+                         out["metadata_retrieved"])
         self.assertEqual(out["independently_eligible_units"], 0)
         self.assertIn(14, out["language_mismatch_candidate_ids"])
+
+    def test_404_not_counted_as_completed_screening(self):
+        manifest = load_manifest(MANIFEST)
+        one = {
+            "candidate_id": 1, "repository": manifest[1]["repository"],
+            "pr_url": manifest[1]["agent_pr_url"],
+            "discovery_language": "Python",
+            "triage_status": "retrieval_failed", "dataset_eligible": False,
+        }
+        out = summarize([one], manifest)
+        self.assertEqual(out["discovery_links_attempted"], 1)
+        self.assertEqual(out["metadata_retrieved"], 0)
+        self.assertEqual(out["metadata_retrieval_failed"], 1)
+        self.assertEqual(out["unattempted_manifest_links"], 119)
+        self.assertEqual(out["retrieval_failure_candidate_ids"], [1])
+        self.assertEqual(out["unknown_or_noassertion_repository_spdx"], 0)
 
     def test_manifest_repo_mismatch_fails_closed(self):
         manifest = load_manifest(MANIFEST)
