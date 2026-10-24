@@ -423,6 +423,98 @@ and search methods \cite{antoniades2025swesearch,zou2026sweverifier}.
 We will not claim an algorithmic improvement until
 sealed-oracle evaluation on actual code establishes one.
 
+\subsection{History-conditional evidence and correlated tests}
+\label{sec:conditional}
+
+The initial BES branch model permits sequential diagnostic
+likelihood multiplication only under explicitly declared
+conditional independence given latent code acceptability.
+That shortcut is scientifically fragile: repeated agent-written
+tests, static checkers using overlapping rules, or different
+tools inspecting the same failing path may carry nearly
+identical information. Two individually well-calibrated
+diagnostics can therefore be \emph{jointly} misrepresented by
+a product of their marginal likelihoods.
+
+We implement a second, diagnostic-only finite-tree reference
+which uses frozen history-conditioned observation channels.
+For a visible diagnostic history $h_t$ and latent patch
+acceptability $Z\in\{0,1\}$, let
+\begin{equation}
+q_{a,z}(h_t)=
+  \Pr(O_a=+\mid Z=z,h_t,a),\quad z\in\{0,1\}.
+\label{eq:conditional-likelihood}
+\end{equation}
+Unlike a single action's unconditional sensitivity and
+specificity, these values depend on the already \emph{observed}
+test results and their order. Given pre-outcome belief
+$p_t=\Pr(Z=1\mid h_t)$, positive evidence has predictive
+probability and posterior
+\begin{align}
+\rho_{a,+}(h_t)
+ &=p_tq_{a,1}(h_t)+(1-p_t)q_{a,0}(h_t),\\
+p_{t+1}^{(+)}
+ &=\frac{p_tq_{a,1}(h_t)}{\rho_{a,+}(h_t)}.
+\label{eq:conditional-bayes}
+\end{align}
+The negative branch uses complementary conditional
+probabilities. Only positive-probability branches are
+expanded; an observed event assigned probability zero by
+the frozen kernel triggers a model-inconsistency error.
+For the diagnostic subset, the BES recursion in
+Eq.~\eqref{eq:bes} now tracks $h_t$ and the set of
+unused action identifiers explicitly, rather than
+reusing an unchanged marginal likelihood.
+
+\paragraph{Counterexample: redundant evidence.}
+Consider the hypothetical $p=.5$ and $p\ge.9$ release
+gate, with two tests each having marginal sensitivity
+and specificity $0.8$ and scalar planning cost $0.01$.
+Under conditional independence, the first test may be
+worth purchasing because two positives yield posterior
+$16/17$, and the two-step plan has toy expected net
+value $0.285$ (Section~\ref{sec:bes}).
+Now suppose the second test is a perfect \emph{copy}
+of the first: conditional on the first positive,
+its positive probability is one in either latent class,
+and after the first negative it is zero in either class.
+The second observation then changes no posterior at all.
+With the same marginal accuracies and positive cost,
+a two-test plan has no incremental terminal benefit,
+and the conditional controller abstains. This comparison
+is a source-controlled \emph{synthetic falsification test},
+not measured success on any real repository.
+
+\paragraph{Training-data restriction.}
+A train-only likelihood estimator accepts records in
+which every proposed diagnostic in a small fixed panel
+was scheduled before observing outcomes, regardless of
+early positives or negatives. It rejects adaptive or
+incomplete panels, duplicated task identities, overlap
+with validation/evaluation fork-lineage groups, missing
+model identity, nonchronological evidence, insufficient
+class support in a visible-history context, and absent
+conditional rows. For each observed context, estimates
+are smoothed class-conditional frequencies; sparse
+contexts are not silently backed off to independence.
+A declared panel assignment is not proof that collection
+was unbiased: randomized or otherwise demonstrably
+ignorable ordering, correct event timestamps, and
+independently sealed oracles need separate audit.
+The current implementation has \emph{no real fitted
+conditional kernels}, and the complete-panel cost can
+itself be impractical at repository scale.
+
+\paragraph{Scope.}
+The history-conditioned variant handles diagnostic
+decisions for one fixed candidate; it is not yet a
+unified history-dependent generator/repair model,
+nor a demonstrated calibrated multiobjective planner.
+It will support an ablation comparing explicit
+dependence handling against unconditional-likelihood
+BES, with the same budgets and held-out task histories.
+A performance improvement is not assumed.
+
 Strong equal-budget baselines include no search, fixed testing, random
 tools, cost-only allocation, uncertainty-only regeneration,
 search without uncertainty, raw-risk and calibrated-risk ablations,
