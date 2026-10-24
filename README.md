@@ -66,6 +66,34 @@ The official Springer publisher class is still required for a real compile.
   sync is a separate authenticated user-side operation.
   [Details](paper/overleaf/README.md).
 
+## Next evidence gates: task admission and training-only diagnostic fitting
+
+- [Diagnostic training interface](src/ucode/diagnostic_fit.py):
+  binary sensitivity and specificity are estimated **only from labeled training
+  repository/fork groups** with pre-oracle observation times, explicit model
+  IDs and frozen input fingerprints. Validation/evaluation groups, duplicated
+  task IDs and mixed model/action records fail closed. A trained diagnostic
+  likelihood does NOT by itself supply a calibrated prior or a risk guarantee.
+- [Task admissibility contract](src/ucode/task_gate.py): checks immutable
+  revision identifiers, production-file language, declared file-rights and
+  independent-oracle review references, pinned image digest and secure
+  sandbox policy. Its positive status means **declared complete, needs human
+  verification**, never safe or rights-cleared by automation.
+- [Scientific procedure](docs/CALIBRATION_AND_TASK_ADMISSION_PROTOCOL_2026-10-24.md):
+  split, leakage, selection bias, statistical limitations and go/no-go criteria.
+- [Two-PR deep provenance case ledger](data/audits/2026-10-24/two_pr_commit_and_license_deep_check.jsonl):
+  dependabot-core #16665 has human-authored commits with Copilot co-author
+  trailers, whereas onnx-light-cpu #1005 has Copilot-authored commits with
+  human co-author trailers on two commits. PR-level Copilot accounts are
+  **not** precise AI line-authorship annotations. Both candidates have
+  production-source changes and root LICENSE files, but are **not** admitted
+  or independently executed.
+- The Springer source in [paper/overleaf/main.tex](paper/overleaf/main.tex)
+  now reflects both the training-only equations and the observed
+  human/agent commit-metadata ambiguity. CI continues to generate the
+  **ucode-overleaf-sources** source-only artifact; no direct Overleaf-account
+  write is claimed.
+
 ## Research thesis
 
 Our testable hypothesis is that **calibrated uncertainty signals, integrated into budget-constrained multi-objective search, can improve independently verified code reliability** against matched-cost baselines. Null and negative results are publishable.
