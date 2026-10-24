@@ -27,11 +27,11 @@ All six recommended models have been **accepted by the researcher for the U-CODE
 
 **Planning approval is not provider authorization or a benchmark result.** All six currently fail the inference-readiness gate until their provider terms, full model/tokenizer revisions, weights, compatible execution environment, memory profile, and sandbox have been verified. We will compare **six checkpoints from five publisher families**. No inference, paid GPU, or independently verified repository task run has been performed.
 
-## Current status (24 October 2026, seven PR screening positions per language)
+## Current status (25 October 2026, all ten PR screening positions per language)
 
 - **120 discovery candidates across 12 GitHub primary-language search categories**, each with a PR link returned for `author:copilot-swe-agent[bot] is:pr is:merged`. **These are NOT 120 verified AI-generated repositories.** GitHub bot attribution alone does not establish what fraction of source code is AI-authored.
 - Public dataset leads: [AIDev](https://huggingface.co/datasets/hao-li/AIDev), [SWE-chat](https://huggingface.co/datasets/SALT-NLP/SWE-chat) (gated), [DroidCollection](https://huggingface.co/datasets/project-droid/DroidCollection), [SWE-rebench](https://proceedings.mlr.press/v306/badertdinov26a.html), [EffiBench-X](https://huggingface.co/datasets/EffiBench/effibench-x). They have **distinct units of analysis** and must not be naively merged.
-- **Issue #1 cumulative read-only screen:** **84/120 links attempted; 83/120 successfully retrieved**, with **1 GitHub 404 retrieval failure**. Among the 83: **39** production-source-path candidates, **8** test-only, **35** non-source, **1** empty file-list requiring review. **43** have recognized repository-level SPDX metadata; **9** forks; **0 fully eligible** pending independently verified AI-line attribution, file rights and safe independent test oracles. The 39 are path-level candidates, not 39 verified AI-generated patches. [Initial 24-PR evidence](docs/logs/2026-10-24_issue1_stratified_pr_audit.md) · [Third-entry screening](docs/logs/2026-10-24_issue1_second_stratified_batch.md) · [Fourth-entry screening](docs/logs/2026-10-24_issue1_fourth_stratified_batch.md) · [Fifth-entry screening](docs/logs/2026-10-24_issue1_fifth_stratified_batch.md) · [Sixth-entry screening](docs/logs/2026-10-24_issue1_sixth_stratified_batch.md) · [Seventh-entry screening and .NET generated-artifact correction](docs/logs/2026-10-24_issue1_seventh_stratified_batch.md). GitHub discovery language is not necessarily the changed-source language.
+- **Issue #1 completed discovery metadata screen:** **120/120 links attempted, 119/120 PRs retrieved**, with **1 GitHub 404 retrieval failure** (candidate #26). Among the 119 retrieved: **62** production-source-path *candidates*, **10** test-only, **45** non-source, and **2** empty-file-list cases requiring review. **62** have recognized repository-level SPDX metadata; **12** forks; **zero fully eligible executable tasks** pending independently verified AI-line attribution, file rights and sealed independent functional oracles. These 62 are weak path-level hints, **not 62 verified AI-generated patches**. [Full 120-link research ledger](docs/logs/2026-10-25_complete_120_pr_screen.md) · [Initial 24-PR evidence](docs/logs/2026-10-24_issue1_stratified_pr_audit.md) · [Third-entry screening](docs/logs/2026-10-24_issue1_second_stratified_batch.md) · [Fourth-entry screening](docs/logs/2026-10-24_issue1_fourth_stratified_batch.md) · [Fifth-entry screening](docs/logs/2026-10-24_issue1_fifth_stratified_batch.md) · [Sixth-entry screening](docs/logs/2026-10-24_issue1_sixth_stratified_batch.md) · [Seventh-entry screening and .NET generated-artifact correction](docs/logs/2026-10-24_issue1_seventh_stratified_batch.md). GitHub discovery language is not necessarily the changed-source language. [Latest source-only manual review queue](scripts/triage_review_queue.py) scores **62** path candidates but admits **none** without independent review.
 - The project initially offers a **pure-Python research scaffold** and **offline toy environment**, not a trained/calibrated uncertainty model or model-driven code repair engine.
 
 ## Scientific novelty and mathematical formulation (24 October 2026)
@@ -226,9 +226,11 @@ study with strong budget-matched baselines is completed.
 **Research status:** These are training-contract and algorithmic
 engineering achievements, not real fitted test kernels, executable
 external benchmark tasks or evidence of an empirical improvement.
-The path-level PR screen remains **84 of 120 attempted, 83 retrieved,
-zero fully study-eligible** pending attribution, file rights and sealed
-independent oracles.
+The discovery metadata screen is now **120 of 120 attempted, 119 retrieved,
+62 production-source-path hints and zero fully study-eligible tasks**. The
+[deterministic manual-review queue](src/ucode/review_queue.py) separates
+first-pass human leads from experimental admission. It **cannot** mark a
+PR as AI-line-attributed, rights-cleared or independently oracle-verified.
 
 ## Research thesis
 
