@@ -14,6 +14,14 @@ SELECTED = ROOT / "configs" / "accepted_six_model_study_2026-10-25.json"
 SOURCE_V2 = ROOT / "configs" / "models_v2_2026-10-24.json"
 REV = re.compile(r"^[0-9a-f]{40}$")
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
+CARD_LICENSES = {
+    "Qwen/Qwen2.5-Coder-7B-Instruct": "apache-2.0",
+    "Qwen/Qwen3-Coder-30B-A3B-Instruct": "apache-2.0",
+    "mistralai/Devstral-Small-2-24B-Instruct-2512": "apache-2.0",
+    "deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct": "deepseek-license",
+    "google/codegemma-1.1-7b-it": "gemma",
+    "meta-llama/Llama-3.1-8B-Instruct": "llama3.1",
+}
 SPECIAL_TERMS = {"gemma", "llama3.1"}
 NON_APACHE = {"deepseek-license", "gemma", "llama3.1"}
 
@@ -54,11 +62,8 @@ def validate_selected_manifest(
         model_id = m["model_id"]
         upstream = original_by_id[model_id]
         if (m.get("card_url") != upstream.get("url")
-                or m.get("card_license") != upstream.get("license_card")
-                and model_id != "deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct"
-                and model_id != "google/codegemma-1.1-7b-it"
-                and model_id != "meta-llama/Llama-3.1-8B-Instruct"):
-            raise ValueError("selected model source URL/license conflicts with v2")
+                or m.get("card_license") != CARD_LICENSES[model_id]):
+            raise ValueError("selected model source URL/license conflicts with official card")
         if m.get("selection") != "user_selected_for_planning" or m.get("study_included") is not True:
             raise ValueError("all six requested models must be in the research plan")
         if m.get("inference_execution_status") == "NOT_RUN" and m.get("independently_verified_task_runs") != 0:
