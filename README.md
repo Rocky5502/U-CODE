@@ -13,6 +13,41 @@ U-CODE studies **when a software engineering agent should test, retrieve context
 - **Issue #1 cumulative read-only screen:** **84/120 links attempted; 83/120 successfully retrieved**, with **1 GitHub 404 retrieval failure**. Among the 83: **39** production-source-path candidates, **8** test-only, **35** non-source, **1** empty file-list requiring review. **43** have recognized repository-level SPDX metadata; **9** forks; **0 fully eligible** pending independently verified AI-line attribution, file rights and safe independent test oracles. The 39 are path-level candidates, not 39 verified AI-generated patches. [Initial 24-PR evidence](docs/logs/2026-10-24_issue1_stratified_pr_audit.md) · [Third-entry screening](docs/logs/2026-10-24_issue1_second_stratified_batch.md) · [Fourth-entry screening](docs/logs/2026-10-24_issue1_fourth_stratified_batch.md) · [Fifth-entry screening](docs/logs/2026-10-24_issue1_fifth_stratified_batch.md) · [Sixth-entry screening](docs/logs/2026-10-24_issue1_sixth_stratified_batch.md) · [Seventh-entry screening and .NET generated-artifact correction](docs/logs/2026-10-24_issue1_seventh_stratified_batch.md). GitHub discovery language is not necessarily the changed-source language.
 - The project initially offers a **pure-Python research scaffold** and **offline toy environment**, not a trained/calibrated uncertainty model or model-driven code repair engine.
 
+## Scientific novelty and mathematical formulation (24 October 2026)
+
+**Reviewed close competitors:** 23 primary-source links and potential baseline threats
+in [the dated novelty matrix](literature/novelty_matrix_2026-10-24.csv).
+Key comparison papers include SWE-Search (MCTS), GA4GC (multiobjective
+configuration search), SWE-Replay (trajectory reuse), SWE-Verifier (2026-10-21
+selective action verification) and work finding negative effects of
+uncertainty-only regeneration. None of these concepts can be claimed
+individually as a first.
+
+**Refined U-CODE question:** can independent calibration and resource-aware
+evidence acquisition determine when to test, statically analyze, retrieve,
+generate, repair or abstain, improving *released* patch reliability
+against equal-budget search without calibrated uncertainty?
+
+The [formal methods and novelty/falsification memo](docs/FORMAL_PROBLEM_AND_NOVELTY_2026-10-24.md)
+defines a partially observed decision process, the five-resource budget vector,
+full-task independent verified success, selective wrong-release risk, coverage
+constraints, Bayesian value of diagnostic evidence, and exactly what would
+falsify the method. A strict posterior acceptance gate can even make signed
+diagnostic evidence value negative; this is a **mathematical reference
+counterexample**, not a measured study result.
+
+**Algorithmic prototypes:** `src/ucode/voi.py` provides an analytically
+testable one-step binary diagnostic value benchmark; `acquisition.py`
+applies candidate-generation EHVI only to `generate` and `repair` actions.
+`test` / `retrieve` / `static_analysis` do **not** manufacture new
+candidate points. These two prototypes are **not integrated into a learned,
+fully tested search controller** and are not empirically validated.
+
+**Manuscript:** [paper/overleaf/main.tex](paper/overleaf/main.tex)
+now has properly separated objectives, resource-constrained Bellman/EVSI
+formulations, 14 source-verified BibTeX entries, and no fabricated results.
+The official Springer publisher class is still required for a real compile.
+
 ## Research thesis
 
 Our testable hypothesis is that **calibrated uncertainty signals, integrated into budget-constrained multi-objective search, can improve independently verified code reliability** against matched-cost baselines. Null and negative results are publishable.
