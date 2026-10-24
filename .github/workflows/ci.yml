@@ -19,5 +19,7 @@ jobs:
         run: python -m pip install -e .
       - name: Run offline unit tests
         run: python -m unittest discover -s tests -v
+      - name: Validate canonical GitHub audit ledger (metadata only)
+        run: python -m scripts.summarize_audit --audit-dir data/audits/2026-10-24 --manifest data/discovery/agent_pr_candidates_120.csv
       - name: Compile original source only
         run: python -m compileall -q src
