@@ -6,6 +6,7 @@ verified executable. For real trials, separate signed task/oracle/runner
 approval and measured receipts are prerequisites.
 """
 import json
+from math import isfinite
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -55,8 +56,12 @@ def validate_prospective_protocol(spec: dict, selected: dict) -> dict:
     for budget in caps.values():
         if set(budget) != RESOURCE_NAMES:
             raise ValueError("all five budget dimensions must be present")
-        if any(type(n) not in (int, float) or n < 0 for n in budget.values()):
+        if any(type(n) not in (int, float) or not isfinite(n) or n < 0
+               for n in budget.values()):
             raise ValueError("resource caps must be finite nonnegative numbers")
+        if (type(budget["tokens"]) is not int or
+                type(budget["test_calls"]) is not int):
+            raise ValueError("token and test-call caps must be integer counts")
     return {
         "status": "PROSPECTIVE_NOT_EXPERIMENTAL",
         "user_selected_model_checkpoints": len(ids),
