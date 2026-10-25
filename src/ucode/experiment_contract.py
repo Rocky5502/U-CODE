@@ -80,6 +80,9 @@ class PolicyRunReceipt:
     seed: int
     budget_id: str
     pre_fix_base_sha: str
+    model_checkpoint_sha40: str
+    tool_access_sha256: str
+    environment_image_sha256: str
     consumed: ResourceVector
     termination: str
     patch_sha256: str | None
@@ -95,6 +98,13 @@ class PolicyRunReceipt:
             raise ValueError("nonnegative integer seed required")
         if not isinstance(self.pre_fix_base_sha, str) or not GIT40.fullmatch(self.pre_fix_base_sha):
             raise ValueError("immutable original pre-fix SHA40 required")
+        if not isinstance(self.model_checkpoint_sha40, str) or not GIT40.fullmatch(
+                self.model_checkpoint_sha40):
+            raise ValueError("immutable model checkpoint SHA40 required")
+        for name in ("tool_access_sha256", "environment_image_sha256"):
+            val = getattr(self, name)
+            if not isinstance(val, str) or not SHA256.fullmatch(val):
+                raise ValueError(name + " must be a SHA256 fingerprint")
         if not isinstance(self.consumed, ResourceVector):
             raise ValueError("measured five-component cost vector required")
         if self.termination not in TERMINAL_ACTIONS | NONTERMINAL_FAILURES:
@@ -192,7 +202,10 @@ def audit_confirmatory_run_matrix(
         raise ValueError("wrong models, policies, tasks, seeds or budget IDs")
     groups = dict(study.task_lineages)
     caps = dict(study.budgets)
-    lineages_seen = {}
+    base_by_task = {}
+    revision_by_model = {}
+    environment_by_model = {}
+    tools_by_task = {}
     aggregated = {p: {f: 0 for f in RESOURCE_FIELDS} for p in study.policies}
     failures = {n: 0 for n in sorted(NONTERMINAL_FAILURES)}
     release_map = {}
@@ -201,9 +214,17 @@ def audit_confirmatory_run_matrix(
             raise ValueError("receipt object must be typed")
         if r.lineage_group != groups[r.task_id]:
             raise ValueError("policy trace uses wrong repository/fork lineage")
-        recorded = lineages_seen.setdefault(r.task_id, r.lineage_group)
-        if recorded != r.lineage_group:
-            raise ValueError("lineage for one task shifted between policies")
+        for mapping, key, value, description in (
+            (base_by_task, r.task_id, r.pre_fix_base_sha, "pre-fix task base"),
+            (revision_by_model, r.model_id, r.model_checkpoint_sha40,
+             "model checkpoint"),
+            (environment_by_model, r.model_id, r.environment_image_sha256,
+             "execution environment"),
+            (tools_by_task, r.task_id, r.tool_access_sha256, "tool access"),
+        ):
+            if key in mapping and mapping[key] != value:
+                raise ValueError("matched policies differ in " + description)
+            mapping[key] = value
         if not caps[r.budget_id].affordable(r.consumed):
             raise ValueError("policy consumed more than assigned FIVE-resource cap")
         for field in RESOURCE_FIELDS:
