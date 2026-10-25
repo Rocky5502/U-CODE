@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.0",
+  "registered_on": "2026-10-25",
+  "status": "PROSPECTIVE_NO_QUALIFIED_EXECUTABLE_TASKS",
+  "target_venue": "Springer Automated Software Engineering — Search-Based Software Engineering in the Era of LLMs and Agentic Systems",
+  "deadline": "2027-01-30",
+  "scientific_primary_endpoint": "verified_full_task_success_per_assigned_task_intention_to_treat",
+  "secondary_endpoints": [
+    "release_coverage",
+    "wrong_release_risk_among_releases",
+    "reliability_risk_coverage_curve",
+    "five_dimensional_realized_cost",
+    "paired_effect_vs_equal_budget_no_uncertainty_search"
+  ],
+  "model_ids": [
+    "Qwen/Qwen2.5-Coder-7B-Instruct",
+    "Qwen/Qwen3-Coder-30B-A3B-Instruct",
+    "mistralai/Devstral-Small-2-24B-Instruct-2512",
+    "deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct",
+    "google/codegemma-1.1-7b-it",
+    "meta-llama/Llama-3.1-8B-Instruct"
+  ],
+  "model_count": 6,
+  "policy_ids": [
+    "ucode_conditional_bes",
+    "ucode_unconditional_bes",
+    "no_uncertainty_search",
+    "uncertainty_only",
+    "fixed_testing",
+    "selective_verification",
+    "mcts_search",
+    "replay_search"
+  ],
+  "primary_treatment": "ucode_conditional_bes",
+  "primary_comparator": "no_uncertainty_search",
+  "planned_external_verification_comparators": [
+    "RETRACE-style bidirectional independent verification (faithful adapter required)",
+    "Dockerless-style execution-free verification (faithful adapter required)",
+    "SWE-Verifier selective agent-step verification (faithful adapter required)"
+  ],
+  "allocation_rule": "same immutable pre-fix task, model checkpoint, seed, tool access, candidate proposal opportunities and FIVE hard resource caps across all policies; actual expenditure may legitimately differ",
+  "planned_resource_caps_example_not_executed": {
+    "B_pilot_illustrative": {
+      "tokens": 30000,
+      "test_calls": 20,
+      "gpu_seconds": 3600,
+      "cpu_seconds": 1800,
+      "wall_seconds": 3600
+    }
+  },
+  "final_budget_caps_frozen": false,
+  "assigned_seed_values_illustrative_not_final": [
+    11,
+    29,
+    47
+  ],
+  "seeds_frozen": false,
+  "qualified_task_ids": [],
+  "qualified_lineage_groups": {},
+  "task_admission_status": "NONE_ATTESTED",
+  "model_revisions_frozen": false,
+  "independent_oracles_sealed": false,
+  "runner_isolated_and_attested": false,
+  "policy_implementations_faithfully_reproduced": false,
+  "results_measured": false,
+  "external_code_executions": 0,
+  "assumptions": [
+    "No oracle result is policy-visible",
+    "Repository/fork group split is externally audited",
+    "PR-authored tests are not hidden test oracles",
+    "Baseline adaptations are fidelity-audited against source methods",
+    "Cost vector uses measured token/test/GPU/CPU/wall components",
+    "Aborted or timed-out runs explicitly reported as attrition rather than silently discarded",
+    "No positive risk certificate without additional validated assumptions"
+  ]
+}
