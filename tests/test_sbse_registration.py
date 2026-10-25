@@ -78,6 +78,19 @@ class ProspectiveSBSERegistrationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "five budget"):
             self.check()
 
+    def test_nan_infinite_and_fractional_resource_caps_are_rejected(self):
+        for resource, value in (
+            ("gpu_seconds", float("nan")),
+            ("wall_seconds", float("inf")),
+            ("tokens", 3.5),
+            ("test_calls", 1.5),
+        ):
+            copy = deepcopy(self.spec)
+            copy["planned_resource_caps_example_not_executed"][
+                "B_pilot_illustrative"][resource] = value
+            with self.subTest(resource=resource), self.assertRaises(ValueError):
+                validate_prospective_protocol(copy, self.models)
+
     def test_negative_budget_forbidden(self):
         self.spec["planned_resource_caps_example_not_executed"]["B_pilot_illustrative"]["wall_seconds"] = -1
         with self.assertRaisesRegex(ValueError, "nonnegative"):
