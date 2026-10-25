@@ -903,14 +903,15 @@ realized resource components must be measured
 and satisfy the same assigned vector ceiling.
 The validator fails when matched cells change
 the base commit, model revision, tool entitlements
-or execution environment. Timeouts, sandbox
-safety blocks and infrastructure failures must
-be reported distinctly, never silently excluded
-as ordinary abstentions. Any later primary
-intention-to-treat estimate and missingness
-sensitivity analysis must be frozen before
-held-out outcomes are inspected, rather than
-post hoc discarding incomplete cells.
+or execution environment. Timeouts and sandbox safety stops that release
+no patch count as verified full-task success
+zero but retain their original stop reason;
+an infrastructure failure is reported
+separately as an \emph{unknown} outcome
+unless a predefined recoverability
+procedure is independently approved.
+No incomplete paired cell may be silently
+discarded to make a treatment appear stronger.
 
 Formally, let $R_{i,\pi}$ denote the
 candidate-release event, let $Y_{i,\pi}$
@@ -933,6 +934,45 @@ pilot task set is currently empty, the
 numerical budget values in the protocol
 file are explicitly \emph{illustrative},
 and there are no measured LLM-effect outcomes.
+
+\paragraph{Bounds for incomplete execution infrastructure.}
+Let $\underline s_{i,\pi}$ and
+$\overline s_{i,\pi}$ be the least and
+greatest independently supportable values
+of full-task verified success for an
+assigned run. After a complete release and
+independent verdict, both equal its measured
+binary correctness; after an abstention,
+timeout or safety block with no release,
+both equal zero. For a genuine external
+infrastructure failure whose result is
+unknown, set
+$[\underline s_{i,\pi},\overline s_{i,\pi}]
+=[0,1]$. The matched effect then admits
+the transparent worst/best-case bound
+\begin{equation}
+ \frac{1}{N}\sum_{i=1}^{N}
+  (\underline s_{i,U}-\overline s_{i,B})
+ \;\leq\;\Delta_{U,B}\;\leq\;
+ \frac{1}{N}\sum_{i=1}^{N}
+  (\overline s_{i,U}-\underline s_{i,B}).
+ \label{eq:attrition-bounds}
+\end{equation}
+The bounds keep every assigned task,
+checkpoint, seed and resource regime
+in the denominator. They are
+\emph{partial-identification bounds},
+not frequentist confidence intervals;
+repository-lineage uncertainty must
+be treated separately. The independent
+evaluator contract checks that any
+reported verdict matches the released
+patch content digest, refuses unknown
+policy/task cells, and retains timeout,
+safety and infrastructure failure
+counts separately. Actual experiment
+data are absent, and the unit tests
+exercise only synthetic receipts.
 
 \paragraph{Researcher-selected six-model panel.}
 The prospective study now includes all six researcher-selected
