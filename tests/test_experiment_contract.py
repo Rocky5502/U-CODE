@@ -28,7 +28,7 @@ def fixture():
                     patch = "a"*64 if releasing else None
                     r = PolicyRunReceipt(
                         task, lineage, model, policy, seed, "tiny",
-                        "c"*40,
+                        "c"*40, "f"*40, "1"*64, "2"*64,
                         ResourceVector(tokens=100 if policy=="ucode" else 80,
                                        test_calls=3 if policy=="ucode" else 1,
                                        gpu_seconds=10, cpu_seconds=20,
@@ -65,6 +65,34 @@ class StrictEmpiricalContractTests(unittest.TestCase):
         self.assertEqual(a.verified_oracle_receipts, 12)
         self.assertEqual(a.incomplete_terminations, 0)
         self.assertEqual(len(a.outcomes), 16)
+
+    def test_different_prefixed_base_is_not_matched_task(self):
+        r = replace(self.runs[0], pre_fix_base_sha="e"*40)
+        with self.assertRaisesRegex(ValueError, "pre-fix task base"):
+            self.audit(runs=(r,)+self.runs[1:])
+
+    def test_different_checkpoint_is_not_same_model_comparison(self):
+        r = replace(self.runs[0], model_checkpoint_sha40="e"*40)
+        with self.assertRaisesRegex(ValueError, "model checkpoint"):
+            self.audit(runs=(r,)+self.runs[1:])
+
+    def test_extra_tool_entitlement_is_not_equal_budgeted_search(self):
+        r = replace(self.runs[0], tool_access_sha256="9"*64)
+        with self.assertRaisesRegex(ValueError, "tool access"):
+            self.audit(runs=(r,)+self.runs[1:])
+
+    def test_different_execution_environment_is_not_matched(self):
+        r = replace(self.runs[0], environment_image_sha256="3"*64)
+        with self.assertRaisesRegex(ValueError, "execution environment"):
+            self.audit(runs=(r,)+self.runs[1:])
+
+    def test_model_checkpoint_must_be_immutable_git_sha(self):
+        with self.assertRaisesRegex(ValueError, "checkpoint SHA40"):
+            replace(self.runs[0], model_checkpoint_sha40="main")
+
+    def test_execution_image_must_be_content_fingerprinted(self):
+        with self.assertRaisesRegex(ValueError, "environment_image_sha256"):
+            replace(self.runs[0], environment_image_sha256="latest")
 
     def test_same_budget_ceiling_but_different_actual_expenditure(self):
         a = self.audit()
