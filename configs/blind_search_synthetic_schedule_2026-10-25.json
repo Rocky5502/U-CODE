@@ -1,0 +1,75 @@
+{
+  "status": "SYNTHETIC_FIRST_PARTY_NO_REPOSITORY_CODE_EXECUTED",
+  "description": "Fake code candidate SHA256 identities, invented visible diagnostics and fixed action costs. No independent correctness oracle or LLM model experiment.",
+  "policy_kind": "pre_registered_fixed_schedule_uncertainty_blind_negative_control",
+  "budget": {
+    "tokens": 50,
+    "test_calls": 2,
+    "gpu_seconds": 0,
+    "cpu_seconds": 0,
+    "wall_seconds": 0
+  },
+  "min_positive_tests": 1,
+  "actions": [
+    {
+      "action_id": "generate_v1",
+      "kind": "generate",
+      "priority": 0,
+      "cost": {
+        "tokens": 20,
+        "test_calls": 0,
+        "gpu_seconds": 0,
+        "cpu_seconds": 0,
+        "wall_seconds": 0
+      }
+    },
+    {
+      "action_id": "retrieve_1",
+      "kind": "retrieve",
+      "priority": 1,
+      "cost": {
+        "tokens": 5,
+        "test_calls": 0,
+        "gpu_seconds": 0,
+        "cpu_seconds": 0,
+        "wall_seconds": 0
+      }
+    },
+    {
+      "action_id": "test_candidate_v1",
+      "kind": "test",
+      "priority": 2,
+      "cost": {
+        "tokens": 0,
+        "test_calls": 1,
+        "gpu_seconds": 0,
+        "cpu_seconds": 0,
+        "wall_seconds": 0
+      }
+    },
+    {
+      "action_id": "repair_v1",
+      "kind": "repair",
+      "priority": 3,
+      "cost": {
+        "tokens": 12,
+        "test_calls": 0,
+        "gpu_seconds": 0,
+        "cpu_seconds": 0,
+        "wall_seconds": 0
+      }
+    },
+    {
+      "action_id": "test_candidate_v2",
+      "kind": "test",
+      "priority": 4,
+      "cost": {
+        "tokens": 0,
+        "test_calls": 1,
+        "gpu_seconds": 0,
+        "cpu_seconds": 0,
+        "wall_seconds": 0
+      }
+    }
+  ]
+}
