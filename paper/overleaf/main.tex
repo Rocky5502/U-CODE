@@ -109,6 +109,26 @@ to buy next, rather than claiming first use of verification or
 agent trajectory scoring. Their reported benchmark results are
 external findings, not U-CODE findings.
 
+\paragraph{Independent patch verification is not selective search.}
+RETRACE reconstructs and reconciles patch-level issue
+explanations using forward and backward evidence, and
+reports improvements on repository issue-resolution
+benchmarks \cite{li2026retrace}. Dockerless independently
+inspects patches through repository exploration without
+executing tests, and evaluates its verifier in a
+post-training pipeline \cite{zeng2026dockerless}.
+These works are directly relevant comparator designs:
+U-CODE cannot claim the invention of independent
+patch verification, execution-free verification,
+or verifier-assisted patch repair. Its narrower,
+falsifiable hypothesis concerns the \emph{decision
+of when and how much} verification to purchase
+relative to retrieval, candidate search and
+termination, under identical hard resource limits.
+Faithful external verification adapters are
+preregistered as prospective comparisons, not
+implemented or experimentally run baselines.
+
 \subsection{Uncertainty, miscalibration and evidence}
 AdaDec uses token uncertainty for adaptive decoding
 \cite{he2025adadec}; this is distinct from post-generation,
@@ -685,6 +705,19 @@ Any score-only microtask must also be disclosed
 as a narrower evaluation than the original
 PR's transactional database settlement.
 
+\paragraph{Recent benchmark integrity evidence.}
+SWE-Bench Pro Verified identifies the dangers
+of benchmark reward hacking, answer leakage
+and incorrectly scoped repository tests
+\cite{zheng2026sweproverified}.
+Consequently our source-path metadata audit
+must not be promoted to executable tasks
+without independently reviewed test
+requirements and evaluator isolation.
+PR-authored tests may help characterize
+the source task, but cannot by themselves
+establish fresh evaluation correctness.
+
 \subsection{Evidence-qualified task admission}\label{sec:admission}
 
 \paragraph{Two pinned task-admission dossiers.}
@@ -833,6 +866,73 @@ selective verifier triggering, and resource-matched trajectory
 search/reuse where faithful replication is feasible. We will
 disclose comparator deviations rather than relabeling simplified
 implementations as exact reproductions of published agents.
+
+\paragraph{Frozen factorial assignment and evaluator receipts.}
+We preregister a proposed eight-policy matrix:
+U-CODE with conditional diagnostic likelihoods,
+U-CODE with the simpler independent-likelihood BES,
+uncertainty-free search, an uncertainty-only heuristic,
+fixed testing, selective verification,
+Monte Carlo tree search and trajectory replay.
+The \emph{primary} comparison is conditional U-CODE
+versus uncertainty-free search with identical task,
+checkpoint, seed, pre-fix Git base, allowed tools,
+execution environment and assigned \emph{five-component}
+hard budget. External RETRACE-, Dockerless- and
+SWE-Verifier-style adaptations are important
+secondary fidelity-audited comparators, not
+automatically presumed to be identical to the
+published systems \cite{li2026retrace,
+zeng2026dockerless,zou2026sweverifier}.
+Every proposed policy is currently only a study
+plan until its runnable implementation has been
+independently verified; core reference planner
+code does not constitute the complete agent or
+a faithfully reproduced baseline.
+
+The audit contract collects \emph{policy-visible}
+termination receipts separately from
+\emph{evaluator-only} correctness verdicts.
+A release receipt must identify the exact patch
+content hash and the evaluator must return
+a matching hash before any correctness outcome
+is joined; abstentions have no gold verdict.
+Each assigned task--model--seed--budget--policy
+cell must be accounted for, and all five
+realized resource components must be measured
+and satisfy the same assigned vector ceiling.
+The validator fails when matched cells change
+the base commit, model revision, tool entitlements
+or execution environment. Timeouts, sandbox
+safety blocks and infrastructure failures must
+be reported distinctly, never silently excluded
+as ordinary abstentions. Any later primary
+intention-to-treat estimate and missingness
+sensitivity analysis must be frozen before
+held-out outcomes are inspected, rather than
+post hoc discarding incomplete cells.
+
+Formally, let $R_{i,\pi}$ denote the
+candidate-release event, let $Y_{i,\pi}$
+be evaluator-only correctness after release,
+and let $c_{i,\pi,j}$ be the measured
+resource component for $j\in\{1,\dots,5\}$.
+Before any performance claim we require
+\begin{equation}
+ \forall i,\pi,j:\quad
+ 0\leq c_{i,\pi,j}\leq B_{i,j},
+ \qquad
+ \operatorname{hash}(x_{i,\pi}^{\mathrm{release}})
+ =\operatorname{hash}(x_{i,\pi}^{\mathrm{oracle}}).
+ \label{eq:receipt-integrity}
+\end{equation}
+These checks establish \emph{metadata consistency},
+not the independence or completeness of a
+human-authored oracle. The actual frozen
+pilot task set is currently empty, the
+numerical budget values in the protocol
+file are explicitly \emph{illustrative},
+and there are no measured LLM-effect outcomes.
 
 \paragraph{Researcher-selected six-model panel.}
 The prospective study now includes all six researcher-selected
