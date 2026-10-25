@@ -834,6 +834,74 @@ adaptive testing and repository distribution shift require
 specific analysis rather than assuming exchangeability or
 distribution-free risk control.
 
+\subsection{Uncertainty-blind baseline and action parity}
+\label{sec:blind-control}
+
+As an initial \emph{negative-control implementation},
+we constructed a fixed-schedule controller with the
+same admissible action \emph{types} as the one-candidate
+BES reference: generate a candidate, retrieve context,
+run tests or static analysis, repair, and then
+release or abstain. The controller receives only
+visible candidate-content hashes, observed
+diagnostic outcomes, a frozen action priority
+schedule and the residual five-resource vector.
+No predicted patch success, diagnostic
+sensitivity/specificity, Bayesian posterior,
+evaluation-only gold verdict or verifier
+training label can appear in the typed action
+catalog. All actions are charged separately
+against the same physical vector budget; after
+a repair changes a candidate, old diagnostic
+observations are invalidated rather than
+silently reused as evidence about new code.
+
+This negative control has an intentionally
+simple terminal policy: one or more preregistered
+positive visible \emph{test} observations may
+trigger release; a failed diagnostic triggers
+a predetermined repair if available, otherwise
+abstention. Retrieval or static-analysis positivity
+alone cannot certify correctness. A positive
+agent-visible test is \emph{not} an independent
+functional oracle, and thus release is never
+automatically counted as verified success.
+A fixed schedule cannot represent the strongest
+uncertainty-free search policy: richer heuristic
+search, tuned action allocation and verifier-based
+competitors remain mandatory before a claim
+of improved coding-agent performance.
+
+We additionally implemented a \emph{pre-execution
+action-parity audit}. If $\mathcal A_U$ and
+$\mathcal A_B$ are the two controllers'
+advertised actions, the audit requires
+\begin{equation}
+ \bigl\{(id_a,\mathrm{type}_a,
+       \mathbf c_a):a\in\mathcal A_U\bigr\}
+ =\bigl\{(id_a,\mathrm{type}_a,
+       \mathbf c_a):a\in\mathcal A_B\bigr\},
+ \qquad \mathbf B_U=\mathbf B_B .
+ \label{eq:action-parity}
+\end{equation}
+The canonical sorted action IDs, types,
+cost vectors and original budget are
+hashed for reproducibility. BES-only
+forecast probabilities and blind-only
+frozen priority ranks are omitted from
+this shared opportunity digest. This is
+a necessary \emph{static} fairness check;
+it cannot prove equal model inference,
+oracle quality, action implementations,
+tool execution costs or runtime access.
+The companion first-party synthetic trace
+demonstrates generation, retrieval,
+failed testing, repair and subsequent
+release without executing a third-party
+repository or observing an independent
+oracle. It does not establish a performance
+difference.
+
 \subsection{Confirmatory evaluation design and estimands}
 
 Our primary endpoint is independently verified \emph{full-task}
