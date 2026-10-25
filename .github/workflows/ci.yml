@@ -37,6 +37,10 @@ jobs:
         run: python -m scripts.check_evaluator_boundary
       - name: Reproduce independent mathematical odd-payout ambiguity witness
         run: python -m examples.pilot_oracle_boundary_smoke
+      - name: Replay synthetic uncertainty-blind generation, diagnostic and repair trace
+        run: python -m examples.blind_search_smoke
+      - name: Validate frozen BES versus blind search opportunities and five budgets
+        run: python -m examples.action_parity_smoke
       - name: Validate prospective SBSE eight-policy six-checkpoint registration
         run: python -m scripts.validate_sbse_protocol
       - name: Validate candidate model and dataset registries
