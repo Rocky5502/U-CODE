@@ -258,6 +258,12 @@ The [evaluator-only paired-trial contract](src/ucode/experiment_contract.py) req
 
 **Research status:** The original 120 PR metadata screen is complete, two actual PHP/Go task-admission dossiers exist, but **zero independent executable tasks**, **zero confirmed six-model runs** and **zero verified policy-effect observations** are available. Experimental algorithms and methodological software do not establish journal-level empirical novelty. [Related primary sources: RETRACE](https://arxiv.org/abs/2608.08950), [Dockerless (EMNLP 2026)](https://aclanthology.org/2026.emnlp-main.640/), and [SWE-Bench Pro Verified](https://arxiv.org/abs/2609.08149).
 
+## Reproducible uncertainty-blind control and equal action opportunities (25 October 2026)
+
+The [first-party blind-search controller](src/ucode/blind_search.py) implements an observable-feedback **fixed-schedule** negative control using generate, retrieve, test, static analysis, repair and terminal release/abstain actions, with all five hard resource caps. It explicitly cannot receive Bayesian predicted success, diagnostic likelihoods or independent oracle labels. Diagnoses on an old patch cannot be reused after repair. A [shared action-inventory auditor](src/ucode/matched_action_inventory.py) verifies identical action IDs, action types, costs and budgets between the blind control and the BES reference. Its canonical digest omits BES-only forecast probabilities.
+
+The [synthetic end-to-end action trace](examples/blind_search_smoke.py), [synthetic action-parity reproduction](examples/action_parity_smoke.py) and [study limitations](docs/BLIND_SEARCH_AND_PARITY_2026-10-25.md) are committed and run in CI. The trace generates a fake patch, retrieves context, fails a visible test, repairs, passes another visible test and chooses release—all **invented fixtures**, with no model inference or independent patch correctness judgment. This controller is a **negative control, not yet the optimized uncertainty-free search competitor** required for the journal's primary effectiveness claim.
+
 ## Research thesis
 
 Our testable hypothesis is that **calibrated uncertainty signals, integrated into budget-constrained multi-objective search, can improve independently verified code reliability** against matched-cost baselines. Null and negative results are publishable.
