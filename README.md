@@ -250,6 +250,14 @@ For the Go settlement pilot, a new [pre-fix specification ambiguity witness](src
 
 **Scientific constraint:** The two real PR candidates are still unapproved, the six-model study has not executed, and no observed model success-rate improvement or risk certificate is claimed.
 
+## Journal-grade empirical protocol (25 October 2026)
+
+U-CODE now has a [prospective Springer SBSE evaluation and falsification plan](docs/SBSE_CONFIRMATORY_EVALUATION_AND_FALSIFIERS_2026-10-25.md) grounded in the official journal call, the latest independent-verifier literature, and the project's real zero-admission task audit. The [frozen-proposal JSON](configs/confirmatory_sbse_protocol_2026-10-25.json) retains **all six user-selected LLMs** and specifies **eight proposed policies**, with primary U-CODE conditional BES versus **the same search tools and hard budgets without uncertainty**. Those controls are **planned**, not eight executed agents.
+
+The [evaluator-only paired-trial contract](src/ucode/experiment_contract.py) requires a complete policy × task × model × seed × budget assignment, frozen pre-fix commit, model revision, tool rights, environment fingerprint, five measured resource costs, release-patch digest and matching independent evaluator verdict. It refuses fabricated/missing comparison cells and unmeasured or excessive costs. [Missing-infrastructure bound analysis](src/ucode/attrition_bounds.py) keeps incomplete attempts in the denominator and reports *worst/best-case effect bounds* without pretending they are confidence intervals. The [offline protocol verifier](scripts/validate_sbse_protocol.py) rejects any unsupported promotion to a completed six-model result.
+
+**Research status:** The original 120 PR metadata screen is complete, two actual PHP/Go task-admission dossiers exist, but **zero independent executable tasks**, **zero confirmed six-model runs** and **zero verified policy-effect observations** are available. Experimental algorithms and methodological software do not establish journal-level empirical novelty. [Related primary sources: RETRACE](https://arxiv.org/abs/2608.08950), [Dockerless (EMNLP 2026)](https://aclanthology.org/2026.emnlp-main.640/), and [SWE-Bench Pro Verified](https://arxiv.org/abs/2609.08149).
+
 ## Research thesis
 
 Our testable hypothesis is that **calibrated uncertainty signals, integrated into budget-constrained multi-objective search, can improve independently verified code reliability** against matched-cost baselines. Null and negative results are publishable.
