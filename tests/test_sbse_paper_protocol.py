@@ -33,6 +33,18 @@ class JournalSEMethodTests(unittest.TestCase):
             with self.subTest(x=x):
                 self.assertIn(x, self.tex)
 
+    def test_infrastructure_partial_identification_is_not_confidence_interval(self):
+        for term in (
+            r"\label{eq:attrition-bounds}",
+            "partial-identification bounds",
+            "not frequentist confidence intervals",
+            "infrastructure failure",
+            "timeout",
+            "safety block",
+        ):
+            with self.subTest(term=term):
+                self.assertIn(term, self.tex)
+
     def test_paper_has_no_empirical_rq_results(self):
         self.assertIn("% NO EMPIRICAL RQ RESULTS EXIST", self.tex)
         self.assertIn("actual frozen", self.tex.lower())
