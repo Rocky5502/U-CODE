@@ -4,6 +4,14 @@
 **Scientific status:** offline synthetic algorithm validation only; **no empirical
 LLM, third-party repository, hidden-test, or six-checkpoint experiments**.
 
+> **27 October 2026 follow-on:** A distinct
+> [correlation-aware finite joint-truth sensitivity planner](../src/ucode/correlated_archive_bes.py)
+> now permits evidence on one patch to update beliefs about another, and
+> models repair-parent truth dependence in hypothetical production branches.
+> See the [new scientific ledger](CORRELATED_JOINT_TRUTH_2026-10-27.md).
+> The factorized joint planner documented below remains unchanged and
+> neither planner has been fitted or validated on real coding-agent tasks.
+
 ## Motivation and fairness correction
 
 The older `conditional_archive.py` plans diagnostics separately for each
