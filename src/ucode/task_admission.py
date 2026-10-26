@@ -138,6 +138,32 @@ def assess_dossier(dossier: TaskAdmissionDossier) -> AdmissionAssessment:
 
 
 def parse_dossier(obj: Mapping) -> TaskAdmissionDossier:
+    """Reject unregistered approval fields while preserving historical ledger notes.
+
+    The extra four legacy screening descriptors remain metadata-only and
+    have NO admission authority; neither root SPDX nor a bot account
+    attests file-level rights or authorship.
+    """
+    if not isinstance(obj, Mapping):
+        raise ValueError("admission dossier must be an object")
+    allowed = {
+        "candidate_id", "repository", "pr_url", "base_sha", "head_sha",
+        "merge_commit_sha", "changed_production_paths", "changed_test_paths",
+        "repository_spdx", "gates", "narrative", "evidence_stage",
+        "research_language", "root_license_blob_sha",
+        "observed_bot_account", "coauthorship_note",
+    }
+    if set(obj) - allowed:
+        raise ValueError("unknown dossier fields; no self-authorized admission")
+    gate_allowed = {
+        "gate", "status", "evidence_refs", "evidence_sha256",
+        "reviewer", "reviewer_role", "note",
+    }
+    if not isinstance(obj.get("gates"), list):
+        raise ValueError("admission gates must be an array")
+    for x in obj["gates"]:
+        if not isinstance(x, Mapping) or set(x) - gate_allowed:
+            raise ValueError("unknown admission gate field; no oracle or approval leakage")
     gates = tuple(GateRecord(
         gate=x["gate"], status=x["status"],
         evidence_refs=tuple(x.get("evidence_refs", [])),
