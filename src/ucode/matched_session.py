@@ -154,14 +154,14 @@ def _common_catalog(actions: Sequence[SearchAction]) -> tuple[SearchAction, ...]
 def baseline_shared_decision(session: SharedSession,
                              actions: Sequence[SearchAction],
                              policy: SearchPolicy) -> SharedDecision:
-    """Use EXACT existing baseline controller on shared candidate archive."""
-    if policy.max_candidates != session.max_candidates:
-        raise ValueError("both policies must use common archive capacity")
-    planned = choose_search(session.state, _common_catalog(actions), policy)
-    cost = next((a.cost for a in actions if a.action_id == planned.action),
-                ResourceVector())
-    return SharedDecision(planned.action, planned.kind,
-                          planned.candidate_sha256, cost)
+    """Use target-aware public matched search on the shared archive.
+
+    The lazy import avoids a module cycle: the common opportunity expander
+    also depends on this policy-neutral execution ledger. The legacy
+    optimized_search.choose_search remains independently available.
+    """
+    from .matched_opportunities import choose_matched_baseline
+    return choose_matched_baseline(session, actions, policy)
 
 
 def commit_shared(
