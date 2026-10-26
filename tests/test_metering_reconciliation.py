@@ -248,6 +248,25 @@ class MeteringLedgerTests(unittest.TestCase):
             reconcile_metering_action(before, after, replace(
                 proof, source_fingerprints=proof.source_fingerprints[:-1]))
 
+    def test_forged_structural_row_with_invalid_digest_rejected(self):
+        before, after = session_pair()
+        caps, readings = matrix()
+        proof = check_five_resource_evidence("run", caps, readings)
+        malformed = list(proof.source_fingerprints)
+        malformed[2] = ("gpu_seconds", "not-a-digest")
+        with self.assertRaisesRegex(MeteringAttestationError, "fingerprint"):
+            reconcile_metering_action(
+                before, after,
+                replace(proof, source_fingerprints=tuple(malformed)))
+
+    def test_reconciliation_rejects_oversized_run_id(self):
+        before, after = session_pair()
+        caps, readings = matrix()
+        proof = check_five_resource_evidence("run", caps, readings)
+        with self.assertRaisesRegex(MeteringAttestationError, "run ID"):
+            reconcile_metering_action(
+                before, after, replace(proof, run_id="x"*200))
+
     def test_structural_evidence_is_not_cryptographic_proof(self):
         before, after = session_pair()
         caps, readings = matrix()
