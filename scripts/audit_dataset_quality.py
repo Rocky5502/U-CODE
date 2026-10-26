@@ -8,7 +8,7 @@ import json
 from hashlib import sha256
 from pathlib import Path
 
-from scripts.build_clean_pr_dataset import SOURCE, AUDIT_DIR, DEFAULT_OUT
+from scripts.build_clean_pr_dataset import ROOT, SOURCE, AUDIT_DIR, DEFAULT_OUT
 from scripts.summarize_audit import audit_files, load_manifest, load_records
 from ucode.dataset_curation import build_dataset, write_dataset
 from ucode.dataset_quality import (
@@ -44,7 +44,7 @@ def audit_release(*, manifest_path=SOURCE, audit_dir=AUDIT_DIR,
              if p.is_file() and p.name != "release_integrity.json"]
     out_bytes = {p.name: p.read_bytes() for p in paths}
     source_digests = source_file_digests(
-        path, audit_files(audit_dir))
+        path, audit_files(audit_dir), root=ROOT)
     receipt = release_integrity_manifest(out_bytes, source_digests)
     (dest/"release_integrity.json").write_text(
         json.dumps(receipt, sort_keys=True, indent=2)+"\n",
