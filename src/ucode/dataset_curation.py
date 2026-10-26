@@ -242,6 +242,7 @@ def build_dataset(manifest: dict[int, dict], audit: list[dict],
         "search_language_strata": len(LANGUAGES),
         "language_strata_count": {x["search_language"]: x["discovered_prs"]
                                   for x in summary},
+        "by_search_language": list(summary),
         "metadata_retrieved": sum(r["metadata_source_status"] == "retrieved" for r in rows),
         "metadata_not_retrieved": sum(r["metadata_source_status"] != "retrieved" for r in rows),
         "status_counts": dict(sorted(counts.items())),
