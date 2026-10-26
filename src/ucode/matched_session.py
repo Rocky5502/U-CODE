@@ -238,3 +238,66 @@ def record_baseline_shared(session: SharedSession,
                          reported_cost=reported_cost,
                          observed_positive=observed_positive,
                          new_candidate_sha256=new_candidate_sha256)
+
+
+
+@dataclass(frozen=True)
+class MatchedSessionStart:
+    """Necessary initial opportunity equality; no actual execution attestation."""
+    action_opportunity_sha256: str
+    action_count: int
+    max_candidates: int
+    initial_budget: ResourceVector
+    scope: str = "MATCHED_OFFLINE_START_ONLY_NO_MODEL_OR_SANDBOX_PROOF"
+
+
+def audit_shared_start(
+    treatment: SharedSession,
+    baseline: SharedSession,
+    treatment_actions: Sequence[SearchAction],
+    baseline_actions: Sequence[SearchAction],
+) -> MatchedSessionStart:
+    """Fail before any step if comparator starts with different opportunities.
+
+    Checks candidate identity/parent/creation, exact action types/nominal
+    vectors, initial five-dimensional caps, and shared archive capacity.
+    It does NOT establish matching future sampling draws, prompts, training,
+    measured resource enforcement, sealed oracles, or external code rights.
+    """
+    if not isinstance(treatment, SharedSession) or not isinstance(
+            baseline, SharedSession):
+        raise ValueError("two typed sessions required")
+    if (treatment.initial_budget != baseline.initial_budget or
+            treatment.state.remaining != baseline.state.remaining):
+        raise ValueError("different initial five-resource budgets")
+    if treatment.max_candidates != baseline.max_candidates:
+        raise ValueError("different candidate archive capacity")
+    if (treatment.receipts or baseline.receipts or
+            treatment.state.attempted or baseline.state.attempted or
+            treatment.state.observations or baseline.state.observations):
+        raise ValueError("fair-start audit must precede policy execution")
+    if (treatment.state.candidates != baseline.state.candidates or
+            treatment.state.active_sha256 != baseline.state.active_sha256):
+        raise ValueError("different initial candidate archive or active candidate")
+    a, b = _common_catalog(treatment_actions), _common_catalog(baseline_actions)
+    ta = tuple((x.action_id, x.kind, x.cost) for x in a)
+    tb = tuple((x.action_id, x.kind, x.cost) for x in b)
+    if ta != tb:
+        raise ValueError("different action IDs, kinds, or five-dimensional costs")
+    immutable = {
+        "actions": [{"action_id": x.action_id, "kind": x.kind,
+                     "cost": {k: getattr(x.cost, k) for k in RESOURCE_FIELDS}} for x in a],
+        "initial_budget": {k: getattr(treatment.initial_budget, k)
+                           for k in RESOURCE_FIELDS},
+        "max_candidates": treatment.max_candidates,
+        "candidate_archive": [
+            {"sha256": c.sha256, "created_by": c.created_by,
+             "parent_sha256": c.parent_sha256}
+            for c in treatment.state.candidates
+        ],
+        "active_sha256": treatment.state.active_sha256,
+    }
+    digest = sha256(json.dumps(immutable,sort_keys=True,
+                               separators=(",",":")).encode()).hexdigest()
+    return MatchedSessionStart(digest,len(a),treatment.max_candidates,
+                               treatment.initial_budget)
