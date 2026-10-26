@@ -4,7 +4,7 @@ import unittest
 
 from ucode.conditional_bes import ConditionalKernel, ConditionalRow, Observation
 from ucode.correlated_archive_bes import (
-    CandidateProfile, CorrelatedProducerRow, FrozenCorrelatedInputs, TruthAtom,
+    CandidateProfile, CorrelatedPlan, CorrelatedProducerRow, FrozenCorrelatedInputs, TruthAtom,
     _producer_branches, plan_correlated_archive, record_correlated_archive,
 )
 from ucode.matched_session import SharedDecision, SharedSession, commit_shared
