@@ -593,6 +593,84 @@ Total discovery links attempted & 120\\
 \end{tabular}
 \end{table}
 
+\paragraph{Deterministic twelve-stratum metadata cleaning.}
+We added a standard-library-only, offline curation
+pipeline to reconcile \emph{all} $120$ discovery links
+against canonical immutable PR metadata. The raw frame
+contains $120$ distinct repository-name strings, with
+ten PR links in each of twelve GitHub \emph{query-language}
+strata. The output retains the metadata retrieval
+failure instead of deleting it; preserves PR/base/head/
+merge identities where known; records fork-lineage
+\emph{hints}, changed production-source paths and
+separate test-path counts; and never upgrades a
+root repository license tag into file-level reuse rights.
+We distinguish a repository's \emph{query language}
+from source-language suffixes observed in the files
+actually changed. Eleven of the $62$ production-path
+leads had a query-language mismatch or no matching
+production-language observation. These can be mixed
+language PRs and need manual review, not relabeling.
+
+\begin{table}[t]
+\centering
+\caption{U-CODE metadata-only language-stratified cleaning.
+Each stratum contributed ten PR search links.
+\emph{Prod} = production-source-path leads;
+\emph{First} = higher-priority manual-review candidates;
+\emph{Short} = 12-item initial manual-review queue;
+\emph{Diff} = query language absent from observed changed
+production-source languages. No column counts independently
+qualified executable tasks.}
+\label{tab:curation-languages}
+\scriptsize
+\begin{tabular}{lrrrr}
+\toprule
+Query stratum & Prod & First & Short & Diff\\
+\midrule
+Python & 6 & 1 & 1 & 2\\
+JavaScript & 7 & 2 & 2 & 3\\
+TypeScript & 5 & 0 & 0 & 1\\
+Java & 6 & 2 & 2 & 0\\
+Go & 3 & 2 & 2 & 1\\
+Rust & 3 & 0 & 0 & 0\\
+C++ & 5 & 2 & 1 & 2\\
+C & 6 & 1 & 1 & 0\\
+C\# & 6 & 1 & 1 & 0\\
+Kotlin & 4 & 0 & 0 & 1\\
+PHP & 5 & 1 & 1 & 1\\
+Ruby & 6 & 2 & 1 & 0\\
+\midrule
+Total & 62 & 14 & 12 & 11\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The resulting source-free repository artifact consists
+of a compact $120$-row discovery frame, a frozen
+twelve-stratum summary and a data card.
+The reproducible CI generation job additionally
+exports a per-link audited cleaning table, a
+per-stratum table, a structured attrition report
+and a \emph{manual-only} review queue.
+All outputs explicitly label file rights, independent
+task specification, evaluator-only oracle,
+sandbox, authorship and train/test split
+\emph{unapproved or pending}. The resulting
+initial shortlist of twelve metadata leads
+spans nine of the twelve discovery strata;
+its selection is conservative, diversity-aware
+and deliberately \emph{not} a valid 12-language
+paired experimental dataset. Shortlisted leads
+must pass the independent admission gate
+before any model or tool execution is authorized.
+Even if a one-week engineering pilot is desired,
+no fixed number of executable tasks, independent
+oracles or positive outcomes is guaranteed;
+zero qualified tasks is an admissible finding.
+No third-party source files or repositories are
+bundled into the compact curated metadata.
+
 Sixty-two of the $119$ retrieved PRs had at least
 one changed file with an eligible production-source
 \emph{suffix and path}; this weak signal can include
