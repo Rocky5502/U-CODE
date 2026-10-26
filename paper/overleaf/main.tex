@@ -988,6 +988,70 @@ presupposed; this baseline is allowed to outperform U-CODE.
 The new checks are synthetic engineering tests, not
 observations for the Results section.
 
+\subsection{Shared candidate ledger and conditional-archive bridge}
+\label{sec:shared-archive}
+
+As an intermediate engineering step toward a matched experimental
+comparison, both policies now accept a \emph{common} typed, immutable
+ledger of patch SHA256 identities, generation/repair-parent links,
+candidate-bound visible diagnostic signs, globally single-use tool
+identifiers, and five-dimensional remaining budgets
+(\texttt{matched\_session.py}). This ledger is independent of a
+policy's predictor: the uncertainty-free baseline accesses no
+posterior or diagnostic likelihood. For an uncertainty-aware
+\emph{reference adapter}, frozen candidate priors and
+history-conditional kernels are supplied separately
+(\texttt{conditional\_archive.py}); evidence concerning patch
+$x$ cannot update the posterior of a repaired or separately
+generated patch $x'$ without its own trained transition model.
+The pre-run equality audit rejects discrepant action IDs, kinds,
+nominal costs, initial budgets, archive capacity and starting
+candidate identities. Its hashed receipt is a necessary
+\emph{opportunity-level} check, not proof of equal realized
+model calls, prompts or physical runtime.
+
+The adapter evaluates a history-conditional diagnostic plan
+\emph{separately} for each currently archived patch, comparing
+its continuation value with the best immediately releasable
+alternative. It also compares one-step, precommitted
+candidate-generation or repair forecasts against that terminal
+alternative. Writing $\mathcal C$ for the current archive,
+the reference immediate stopping value is
+\begin{equation}
+ V_{\mathrm{archive},0}(\mathcal C)
+ =\max\left\{0,\max_{x\in\mathcal C}
+          U_0\bigl(p_x(h_x)\bigr)\right\},
+ \label{eq:archive-stop}
+\end{equation}
+where $h_x$ contains only diagnostics observed for candidate $x$.
+This is \emph{not} a jointly optimized multicandidate Bellman
+recursion: sequential testing of multiple candidates, jointly
+planned future generation/repair transitions and cross-candidate
+dependent evidence are not yet represented. The auxiliary
+search controller's archive and the adapter now share candidate
+storage and action accounting, but full \emph{policy capability}
+and tuning parity remain unresolved. Both must use the same
+sealed generation opportunities and executor when real
+comparison begins.
+
+For every chosen nonterminal action, the offline ledger stores
+its \emph{nominal reserved} vector and a separate
+\emph{caller-reported} consumption vector. It rejects action
+replays, stale patch diagnostics, changed repair ancestry,
+inconsistent cumulative accounting and any resource component
+exceeding the remaining bound. These are deterministic
+bookkeeping checks, \emph{not} measurement or enforcement of
+actual GPU, CPU, wall time, model tokens or malicious external
+processes. An independently audited runner is required before
+setting \texttt{actual\_costs\_measured=true} in experimental
+receipts. Adversarial tests use only hand-authored synthetic
+visible feedback; they include a case in which a
+test-count-based uncertainty-free terminal rule releases a
+patch while a frozen hypothetical adverse diagnostic kernel
+causes the conditional policy to abstain. This establishes
+that opposite decisions are possible by construction,
+not which policy achieves better empirical correctness.
+
 \subsection{Confirmatory evaluation design and estimands}
 
 Our primary endpoint is independently verified \emph{full-task}
