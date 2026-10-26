@@ -251,5 +251,38 @@ class OptimizedSearchTests(unittest.TestCase):
             ResourceVector(wall_seconds=float("inf"))
 
 
+    def test_generation_action_cannot_claim_two_different_patches(self):
+        with self.assertRaisesRegex(ValueError, "two artifacts"):
+            SearchState(
+                ResourceVector(tokens=1),
+                (SearchCandidate(A, "g"), SearchCandidate(B, "g")),
+                B, ("g",),
+            )
+
+    def test_diagnostic_cannot_precede_candidate_in_attempt_chronology(self):
+        with self.assertRaisesRegex(ValueError, "predates candidate"):
+            SearchState(
+                ResourceVector(), (SearchCandidate(A, "g"),), A,
+                ("test", "g"), (SearchObservation("test", A, "test", True),),
+            )
+
+    def test_repair_cannot_precede_parent_generation(self):
+        with self.assertRaisesRegex(ValueError, "precede parent"):
+            SearchState(
+                ResourceVector(),
+                (SearchCandidate(A, "g"), SearchCandidate(B, "repair", A)),
+                B, ("repair", "g"),
+            )
+
+    def test_visible_diagnostics_must_follow_attempt_order(self):
+        with self.assertRaisesRegex(ValueError, "chronology"):
+            SearchState(
+                ResourceVector(), (SearchCandidate(A, "initial"),), A,
+                ("first", "second"),
+                (SearchObservation("second", A, "test", True),
+                 SearchObservation("first", A, "test", False)),
+            )
+
+
 if __name__ == "__main__":
     unittest.main()
