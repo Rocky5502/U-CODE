@@ -91,6 +91,13 @@ def inspect_plan(selected: dict, plan: dict) -> tuple[PlannedModel, ...]:
             item.get("gpu_count_for_model") != 1
         ):
             raise ValueError("initial one-GPU 80GB sizing must be explicit")
+        if item.get("rental_gpu_for_initial_preflight") != "A100-SXM4-80GB":
+            raise ValueError("all six models must target the ONE A100 80GB GPU type")
+        if item.get("model_id").startswith("mistralai/") and (
+            item.get("ampere_fp8_fallback_kernel")
+            != "vLLM_W8A16_Marlin_WEIGHT_ONLY_UNVERIFIED_FOR_THIS_CHECKPOINT"
+        ):
+            raise ValueError("Devstral A100 Marlin fallback remains unverified")
         ctx = item.get("max_model_len_tokens_initial")
         if type(ctx) is not int or not 2048 <= ctx <= 16384:
             raise ValueError("unmeasured initial context exceeds conservative bound")
@@ -127,6 +134,14 @@ def inspect_plan(selected: dict, plan: dict) -> tuple[PlannedModel, ...]:
     if (profiles["sequential_one_gpu"].get("requested_gpu_count") != 1
         or profiles["simultaneous_six_gpu"].get("requested_gpu_count") != 6):
         raise ValueError("GPU scheduling profiles contradictory")
+    if (plan.get("single_gpu_constraint")
+        != "ONLY_NVIDIA_A100_80GB_FOR_ALL_SIX_MODEL_INFERENCE_PRE-FLIGHTS"
+        or profiles["sequential_one_gpu"].get("required_gpu_model")
+        != "NVIDIA A100 80GB"
+        or profiles["sequential_one_gpu"].get("no_alternate_gpu_required") is not True
+        or profiles["simultaneous_six_gpu"].get("required_gpu_model_each")
+        != "NVIDIA A100 80GB"):
+        raise ValueError("single A100 hardware family constraint violated")
     if set(plan.get("deployment_gates", {})) != set(REQUIRED_GATES):
         raise ValueError("all nine readiness gates required")
     if not all(plan["deployment_gates"].values()):
