@@ -13,6 +13,10 @@ No GPU instance rented by this commit, and no external code executed.
 - Read-only validator/preview:
   `python -m scripts.plan_ai_galaxy_six_models`,
   `python -m scripts.plan_ai_galaxy_six_models --profile simultaneous_six_gpu --json`.
+- **Scenario GPU-days and cost** (`--minutes-per-assignment` is a required
+  explicitly assumed or later measured value):
+  `python -m scripts.estimate_ai_galaxy_rental --tasks 40 --policies 2 --seeds 1 --minutes-per-assignment 5`.
+  This example is not a runtime benchmark or proof of qualified tasks.
 - The original `src/ucode/model_readiness.py` remains the actual
   provenance/license/runtime gate: planning services does not pass it.
 
