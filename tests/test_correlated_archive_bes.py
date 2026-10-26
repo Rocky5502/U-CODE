@@ -112,6 +112,52 @@ class CorrelatedArchiveTests(unittest.TestCase):
         self.assertEqual(p.decision.target_sha256, A)
         self.assertEqual(p.posterior_marginals[1][1], 1)
 
+    def test_same_marginals_different_correlation_reverses_action(self):
+        # Synthetic controlled counterexample: A and C are anticorrelated,
+        # while B is independent. Under an independent prior the perfect
+        # B-specific probe wins; under the anticorrelated prior the noisy
+        # A/C probe can identify a releasable candidate in BOTH branches.
+        probe_a = SearchAction("probe_a", "test",
+                               ResourceVector(test_calls=1))
+        probe_b = SearchAction("probe_b", "test",
+                               ResourceVector(test_calls=1))
+        weak = ConditionalKernel((
+            ConditionalRow("probe_a", (), .95, .05),
+            ConditionalRow("probe_b", (), .5, .5),
+        ))
+        strong = ConditionalKernel((
+            ConditionalRow("probe_a", (), .5, .5),
+            ConditionalRow("probe_b", (), 1, 0),
+        ))
+        profiles = (CandidateProfile(A, "weak"),
+                    CandidateProfile(B, "strong"),
+                    CandidateProfile(C, "weak"))
+        anticorrelated = tuple(
+            truth(a, b, not a, mass=.25)
+            for a in (False, True) for b in (False, True))
+        independent = tuple(
+            truth(a, b, c, mass=.125)
+            for a in (False, True)
+            for b in (False, True)
+            for c in (False, True))
+        def inputs(atoms):
+            return FrozenCorrelatedInputs(
+                profiles, atoms, (("weak", weak), ("strong", strong)),
+                horizon=1)
+        s = seeded((A, B, C))
+        p_corr = plan_correlated_archive(
+            s, (probe_a, probe_b), inputs(anticorrelated))
+        p_ind = plan_correlated_archive(
+            s, (probe_a, probe_b), inputs(independent))
+        self.assertEqual(p_corr.posterior_marginals,
+                         p_ind.posterior_marginals)
+        self.assertEqual((p_corr.decision.action_id,
+                          p_corr.decision.target_sha256), ("probe_a", A))
+        self.assertEqual((p_ind.decision.action_id,
+                          p_ind.decision.target_sha256), ("probe_b", B))
+        self.assertAlmostEqual(p_corr.expected_proxy_utility, .9)
+        self.assertAlmostEqual(p_ind.expected_proxy_utility, .5)
+
     def test_root_one_step_positive_voi(self):
         p = plan_correlated_archive(seeded(), (TEST,), frozen(horizon=1))
         self.assertEqual((p.decision.action_id, p.decision.target_sha256),
