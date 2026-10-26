@@ -138,6 +138,9 @@ def validate_release(data: CuratedDataset, audits: list[dict]) -> DatasetValidat
         # test-pass or hidden oracle conclusion is permitted by this number.
         for f in ("base_sha", "head_sha", "merge_commit_sha"):
             value = row[f]
+            raw_value = rec.get(f) or ""
+            if value != raw_value:
+                raise ValueError("raw-to-clean immutable commit SHA mismatch")
             if value:
                 if not HEX40.fullmatch(value):
                     raise ValueError("invalid immutable commit SHA in metadata")
