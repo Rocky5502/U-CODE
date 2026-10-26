@@ -38,6 +38,15 @@ class SharedReceipt:
             raise ValueError("receipt requires five-vector resource costs")
         if self.reserved_cost.is_free():
             raise ValueError("reservation cannot be free")
+        if self.reported_cost.is_free():
+            raise ValueError("purchased tool needs nonzero reported consumption")
+        for candidate_sha in (self.target_sha256, self.resulting_sha256):
+            if candidate_sha is not None and (
+                not isinstance(candidate_sha, str) or len(candidate_sha) != 64
+                or any(ch not in "0123456789abcdef" for ch in candidate_sha)):
+                raise ValueError("receipt candidate identity must be SHA256")
+        if self.kind in DIAGNOSTICS | {"repair"} and self.target_sha256 is None:
+            raise ValueError("diagnostic or repair receipt needs target candidate")
         if self.kind in DIAGNOSTICS:
             if type(self.visible_positive) is not bool or self.resulting_sha256 is not None:
                 raise ValueError("diagnostic receipt requires visible boolean only")
@@ -73,6 +82,10 @@ class SharedSession:
                for f in RESOURCE_FIELDS):
             raise ValueError("reported five-resource ledger does not reconcile")
         ids = {r.action_id: r for r in self.receipts}
+        for r in self.receipts:
+            if r.resulting_sha256 is not None and not any(
+                    c.sha256 == r.resulting_sha256 for c in self.state.candidates):
+                raise ValueError("receipt declares missing generated candidate")
         for c in self.state.candidates:
             if c.created_by != "initial":
                 r = ids[c.created_by]
