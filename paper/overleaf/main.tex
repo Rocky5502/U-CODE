@@ -902,6 +902,92 @@ repository or observing an independent
 oracle. It does not establish a performance
 difference.
 
+\subsection{Optimized uncertainty-free search comparator}
+\label{sec:optimized-search}
+
+To avoid attributing ordinary search gains to Bayesian uncertainty
+modeling, we have additionally implemented a separate
+\emph{uncertainty-free, depth-limited heuristic beam-search reference}
+(\texttt{optimized\_search.py}). Unlike the fixed-schedule negative
+control in Section~\ref{sec:blind-control}, this comparator ranks
+sequences of candidate-generation, repair, diagnostic, and retrieval
+opportunities subject to all five resource ceilings. It maintains
+an append-only SHA256-keyed candidate archive, explicit repair-parent
+lineage, and observed tool results attached to the corresponding
+candidate rather than transferring evidence from a failed parent
+to a repaired child. These are first-party algorithm-engineering
+capabilities, not a fully reproduced real coding agent.
+
+The baseline's permitted input is a frozen catalog of action IDs,
+kinds and nominal cost vectors, current candidate fingerprints,
+visible diagnostic signs, the previously attempted action IDs,
+and the remaining five-resource budget. In particular it receives
+no fitted acceptability prior, confidence estimate, posterior,
+sensitivity/specificity, expected correct-patch value, future
+diagnostic outcome, evaluator-only test or gold patch. Given
+a candidate-dependent visible state $h_t$, a predeclared vector
+of nonnegative heuristic action weights $\boldsymbol\omega$, a
+planning-only price vector $\boldsymbol\lambda$, and a candidate
+action sequence $P=(a_1,\ldots,a_H)$, its surrogate objective is
+\begin{equation}
+ Q_{\mathrm{blind}}(P\mid h_t)
+ =\sum_{k=1}^{H}\left[
+ \omega_{\mathrm{type}(a_k)}
+ +b_{\mathrm{vis}}(a_k,h_t)
+ +b_{\mathrm{div}}(a_k,P_{<k})
+ -\boldsymbol\lambda^\top\mathbf c(a_k)\right],
+ \label{eq:blind-heuristic-beam}
+\end{equation}
+where $b_{\mathrm{vis}}$ rewards an actionable repair after
+\emph{visible} failure or a first testing opportunity, and
+$b_{\mathrm{div}}$ rewards diversification of action types.
+Neither bonus contains an estimate of latent correctness.
+Every sequence must respect action-ID single-use, a bounded
+candidate archive and componentwise feasibility
+$\sum_{k\le H}\mathbf c(a_k)\preceq\mathbf B$.
+A deterministic beam of width $W$ approximates the maximizing
+path at depth $H\le4$; at each real observed result it replans.
+A future generate action represents a \emph{possible}
+candidate-producing opportunity and is not asserted to produce
+a useful or correct patch. As a surrogate search, it is neither
+globally optimal nor Bayes optimal.
+
+A visible-test-based terminal gate can release a previously
+archived candidate only when that SHA has sufficient positive
+tests under a frozen threshold and no failed test or static
+observation. These \emph{agent-visible} diagnostics are not
+independent full-task acceptance oracles. Unsuccessful candidate
+generation still consumes nominal resources and does not
+silently create a solution. Resource values in this reference
+remain declared planning costs, not measured GPU, CPU or wall
+telemetry. Independent sandbox execution and evaluator-side
+measured receipts are therefore prerequisites for an
+effectiveness comparison.
+
+For comparable \emph{preexecution} action catalogs, our
+extended audit computes the same sorted SHA256 inventory
+digest for conditional/BES reference actions and this
+heuristic controller as for the older fixed-schedule control,
+excluding forecast and heuristic fields
+(Eq.~\eqref{eq:action-parity}). Importantly, this static
+digest \emph{does not yet establish genuine action parity}:
+the heuristic implementation supports multiple archived
+candidate hashes and may release a previous patch, whereas
+our implemented conditional BES still searches diagnostics
+for one candidate. It would be invalid to present the
+current prototype comparison as a controlled head-to-head.
+Before held-out testing we must implement a shared candidate
+archive, identical candidate-generation/tool opportunities,
+matched checkpoint and prompt/seed access, measured resource
+enforcement and independent evaluator isolation for both
+policies. Hyperparameters and search budget must be tuned
+on disjoint training/validation repository groups, then
+frozen before opening oracle outcomes. Neither a beneficial
+result nor the superiority of uncertainty modeling is
+presupposed; this baseline is allowed to outperform U-CODE.
+The new checks are synthetic engineering tests, not
+observations for the Results section.
+
 \subsection{Confirmatory evaluation design and estimands}
 
 Our primary endpoint is independently verified \emph{full-task}
