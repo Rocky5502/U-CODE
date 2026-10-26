@@ -32,7 +32,8 @@ def matrix(cost=None, caps=None):
         "tokens": 10, "test_calls": 2,
         "gpu_seconds": 3, "cpu_seconds": 4, "wall_seconds": 5,
     }
-    values = {name: getattr(cost, name) for name in RESOURCE_FIELDS}
+    values = {name: (int(getattr(cost, name)) if name in ("tokens", "test_calls")
+                     else getattr(cost, name)) for name in RESOURCE_FIELDS}
     readings = {
         field: MeterReading(values[field], SOURCE_BY_RESOURCE[field],
                             sha256(("fixture:"+field).encode()).hexdigest(),
