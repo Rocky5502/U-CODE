@@ -28,6 +28,44 @@ The only available workloads are fixed internal Python snippets: success, failur
 
 Important limitations: RUSAGE_CHILDREN can be contaminated by concurrent child exits and is **not attributed to an individual process**; RLIMIT_CPU has integer-second resolution. There is NO separately enforced network namespace, rootless container, read-only filesystem, cgroups, independent per-process CPU meter, GPU accounting, model-token hook, trusted test dispatcher, physically isolated oracle or independent external approval. The smoke result explicitly says full_five_resource_trial_attested=False, network_isolation_enforced=False and filesystem_isolation_enforced=False. No real experiment may claim to have passed these gates based on this fixture.
 
+## Action-receipt reconciliation and controlled CI smoke
+
+The second [policy-neutral reconciliation module](../src/ucode/metering_reconciliation.py)
+compares a five-resource `StructuralMeteringAudit` to **exactly one**
+new immutable `SharedSession` receipt. It verifies unchanged
+initial-budget and archive contracts; one appended action and trace;
+canonical token/test/GPU/CPU/wall row ordering; exact five-component
+agreement between structural meter readings and recorded consumption;
+and the budget delta of each dimension. The binding returns the
+before/after public trace SHA256 values and source-claim fingerprints,
+with `independently_authenticated=False`,
+`physical_caps_verified=False` and `approved_real_trial=False`
+**unconditionally**. No policy receives an evaluator label.
+
+A passing reconciliation is not proof that someone did not fabricate
+`MeterReading.source`, hash strings or cap-enforcement booleans;
+[the tests](../tests/test_metering_reconciliation.py) deliberately
+demonstrate that a forged digest-shaped string cannot be authenticated
+by a purely local data schema. In particular, an action whose reported
+token use is two cannot be reconciled with a purported external reading
+of one. Yet agreeing values alone are not evidence of physical truth.
+
+GitHub Actions now also runs the fixed first-party
+[`examples.metering_contract_smoke`](../examples/metering_contract_smoke.py)
+in **both** Python-version jobs. It constructs a synthetic patch
+and five-dimensional reading set, binds these to the public ledger,
+and runs one hardcoded first-party subprocess success fixture. The
+output explicitly reports `approved_real_trial=False`. There is no
+arbitrary user or third-party code, model inference, network namespace,
+sequestered evaluator or trusted GPU counter in this smoke.
+
+**Verified offline checkpoint:** [CI run 40380919939](https://github.com/Rocky5502/U-CODE/actions/runs/40380919939)
+passed **619 tests on Python 3.10** and **619 tests on Python 3.12**
+and completed the additional first-party smoke on each interpreter.
+The source-only [Overleaf artifact](https://github.com/Rocky5502/U-CODE/actions/runs/40380919939/artifacts/12678072294)
+is packaged by GitHub, not synced to the authenticated live Overleaf
+website. The checkpoint is about code checks, not measured effectiveness.
+
 ## Reproduction
 
 Use a fresh checkout on Linux with the supported Python version, then run:
