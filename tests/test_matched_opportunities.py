@@ -6,7 +6,7 @@ from ucode.matched_opportunities import (
     Opportunity, choose_matched_baseline, matched_opportunities,
     opportunity_digest, record_matched_baseline,
 )
-from ucode.matched_session import SharedDecision, SharedSession
+from ucode.matched_session import SharedDecision, SharedSession, commit_shared
 from ucode.optimized_search import (
     SearchAction, SearchCandidate, SearchObservation, SearchPolicy, SearchState,
 )
@@ -92,9 +92,12 @@ class MatchedOpportunityTests(unittest.TestCase):
         self.assertEqual(len(opportunity_digest(session(), (TEST,))), 64)
 
     def test_baseline_can_target_non_active_patch(self):
-        s = session((A, B), attempted=("old",),
-                    observations=(SearchObservation("old", B, "test", False),))
         old = SearchAction("old", "test", ResourceVector(test_calls=1))
+        s = commit_shared(
+            session((A, B)), (old, REP),
+            SharedDecision("old", "test", B, old.cost),
+            reported_cost=old.cost, observed_positive=False)
+        s = replace(s, state=replace(s.state, active_sha256=A))
         decision = choose_matched_baseline(
             s, (REP, old), SearchPolicy(depth=1))
         self.assertEqual((decision.action_id, decision.target_sha256),
