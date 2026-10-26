@@ -1161,7 +1161,14 @@ produced SHA256 to a newly estimated joint prior
 \emph{is not yet implemented or calibrated}; a
 separately trained, pre-outcome joint scorer and
 explicit reconciliation of past production outcomes
-are needed before sequential deployment. Joint priors
+are needed before sequential deployment. The reference
+now rejects a reused joint prior after a real
+generation/repair receipt unless its input explicitly
+binds to a SHA256 digest of the public producer-receipt
+chronology. This binding prevents \emph{accidental}
+reuse of an unacknowledged history but is \emph{not}
+a certificate that the externally supplied joint
+prior was statistically reconditioned correctly. Joint priors
 and conditional kernels must be fitted and audited on
 disjoint training data; they must never be reconstructed
 from the independent held-out correctness oracle.
