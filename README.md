@@ -16,6 +16,34 @@ U-CODE studies **when a software engineering agent should test, retrieve context
 
 <sub>Figure 1. Proposed U-CODE architecture. The top row is the risk-aware agent policy (task → interventions → evidence modeling → BES → controlled execution → release/abstention); the curved teal arrow returns **visible** execution feedback from the execution stage to BES. The lower research lane independently admits tasks, seals the functional oracle, evaluates released artifacts, and summarizes evidence. **Architectural design, not a completed or validated experimental result.** [View scalable SVG](docs/figures/ucode-framework.svg).</sub>
 
+## Optimized uncertainty-free search comparator (26 October 2026)
+
+A new [bounded heuristic beam-search reference](src/ucode/optimized_search.py)
+implements the prospective `no_uncertainty_search` controller at the
+**first-party/offline algorithm-engineering stage**. Unlike the separate
+[fixed-schedule blind negative control](src/ucode/blind_search.py), it
+searches over feasible action sequences, adapts to visible test/analysis
+results, archives multiple candidate SHA256 artifacts and tracks repair
+parents. Its public input schema excludes predictive acceptability,
+confidence, Bayesian likelihoods, golden patches and evaluator-only results.
+All five resources remain independently capped; a scalar planning price
+cannot make an infeasible action admissible. Candidate archive evidence
+is bound to the **original patch**, including after later repair.
+
+[Design, limits and falsifiers](docs/OPTIMIZED_UNCERTAINTY_FREE_SEARCH_2026-10-26.md)
+· [adversarial engineering tests](tests/test_optimized_search.py)
+· [shared action-inventory parity tests](tests/test_optimized_action_parity.py).
+
+**Do not call this a tuned empirical baseline yet.** Beam scores are
+heuristic action-opportunity proxies, not expected patch-success probabilities.
+The [static BES-versus-optimized inventory audit](src/ucode/matched_action_inventory.py)
+matches action IDs, kinds, five-dimensional nominal costs and initial caps,
+but full parity is **blocked** because current BES tracks one candidate
+and the heuristic baseline has an archive; no shared measured-cost
+LLM/tool executor, training-only tuned weights, independent rights-cleared
+tasks or sealed-oracle outcomes exist. The existing eight-policy and
+six-model prospective rosters are unchanged.
+
 ## Six LLMs selected for the planned study (25 October 2026)
 
 All six recommended models have been **accepted by the researcher for the U-CODE study plan**. The [version-controlled six-model configuration](configs/accepted_six_model_study_2026-10-25.json), [model preflight code](src/ucode/model_readiness.py), and [experiment/reproducibility protocol](docs/SIX_MODEL_STUDY_PLAN_2026-10-25.md) preserve every checkpoint—none is silently excluded for being larger or gated.
