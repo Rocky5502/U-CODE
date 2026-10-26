@@ -1229,16 +1229,26 @@ AI~Galaxy GPU deployment manifest now records
 all six model identifiers, disjoint candidate service ports,
 initial context caps, model-family runtime constraints
 and two alternative resource profiles:
-\emph{sequential} one-model-at-a-time evaluation on a
-nominal 80\,GB accelerator versus \emph{concurrent}
-six isolated 80\,GB accelerator services.
-The latter is a planning capacity bound, not
-an optimized packing or a purchased cluster.
+\emph{sequential} one-model-at-a-time evaluation on
+exactly one NVIDIA A100 80\,GB accelerator versus a
+hypothetical \emph{concurrent} six-A100 capacity bound.
+The latter is not an optimized packing, approved
+rental, or purchased cluster. All six prospective
+checkpoints, including Devstral Small~2, retain the
+\emph{same} A100 hardware-family requirement; no
+different GPU type is needed in the protocol.
 BF16 weight-memory floors inferred from published
 parameter counts exclude runtime allocations, attention
 key/value caches, test-runner memory and concurrency.
-The Devstral FP8 engine requires independent accelerator
-compatibility checks; the selected gated Llama/CodeGemma
+For Devstral Small~2, the provider's documentation
+explicitly lists A100 deployment, and the vLLM
+implementation supports Ampere FP8 weight-only W8A16
+Marlin execution; this is not equivalent to native
+Hopper FP8 acceleration. The exact pinned
+Devstral--vLLM--A100 runtime still requires a
+measured load/generation preflight, with a BF16
+A100 fallback considered only after peak-VRAM checks.
+The selected gated Llama/CodeGemma
 checkpoints require access and license validation, and
 custom model code must undergo security review before
 execution. Each model further requires an immutable
@@ -1251,7 +1261,15 @@ are not yet an independently admitted executable
 evaluation corpus, regardless of the number of PR
 metadata entries. Paid rental selection, throughput
 and GPU-hour budgets cannot be inferred from unmeasured
-runtime or unqualified task volume.
+runtime or unqualified task volume. The separate
+first-party rental-planning utility reports only
+hypothetical capacity scenarios using an \emph{explicit}
+task count, measured or assumed per-assignment runtime,
+model count, policy count, seed count and overhead factor.
+In particular, the complete factorial study is not
+assumed to finish within days on one accelerator;
+the actual sample-size and compute protocol must
+be re-registered after representative profiling.
 
 \paragraph{Frozen factorial assignment and evaluator receipts.}
 We preregister a proposed eight-policy matrix:
