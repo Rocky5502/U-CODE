@@ -123,11 +123,21 @@ The Springer [Methods draft](paper/overleaf/main.tex) reflects this boundary.
 
 All six **unchanged** selected Hugging Face checkpoint IDs now have one
 [version-controlled deployment configuration](configs/ai_galaxy_six_model_deployment_2026-10-27.json)
-with GPU targets, initial model contexts, one-sequence concurrency,
-unique ports 8100–8105, per-model risk flags, and two deployment profiles:
-**one rented 80GB GPU reusing models sequentially** or **six independent
-80GB GPUs for truly simultaneous model services**. See the
+with a **single NVIDIA A100 80GB GPU hardware family for ALL SIX**
+(including Devstral), initial model contexts, one-sequence concurrency,
+unique ports 8100–8105, and explicit compatibility risk flags.
+The recommended profile is **one A100 80GB running the models sequentially**;
+an optional six-A100 capacity estimate is NOT an approved rental. See the
 [AI Galaxy hardware sizing, advertised rental price and safety ledger](docs/AI_GALAXY_SIX_MODEL_RENTAL_PLAN_2026-10-27.md).
+
+A [conservative GPU-days and RMB scenario estimator](scripts/estimate_ai_galaxy_rental.py)
+requires an explicit `--minutes-per-assignment`; it cannot invent
+task throughput or count unqualified candidate PRs as executable tasks.
+Start with a limited **12–24-hour rental preflight**, not a prepaid
+multiweek GPU reservation. Full eight-policy × six-model × multiple-seed
+evaluation can demand many weeks of sequential A100 time depending
+on actual per-task latency. See
+[the rental scenario ledger](docs/AI_GALAXY_SIX_MODEL_RENTAL_PLAN_2026-10-27.md).
 
 Use `python -m scripts.plan_ai_galaxy_six_models` for read-only full-roster
 preflight, or add `--profile simultaneous_six_gpu --json`.
@@ -139,8 +149,11 @@ and deletion of authorization gates. CI checks both Python versions.
 **Planning is not deployment:** zero of the six weight snapshots are
 downloaded or pinned, zero provider terms approved, zero model inference
 performed, and zero real dataset tasks admitted for sealed evaluation.
-Native Devstral FP8 acceleration needs separately verified H100-compatible
-engine support, and DeepSeek custom model code needs a security review.
+Official Mistral documentation explicitly lists **A100** for
+Devstral Small 2. vLLM supports Ampere FP8 weight-only **Marlin W8A16**
+as an alternative to H100-native FP8; the exact pinned Devstral/A100
+runtime must still be verified. No second GPU type is required
+or budgeted. DeepSeek custom model code needs independent review.
 The model roster remains six checkpoints from five publisher families;
 no model is silently excluded because it is too large or gated.
 
