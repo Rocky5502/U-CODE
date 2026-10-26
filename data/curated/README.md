@@ -64,6 +64,49 @@ why the cleaned data is in kilobytes rather than many gigabytes.
 Do not bundle unreviewed patches, source trees or executables into
 a supposedly redistribution-cleared benchmark.
 
+## Additional technical quality audit and release receipts
+
+The stricter [offline quality audit](../../scripts/audit_dataset_quality.py)
+is the **preferred release command**:
+
+    python -m scripts.audit_dataset_quality \
+      --output-dir dist/datasets/ucode_pr_metadata_v1
+
+It produces the four cleaning files above **plus four quality and
+reproducibility outputs** (eight total):
+
+- \`dataset_schema.json\`: machine-readable column types, unit of
+  analysis, required fields and the meaning of changed-file versus
+  GitHub search language.
+- \`quality_report.json\`: exact raw-to-clean join coverage, primary
+  key uniqueness, original 12-stratum preservation, field-level
+  missingness, candidate owner/fork/shared-commit collision **flags**,
+  and explicit blocked downstream split/task-readiness checks.
+- \`manual_lineage_and_rights_flags.json\`: per-PR metadata-only
+  manual review reasons; **no certification** that any PR is
+  AI-authored, rights-cleared or executable. There are 107
+  records with one or more additional screening flags in the
+  tested 2026-10-27 snapshot; **all 120** still need independent
+  file-rights/oracle and task qualification.
+- \`release_integrity.json\`: SHA256 and byte count for each of
+  the preceding seven files and digest of each canonical
+  *input* audit/manifest file, with repository-relative
+  paths independent of the machine used to produce the release.
+
+Exact commit SHA consistency with the original PR audit is checked:
+an attacker cannot alter a 40-character SHA in the cleaned table and
+have it pass merely because it is syntactically valid. All seven
+output hashes can be verified after artifact extraction.
+A matching SHA256 is **integrity of these files**, not a
+cryptographic proof of legitimate GitHub authorship, source code
+permission, independent held-out test quality or reproducible builds.
+
+The accompanying [Scientific Data readiness assessment](../../docs/SCIENTIFIC_DATA_READINESS_2026-10-27.md)
+distinguishes a small reusable PR **metadata** snapshot from
+a fully curated multilingual executable software repair dataset.
+The latter needs independent annotation and task re-execution,
+lineage-safe splits, license review, and an archived DOI release.
+
 ## What the pipeline CANNOT claim
 
 1. Bot-authored/merged PR metadata is not evidence of line-level AI
