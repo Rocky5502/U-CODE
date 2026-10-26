@@ -43,6 +43,8 @@ jobs:
         run: python -m examples.action_parity_smoke
       - name: Validate prospective SBSE eight-policy six-checkpoint registration
         run: python -m scripts.validate_sbse_protocol
+      - name: Validate all six AI Galaxy model hardware and startup gates (offline)
+        run: python -m scripts.plan_ai_galaxy_six_models
       - name: Validate candidate model and dataset registries
         run: python -m scripts.validate_research_registries
       - name: Reproduce first-party structural five-resource meter and ledger smoke
