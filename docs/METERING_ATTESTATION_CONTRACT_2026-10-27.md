@@ -75,6 +75,19 @@ Use a fresh checkout on Linux with the supported Python version, then run:
 
 GitHub Actions runs the above offline unit suite on Python 3.10 and 3.12. These synthetic/first-party tests check structural invariants and fixed process termination, not third-party patch correctness or scientific efficacy.
 
+### Additional fail-closed regression (27 October 2026)
+
+The action-ledger reconciler now also rejects a malformed
+source-fingerprint field and overlong run identifier in a
+hand-constructed structural audit. This intentionally remains
+a **format check**, not cryptographic authentication: an attacker
+could still supply a valid-looking but unverified SHA256 string.
+[CI run 40381231237](https://github.com/Rocky5502/U-CODE/actions/runs/40381231237)
+passed **621/621** offline tests on Python 3.10 and **621/621**
+on Python 3.12, including the fixed first-party subprocess check.
+No real-task execution, certified resource cap, or independent
+measurement result is asserted by these tests.
+
 ## Next independent gates
 
 1. Build an actually rootless, network-disabled, read-only, disposable third-party task runner only after authorized source rights and task admission.
