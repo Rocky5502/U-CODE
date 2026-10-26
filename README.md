@@ -6,6 +6,10 @@
 
 U-CODE studies **when a software engineering agent should test, retrieve context, generate another patch, repair, or abstain** under a fixed execution and inference budget. The target is the Springer *Automated Software Engineering* special issue **Search-Based Software Engineering in the Era of LLMs and Agentic Systems** (30 January 2027): https://link.springer.com/collections/jjcfecffai.
 
+## Continue U-CODE in a new ChatGPT chat
+
+**[Master scientific handoff — 26 October 2026](docs/UCODE_MASTER_HANDOFF_2026-10-26.md)** is the canonical continuation prompt. It includes the exact verified pre-handoff SHA/CI, all R0–R16 simulated research-team roles, research questions, code/experiment map, 120-PR audit outcomes, two real pilot dossiers, six prospective model choices, eight-policy study plan, Springer source locations, current scientific blockers, and the next executable research priorities. **Always recheck current GitHub main and CI before continuing**: this README/handoff commit advances the earlier 426-test checkpoint.
+
 ## Framework at a glance
 
 ![U-CODE framework: six policy stages, a bounded feedback loop, and an independently sealed evaluation lane](docs/figures/ucode-framework.svg)
