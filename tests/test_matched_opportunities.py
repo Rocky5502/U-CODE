@@ -55,8 +55,10 @@ class MatchedOpportunityTests(unittest.TestCase):
         self.assertEqual(matched_opportunities(s, (GEN, REP)), ())
 
     def test_one_use_action_id_blocks_every_target(self):
-        s = session((A, B), attempted=("test",),
-                    observations=(SearchObservation("test", A, "test", True),))
+        s = commit_shared(
+            session((A, B)), (TEST,),
+            SharedDecision("test", "test", A, TEST.cost),
+            reported_cost=TEST.cost, observed_positive=True)
         self.assertEqual(matched_opportunities(s, (TEST,)), ())
 
     def test_budget_blocks_each_dimension(self):
