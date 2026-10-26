@@ -119,6 +119,31 @@ token/test/GPU counters, independently signed attestation or real executable
 task has been established. The APIs explicitly decline real-trial approval.
 The Springer [Methods draft](paper/overleaf/main.tex) reflects this boundary.
 
+## All-six AI Galaxy GPU rental deployment configuration (27 October 2026)
+
+All six **unchanged** selected Hugging Face checkpoint IDs now have one
+[version-controlled deployment configuration](configs/ai_galaxy_six_model_deployment_2026-10-27.json)
+with GPU targets, initial model contexts, one-sequence concurrency,
+unique ports 8100–8105, per-model risk flags, and two deployment profiles:
+**one rented 80GB GPU reusing models sequentially** or **six independent
+80GB GPUs for truly simultaneous model services**. See the
+[AI Galaxy hardware sizing, advertised rental price and safety ledger](docs/AI_GALAXY_SIX_MODEL_RENTAL_PLAN_2026-10-27.md).
+
+Use `python -m scripts.plan_ai_galaxy_six_models` for read-only full-roster
+preflight, or add `--profile simultaneous_six_gpu --json`.
+[Adversarial registry tests](tests/test_ai_galaxy_six_models.py)
+reject missing/reordered model IDs, false weight/license/inference claims,
+non-immutable revisions, unsafe initial memory allocations, duplicated ports,
+and deletion of authorization gates. CI checks both Python versions.
+
+**Planning is not deployment:** zero of the six weight snapshots are
+downloaded or pinned, zero provider terms approved, zero model inference
+performed, and zero real dataset tasks admitted for sealed evaluation.
+Native Devstral FP8 acceleration needs separately verified H100-compatible
+engine support, and DeepSeek custom model code needs a security review.
+The model roster remains six checkpoints from five publisher families;
+no model is silently excluded because it is too large or gated.
+
 ## Six LLMs selected for the planned study (25 October 2026)
 
 All six recommended models have been **accepted by the researcher for the U-CODE study plan**. The [version-controlled six-model configuration](configs/accepted_six_model_study_2026-10-25.json), [model preflight code](src/ucode/model_readiness.py), and [experiment/reproducibility protocol](docs/SIX_MODEL_STUDY_PLAN_2026-10-25.md) preserve every checkpoint—none is silently excluded for being larger or gated.
