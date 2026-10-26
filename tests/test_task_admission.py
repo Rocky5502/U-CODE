@@ -153,5 +153,30 @@ class TaskAdmissionTests(unittest.TestCase):
         self.assertFalse(result.eligible_for_experiment)
 
 
+    def test_unknown_dossier_approval_fields_cannot_be_ignored(self):
+        for key in ("eligible_for_experiment", "oracle_correct",
+                    "signed_human_approval", "model_posterior"):
+            forged = dict(self.original[0], **{key: True})
+            with self.subTest(key=key), self.assertRaisesRegex(
+                    ValueError, "unknown dossier fields"):
+                parse_dossier(forged)
+
+    def test_gate_approval_and_gold_fields_cannot_be_smuggled(self):
+        forged = deepcopy(self.original[0])
+        forged["gates"][0]["hidden_gold_label"] = True
+        with self.assertRaisesRegex(ValueError, "unknown admission gate"):
+            parse_dossier(forged)
+        forged = deepcopy(self.original[0])
+        forged["gates"][0]["eligible_for_experiment"] = True
+        with self.assertRaisesRegex(ValueError, "unknown admission gate"):
+            parse_dossier(forged)
+
+    def test_legacy_screening_annotations_carry_no_admission_authority(self):
+        x = parse_dossier(self.original[0])
+        self.assertFalse(assess_dossier(x).eligible_for_experiment)
+        self.assertIn("observed_bot_account", self.original[0])
+        self.assertIn("root_license_blob_sha", self.original[0])
+
+
 if __name__ == "__main__":
     unittest.main()
