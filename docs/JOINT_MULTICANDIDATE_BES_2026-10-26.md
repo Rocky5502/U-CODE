@@ -15,12 +15,15 @@ premature. Both are retained for compatibility. The new matched path is:
   `(action_id, action_kind, target_sha, nominal_cost)` alternatives. Generation
   has one target-free option; diagnostics and repair expand over **every**
   archived candidate; action IDs remain globally single-use. Deterministic
-  public digest includes the remaining five-budget, attempted IDs, candidate
-  identities/ancestry and nominal tool costs, **not** policy-private beliefs.
+  public digest includes the remaining five-budget, attempted IDs, active
+  candidate, visible observation chronology, candidate identities/ancestry
+  and nominal tool costs, **not** policy-private beliefs.
 - `choose_matched_baseline`: depth-limited, bounded uncertainty-free beam
   search on that same menu. Scores use only fixed public heuristics and
   candidate-bound visible diagnostics; hypothetical future candidates are
-  opportunity placeholders, not success predictions.
+  opportunity placeholders, not success predictions. The legacy
+  \`matched_session.baseline_shared_decision\` now routes through this matched
+  target-aware implementation by default.
 - `src/ucode/joint_conditional_bes.py`: finite-horizon dynamic programming
   over the whole archive, candidate-specific conditional histories, globally
   unused action IDs, five-dimensional budget and symbolic future candidate
@@ -58,7 +61,7 @@ silently imported into the real archive.
 
 ## Validation and interpretation
 
-Added **42 synthetic/adversarial tests** in
+Added **44 synthetic/adversarial tests** in
 `tests/test_matched_opportunities.py` and
 `tests/test_joint_conditional_bes.py`. They exercise menu expansion,
 target parity, non-active target choice, deterministic ties, symbolic
@@ -69,7 +72,7 @@ and state explosion caps.
 
 Official GitHub Actions checkpoint after algorithm and test integration:
 [run 40354926845](https://github.com/Rocky5502/U-CODE/actions/runs/40354926845)
-passed **532/532** tests on both Python 3.10 and 3.12. The prior checkpoint
+passed **532/532** tests on both Python 3.10 and 3.12 at the initial integration. Two later public-menu hardening tests bring the expected total to **534**; verify the final HEAD CI before claiming that final count. The prior checkpoint
 was 490/490 on both versions. Later manuscript and README edits must be
 verified on their own final HEAD workflow before declaring a final checkpoint.
 
