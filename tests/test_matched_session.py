@@ -156,10 +156,10 @@ class SharedArchiveTests(unittest.TestCase):
         f=CandidateAction("gen","generate",
                           (CandidateScenario(1,.95),),GEN.cost)
         inp=conditional(priors=((A,.1),),kernels=(),forecasts=(f,))
-        x=plan_conditional_archive(s,(TEST,GEN,REPAIR),inp)
-        y=plan_conditional_archive(s,(REPAIR,GEN,TEST),inp)
-        # No diagnostic kernel for a feasible test intentionally triggers
-        # a fail-closed error; use just candidate generators here.
+        # Catalog permutation must not alter the same feasible candidate
+        # generation/repair comparison. No diagnostic kernel is provided.
+        x=plan_conditional_archive(s,(GEN,REPAIR),inp)
+        y=plan_conditional_archive(s,(REPAIR,GEN),inp)
         self.assertEqual(x.decision,y.decision)
 
     def test_all_five_reported_cost_limits_refuse_overspend(self):
