@@ -1,0 +1,132 @@
+{
+  "schema_version": "1.0",
+  "computed_from": "canonical_2026-10-24_audit_and_120_discovery_manifest",
+  "offline_ci_run_id": 40395204786,
+  "source_manifest_sha256": "f4c24b15b22032d8314e1608ccb9bc7f7ddd8a0eedcd7431e5303f31385e7fc1",
+  "status": "METADATA_ONLY_NO_TASK_APPROVAL",
+  "discovered_pr_links": 120,
+  "distinct_repository_names": 120,
+  "metadata_retrieved": 119,
+  "production_source_path_leads": 62,
+  "first_pass_manual_review_leads": 14,
+  "shortlisted_for_manual_review": 12,
+  "independently_approved_executable_tasks": 0,
+  "status_counts": {
+    "production_source_path_detected": 62,
+    "test_only_source_change": 10,
+    "non_source_change": 45,
+    "empty_file_list_needs_review": 2,
+    "retrieval_failed": 1
+  },
+  "search_language_note": "10 PR searches per stratum, NOT necessarily PR changed language",
+  "by_search_language": [
+    {
+      "search_language": "Python",
+      "discovered_prs": 10,
+      "source_path_leads": 6,
+      "first_pass_metadata_leads": 1,
+      "shortlisted_for_manual_review": 1,
+      "source_language_mismatched_or_unobserved": 2,
+      "experiment_eligible": 0
+    },
+    {
+      "search_language": "JavaScript",
+      "discovered_prs": 10,
+      "source_path_leads": 7,
+      "first_pass_metadata_leads": 2,
+      "shortlisted_for_manual_review": 2,
+      "source_language_mismatched_or_unobserved": 3,
+      "experiment_eligible": 0
+    },
+    {
+      "search_language": "TypeScript",
+      "discovered_prs": 10,
+      "source_path_leads": 5,
+      "first_pass_metadata_leads": 0,
+      "shortlisted_for_manual_review": 0,
+      "source_language_mismatched_or_unobserved": 1,
+      "experiment_eligible": 0
+    },
+    {
+      "search_language": "Java",
+      "discovered_prs": 10,
+      "source_path_leads": 6,
+      "first_pass_metadata_leads": 2,
+      "shortlisted_for_manual_review": 2,
+      "source_language_mismatched_or_unobserved": 0,
+      "experiment_eligible": 0
+    },
+    {
+      "search_language": "Go",
+      "discovered_prs": 10,
+      "source_path_leads": 3,
+      "first_pass_metadata_leads": 2,
+      "shortlisted_for_manual_review": 2,
+      "source_language_mismatched_or_unobserved": 1,
+      "experiment_eligible": 0
+    },
+    {
+      "search_language": "Rust",
+      "discovered_prs": 10,
+      "source_path_leads": 3,
+      "first_pass_metadata_leads": 0,
+      "shortlisted_for_manual_review": 0,
+      "source_language_mismatched_or_unobserved": 0,
+      "experiment_eligible": 0
+    },
+    {
+      "search_language": "C++",
+      "discovered_prs": 10,
+      "source_path_leads": 5,
+      "first_pass_metadata_leads": 2,
+      "shortlisted_for_manual_review": 1,
+      "source_language_mismatched_or_unobserved": 2,
+      "experiment_eligible": 0
+    },
+    {
+      "search_language": "C",
+      "discovered_prs": 10,
+      "source_path_leads": 6,
+      "first_pass_metadata_leads": 1,
+      "shortlisted_for_manual_review": 1,
+      "source_language_mismatched_or_unobserved": 0,
+      "experiment_eligible": 0
+    },
+    {
+      "search_language": "C#",
+      "discovered_prs": 10,
+      "source_path_leads": 6,
+      "first_pass_metadata_leads": 1,
+      "shortlisted_for_manual_review": 1,
+      "source_language_mismatched_or_unobserved": 0,
+      "experiment_eligible": 0
+    },
+    {
+      "search_language": "Kotlin",
+      "discovered_prs": 10,
+      "source_path_leads": 4,
+      "first_pass_metadata_leads": 0,
+      "shortlisted_for_manual_review": 0,
+      "source_language_mismatched_or_unobserved": 1,
+      "experiment_eligible": 0
+    },
+    {
+      "search_language": "PHP",
+      "discovered_prs": 10,
+      "source_path_leads": 5,
+      "first_pass_metadata_leads": 1,
+      "shortlisted_for_manual_review": 1,
+      "source_language_mismatched_or_unobserved": 1,
+      "experiment_eligible": 0
+    },
+    {
+      "search_language": "Ruby",
+      "discovered_prs": 10,
+      "source_path_leads": 6,
+      "first_pass_metadata_leads": 2,
+      "shortlisted_for_manual_review": 1,
+      "source_language_mismatched_or_unobserved": 0,
+      "experiment_eligible": 0
+    }
+  ]
+}
