@@ -88,6 +88,11 @@ def opportunity_digest(session: SharedSession, actions: Sequence[SearchAction]) 
         "initial_budget": vector(session.initial_budget),
         "remaining": vector(session.state.remaining),
         "max_candidates": session.max_candidates,
+        "active_sha256": session.state.active_sha256,
+        "visible_observations": [
+            (o.action_id, o.candidate_sha256, o.kind, o.positive)
+            for o in session.state.observations
+        ],
         "archive": sorted(
             (c.sha256, c.created_by, c.parent_sha256)
             for c in session.state.candidates
