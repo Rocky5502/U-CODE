@@ -1168,7 +1168,15 @@ from the independent held-out correctness oracle.
 Synthetic tests of positively correlated, negatively
 correlated and independent truth distributions demonstrate
 only that the algorithm performs the stipulated
-Bayesian arithmetic and fail-closed accounting.
+Bayesian arithmetic and fail-closed accounting. In a
+three-patch analytical counterexample with identical
+marginal correctness probabilities of $0.5$, changing
+from independent patch truths to an anti-correlation
+between two patches reverses the first selected
+diagnostic under a frozen one-step synthetic model.
+The corresponding stipulated expected release utilities
+are $0.5$ and $0.9$; these are \emph{constructed
+decision-model quantities, not observed success rates}.
 No reliability, selective-risk or calibration improvement
 is inferred from these constructed examples.
 
