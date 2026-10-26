@@ -73,3 +73,37 @@ def audit_action_parity(
         len(manifest), tuple(sorted(bes_index)), tuple(RESOURCE_FIELDS),
         digest, bes_initial_budget,
     )
+
+
+
+def audit_optimized_action_parity(
+    forecast_actions: Sequence[EvidenceAction | CandidateAction],
+    optimized_actions: Sequence["SearchAction"],
+    *,
+    bes_initial_budget: ResourceVector,
+    optimized_initial_budget: ResourceVector,
+) -> MatchedInventory:
+    """Reuse the SAME canonical action-opportunity fingerprint for optimized search.
+
+    This checks immutable (action ID, kind, nominal 5-cost) inventories; it
+    does not claim that BES and optimized search already share multi-candidate
+    archive access, candidate sampling, measured costs or execution budgets.
+    """
+    from .optimized_search import SearchAction
+
+    optimized_actions = tuple(optimized_actions)
+    if any(not isinstance(a, SearchAction) for a in optimized_actions):
+        raise ValueError("optimized search actions must be typed")
+    # Priority is syntactic only and is ignored in the parity fingerprint.
+    bridge = tuple(BlindAction(a.action_id, a.kind, a.cost, 0)
+                   for a in optimized_actions)
+    result = audit_action_parity(
+        forecast_actions, bridge,
+        bes_initial_budget=bes_initial_budget,
+        blind_initial_budget=optimized_initial_budget,
+    )
+    return MatchedInventory(
+        result.action_count, result.action_ids, result.resource_components,
+        result.action_opportunity_sha256, result.initial_budget,
+        "PREEXECUTION_ACTION_PARITY_ONLY_ARCHIVE_AND_REAL_INFERENCE_NOT_MATCHED",
+    )
