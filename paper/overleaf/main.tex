@@ -1391,6 +1391,33 @@ are synthetic and provide \emph{no} U-CODE effectiveness
 estimate. Real empirical results require genuinely sealed
 and replayed oracles before any table can be filled.
 
+\paragraph{Structural metering and policy-neutral receipts.}
+The first-party \texttt{metering\_attestation.py} reference now checks
+whether all five resources are separately represented with finite,
+nonnegative consumption, source-specific receipt digests,
+independence claims and enforcement flags. Token and test counters
+must be whole-valued (including integral floating-point representations
+used by the existing budget-vector interface). A missing dimension,
+including an unmeasured zero, or a declared model-self-reported counter
+fails the structural check. The separate
+\texttt{metering\_reconciliation.py} reference compares one appended
+action receipt with the pre/post shared-candidate ledger and all five
+resource deltas; it does not use evaluator-only correctness.
+A Linux-only first-party subprocess smoke uses fixed Python fixtures
+to exercise a wall watchdog and coarse integer-second CPU limit while
+recording monotonic wall time and aggregate child-process CPU usage.
+These synthetic controls expose measurement omissions, but the
+source identifiers, enforcement flags and SHA256-shaped receipt digests
+remain caller-declared and \emph{are not authenticated attestations}.
+In particular, aggregate child accounting is not reliably attributable
+under concurrent execution, and the smoke does not enforce a network
+namespace, rootless container, sealed filesystem, trusted GPU meter,
+token counter, or test-dispatch quota. Both structural output types
+therefore permanently report that external authentication and approval
+for real trials are absent. An independent runner and signed, per-run
+five-resource evidence remain prerequisites for the prospective paired
+evaluation; no empirical model or task result is implied.
+
 \section{Results}\label{sec:results}
 % NO EMPIRICAL RQ RESULTS EXIST AT THIS MANUSCRIPT STATE.
 % Add tables and figures ONLY after executable, revision-pinned runs and
