@@ -91,7 +91,7 @@ def inspect_plan(selected: dict, plan: dict) -> tuple[PlannedModel, ...]:
             item.get("gpu_count_for_model") != 1
         ):
             raise ValueError("initial one-GPU 80GB sizing must be explicit")
-        if item.get("rental_gpu_for_initial_preflight") != "A100-SXM4-80GB":
+        if item.get("rental_gpu_for_initial_preflight") != "A100-80GB":
             raise ValueError("all six models must target the ONE A100 80GB GPU type")
         if item.get("model_id").startswith("mistralai/") and (
             item.get("ampere_fp8_fallback_kernel")
