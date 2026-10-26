@@ -75,6 +75,29 @@ Prompts, RNG sampling, actual generation and tool opportunities, model
 checkpoint snapshots, sealed oracles and safety remain unverified.
 This is **engineering parity, not a real paired effectiveness result**.
 
+## Correlation-aware whole-archive Bayesian planning (27 October 2026)
+
+The new [finite joint-truth Bayesian search reference](src/ucode/correlated_archive_bes.py)
+models **dependence between the acceptability of different archived patches**,
+not just dependence among diagnostic outcomes for a single patch. A visible
+diagnostic on patch A can therefore change the predicted acceptability of
+patch B; a repair-production outcome can update the latent belief about its
+parent. The algorithm uses the **same public action-target menu** as the
+uncertainty-free comparator, while keeping its private joint probability
+model out of the baseline.
+
+A [same-marginal synthetic falsifier](tests/test_correlated_archive_bes.py)
+shows that an independent versus anti-correlated three-patch prior can
+reverse the preferred first diagnostic, despite identical per-patch
+marginal priors. See the [mathematical and integrity ledger](docs/CORRELATED_JOINT_TRUTH_2026-10-27.md)
+and the updated [Springer manuscript source](paper/overleaf/main.tex).
+
+**Not empirical:** no fitted joint priors, sealed external evaluation,
+verified task permissions, actual model execution, trusted five-resource
+metering, calibrated risk guarantee, or live Overleaf synchronization.
+The correlated planner is a bounded offline sensitivity-analysis
+reference, **not** a validated improvement over uncertainty-free search.
+
 ## Six LLMs selected for the planned study (25 October 2026)
 
 All six recommended models have been **accepted by the researcher for the U-CODE study plan**. The [version-controlled six-model configuration](configs/accepted_six_model_study_2026-10-25.json), [model preflight code](src/ucode/model_readiness.py), and [experiment/reproducibility protocol](docs/SIX_MODEL_STUDY_PLAN_2026-10-25.md) preserve every checkpoint—none is silently excluded for being larger or gated.
