@@ -705,6 +705,33 @@ and independently tested executable task resource
 is a \emph{future output}, not a property of this
 metadata-only release.
 
+\paragraph{Prospective large multilingual source (not incorporated).}
+For a possible independent, larger task-admission pool,
+we registered the public SWE-rebench~V2 dataset
+\cite{badertdinov2026swerebench}, whose publisher
+describes $32{,}079$ tasks across twenty repository
+language categories. This is an \emph{external}
+published dataset, not new U-CODE ground-truth data.
+Its rows include gold patches, test patches and
+test identifiers; those fields are forbidden from
+policy-visible task discovery. Our separately
+developed \emph{unexecuted} offline intake adapter
+can project only seven non-oracle metadata columns,
+normalize candidate language aliases to the original
+twelve query-language categories, and flag
+same-repository/base-revision overlap for review.
+The adapter requires an immutable source revision and
+a locally obtained Parquet snapshot; neither the
+published $32{,}079$ rows nor their test environments
+have been imported, replayed or approved in the
+present study. Original dataset-level licensing
+does not supersede source-repository license
+conditions. The source must undergo independent
+oracle and leakage adjudication before any
+future controlled evaluation, and may not be
+merged with the $120$-PR frame without a
+separately registered cohort definition.
+
 Sixty-two of the $119$ retrieved PRs had at least
 one changed file with an eligible production-source
 \emph{suffix and path}; this weak signal can include
