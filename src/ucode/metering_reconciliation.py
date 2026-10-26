@@ -14,7 +14,7 @@ from dataclasses import dataclass
 
 from .matched_session import SharedSession
 from .metering_attestation import (
-    RESOURCE_FIELDS, StructuralMeteringAudit, MeteringAttestationError,
+    RESOURCE_FIELDS, HEX64, StructuralMeteringAudit, MeteringAttestationError,
 )
 from .vector_policy import ResourceVector
 
@@ -65,7 +65,7 @@ def reconcile_metering_action(
             + (after.receipts[-1].action_id,)):
         raise MeteringAttestationError("receipt does not match attempted chronology")
     if (not isinstance(structural.run_id, str)
-            or not structural.run_id.strip()):
+            or not structural.run_id.strip() or len(structural.run_id) > 128):
         raise MeteringAttestationError("nonblank structural run ID required")
     read = structural.consumed
     stamps = structural.source_fingerprints
@@ -74,6 +74,10 @@ def reconcile_metering_action(
             or not isinstance(stamps, tuple) or len(stamps) != 5
             or tuple(k for k, _ in stamps) != RESOURCE_FIELDS):
         raise MeteringAttestationError("five canonical meter rows required")
+    for field, digest in stamps:
+        if not isinstance(digest, str) or not HEX64.fullmatch(digest):
+            raise MeteringAttestationError(
+                "invalid source receipt fingerprint: " + field)
     expected = after.receipts[-1].reported_cost
     for name, amount in read:
         if (type(amount) is bool or not isinstance(amount, (int, float))
