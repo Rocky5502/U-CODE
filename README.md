@@ -16,6 +16,44 @@ U-CODE studies **when a software engineering agent should test, retrieve context
 
 <sub>Figure 1. Proposed U-CODE architecture. The top row is the risk-aware agent policy (task → interventions → evidence modeling → BES → controlled execution → release/abstention); the curved teal arrow returns **visible** execution feedback from the execution stage to BES. The lower research lane independently admits tasks, seals the functional oracle, evaluates released artifacts, and summarizes evidence. **Architectural design, not a completed or validated experimental result.** [View scalable SVG](docs/figures/ucode-framework.svg).</sub>
 
+## Compact 120-repository dataset cleaning (27 October 2026)
+
+The original 120 unique repository-name/PR-link discovery records span
+**12 GitHub query-language strata, 10 PR links each**: Python,
+JavaScript, TypeScript, Java, Go, Rust, C++, C, C#, Kotlin, PHP and Ruby.
+Read-only metadata retrieval succeeded for 119 links. The audited
+triage identified 62 **production-source PATH** leads, 14 higher-priority
+manual-review cases, an initial **12-item manual-review queue** spanning
+nine query-language strata, and 11 source-lead query-language mismatches
+or unobserved changed-source languages. **Zero tasks** are approved for
+real execution: path suffixes do not establish independent functional
+oracles, file-specific rights or per-line AI authorship.
+
+This is now a versioned compact [120-repo discovery frame](data/curated/2026-10-27/discovery_frame_120_NOT_EXECUTABLE.csv)
+plus [frozen, CI-verified twelve-stratum summary](data/curated/2026-10-27/frozen_cleaning_summary.json),
+[full data card and seven-day gated pilot schedule](data/curated/README.md),
+[deterministic offline cleaning library](src/ucode/dataset_curation.py)
+and [dataset builder](scripts/build_clean_pr_dataset.py).
+The builder joins all 120 canonical audit entries, preserves failures,
+checks immutable base/head/merge SHA references and lineage hints,
+separates search from changed-path languages, prevents unsupported
+promotion to executable tasks and exports **four small source-free
+files**, including `clean_metadata_120.csv`, a language table,
+and a 12-item manual review queue. CI attaches these as
+`ucode-pr-metadata-clean-v1` for independent inspection.
+
+```bash
+python -m scripts.build_clean_pr_dataset --output-dir dist/datasets/ucode_pr_metadata_v1
+```
+
+**Scope and one-week limitation:** metadata cleaning is inexpensive
+and does not require a rented GPU, but producing a genuinely
+independent 12-language repair benchmark requires rights clearance,
+pre-fix task reconstruction, executable isolated environments, and
+separate sealed correctness oracles. The one-week target is an
+**engineering/qualification pilot**, not a guarantee of 12-language
+or six-model full experimental Results.
+
 ## Optimized uncertainty-free search comparator (26 October 2026)
 
 A new [bounded heuristic beam-search reference](src/ucode/optimized_search.py)
