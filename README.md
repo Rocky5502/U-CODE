@@ -98,6 +98,27 @@ metering, calibrated risk guarantee, or live Overleaf synchronization.
 The correlated planner is a bounded offline sensitivity-analysis
 reference, **not** a validated improvement over uncertainty-free search.
 
+## Policy-neutral metering attestation prototype (27 October 2026)
+
+A new [five-resource structural metering gate](src/ucode/metering_attestation.py)
+checks candidate evidence for **tokens, test calls, GPU, CPU, and wall time**,
+requiring separately declared source counters, cap enforcement, independence
+and receipt hashes for each. The
+[shared-ledger reconciliation](src/ucode/metering_reconciliation.py)
+compares one new action receipt against all five recorded budget deltas and
+the SHA256-fingerprinted visible execution trace. Both are policy-neutral,
+so neither algorithm is granted extra meter or evaluator-only information.
+
+A **Linux first-party subprocess smoke** tests hardcoded internal scripts
+with a wall watchdog and integer CPU rlimit; no untrusted repository code is
+run. The [research-integrity memo](docs/METERING_ATTESTATION_CONTRACT_2026-10-27.md)
+documents its limitations. These contracts remain **structural only**:
+claimed receipt digests are not cryptographic signatures; CPU child rusage
+can include concurrent children; no rootless network-isolated runner, trusted
+token/test/GPU counters, independently signed attestation or real executable
+task has been established. The APIs explicitly decline real-trial approval.
+The Springer [Methods draft](paper/overleaf/main.tex) reflects this boundary.
+
 ## Six LLMs selected for the planned study (25 October 2026)
 
 All six recommended models have been **accepted by the researcher for the U-CODE study plan**. The [version-controlled six-model configuration](configs/accepted_six_model_study_2026-10-25.json), [model preflight code](src/ucode/model_readiness.py), and [experiment/reproducibility protocol](docs/SIX_MODEL_STUDY_PLAN_2026-10-25.md) preserve every checkpoint—none is silently excluded for being larger or gated.
