@@ -6,6 +6,7 @@ from ucode.conditional_bes import ConditionalKernel, ConditionalRow, Observation
 from ucode.correlated_archive_bes import (
     CandidateProfile, CorrelatedPlan, CorrelatedProducerRow, FrozenCorrelatedInputs, TruthAtom,
     _producer_branches, plan_correlated_archive, record_correlated_archive,
+    public_producer_trace_sha256,
 )
 from ucode.matched_session import SharedDecision, SharedSession, commit_shared
 from ucode.optimized_search import SearchAction, SearchCandidate, SearchState
@@ -315,6 +316,48 @@ class CorrelatedArchiveTests(unittest.TestCase):
     def test_target_free_generator_cannot_depend_on_hidden_parent(self):
         with self.assertRaisesRegex(ValueError, "truth-independent"):
             producer(produced_true=.8, produced_false=.2)
+
+    def test_failed_real_production_requires_explicit_prior_binding(self):
+        s = commit_shared(
+            seeded(), (REP,),
+            SharedDecision("rep", "repair", A, REP.cost),
+            reported_cost=REP.cost)
+        with self.assertRaisesRegex(ValueError, "producer-history binding"):
+            plan_correlated_archive(s, (REP,), frozen())
+        # The digest binds an externally supplied prior to the public
+        # producer history; it does NOT independently certify calibration.
+        inp = replace(
+            frozen(),
+            conditioned_on_producer_receipts_sha256=public_producer_trace_sha256(s))
+        p = plan_correlated_archive(s, (REP,), inp)
+        self.assertEqual(p.decision.kind, "abstain")
+
+    def test_producer_binding_changes_with_visible_outcome(self):
+        failed = commit_shared(
+            seeded(), (REP,),
+            SharedDecision("rep", "repair", A, REP.cost),
+            reported_cost=REP.cost)
+        produced = commit_shared(
+            seeded(), (REP,),
+            SharedDecision("rep", "repair", A, REP.cost),
+            reported_cost=REP.cost, new_candidate_sha256=B)
+        self.assertNotEqual(public_producer_trace_sha256(failed),
+                            public_producer_trace_sha256(produced))
+
+    def test_produced_real_patch_requires_new_joint_profile(self):
+        after = commit_shared(
+            seeded(), (REP,),
+            SharedDecision("rep", "repair", A, REP.cost),
+            reported_cost=REP.cost, new_candidate_sha256=B)
+        inp = replace(
+            frozen(),
+            conditioned_on_producer_receipts_sha256=public_producer_trace_sha256(after))
+        with self.assertRaisesRegex(ValueError, "exactly match"):
+            plan_correlated_archive(after, (REP,), inp)
+
+    def test_producer_binding_rejects_invalid_digest(self):
+        with self.assertRaisesRegex(ValueError, "requires SHA256"):
+            replace(frozen(), conditioned_on_producer_receipts_sha256="bad")
 
     def test_missing_archive_profile_rejected(self):
         with self.assertRaisesRegex(ValueError, "exactly match"):
