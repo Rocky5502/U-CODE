@@ -119,13 +119,13 @@ class AIGalaxyModelPlanningTests(unittest.TestCase):
     def test_fp8_accelerator_compatibility_not_assumed(self):
         rows = inspect_plan(SELECTED, PLAN)
         x = next(r for r in rows if r.model_id.startswith("mistralai/"))
-        self.assertEqual(x.gpu, "A100-SXM4-80GB")
+        self.assertEqual(x.gpu, "A100-80GB")
         self.assertIn("native_fp8_accelerator_compatibility_not_tested",
                       x.blockers)
 
     def test_single_A100_GPU_type_for_all_six(self):
         models = inspect_plan(SELECTED, PLAN)
-        self.assertEqual({m.gpu for m in models}, {"A100-SXM4-80GB"})
+        self.assertEqual({m.gpu for m in models}, {"A100-80GB"})
         self.assertEqual(PLAN["profiles"]["sequential_one_gpu"]["requested_gpu_count"], 1)
 
     def test_h100_requirement_cannot_be_reintroduced(self):
