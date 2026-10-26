@@ -38,10 +38,11 @@ is bound to the **original patch**, including after later repair.
 heuristic action-opportunity proxies, not expected patch-success probabilities.
 The [static BES-versus-optimized inventory audit](src/ucode/matched_action_inventory.py)
 matches action IDs, kinds, five-dimensional nominal costs and initial caps,
-but full parity is **blocked** because current BES tracks one candidate
-and the heuristic baseline has an archive; no shared measured-cost
-LLM/tool executor, training-only tuned weights, independent rights-cleared
-tasks or sealed-oracle outcomes exist. The existing eight-policy and
+and the new [matched action-target expander](src/ucode/matched_opportunities.py)
+now also offers both policies the same candidate-target choices.
+**End-to-end parity remains blocked** by missing shared measured-cost
+LLM/tool execution, training-only tuned weights, independently rights-cleared
+tasks and sealed-oracle outcomes. The existing eight-policy and
 six-model prospective rosters are unchanged.
 
 ## Shared candidate/receipt ledger (26 October 2026)
@@ -58,11 +59,18 @@ exercise both policy paths on common synthetic states, including cases where
 the two release gates disagree. Details and scientific falsifiers are in
 [the dated research ledger](docs/SHARED_MATCHED_ARCHIVE_2026-10-26.md).
 
-**Scope limitation:** conditional BES is still only jointly optimized
-for single-candidate diagnostic evidence; the archive adapter performs
-per-patch conditional planning and one-step creation forecasts, **not**
-a full multicandidate Bellman search. Reported consumption is not
-independently measured hardware telemetry or sandbox enforcement.
+**Updated 26 October 2026:** the [joint conditional BES planner](src/ucode/joint_conditional_bes.py)
+now performs finite-horizon whole-archive look-ahead across diagnostic
+targets and symbolic future generation/repair branches. The
+[matched uncertainty-free controller](src/ucode/matched_opportunities.py)
+uses the same public action-target opportunity menu, but no Bayesian
+inputs. The original [per-patch adapter](src/ucode/conditional_archive.py)
+remains available for regression comparisons. See the
+[joint planner research ledger](docs/JOINT_MULTICANDIDATE_BES_2026-10-26.md)
+and [synthetic adversarial tests](tests/test_joint_conditional_bes.py).
+**Limits:** finite factorized hypothetical model only; no train-fitted
+kernels, admitted tasks, sealed real trials, independently measured
+hardware telemetry, sandbox enforcement, or demonstrated reliability gain.
 Prompts, RNG sampling, actual generation and tool opportunities, model
 checkpoint snapshots, sealed oracles and safety remain unverified.
 This is **engineering parity, not a real paired effectiveness result**.
