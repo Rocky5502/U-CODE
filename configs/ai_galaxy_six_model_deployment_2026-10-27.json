@@ -17,7 +17,9 @@
       "local_nvme_gb_min": 500,
       "local_nvme_gb_preferred": 1000,
       "dataset_streaming_required": true,
-      "notes": "Use H100-80GB if native Devstral FP8 support is required without model conversion; A100-80GB for other BF16 models subject to measured cache/OOM preflight"
+      "notes": "Single NVIDIA A100-SXM4-80GB for EVERY selected model, strictly one model at a time. Devstral FP8 loads as supported A100 weight-only W8A16 via vLLM Marlin (not native H100 W8A8); fallback BF16 must pass 80GB peak VRAM and 8K one-sequence check. No H100 rental.",
+      "required_gpu_model": "NVIDIA A100 80GB",
+      "no_alternate_gpu_required": true
     },
     "simultaneous_six_gpu": {
       "strategy": "one_isolated_service_per_gpu",
@@ -25,7 +27,8 @@
       "required_gpu_vram_gb_each": 80,
       "host_ram_gb_per_gpu_min": 64,
       "local_nvme_gb_min": 1000,
-      "notes": "Six parallel engines require six suitable GPU instances or verified tenancy arrangements; not economically justified until model and dataset gates pass"
+      "notes": "Optional capacity comparison ONLY: 6 x A100 80GB, no different GPU families. User requests one GPU rental; do NOT deploy this profile without separate budget approval.",
+      "required_gpu_model_each": "NVIDIA A100 80GB"
     }
   },
   "resource_policy": {
@@ -107,7 +110,7 @@
       "parameters_billions_approx": 24.0114,
       "bf16_weight_floor_decimal_gb_approx": 48,
       "bf16_weights_are_not_total_vram": true,
-      "rental_gpu_for_initial_preflight": "H100-80GB",
+      "rental_gpu_for_initial_preflight": "A100-SXM4-80GB",
       "gpu_vram_gb_requested": 80,
       "gpu_count_for_model": 1,
       "vllm_openai_compatible_endpoint_port": 8102,
@@ -126,7 +129,8 @@
       "model_inference_executed": false,
       "actual_peak_vram_gb": null,
       "actual_tokens_per_second": null,
-      "notes": "H100 preferred to validate first-party FP8 Mistral3 runtime; do not assume A100 FP8 kernels work"
+      "notes": "Mistral official docs explicitly support single A100; vLLM Ampere FP8 supports weight-only W8A16/Marlin, NOT H100 native W8A8. Pin known-working vLLM+transformers; test this exact multimodal-format checkpoint on A100 80GB (8K, one seq), otherwise try BF16 with ~48 GB weights plus KV/overhead. Exclude only after actual A100 failure and a preregistered review; no second GPU rental.",
+      "ampere_fp8_fallback_kernel": "vLLM_W8A16_Marlin_WEIGHT_ONLY_UNVERIFIED_FOR_THIS_CHECKPOINT"
     },
     {
       "model_id": "deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct",
@@ -209,5 +213,10 @@
       "actual_tokens_per_second": null,
       "notes": "Gated terms and user authorization required before downloading"
     }
+  ],
+  "single_gpu_constraint": "ONLY_NVIDIA_A100_80GB_FOR_ALL_SIX_MODEL_INFERENCE_PRE-FLIGHTS",
+  "technical_sources": [
+    "https://docs.mistral.ai/vibe/code/cli/offline-models",
+    "https://docs.vllm.ai/en/latest/features/quantization/fp8/"
   ]
 }
