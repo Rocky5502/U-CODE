@@ -36,10 +36,14 @@ class MeteringAttestationError(ValueError):
 
 
 def _valid_quantity(field: str, amount: object) -> bool:
-    if field in INTEGER_FIELDS:
-        return type(amount) is int and amount >= 0
-    return (isinstance(amount, Real) and not isinstance(amount, bool)
-            and isfinite(amount) and amount >= 0)
+    # ResourceVector represents all components as numeric and often stores
+    # integral counters as floats (e.g. 2.0). These are valid whole counts,
+    # unlike 2.3, NaN, infinity, negative values or booleans.
+    if not isinstance(amount, Real) or isinstance(amount, bool):
+        return False
+    if not isfinite(amount) or amount < 0:
+        return False
+    return field not in INTEGER_FIELDS or float(amount).is_integer()
 
 
 @dataclass(frozen=True)
