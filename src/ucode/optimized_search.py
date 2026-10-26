@@ -12,7 +12,6 @@ Not yet a fair END-TO-END comparison with one-candidate conditional BES:
 the latter still needs a comparable archive and real action adapters.
 """
 from dataclasses import dataclass, field
-from hashlib import sha256
 from math import isfinite
 import re
 from typing import Sequence
@@ -23,12 +22,6 @@ from .vector_policy import (
 
 _HASH = re.compile(r"^[0-9a-f]{64}$")
 _KINDS = ("generate", "repair", "test", "static_analysis", "retrieve")
-_FORBIDDEN = frozenset((
-    "posterior", "prior", "confidence", "predicted_success", "risk",
-    "sensitivity", "specificity", "oracle", "oracle_passed", "gold",
-    "gold_patch", "correctness", "expected_terminal_value_after",
-))
-
 
 def _digest(value: str) -> bool:
     return isinstance(value, str) and bool(_HASH.fullmatch(value))
@@ -117,15 +110,37 @@ class SearchState:
         if len({o.action_id for o in self.observations}) != len(self.observations):
             raise ValueError("diagnostic action can produce one recorded observation")
         seen = set()
+        creators = set()
+        creation_steps = {}
+        attempted_steps = {aid: step for step, aid in enumerate(self.attempted)}
         for candidate in self.candidates:
-            if candidate.parent_sha256 is not None and candidate.parent_sha256 not in seen:
+            parent = candidate.parent_sha256
+            if parent is not None and parent not in seen:
                 raise ValueError("candidate parent must precede descendant")
-            if candidate.created_by != "initial" and candidate.created_by not in self.attempted:
-                raise ValueError("candidate must originate from attempted action")
+            if candidate.created_by != "initial":
+                if candidate.created_by not in attempted_steps:
+                    raise ValueError("candidate must originate from attempted action")
+                if candidate.created_by in creators:
+                    raise ValueError("single-use generating action cannot create two artifacts")
+                if parent is not None and (
+                    attempted_steps[candidate.created_by] <= creation_steps[parent]
+                ):
+                    raise ValueError("child repair cannot precede parent creation")
+                creators.add(candidate.created_by)
+                creation_steps[candidate.sha256] = attempted_steps[candidate.created_by]
+            else:
+                creation_steps[candidate.sha256] = -1
             seen.add(candidate.sha256)
+        observation_steps = []
         for obs in self.observations:
-            if obs.action_id not in self.attempted or obs.candidate_sha256 not in seen:
+            if obs.action_id not in attempted_steps or obs.candidate_sha256 not in seen:
                 raise ValueError("observation cannot refer to unseen action or patch")
+            step = attempted_steps[obs.action_id]
+            if step <= creation_steps[obs.candidate_sha256]:
+                raise ValueError("diagnostic observation predates candidate creation")
+            observation_steps.append(step)
+        if observation_steps != sorted(observation_steps):
+            raise ValueError("visible diagnostic sequence violates attempt chronology")
 
 
 @dataclass(frozen=True)
