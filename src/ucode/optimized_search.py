@@ -8,8 +8,10 @@ Future generated patches and test signs are UNKNOWN; the beam optimizes an
 opportunity proxy, not expected correct software. This module never executes
 repository code, inference, or a hidden evaluator oracle.
 
-Not yet a fair END-TO-END comparison with one-candidate conditional BES:
-the latter still needs a comparable archive and real action adapters.
+The matched primary uncertainty-free path now lives in matched_opportunities.py
+and expands the same action-target menu as joint_conditional_bes.py. This
+legacy entry point remains for backward compatibility; neither path proves
+end-to-end fairness without independently metered execution and sealed oracles.
 """
 from dataclasses import dataclass, field
 from math import isfinite
