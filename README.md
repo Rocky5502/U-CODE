@@ -61,6 +61,30 @@ separate sealed correctness oracles. The one-week target is an
 **engineering/qualification pilot**, not a guarantee of 12-language
 or six-model full experimental Results.
 
+## Optional larger multilingual benchmark screening (not run)
+
+The [SWE-rebench V2 public dataset](https://huggingface.co/datasets/nebius/SWE-rebench-V2)
+reports **32,079 upstream tasks and 20 repository-language categories**.
+This dataset belongs to its original authors and is NOT part of the 120
+distinct U-CODE discovery PRs. A new [local, optional metadata-only
+intake](src/ucode/external_dataset_intake.py) and
+[CLI](scripts/screen_swe_rebench_v2.py) accept only **seven projected,
+non-oracle fields** from an *already-downloaded, revision-pinned,
+offline Parquet snapshot*. They explicitly forbid reading the upstream
+gold solution patch, test patch, test IDs, problem statement,
+install instructions or LLM annotations into the intake table.
+They normalize twelve in-scope language aliases, flag duplicate
+source identities and same-base/overlapping repository candidates,
+and never mark tasks runnable or independent.
+
+The [source registration](configs/external_multilingual_source_swe_rebench_v2_2026-10-27.json)
+and [intake protocol](docs/SWE_REBENCH_V2_SAFE_DATA_INTAKE_2026-10-27.md)
+retain source rights, executable task admissions, source revision
+and GPU experiments as **unverified/not run**. Real data acquisition
+and evaluator reconstruction require separate authorization and a
+rootless, network-off sandbox. Do not describe this external
+source as a new original U-CODE or Nature Scientific Data dataset.
+
 ## Optimized uncertainty-free search comparator (26 October 2026)
 
 A new [bounded heuristic beam-search reference](src/ucode/optimized_search.py)
