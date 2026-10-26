@@ -129,7 +129,11 @@ class JointArchiveTests(unittest.TestCase):
         # B remains untested; a new globally unused test can target B.
         next_plan = plan_joint_archive(
             after, (TEST, TEST2),
-            model(priors=((A, .5, "base"), (B, .5, "base")), horizon=1))
+            model(priors=((A, .5, "base"), (B, .5, "base")),
+                  kernels=(("base", ConditionalKernel(PERFECT.rows + (
+                      ConditionalRow("test2", (Observation("test", False),),
+                                     .5, .5),))),),
+                  horizon=1))
         self.assertEqual((next_plan.decision.action_id,
                           next_plan.decision.target_sha256), ("test2", B))
 
