@@ -12,6 +12,20 @@
 
 ---
 
+## 27 OCTOBER 2026 — METERING AND LEDGER-BOUND RESOURCE ACCOUNTING UPDATE
+
+**This section supersedes the earlier statement that the next unblocked task is to implement a metering schema.** The actual **independent physically hardened runner** and authenticated five-component metering remain open.
+
+- [Structural contract](../src/ucode/metering_attestation.py): policy-neutral finite nonnegative token/test/GPU/CPU/wall evidence readings, independently declared counter types, enforced-cap claims, source receipt SHA256-shaped digests, fail-closed missing/zero/unmetered checks. Integer-valued floats (e.g. 2.0) are accepted for whole token/test counts to match ResourceVector; fractional counts still fail. An asserted digest/flag is NOT authentication.
+- [Per-action reconciliation](../src/ucode/metering_reconciliation.py): links one structurally checked five-vector to an appended shared session action, matched budget deltas, and pre/post public ledger traces; never accepts correctness priors or hidden oracle labels. All returned authorization/physical-cap booleans are false.
+- [First-party bounded Linux subprocess smoke](../src/ucode/metering_attestation.py) only executes fixed Python fixtures with an integer-second CPU RLIMIT and a wall watchdog; it has NO network/filesystem namespace isolation, trusted GPU/token/test meter, robust process-specific CPU attribution or real-task approval.
+- [Adversarial tests](../tests/test_metering_attestation.py) and [ledger-bound tests](../tests/test_metering_reconciliation.py) plus the [scientific caveats](METERING_ATTESTATION_CONTRACT_2026-10-27.md).
+- **Verified intermediate CI:** [run 40380531997](https://github.com/Rocky5502/U-CODE/actions/runs/40380531997) passed **619 first-party offline tests on Python 3.10 and 3.12**, including structural metering and ledger parity. Later manuscript/README/handoff commits must be checked against their own current HEAD CI.
+- Updated [prospective Springer Methods](../paper/overleaf/main.tex) to describe limitations; **live Overleaf was not edited**. No third-party PR code, model inference, sealed independent oracles, signed physical meter, cgroup isolation, or validated reliability gain resulted.
+- **Next concrete blocker:** create independent verifiable per-process/cgroup CPU and wall enforcement, controlled engine token and dispatcher test metering, GPU attribution, tamper-evident counter receipts and independently audited rootless network-off test infrastructure; bind those trusted receipts to admitted real tasks, but do not execute untrusted code until all rights/oracle/containment gates pass. In parallel, plan train-only fitting for joint priors and dependence kernels.
+
+---
+
 ## 27 OCTOBER 2026 ADDENDUM — LATEST ALGORITHM MILESTONE
 
 **This addendum supersedes historical checkpoint counts and next-step claims
