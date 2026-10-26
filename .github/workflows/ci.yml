@@ -27,6 +27,15 @@ jobs:
         run: python -m scripts.validate_framework_figure
       - name: Print six-model selected planning roster with hard readiness blockers
         run: python -m ucode.model_readiness
+      - name: Build compact 120-PR curated metadata dataset (NO executable tasks)
+        run: python -m scripts.build_clean_pr_dataset --output-dir dist/ucode-pr-metadata-clean
+      - name: Publish clean metadata dataset for independent inspection
+        if: matrix.python-version == '3.12'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ucode-pr-metadata-clean-v1
+          path: dist/ucode-pr-metadata-clean/
+          if-no-files-found: error
       - name: Validate canonical GitHub audit ledger (metadata only)
         run: python -m scripts.summarize_audit --audit-dir data/audits/2026-10-24 --manifest data/discovery/agent_pr_candidates_120.csv
       - name: Display noneligible source-path leads for human review (no network)
