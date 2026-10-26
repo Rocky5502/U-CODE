@@ -45,7 +45,7 @@ jobs:
         run: python -m scripts.validate_sbse_protocol
       - name: Validate candidate model and dataset registries
         run: python -m scripts.validate_research_registries
-      - name: Compile original source only
+      - name: Reproduce first-party structural five-resource meter and ledger smoke\n        run: python -m examples.metering_contract_smoke\n      - name: Compile original source only
         run: python -m compileall -q src
       - name: Export official-template Overleaf source bundle
         if: matrix.python-version == '3.12'
