@@ -13,6 +13,7 @@ import unittest
 from scripts.build_clean_pr_dataset import SOURCE, AUDIT_DIR
 from scripts.summarize_audit import load_manifest, load_records
 from scripts.audit_dataset_quality import audit_release
+from scripts.verify_dataset_release import verify_dataset_release
 from ucode.dataset_curation import build_dataset
 from ucode.dataset_quality import (
     dataset_schema, release_integrity_manifest,
@@ -134,6 +135,30 @@ class MetadataQualityTests(unittest.TestCase):
     def test_bad_source_sha_rejected(self):
         with self.assertRaisesRegex(ValueError, "SHA256"):
             release_integrity_manifest({"clean.csv": b""}, {"source": "fake"})
+
+    def test_release_verifier_rejects_tampered_csv(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            audit_release(output_dir=Path(tmp))
+            self.assertEqual(
+                verify_dataset_release(tmp)["files_verified"], 7)
+            csv_path = Path(tmp, "clean_metadata_120.csv")
+            csv_path.write_bytes(csv_path.read_bytes()+b"\nTAMPERED\n")
+            with self.assertRaisesRegex(ValueError, "SHA256"):
+                verify_dataset_release(tmp)
+
+    def test_release_verifier_rejects_missing_file(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            audit_release(output_dir=Path(tmp))
+            (Path(tmp)/"dataset_schema.json").unlink()
+            with self.assertRaisesRegex(ValueError, "missing"):
+                verify_dataset_release(tmp)
+
+    def test_release_verifier_rejects_extra_file(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            audit_release(output_dir=Path(tmp))
+            (Path(tmp)/"hidden_label.csv").write_text("oracle\n")
+            with self.assertRaisesRegex(ValueError, "unexpected"):
+                verify_dataset_release(tmp)
 
     def test_full_eight_file_source_only_release(self):
         with tempfile.TemporaryDirectory() as tmp:
