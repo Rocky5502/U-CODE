@@ -74,8 +74,11 @@ class MatchedOpportunityTests(unittest.TestCase):
                          opportunity_digest(s, (GEN, TEST, REP)))
 
     def test_archive_order_does_not_change_digest(self):
+        reordered = session((B, A))
+        reordered = replace(reordered, state=replace(
+            reordered.state, active_sha256=A))
         self.assertEqual(opportunity_digest(session((A, B)), (TEST, REP)),
-                         opportunity_digest(session((B, A)), (REP, TEST)))
+                         opportunity_digest(reordered, (REP, TEST)))
 
     def test_digest_sensitive_to_action_cost_and_capacity(self):
         s = session((A,))
@@ -85,6 +88,17 @@ class MatchedOpportunityTests(unittest.TestCase):
                 "gen", "generate", ResourceVector(tokens=3)),)))
         self.assertNotEqual(opportunity_digest(s, (GEN,)),
                             opportunity_digest(session((A,), cap=1), (GEN,)))
+
+    def test_digest_changes_with_visible_evidence_not_oracle(self):
+        s = session((A,))
+        positive = commit_shared(
+            s, (TEST,), SharedDecision("test", "test", A, TEST.cost),
+            reported_cost=TEST.cost, observed_positive=True)
+        negative = commit_shared(
+            s, (TEST,), SharedDecision("test", "test", A, TEST.cost),
+            reported_cost=TEST.cost, observed_positive=False)
+        self.assertNotEqual(opportunity_digest(positive, (TEST,)),
+                            opportunity_digest(negative, (TEST,)))
 
     def test_digest_has_no_private_fields(self):
         self.assertFalse(any(
