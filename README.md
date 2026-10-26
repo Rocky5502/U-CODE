@@ -44,6 +44,29 @@ LLM/tool executor, training-only tuned weights, independent rights-cleared
 tasks or sealed-oracle outcomes exist. The existing eight-policy and
 six-model prospective rosters are unchanged.
 
+## Shared candidate/receipt ledger (26 October 2026)
+
+The [shared offline action and archive contract](src/ucode/matched_session.py)
+now lets the search-optimized uncertainty-free policy and a
+[per-candidate conditional BES adapter](src/ucode/conditional_archive.py)
+operate on the **same typed candidate SHA archive, patch-specific evidence,
+one-use tool IDs, and reported five-resource receipt ledger**.
+The [pre-execution matched-start audit](src/ucode/matched_session.py)
+fails on changed initial candidate identity, action opportunities, archive
+capacity, or budget. [Adversarial offline tests](tests/test_matched_session.py)
+exercise both policy paths on common synthetic states, including cases where
+the two release gates disagree. Details and scientific falsifiers are in
+[the dated research ledger](docs/SHARED_MATCHED_ARCHIVE_2026-10-26.md).
+
+**Scope limitation:** conditional BES is still only jointly optimized
+for single-candidate diagnostic evidence; the archive adapter performs
+per-patch conditional planning and one-step creation forecasts, **not**
+a full multicandidate Bellman search. Reported consumption is not
+independently measured hardware telemetry or sandbox enforcement.
+Prompts, RNG sampling, actual generation and tool opportunities, model
+checkpoint snapshots, sealed oracles and safety remain unverified.
+This is **engineering parity, not a real paired effectiveness result**.
+
 ## Six LLMs selected for the planned study (25 October 2026)
 
 All six recommended models have been **accepted by the researcher for the U-CODE study plan**. The [version-controlled six-model configuration](configs/accepted_six_model_study_2026-10-25.json), [model preflight code](src/ucode/model_readiness.py), and [experiment/reproducibility protocol](docs/SIX_MODEL_STUDY_PLAN_2026-10-25.md) preserve every checkpoint—none is silently excluded for being larger or gated.
