@@ -5,7 +5,8 @@ import unittest
 from ucode.conditional_bes import ConditionalKernel, ConditionalRow, Observation
 from ucode.correlated_archive_bes import (
     CandidateProfile, CorrelatedPlan, CorrelatedProducerRow, FrozenCorrelatedInputs, TruthAtom,
-    _producer_branches, plan_correlated_archive, record_correlated_archive,
+    _posterior_branch, _producer_branches, plan_correlated_archive,
+    record_correlated_archive,
     public_producer_trace_sha256,
 )
 from ucode.matched_session import SharedDecision, SharedSession, commit_shared
@@ -272,6 +273,44 @@ class CorrelatedArchiveTests(unittest.TestCase):
         self.assertEqual(failure[0], 0)
         self.assertAlmostEqual(success[0], 1)
         self.assertTrue(all(a.bits[0] == a.bits[1] for a in success[1]))
+
+    def test_joint_bayes_update_obeys_marginal_martingale(self):
+        # The expected posterior of a sibling must equal its prior
+        # before the diagnostic outcome is observed.
+        atoms = (truth(False, True, mass=.5),
+                 truth(True, False, mass=.5))
+        row = ConditionalRow("test", (), .8, .2)
+        positive, pos = _posterior_branch(atoms, 0, row, True, 8)
+        negative, neg = _posterior_branch(atoms, 0, row, False, 8)
+        expected_b = (
+            positive * sum(a.probability for a in pos if a.bits[1])
+            + negative * sum(a.probability for a in neg if a.bits[1]))
+        self.assertAlmostEqual(positive+negative, 1)
+        self.assertAlmostEqual(expected_b, .5)
+
+    def test_producer_observation_obeys_parent_martingale(self):
+        atoms = (truth(False, mass=.5), truth(True, mass=.5))
+        row = producer("rep", "repair", "base",
+                       produced_true=.9, produced_false=.1,
+                       child_true=.8, child_false=.2)
+        failure, success = _producer_branches(atoms, 0, row, 8)
+        expected_parent = (
+            failure[0] * sum(a.probability for a in failure[1] if a.bits[0])
+            + success[0] * sum(a.probability for a in success[1] if a.bits[0]))
+        self.assertAlmostEqual(failure[0]+success[0], 1)
+        self.assertAlmostEqual(expected_parent, .5)
+
+    def test_generator_does_not_condition_existing_truth(self):
+        atoms = (truth(False, mass=.3), truth(True, mass=.7))
+        row = producer(produced_true=.6, produced_false=.6,
+                       child_true=.2, child_false=.2)
+        failure, success = _producer_branches(atoms, None, row, 8)
+        self.assertAlmostEqual(failure[0], .4)
+        self.assertAlmostEqual(success[0], .6)
+        self.assertAlmostEqual(
+            sum(a.probability for a in success[1] if a.bits[0]), .7)
+        self.assertAlmostEqual(
+            sum(a.probability for a in success[1] if a.bits[1]), .2)
 
     def test_production_support_cap_fails_closed(self):
         inp = frozen(keys=(), atoms=(truth(),), kernels=(),
