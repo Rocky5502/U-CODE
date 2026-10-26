@@ -1003,7 +1003,11 @@ correctness prior, posterior or diagnostic likelihood.
 action--target set $\Omega(s)$ for either policy: one target-free
 generation alternative, or one diagnostic/repair alternative
 per archived candidate, subject to capacity, used IDs and
-componentwise affordability. The pre-run audit additionally
+componentwise affordability. Here retrieval is modeled as
+candidate-scoped evidence; if a real retrieval adapter instead changes
+shared context for future generation, both policies must receive an
+explicit common context-state transition before confirmatory trials.
+The pre-run audit additionally
 requires equal initial tool catalog, archive and budget.
 A public SHA256 menu digest excludes policy-private predictions.
 
