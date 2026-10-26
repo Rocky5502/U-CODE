@@ -10,7 +10,7 @@ from ucode.conditional_archive import (
 )
 from ucode.matched_session import (
     SharedDecision, SharedReceipt, SharedSession, baseline_shared_decision,
-    commit_shared, record_baseline_shared,
+    commit_shared, record_baseline_shared, audit_shared_start,
 )
 from ucode.optimized_search import (
     SearchAction, SearchCandidate, SearchObservation, SearchPolicy, SearchState,
@@ -268,6 +268,76 @@ class SharedArchiveTests(unittest.TestCase):
         self.assertNotIn("actual_costs_measured",SharedSession.__dataclass_fields__)
         self.assertNotIn("oracle_passed",SharedReceipt.__dataclass_fields__)
         self.assertTrue(s.trace_sha256)
+
+
+    def test_matching_start_checks_archive_tools_and_budget_before_action(self):
+        x=SharedSession.empty(BUDGET)
+        match=audit_shared_start(x,x,(TEST,GEN),(GEN,TEST))
+        self.assertEqual(match.action_count,2)
+        self.assertEqual(len(match.action_opportunity_sha256),64)
+        self.assertIn("OFFLINE_START_ONLY",match.scope)
+        self.assertEqual(
+            match.action_opportunity_sha256,
+            audit_shared_start(x,x,(GEN,TEST),(TEST,GEN)).action_opportunity_sha256)
+
+    def test_initial_opportunity_mismatches_are_all_refused(self):
+        x=SharedSession.empty(BUDGET)
+        y=SharedSession.empty(BUDGET,max_candidates=1)
+        with self.assertRaisesRegex(ValueError,"archive capacity"):
+            audit_shared_start(x,y,(GEN,),(GEN,))
+        z=SharedSession.empty(ResourceVector(tokens=21,test_calls=2,
+                                            gpu_seconds=2,cpu_seconds=3,
+                                            wall_seconds=10))
+        with self.assertRaisesRegex(ValueError,"five-resource budgets"):
+            audit_shared_start(x,z,(GEN,),(GEN,))
+        with self.assertRaisesRegex(ValueError,"action IDs, kinds"):
+            audit_shared_start(x,x,(GEN,),(GEN2,))
+        with self.assertRaisesRegex(ValueError,"action IDs, kinds"):
+            audit_shared_start(x,x,(GEN,),(SearchAction(
+                "gen","generate",ResourceVector(tokens=3)),))
+        with self.assertRaisesRegex(ValueError,"action IDs, kinds"):
+            audit_shared_start(x,x,(GEN,),(SearchAction(
+                "gen","repair",GEN.cost),))
+
+    def test_initial_candidate_archive_mismatch_is_refused(self):
+        with self.assertRaisesRegex(ValueError,"initial candidate archive"):
+            audit_shared_start(seeded(A),seeded(B),(TEST,),(TEST,))
+
+    def test_matching_start_cannot_be_backdated_after_search(self):
+        s=SharedSession.empty(BUDGET)
+        d=SharedDecision("gen","generate",None,GEN.cost)
+        progressed=commit_shared(s,(GEN,),d,reported_cost=GEN.cost,
+                                 new_candidate_sha256=A)
+        with self.assertRaisesRegex(ValueError,"precede policy"):
+            audit_shared_start(progressed,progressed,(GEN,),(GEN,))
+
+    def test_positive_visible_test_does_not_force_conditional_release(self):
+        # SYNTHETIC counterexample to a universal U-CODE superiority claim:
+        # fixed train-only adverse diagnostic kernel gives low posterior even
+        # when simple blind test-count gate would release the same SHA.
+        session=commit_shared(
+            seeded(A),(TEST,),SharedDecision("test","test",A,TEST.cost),
+            reported_cost=TEST.cost,observed_positive=True)
+        baseline=baseline_shared_decision(session,(TEST,),SearchPolicy(depth=1))
+        model=ConditionalArchiveInputs(
+            priors=((A,.2),),kernels=((A,kernel("test",.2,.8)),),
+            rule=ReleaseRule(max_predicted_failure=.1),
+        )
+        conditional_choice=plan_conditional_archive(session,(TEST,),model).decision
+        self.assertEqual((baseline.kind,baseline.target_sha256),("release",A))
+        self.assertEqual(conditional_choice.kind,"abstain")
+
+    def test_old_patch_evidence_cannot_transfer_to_fresh_generated_patch(self):
+        s=commit_shared(
+            seeded(),(TEST,GEN),SharedDecision("test","test",A,TEST.cost),
+            reported_cost=TEST.cost,observed_positive=True)
+        s=commit_shared(s,(TEST,GEN),SharedDecision("gen","generate",None,GEN.cost),
+                        reported_cost=GEN.cost,new_candidate_sha256=B)
+        self.assertEqual(s.state.active_sha256,B)
+        self.assertEqual([o.candidate_sha256 for o in s.state.observations],[A])
+        inp=conditional(priors=((A,.5),(B,.1)),kernels=((A,kernel()),))
+        outcome=plan_conditional_archive(s,(TEST,GEN),inp).decision
+        self.assertEqual((outcome.kind,outcome.target_sha256),("release",A))
 
 
 if __name__=="__main__":
