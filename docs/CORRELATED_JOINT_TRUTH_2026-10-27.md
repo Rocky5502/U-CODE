@@ -117,8 +117,13 @@ state caps, target-free producer restrictions and off-policy receipt rejection.
 3. **No online producer reconciliation.** The finite planner correctly
    conditions hypothetical production branches, but an actual
    generation/repair receipt changes the real candidate roster.
-   A separate frozen, pre-outcome joint scorer must construct the
-   next joint prior, consistently conditioned on visible producer
+   The implementation now rejects an unchanged input that lacks
+   `conditioned_on_producer_receipts_sha256` after any real producer
+   receipt. This digest covers **only public producer events** and
+   binds a claimed reconditioned prior to the exact production history;
+   it does **not** prove the external scorer actually updated the prior
+   correctly. A separate frozen, pre-outcome joint scorer must construct
+   the next joint prior, consistently conditioned on visible producer
    outcomes; no automatic real-run transition is claimed.
 4. **No physical metering.** All five budgets in the current shared
    ledger are nominal reservations or caller-reported consumption.
