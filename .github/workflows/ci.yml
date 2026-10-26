@@ -29,6 +29,8 @@ jobs:
         run: python -m ucode.model_readiness
       - name: Audit and package source-free 120-PR metadata dataset (NO executable tasks)
         run: python -m scripts.audit_dataset_quality --output-dir dist/ucode-pr-metadata-clean
+      - name: Verify exported eight-file dataset SHA256 and no extra labels
+        run: python -m scripts.verify_dataset_release dist/ucode-pr-metadata-clean
       - name: Publish clean metadata dataset for independent inspection
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
