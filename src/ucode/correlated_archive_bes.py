@@ -11,6 +11,8 @@ No real patch generation, tool execution, model inference or hidden oracle.
 """
 from dataclasses import dataclass
 from functools import lru_cache
+from hashlib import sha256
+import json
 from typing import Sequence
 
 from .conditional_bes import ConditionalKernel, Observation, _probability
@@ -18,7 +20,8 @@ from .joint_conditional_bes import SymbolicCandidateKey
 from .matched_opportunities import _expand_keys, _key, matched_opportunities
 from .matched_session import SharedDecision, SharedSession, _common_catalog, commit_shared
 from .optimized_search import SearchAction
-from .vector_policy import DIAGNOSTICS, GENERATORS, ResourcePrices, ResourceVector
+from .vector_policy import (DIAGNOSTICS, GENERATORS, RESOURCE_FIELDS,
+                            ResourcePrices, ResourceVector)
 from .voi import ReleaseRule, terminal_value
 
 
@@ -110,6 +113,7 @@ class FrozenCorrelatedInputs:
     horizon: int = 2
     max_states: int = 30000
     max_atoms: int = 256
+    conditioned_on_producer_receipts_sha256: str | None = None
 
     def __post_init__(self):
         if not isinstance(self.profiles, tuple) or any(
@@ -151,6 +155,33 @@ class FrozenCorrelatedInputs:
             raise ValueError("atom cap must be 1..512")
         if len(self.prior) > self.max_atoms:
             raise ValueError("initial joint support exceeds atom cap")
+        digest = self.conditioned_on_producer_receipts_sha256
+        if digest is not None and (
+            not isinstance(digest, str) or len(digest) != 64
+            or any(ch not in "0123456789abcdef" for ch in digest)
+        ):
+            raise ValueError("producer receipt binding requires SHA256")
+
+
+def public_producer_trace_sha256(session: SharedSession) -> str:
+    """Hash only visible producer receipts, never private posteriors/oracles.
+
+    This is an INPUT BINDING, not proof a newly supplied joint prior was
+    correctly reconditioned. The prior's external scorer needs independent
+    review before any real use.
+    """
+    if not isinstance(session, SharedSession):
+        raise TypeError("typed shared session required")
+    rows = [{
+        "action_id": r.action_id,
+        "kind": r.kind,
+        "target": r.target_sha256,
+        "produced": r.resulting_sha256,
+        "reported_cost": {f: getattr(r.reported_cost, f)
+                          for f in RESOURCE_FIELDS},
+    } for r in session.receipts if r.kind in GENERATORS]
+    return sha256(json.dumps(rows, sort_keys=True,
+                             separators=(",", ":")).encode()).hexdigest()
 
 
 @dataclass(frozen=True)
@@ -236,6 +267,15 @@ def plan_correlated_archive(
         raise TypeError("typed session and frozen correlated inputs required")
     catalog = _common_catalog(actions)
     matched_opportunities(session, catalog)
+    expected_production_digest = (
+        public_producer_trace_sha256(session)
+        if any(r.kind in GENERATORS for r in session.receipts) else None
+    )
+    if inputs.conditioned_on_producer_receipts_sha256 != expected_production_digest:
+        raise ValueError(
+            "producer-history binding required after observed production; "
+            "supply an independently reconditioned frozen joint prior"
+        )
     real = {c.sha256: c for c in session.state.candidates}
     if set(real) != {p.sha256 for p in inputs.profiles}:
         raise ValueError("joint profiles must exactly match real archive")
