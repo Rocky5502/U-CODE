@@ -6,7 +6,8 @@ from ucode.matched_opportunities import (
     Opportunity, choose_matched_baseline, matched_opportunities,
     opportunity_digest, record_matched_baseline,
 )
-from ucode.matched_session import SharedDecision, SharedSession, commit_shared
+from ucode.matched_session import (SharedDecision, SharedSession, commit_shared,
+                                   baseline_shared_decision)
 from ucode.optimized_search import (
     SearchAction, SearchCandidate, SearchObservation, SearchPolicy, SearchState,
 )
@@ -118,6 +119,20 @@ class MatchedOpportunityTests(unittest.TestCase):
             s, (REP, old), SearchPolicy(depth=1))
         self.assertEqual((decision.action_id, decision.target_sha256),
                          ("repair", B))
+
+    def test_default_shared_baseline_routes_through_matched_menu(self):
+        old = SearchAction("old", "test", ResourceVector(test_calls=1))
+        s = commit_shared(
+            session((A, B)), (old, REP),
+            SharedDecision("old", "test", B, old.cost),
+            reported_cost=old.cost, observed_positive=False)
+        s = replace(s, state=replace(s.state, active_sha256=A))
+        policy = SearchPolicy(depth=1)
+        self.assertEqual(
+            baseline_shared_decision(s, (old, REP), policy),
+            choose_matched_baseline(s, (old, REP), policy))
+        self.assertEqual(
+            baseline_shared_decision(s, (old, REP), policy).target_sha256, B)
 
     def test_baseline_uses_no_posterior_input(self):
         self.assertEqual(set(choose_matched_baseline.__code__.co_varnames[:3]),
