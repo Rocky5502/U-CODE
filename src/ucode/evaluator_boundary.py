@@ -8,6 +8,7 @@ from dataclasses import dataclass
 from hashlib import sha256
 import json
 import re
+from urllib.parse import urlsplit
 
 _SHA40 = re.compile(r"^[0-9a-f]{40}$")
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
@@ -81,6 +82,31 @@ class EvaluatorRegistration:
         if (set(self.pr_authored_test_paths)
                 & set(self.evaluator_only_oracle_refs)):
             raise ValueError("PR-authored tests cannot be held-out oracle artifacts")
+        # These are GitHub-prefixed pre-fix task references, never places
+        # to embed arbitrary network addresses, fragments, oracle URLs,
+        # post-fix blobs, paths escaping the task repository or query tokens.
+        # A mutable issue URL is still NOT a frozen pre-PR specification.
+        prefix = "/" + self.repository + "/"
+        for ref in self.policy_visible_spec_refs:
+            parsed = urlsplit(ref)
+            if (parsed.scheme != "https" or parsed.netloc != "github.com"
+                    or parsed.query or parsed.fragment or parsed.username
+                    or parsed.password or "%" in parsed.path
+                    or not parsed.path.startswith(prefix)):
+                raise ValueError("unsafe policy-visible specification reference")
+            local_path = parsed.path[len(prefix):]
+            issue = re.fullmatch(r"issues/[1-9][0-9]*", local_path)
+            blob = re.fullmatch(r"blob/([0-9a-f]{40})/(.+)", local_path)
+            if issue and ref != self.issue_ref:
+                raise ValueError("policy-visible issue reference not task issue")
+            if blob:
+                blob_path = blob.group(2)
+                if blob.group(1) != self.task_base_sha or any(
+                    p in ("", ".", "..") for p in blob_path.split("/")
+                ) or "\\" in blob_path:
+                    raise ValueError("policy-visible spec must use pre-fix base")
+            if not issue and not blob:
+                raise ValueError("policy-visible spec must be task issue or pinned blob")
         if (self.oracle_commitment_sha256 is not None
                 and not _digest(self.oracle_commitment_sha256)):
             raise ValueError("oracle commitment must be SHA256")
