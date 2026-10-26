@@ -157,5 +157,49 @@ class ProspectiveOracleBoundaryTests(unittest.TestCase):
         self.assertFalse(result["independently_admitted"])
 
 
+    def test_visible_spec_rejects_network_and_query_gold_smuggling(self):
+        x = self.objects[0]
+        refs = (
+            "https://attacker.example/evaluator-secret",
+            x.issue_ref + "?oracle=private-secret",
+            x.issue_ref + "#hidden-test",
+            x.issue_ref.replace("https://", "http://"),
+            x.issue_ref.replace("github.com", "github.com.evil.example"),
+        )
+        for ref in refs:
+            with self.subTest(ref=ref), self.assertRaisesRegex(
+                    ValueError, "unsafe policy-visible"):
+                replace(x, policy_visible_spec_refs=(ref,))
+
+    def test_visible_spec_cannot_point_to_other_issue_or_post_fix_blob(self):
+        x = self.objects[1]
+        repo = x.repository
+        later = "a" * 40
+        with self.assertRaisesRegex(ValueError, "not task issue"):
+            replace(x, policy_visible_spec_refs=(
+                "https://github.com/" + repo + "/issues/999",))
+        with self.assertRaisesRegex(ValueError, "pre-fix base"):
+            replace(x, policy_visible_spec_refs=(
+                "https://github.com/" + repo + "/blob/" + later + "/docs/design.md",))
+
+    def test_visible_spec_ref_traversal_and_encoded_path_blocked(self):
+        x = self.objects[1]
+        p = "https://github.com/" + x.repository + "/blob/" + x.task_base_sha
+        for ref in (p + "/docs/../oracle.py",
+                    p + "/docs//oracle.py",
+                    p + "/docs/%2e%2e/oracle.py"):
+            with self.subTest(ref=ref), self.assertRaisesRegex(
+                    ValueError, "pre-fix base|unsafe"):
+                replace(x, policy_visible_spec_refs=(ref,))
+
+    def test_pinned_public_spec_still_valid_and_not_oracle(self):
+        x = self.objects[1]
+        view = policy_visible_registration(x)
+        self.assertEqual(view["policy_visible_spec_refs"],
+                         list(x.policy_visible_spec_refs))
+        self.assertNotIn("evaluator_only_oracle_refs", view)
+        self.assertFalse(evaluate_registration(x)["independently_admitted"])
+
+
 if __name__ == "__main__":
     unittest.main()
