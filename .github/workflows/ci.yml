@@ -45,6 +45,8 @@ jobs:
         run: python -m scripts.validate_sbse_protocol
       - name: Validate all six AI Galaxy model hardware and startup gates (offline)
         run: python -m scripts.plan_ai_galaxy_six_models
+      - name: Reproduce hypothetical one-A100 40-task rental scenario (NOT measured)
+        run: python -m scripts.estimate_ai_galaxy_rental --tasks 40 --policies 2 --seeds 1 --minutes-per-assignment 5
       - name: Validate candidate model and dataset registries
         run: python -m scripts.validate_research_registries
       - name: Reproduce first-party structural five-resource meter and ledger smoke
