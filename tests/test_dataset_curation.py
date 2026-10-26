@@ -7,6 +7,7 @@ from copy import deepcopy
 from hashlib import sha256
 from pathlib import Path
 import csv
+import json
 import tempfile
 import unittest
 
@@ -146,6 +147,25 @@ class DatasetCleaningTests(unittest.TestCase):
         self.assertTrue(all(r["lineage_group_review"] == "PENDING_INDEPENDENT_REVIEW"
                             for r in self.cleaned.rows))
         self.assertFalse(self.cleaned.report["independent_train_test_split_frozen"])
+
+    def test_in_repo_snapshot_matches_recomputed_canonical_data(self):
+        root = Path(__file__).resolve().parents[1]
+        saved = json.loads((root / "data/curated/2026-10-27/"
+                            "frozen_cleaning_summary.json").read_text(
+                                encoding="utf-8"))
+        current = self.cleaned.report
+        for name in ("discovered_pr_links", "distinct_repository_names",
+                     "metadata_retrieved", "production_source_path_leads",
+                     "first_pass_manual_review_leads",
+                     "shortlisted_for_manual_review",
+                     "independently_approved_executable_tasks",
+                     "discovery_manifest_sha256", "status_counts"):
+            with self.subTest(name=name):
+                self.assertEqual(saved[name], current[name])
+        for actual, pinned in zip(current["by_search_language"],
+                                  saved["by_search_language"]):
+            for name, value in pinned.items():
+                self.assertEqual(actual[name], value)
 
     def test_review_budget_zero_disables_shortlist_only(self):
         x = build_dataset(MANIFEST, AUDIT, max_review=0)
