@@ -964,93 +964,128 @@ telemetry. Independent sandbox execution and evaluator-side
 measured receipts are therefore prerequisites for an
 effectiveness comparison.
 
-For comparable \emph{preexecution} action catalogs, our
-extended audit computes the same sorted SHA256 inventory
-digest for conditional/BES reference actions and this
-heuristic controller as for the older fixed-schedule control,
-excluding forecast and heuristic fields
-(Eq.~\eqref{eq:action-parity}). Importantly, this static
-digest \emph{does not yet establish genuine action parity}:
-the heuristic implementation supports multiple archived
-candidate hashes and may release a previous patch, whereas
-our implemented conditional BES still searches diagnostics
-for one candidate. It would be invalid to present the
-current prototype comparison as a controlled head-to-head.
-Before held-out testing we must implement a shared candidate
-archive, identical candidate-generation/tool opportunities,
-matched checkpoint and prompt/seed access, measured resource
-enforcement and independent evaluator isolation for both
-policies. Hyperparameters and search budget must be tuned
-on disjoint training/validation repository groups, then
-frozen before opening oracle outcomes. Neither a beneficial
-result nor the superiority of uncertainty modeling is
-presupposed; this baseline is allowed to outperform U-CODE.
-The new checks are synthetic engineering tests, not
-observations for the Results section.
+For the primary matched comparison, the new first-party
+\texttt{matched\_opportunities.py} expands a \emph{common}
+public action--target menu before either policy scores it.
+In particular, a diagnostic or repair action is offered against
+every currently archived patch, while generation is target-free;
+one action ID remains globally single-use regardless of target.
+The uncertainty-free matched path
+(\texttt{choose\_matched\_baseline}) searches this common menu
+with its preregistered, probability-free heuristic, rather than
+privately fixing one target before search. Its beam uses symbolic
+future \emph{availability} only, not predicted patch correctness.
+The earlier \texttt{choose\_search} remains for compatibility
+and is not the matched primary comparator.
 
-\subsection{Shared candidate ledger and conditional-archive bridge}
+The canonical public opportunity digest includes action ID,
+kind, target, nominal resource reservation, candidate ancestry,
+archive capacity, attempted IDs and remaining budget, excluding
+all private likelihoods, priors and oracle fields. This is stronger
+than matching an initial action catalog, but still does not
+establish matched physical tool execution, prompt/model/seed
+access, or independent outcome evaluation. Neither a beneficial
+effect nor the superiority of uncertainty modeling is
+presupposed; the baseline may outperform U-CODE. All current
+tests are synthetic engineering checks, not Results observations.
+
+\subsection{Shared candidate ledger and bounded joint archive search}
 \label{sec:shared-archive}
 
-As an intermediate engineering step toward a matched experimental
-comparison, both policies now accept a \emph{common} typed, immutable
-ledger of patch SHA256 identities, generation/repair-parent links,
-candidate-bound visible diagnostic signs, globally single-use tool
-identifiers, and five-dimensional remaining budgets
-(\texttt{matched\_session.py}). This ledger is independent of a
-policy's predictor: the uncertainty-free baseline accesses no
-posterior or diagnostic likelihood. For an uncertainty-aware
-\emph{reference adapter}, frozen candidate priors and
-history-conditional kernels are supplied separately
-(\texttt{conditional\_archive.py}); evidence concerning patch
-$x$ cannot update the posterior of a repaired or separately
-generated patch $x'$ without its own trained transition model.
-The pre-run equality audit rejects discrepant action IDs, kinds,
-nominal costs, initial budgets, archive capacity and starting
-candidate identities. Its hashed receipt is a necessary
-\emph{opportunity-level} check, not proof of equal realized
-model calls, prompts or physical runtime.
+Both primary policy references now use a typed, immutable
+policy-neutral execution ledger of real patch SHA256 identities,
+generation/repair ancestry, candidate-bound \emph{visible}
+diagnostic outcomes, globally single-use tool identifiers and
+remaining five-dimensional resources
+(\texttt{matched\_session.py}). The ledger exposes no gold label,
+correctness prior, posterior or diagnostic likelihood.
+\texttt{matched\_opportunities.py} constructs the same feasible
+action--target set $\Omega(s)$ for either policy: one target-free
+generation alternative, or one diagnostic/repair alternative
+per archived candidate, subject to capacity, used IDs and
+componentwise affordability. The pre-run audit additionally
+requires equal initial tool catalog, archive and budget.
+A public SHA256 menu digest excludes policy-private predictions.
 
-The adapter evaluates a history-conditional diagnostic plan
-\emph{separately} for each currently archived patch, comparing
-its continuation value with the best immediately releasable
-alternative. It also compares one-step, precommitted
-candidate-generation or repair forecasts against that terminal
-alternative. Writing $\mathcal C$ for the current archive,
-the reference immediate stopping value is
+We retain \texttt{conditional\_archive.py} as a backward-compatible
+\emph{per-patch} reference, but the new
+\texttt{joint\_conditional\_bes.py} implements finite-horizon
+\emph{whole-archive} dynamic programming. A planning state is
 \begin{equation}
- V_{\mathrm{archive},0}(\mathcal C)
- =\max\left\{0,\max_{x\in\mathcal C}
-          U_0\bigl(p_x(h_x)\bigr)\right\},
+ s_t=\left(\mathcal C_t,
+ \{p_x,r_x,h_x\}_{x\in\mathcal C_t},
+ \mathcal A_t,\mathbf b_t\right),
+ \label{eq:joint-archive-state}
+\end{equation}
+where $p_x$ is the pre-outcome acceptability belief for patch
+$x$, $r_x$ is its frozen diagnostic profile, $h_x$ is
+\emph{only its own} visible diagnostic history,
+$\mathcal A_t$ contains globally available action IDs, and
+$\mathbf b_t$ is the remaining hard resource vector.
+The stopping value over the full archive is
+\begin{equation}
+ V_0(s)=\max\left\{0,\max_{x\in\mathcal C_t}
+ U_{\mathrm{rel}}(p_x)\right\}.
  \label{eq:archive-stop}
 \end{equation}
-where $h_x$ contains only diagnostics observed for candidate $x$.
-This is \emph{not} a jointly optimized multicandidate Bellman
-recursion: sequential testing of multiple candidates, jointly
-planned future generation/repair transitions and cross-candidate
-dependent evidence are not yet represented. The auxiliary
-search controller's archive and the adapter now share candidate
-storage and action accounting, but full \emph{policy capability}
-and tuning parity remain unresolved. Both must use the same
-sealed generation opportunities and executor when real
-comparison begins.
+For a fixed finite depth $d\le4$, our analytical recursion is
+\begin{equation}
+ \begin{split}
+ V_d(s)=\max\Bigl\{V_0(s),\;
+ \max_{\omega\in\Omega(s)}
+ \bigl[-\boldsymbol\lambda^\top\mathbf c(\omega)\\
+ +\sum_{z}P_{\theta}(z\mid s,\omega)
+ V_{d-1}\bigl(T_{\theta}(s,\omega,z)\bigr)\bigr]\Bigr\}.
+ \end{split}
+ \label{eq:joint-archive-bellman}
+\end{equation}
+The branch kernel is history-conditional for diagnostics and
+target-profile/history-conditional for repair; all quantities
+are externally supplied, frozen \emph{hypothetical} models.
+The recursion can test multiple different archived patches,
+retain a repaired parent, and generate a symbolic candidate
+before planning a later diagnostic on that candidate.
+This is exact \emph{only within the supplied finite,
+candidate-factorized transition model and state cap}, not
+a solution of the general coding-agent POMDP. The approach
+is conceptually related to Bayes-adaptive planning
+\cite{ross2011bayesadaptive} and sequential value of
+information across alternatives
+\cite{mes2011hierarchicalkg}, without inheriting their
+distributional assumptions or guarantees.
 
-For every chosen nonterminal action, the offline ledger stores
-its \emph{nominal reserved} vector and a separate
-\emph{caller-reported} consumption vector. It rejects action
-replays, stale patch diagnostics, changed repair ancestry,
-inconsistent cumulative accounting and any resource component
-exceeding the remaining bound. These are deterministic
-bookkeeping checks, \emph{not} measurement or enforcement of
-actual GPU, CPU, wall time, model tokens or malicious external
-processes. An independently audited runner is required before
-setting \texttt{actual\_costs\_measured=true} in experimental
-receipts. Adversarial tests use only hand-authored synthetic
-visible feedback; they include a case in which a
-test-count-based uncertainty-free terminal rule releases a
-patch while a frozen hypothetical adverse diagnostic kernel
-causes the conditional policy to abstain. This establishes
-that opposite decisions are possible by construction,
-not which policy achieves better empirical correctness.
+Future patches in the Bellman tree have typed
+\emph{symbolic branch identities}, never invented real SHA256
+values. Only an actual executor-produced content SHA may
+enter the shared ledger, and after real generation a separately
+frozen pre-outcome scorer must assign that \emph{actual}
+patch's prior/profile before replanning. Parent evidence is
+not copied to its child. Every publicly feasible opportunity
+must have the required frozen conditional likelihood row or
+target-specific producer forecast on each reachable branch;
+missing coverage raises an error rather than silently
+reducing the treatment's menu. The finite model presently
+factorizes evidence by candidate: sibling-patch dependence
+from a common task/model latent factor remains unmodeled,
+a substantive threat to validity.
+
+The reference planner reserves \emph{nominal} action vectors;
+the shared ledger separately checks \emph{caller-reported}
+five-dimensional consumption and rejects replays,
+inconsistent receipts and illegal lineage. These are
+deterministic bookkeeping properties, not independent
+physical measurement or hard sandbox enforcement. A
+production runner must enforce caps \emph{during} execution
+and independently meter tokens, test calls, GPU, CPU and
+wall time. Joint-planner computation itself must be
+charged to the same CPU/wall budget or covered by a
+preregistered matched controller-compute allowance.
+Neither such a runner nor independently admitted
+executable tasks, sealed evaluation, train-only fitted
+kernels or six-checkpoint trials has been established.
+The current synthetic tests validate program behavior,
+not real-world reliability, calibration or selective-risk
+guarantees. The confirmatory hypothesis remains open.
 
 \subsection{Confirmatory evaluation design and estimands}
 
@@ -1286,8 +1321,11 @@ reproducibility statements will be provided after artifact validation.
 
 \textbf{Author contributions.} To be completed and approved by all authors.
 
-\textbf{Use of AI tools.} AI assistance in the research or manuscript must be
-disclosed as required by the publisher.
+\textbf{Use of AI tools.} Generative AI assistance was used to develop
+research-code prototypes, synthetic adversarial tests and manuscript
+draft text. Human authors remain responsible for independently checking
+all code, references, analyses and claims before submission; this
+disclosure and the final author-approved record require verification.
 
 \bibliography{references}
 \end{document}
