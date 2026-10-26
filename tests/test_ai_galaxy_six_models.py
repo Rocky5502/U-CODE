@@ -119,9 +119,32 @@ class AIGalaxyModelPlanningTests(unittest.TestCase):
     def test_fp8_accelerator_compatibility_not_assumed(self):
         rows = inspect_plan(SELECTED, PLAN)
         x = next(r for r in rows if r.model_id.startswith("mistralai/"))
-        self.assertEqual(x.gpu, "H100-80GB")
+        self.assertEqual(x.gpu, "A100-SXM4-80GB")
         self.assertIn("native_fp8_accelerator_compatibility_not_tested",
                       x.blockers)
+
+    def test_single_A100_GPU_type_for_all_six(self):
+        models = inspect_plan(SELECTED, PLAN)
+        self.assertEqual({m.gpu for m in models}, {"A100-SXM4-80GB"})
+        self.assertEqual(PLAN["profiles"]["sequential_one_gpu"]["requested_gpu_count"], 1)
+
+    def test_h100_requirement_cannot_be_reintroduced(self):
+        plan = deepcopy(PLAN)
+        plan["models"][2]["rental_gpu_for_initial_preflight"] = "H100-80GB"
+        with self.assertRaisesRegex(ValueError, "ONE A100"):
+            inspect_plan(SELECTED, plan)
+
+    def test_devstral_fallback_is_explicitly_unverified(self):
+        plan = deepcopy(PLAN)
+        plan["models"][2]["ampere_fp8_fallback_kernel"] = "NATIVE_A100_W8A8"
+        with self.assertRaisesRegex(ValueError, "Marlin fallback"):
+            inspect_plan(SELECTED, plan)
+
+    def test_sequential_profile_cannot_switch_to_another_gpu_family(self):
+        plan = deepcopy(PLAN)
+        plan["profiles"]["sequential_one_gpu"]["required_gpu_model"] = "H100"
+        with self.assertRaisesRegex(ValueError, "A100 hardware"):
+            inspect_plan(SELECTED, plan)
 
     def test_proposed_bf16_weight_floor_excludes_kv_cache(self):
         rows = inspect_plan(SELECTED, PLAN)
