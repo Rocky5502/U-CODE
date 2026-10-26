@@ -671,6 +671,40 @@ zero qualified tasks is an admissible finding.
 No third-party source files or repositories are
 bundled into the compact curated metadata.
 
+\paragraph{Metadata quality assurance and release integrity.}
+A separate source-free technical validation stage now
+performs strict one-to-one joins between the raw
+$120$-record discovery frame, audited PR identities,
+and the cleaned release. It verifies complete
+stratum denominators, unique repository names/PR URLs,
+exact pre-fix/head/merge commit-hash equality
+against raw metadata, schema stability, changed
+production-source language provenance, and explicit
+nonpromotion of unverified file rights, AI line
+attribution, oracle validity and sandbox status.
+It records field-level missingness and produces
+conservative \emph{manual} owner/fork-parent/shared-
+commit overlap warnings. These checks can identify
+possible leakage but \emph{cannot} establish
+source-content nonduplication or a genuinely
+independent task-family split without further
+review. The metadata quality pipeline produces a
+machine-readable field dictionary, per-record
+review warnings, a structured quality report,
+and a reproducible release-integrity manifest
+containing SHA256 digests of every published text
+artifact and its canonical input snapshots.
+This last contract detects postrelease file drift
+but does \emph{not} authenticate third-party
+source rights or guarantee executable correctness.
+All dataset integrity checks remain deterministic,
+offline and independent of the six model policies.
+The zero qualified-task denominator remains
+unchanged. A separately curated, rights-cleared
+and independently tested executable task resource
+is a \emph{future output}, not a property of this
+metadata-only release.
+
 Sixty-two of the $119$ retrieved PRs had at least
 one changed file with an eligible production-source
 \emph{suffix and path}; this weak signal can include
