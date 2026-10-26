@@ -70,11 +70,13 @@ parent/child ancestry, fail-closed missing kernels/producer models,
 five-resource feasibility, public digest invariance, replay rejection,
 and state explosion caps.
 
-Official GitHub Actions checkpoint after algorithm and test integration:
-[run 40354926845](https://github.com/Rocky5502/U-CODE/actions/runs/40354926845)
-passed **532/532** tests on both Python 3.10 and 3.12 at the initial integration. Two later public-menu hardening tests bring the expected total to **534**; verify the final HEAD CI before claiming that final count. The prior checkpoint
-was 490/490 on both versions. Later manuscript and README edits must be
-verified on their own final HEAD workflow before declaring a final checkpoint.
+Official GitHub Actions checkpoint after algorithm, tests and manuscript
+integration: [run 40355643095](https://github.com/Rocky5502/U-CODE/actions/runs/40355643095)
+passed **534/534** tests on Python 3.10 and **534/534** on Python 3.12.
+The prior checkpoint was 490/490 on both versions. The source-only
+`ucode-overleaf-sources` artifact from that run is **12665588134**.
+This validates the offline workflow and source packaging, **not**
+publisher-template LaTeX compilation or external live Overleaf synchronization.
 
 These tests are constructed synthetic examples, not statistical results.
 No conclusion that Bayesian allocation outperforms the uncertainty-free
