@@ -2,7 +2,6 @@
   "schema_version": "1.0",
   "computed_from": "canonical_2026-10-24_audit_and_120_discovery_manifest",
   "offline_ci_run_id": 40395204786,
-  "source_manifest_sha256": "f4c24b15b22032d8314e1608ccb9bc7f7ddd8a0eedcd7431e5303f31385e7fc1",
   "status": "METADATA_ONLY_NO_TASK_APPROVAL",
   "discovered_pr_links": 120,
   "distinct_repository_names": 120,
@@ -128,5 +127,6 @@
       "source_language_mismatched_or_unobserved": 0,
       "experiment_eligible": 0
     }
-  ]
+  ],
+  "discovery_manifest_sha256": "f4c24b15b22032d8314e1608ccb9bc7f7ddd8a0eedcd7431e5303f31385e7fc1"
 }
