@@ -1091,6 +1091,87 @@ The current synthetic tests validate program behavior,
 not real-world reliability, calibration or selective-risk
 guarantees. The confirmatory hypothesis remains open.
 
+\subsection{Correlation-aware joint-truth sensitivity analysis}
+\label{sec:correlated-archive}
+
+The preceding reference factors candidate correctness beliefs
+and their diagnostic evidence by patch. This may be a poor
+approximation when multiple patches share a generator,
+prompt, repository defect, or common evidence source.
+We therefore additionally implement a \emph{separate,
+optional} finite joint-truth planner
+(\texttt{correlated\_archive\_bes.py}), which retains the
+\emph{same} public action--target opportunity menu as the
+uncertainty-free comparator but replaces independent patch
+beliefs with a frozen distribution
+$q_t(\mathbf y)$ over a binary acceptability vector
+$\mathbf y=(y_1,\ldots,y_K)$.
+This is a sensitivity-analysis reference, not a calibrated
+correlation model or a confirmatory treatment substitution.
+
+For a diagnostic action $a$ on archived patch $i$ with
+agent-visible binary outcome $z$, the supplied likelihood
+$L_{i,a}(z\mid y_i,h_i)$ is conditional on that patch's
+\emph{own} previously visible diagnostic history.
+The joint Bayesian update is
+\begin{equation}
+ q_{t+1}(\mathbf y)
+ =\frac{q_t(\mathbf y)L_{i,a}(z\mid y_i,h_i)}
+ {\sum_{\mathbf y'}q_t(\mathbf y')
+ L_{i,a}(z\mid y'_i,h_i)},\qquad
+ p_{j,t+1}=\sum_{\mathbf y}y_j q_{t+1}(\mathbf y).
+ \label{eq:joint-truth-update}
+\end{equation}
+Consequently, evidence on $i$ may change the predicted
+acceptability of \emph{another} candidate $j$ even though
+no diagnostic was executed on $j$. The joint prior is
+specified \emph{before} the diagnostic observations being
+replayed, and all such observations are taken exclusively
+from the shared policy-visible receipt chronology. An
+observation with zero probability under the frozen model
+is rejected instead of silently smoothed.
+
+For repair, the model also supplies the probability that a
+new patch is actually produced conditional on the repair
+parent's latent acceptability and visible history, together
+with the conditional acceptability distribution of the
+new child. A successful production branch extends the
+latent vector by one unobserved child bit; failure
+conditions the existing vector on the publicly visible
+fact that no child was produced. Target-free generation
+is restricted to a forecast independent of the existing
+truth vector. Both branches spend the action's nominal
+five-dimensional resource reservation, and neither
+reveals a child correctness label. The resulting finite
+joint-hypothesis recursion uses
+Eq.~\eqref{eq:joint-archive-bellman}, with the marginal
+release utility of each candidate computed from $q_t$.
+The exact finite reference limits the starting archive
+to eight candidates, the hypothesis support to 512
+atoms, and the planning horizon to four actions; a
+state-expansion cap fails closed.
+
+This model captures dependence mediated by the joint
+correctness prior and repair-parent truth, but does
+\emph{not} automatically capture cross-candidate
+diagnostic-noise correlation conditional on that truth,
+shared mutable retrieval context, or unknown task-level
+latent factors. The online transition from a real
+produced SHA256 to a newly estimated joint prior
+\emph{is not yet implemented or calibrated}; a
+separately trained, pre-outcome joint scorer and
+explicit reconciliation of past production outcomes
+are needed before sequential deployment. Joint priors
+and conditional kernels must be fitted and audited on
+disjoint training data; they must never be reconstructed
+from the independent held-out correctness oracle.
+Synthetic tests of positively correlated, negatively
+correlated and independent truth distributions demonstrate
+only that the algorithm performs the stipulated
+Bayesian arithmetic and fail-closed accounting.
+No reliability, selective-risk or calibration improvement
+is inferred from these constructed examples.
+
 \subsection{Confirmatory evaluation design and estimands}
 
 Our primary endpoint is independently verified \emph{full-task}
