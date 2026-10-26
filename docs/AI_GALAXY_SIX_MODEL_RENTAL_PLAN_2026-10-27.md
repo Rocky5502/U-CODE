@@ -30,12 +30,20 @@ metadata were read 27 Oct 2026; numbers are not device measurements.
 
 | Selected HF checkpoint | ~Parameters B | BF16 weights, GB | Initial GPU | Initial model context |
 |---|---:|---:|---|---:|
-| Qwen/Qwen2.5-Coder-7B-Instruct | 7.616 | 15.2 | A100 SXM4 80GB | 16K |
-| Qwen/Qwen3-Coder-30B-A3B-Instruct | 30.532 total MoE | 61.1 | A100 SXM4 80GB | 8K |
-| mistralai/Devstral-Small-2-24B-Instruct-2512 | 24.011 | 48.0 BF16 equivalent | A100 SXM4 80GB with tested Marlin W8A16 or BF16 | 8K |
-| deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct | 15.707 total MoE | 31.4 | A100 SXM4 80GB | 8K |
-| google/codegemma-1.1-7b-it | 8.538 | 17.1 | A100 SXM4 80GB | 16K |
-| meta-llama/Llama-3.1-8B-Instruct | 8.030 | 16.1 | A100 SXM4 80GB | 16K |
+| Qwen/Qwen2.5-Coder-7B-Instruct | 7.616 | 15.2 | A100 80GB | 16K |
+| Qwen/Qwen3-Coder-30B-A3B-Instruct | 30.532 total MoE | 61.1 | A100 80GB | 8K |
+| mistralai/Devstral-Small-2-24B-Instruct-2512 | 24.011 | 48.0 BF16 equivalent | A100 80GB with tested Marlin W8A16 or BF16 | 8K |
+| deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct | 15.707 total MoE | 31.4 | A100 80GB | 8K |
+| google/codegemma-1.1-7b-it | 8.538 | 17.1 | A100 80GB | 16K |
+| meta-llama/Llama-3.1-8B-Instruct | 8.030 | 16.1 | A100 80GB | 16K |
+
+**Vendor-SKU verification:** the AI Galaxy public homepage lists
+`NVIDIA A100 80G`, not a guaranteed PCIe-vs-SXM4 variant.
+Either A100 80GB variant is compatible with the one-GPU-family
+deployment plan in principle; record the actual GPU name,
+PCIe/SXM4 interconnect, driver, CUDA runtime, and measured
+prefill/decode tokens/sec before costing the study. No
+specific speed is assumed from the storefront entry.
 
 **Qwen3 3B active and DeepSeek MoE active parameter counts DO NOT mean
 only the active experts' weights need storage.** Model-native Devstral FP8
