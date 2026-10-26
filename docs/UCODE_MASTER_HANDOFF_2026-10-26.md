@@ -12,6 +12,55 @@
 
 ---
 
+## 27 OCTOBER 2026 ADDENDUM — LATEST ALGORITHM MILESTONE
+
+**This addendum supersedes historical checkpoint counts and next-step claims
+elsewhere in this October 26 handoff.** Always refresh actual main HEAD and CI
+before doing further work.
+
+- [Verified algorithm/test run 40362950959](https://github.com/Rocky5502/U-CODE/actions/runs/40362950959):
+  **575/575 offline tests on Python 3.10 and 575/575 on Python 3.12**
+  at commit `c89ee49c3dfdd2ab8af910172b6a08040e2e3112`.
+  The README/manuscript/handoff commits after this test milestone must
+  be checked against their own final HEAD workflow.
+- The **primary uncertainty-free comparator** now uses a shared
+  target-aware action menu, via `src/ucode/matched_opportunities.py`
+  and `matched_session.baseline_shared_decision`; it is not allowed
+  Bayesian forecasts or evaluator-only labels.
+- `src/ucode/joint_conditional_bes.py` supports finite-horizon
+  multi-candidate diagnostic/generation/repair planning under an explicitly
+  candidate-factorized frozen synthetic transition model.
+- The new `src/ucode/correlated_archive_bes.py` is an **optional,
+  finite, correlation-aware joint-truth sensitivity-analysis reference**:
+  exact Bayes updates over latent candidate acceptability vectors,
+  repair-parent-dependent hypothetical production transitions,
+  five-dimensional nominal budgets, state/support caps, and a public
+  producer-receipt digest to fail closed on accidental reuse of an
+  unacknowledged production history. The digest is NOT a certificate of
+  correctly refitted joint priors.
+- The [correlated algorithm research ledger](CORRELATED_JOINT_TRUTH_2026-10-27.md)
+  includes a **constructed same-marginal three-patch counterexample**:
+  independent versus anti-correlated truths reverse the selected first
+  diagnostic, with synthetic expected utilities 0.50 versus 0.90.
+  This is mathematical test evidence, NOT observed software reliability.
+- Updated `paper/overleaf/main.tex` contains joint-archive and
+  correlation-aware Bayesian equations, symbolic-branch semantics,
+  sensitivity analysis and limitations. `references.bib` contains
+  published methodological references. GitHub CI exports source-only
+  `ucode-overleaf-sources`; **live external Overleaf has not been edited**.
+- **No real model execution, no admitted executable tasks, no verified
+  independent sealed oracle, no attested five-resource metering, no
+  trained/calibrated joint priors, no RQ effectiveness results.**
+- **Next falsifiable code gate:** build a policy-neutral, first-party
+  *metering attestation contract* and controlled subprocess test harness
+  without executing third-party repositories; distinguish independently
+  measured wall/CPU counters from model-reported token/test/GPU metrics,
+  and fail closed on missing or non-enforced resource dimensions.
+  Then prepare train-only fitting/calibration protocol for joint priors
+  and cross-candidate residual diagnostic dependence.
+
+---
+
 ## A. EXACT NEW-CHAT ACTIVATION INSTRUCTION
 
 ACTIVATE **U-CODE SCIENTIFIC PRINCIPAL-INVESTIGATOR AND ENGINEERING EXECUTION MODE**. You are continuing an existing, actively developed empirical software-engineering research project, NOT starting from scratch. The canonical and already-user-authorized code repository is https://github.com/Rocky5502/U-CODE, branch main. First READ THIS COMPLETE HANDOFF, then the **latest** GitHub README, current commit, CI results, all relevant code/test files, experimental protocol, issue tracker, paper sources and newest research logs. The initial verified checkpoint was main 4d6b9f8f9431e6dd15ce7d0b2766e9be5a2af2f6 with 426 passing Python offline tests; refresh because this document's commit and later work change HEAD.
@@ -275,4 +324,4 @@ Execute one focused, user-triggered block at a time (not silently in the backgro
 
 Answer directly, keep links useful, do not repeatedly ask for information already established in this document. You may obtain fresh GitHub status and literature through supported tools and make best-effort advances in one turn. Do not promise autonomous continuous work when no scheduled task has been created.
 
-**YOUR FIRST NEW-CHAT RESPONSE SHOULD BEGIN:** "I have resumed U-CODE from the handoff. I am checking the current main branch and CI, then implementing the strong matched-budget uncertainty-free search comparator. The 426-test checkpoint is historical; I will report the actual latest passing run before claiming progress." Then carry out the work, not just offer a plan.
+**YOUR FIRST NEW-CHAT RESPONSE SHOULD BEGIN:** "I have resumed U-CODE from the October 27 addendum. I am verifying the latest main branch and Python 3.10/3.12 CI, then addressing the next scientifically falsifiable blocker while preserving all prior synthetic tests, the matched uncertainty-free comparator, and the factorized/correlated joint Bayesian planners." Then carry out the work, not just offer a plan.
