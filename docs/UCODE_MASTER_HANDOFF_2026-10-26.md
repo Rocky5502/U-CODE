@@ -12,6 +12,56 @@
 
 ---
 
+## 27 OCTOBER 2026 — REPRODUCIBLE DATA QUALITY & MULTILINGUAL SOURCE ADDENDUM
+
+**This addendum supersedes earlier statements that U-CODE has only the
+pre-cleaning 120-PR CSV or 4-file dataset output.** Recheck `main`
+and GitHub CI every turn.
+
+- [Frozen source 120-PR frame](../data/curated/2026-10-27/discovery_frame_120_NOT_EXECUTABLE.csv),
+  [12-stratum verified statistics](../data/curated/2026-10-27/frozen_cleaning_summary.json),
+  and [source dataset card](../data/curated/README.md):
+  120 unique repo names/PR URLs, 119 retrievable, 62
+  production-source-path leads, 14 first-pass manual-review
+  leads, 12 manually reviewable records, 11 search-versus-changed-language
+  mismatches/unobserved; **zero independently approved executable tasks**.
+- [Eight-file source-free curation and QC tool](../scripts/audit_dataset_quality.py),
+  [recomputed QA](../src/ucode/dataset_quality.py), and
+  [independent post-export verifier](../scripts/verify_dataset_release.py):
+  reproducible SHA256 of input audit files and seven output files,
+  ID/PR uniqueness, exact original SHA fidelity, language coverage,
+  metadata missingness, owner/fork/common-base risk warnings,
+  no contaminated/hidden evaluator fields or self-approved task flags.
+  A SHA256 match does NOT authenticate original GitHub observations,
+  individual code licenses, source authorship or independent correctness.
+- [Scientific Data technical-readiness ledger](SCIENTIFIC_DATA_READINESS_2026-10-27.md)
+  and [standalone data descriptor outline](../paper/scientific_data/DATA_DESCRIPTOR_PRE_SUBMISSION_OUTLINE.md)
+  are transparent **NOT SUBMISSION READY** proposals. The current
+  metadata is not an AlphaCode-comparable task benchmark or
+  validated Nature data resource.
+- [Optional SWE-rebench V2 read-only source](../configs/external_multilingual_source_swe_rebench_v2_2026-10-27.json),
+  [restricted seven-column local Parquet intake](../src/ucode/external_dataset_intake.py),
+  [CLI](../scripts/screen_swe_rebench_v2.py), and
+  [provenance/rights warning ledger](SWE_REBENCH_V2_SAFE_DATA_INTAKE_2026-10-27.md).
+  Upstream publisher reports **32,079 tasks and 20 repository languages**,
+  not newly collected U-CODE tasks. Their gold patches/test identifiers
+  MUST NEVER appear in policy-visible ingestion. **Source not
+  downloaded or screened yet**, immutable HF revision not frozen,
+  per-task rights/oracles not verified; no combined 120+32k dataset.
+- Updated `paper/overleaf/main.tex` documents quality controls
+  and prospective external source **without empirical model outcomes**.
+  GitHub source-only ZIP export is **not live Overleaf synchronization**.
+- **Verified intermediate CI:** [run 40399787748](https://github.com/Rocky5502/U-CODE/actions/runs/40399787748)
+  passed **707/707 offline tests on each of Python 3.10 and 3.12**.
+  Any later commits must be verified separately.
+- **Next real scientific gates:** independently adjudicate file rights,
+  task-era specifications, oracle secrecy, runnable containers,
+  contamination/leakage groups; pin six model revisions, launch approved
+  A100 preflights and measure throughput. Do not claim full
+  multilingual experiments can finish in a week without these.
+
+---
+
 ## 27 OCTOBER 2026 — METERING AND LEDGER-BOUND RESOURCE ACCOUNTING UPDATE
 
 **This section supersedes the earlier statement that the next unblocked task is to implement a metering schema.** The actual **independent physically hardened runner** and authenticated five-component metering remain open.
