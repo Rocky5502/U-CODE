@@ -94,12 +94,11 @@ class MetadataQualityTests(unittest.TestCase):
     def test_commit_sha_drift_rejected(self):
         rows = list(deepcopy(self.data.rows))
         rows[0]["base_sha"] = "f"*40 if rows[0]["base_sha"] != "f"*40 else "a"*40
-        # SHA format is correct but metadata consistency currently binds ID,
-        # not SHA to original independently; expose this missing check.
+        # Even a syntactically valid, tampered SHA must be rejected.
         changed = type(self.data)(tuple(rows), self.data.review_queue,
                                   self.data.language_summary, self.data.report)
-        result = validate_release(changed, self.audits)
-        self.assertEqual(result.report["candidate_pr_count"], 120)
+        with self.assertRaisesRegex(ValueError, "SHA mismatch"):
+            validate_release(changed, self.audits)
 
     def test_schema_documents_pre_and_post_change_shas(self):
         s = dataset_schema()
