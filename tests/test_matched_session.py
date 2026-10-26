@@ -340,5 +340,32 @@ class SharedArchiveTests(unittest.TestCase):
         self.assertEqual((outcome.kind,outcome.target_sha256),("release",A))
 
 
+    def test_zero_reported_cost_is_not_accepted_as_measured_run(self):
+        s=SharedSession.empty(BUDGET)
+        d=SharedDecision("gen","generate",None,GEN.cost)
+        with self.assertRaisesRegex(ValueError,"nonzero reported"):
+            commit_shared(s,(GEN,),d,reported_cost=ResourceVector(),
+                          new_candidate_sha256=A)
+
+    def test_phantom_patch_in_receipt_cannot_pass_archive_consistency(self):
+        s=commit_shared(
+            SharedSession.empty(BUDGET),(GEN,),
+            SharedDecision("gen","generate",None,GEN.cost),
+            reported_cost=GEN.cost,new_candidate_sha256=A)
+        with self.assertRaisesRegex(ValueError,"missing generated candidate"):
+            replace(s,receipts=(replace(s.receipts[0],resulting_sha256=B),))
+
+    def test_direct_receipt_forbids_invalid_or_missing_candidate_bindings(self):
+        with self.assertRaisesRegex(ValueError,"SHA256"):
+            SharedReceipt("gen","generate",None,"invalid",None,
+                          GEN.cost,GEN.cost)
+        with self.assertRaisesRegex(ValueError,"target candidate"):
+            SharedReceipt("test","test",None,None,True,
+                          TEST.cost,TEST.cost)
+        with self.assertRaisesRegex(ValueError,"target candidate"):
+            SharedReceipt("repair","repair",None,A,None,
+                          REPAIR.cost,REPAIR.cost)
+
+
 if __name__=="__main__":
     unittest.main()
