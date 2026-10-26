@@ -1220,6 +1220,39 @@ search/reuse where faithful replication is feasible. We will
 disclose comparator deviations rather than relabeling simplified
 implementations as exact reproductions of published agents.
 
+\paragraph{Six-model resource provisioning and readiness.}
+The planned study fixes six distinct open-weight checkpoint
+identities (two Qwen coder models, Devstral Small~2,
+DeepSeek Coder V2 Lite, CodeGemma, and Llama~3.1)
+in a separate prospective registry. A companion
+AI~Galaxy GPU deployment manifest now records
+all six model identifiers, disjoint candidate service ports,
+initial context caps, model-family runtime constraints
+and two alternative resource profiles:
+\emph{sequential} one-model-at-a-time evaluation on a
+nominal 80\,GB accelerator versus \emph{concurrent}
+six isolated 80\,GB accelerator services.
+The latter is a planning capacity bound, not
+an optimized packing or a purchased cluster.
+BF16 weight-memory floors inferred from published
+parameter counts exclude runtime allocations, attention
+key/value caches, test-runner memory and concurrency.
+The Devstral FP8 engine requires independent accelerator
+compatibility checks; the selected gated Llama/CodeGemma
+checkpoints require access and license validation, and
+custom model code must undergo security review before
+execution. Each model further requires an immutable
+weight/tokenizer revision, measured peak device memory,
+frozen engine and quantization, full five-resource metering
+and runtime verification. These are \emph{pending
+infrastructure gates}, not completed six-model experiments.
+The currently version-controlled PR discovery records
+are not yet an independently admitted executable
+evaluation corpus, regardless of the number of PR
+metadata entries. Paid rental selection, throughput
+and GPU-hour budgets cannot be inferred from unmeasured
+runtime or unqualified task volume.
+
 \paragraph{Frozen factorial assignment and evaluator receipts.}
 We preregister a proposed eight-policy matrix:
 U-CODE with conditional diagnostic likelihoods,
