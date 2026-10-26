@@ -231,11 +231,19 @@ def validate_release(data: CuratedDataset, audits: list[dict]) -> DatasetValidat
     return DatasetValidation(checks, report, tuple(flags))
 
 
-def source_file_digests(manifest: Path, audit_paths: list[Path]) -> dict[str, str]:
+def source_file_digests(manifest: Path, audit_paths: list[Path],
+                        root: Path | None = None) -> dict[str, str]:
     paths = [manifest, *audit_paths]
-    if len(paths) != len(set(paths)):
+    resolved = [p.resolve() for p in paths]
+    if len(resolved) != len(set(resolved)):
         raise ValueError("repeated source file in provenance ledger")
-    return {p.as_posix(): _digest(p.read_bytes()) for p in paths}
+    # CI, local machines and WSL must share the SAME source provenance keys.
+    # When root is given, reject paths escaping the explicit repository root.
+    if root is not None:
+        base = root.resolve()
+        return {p.relative_to(base).as_posix(): _digest(p.read_bytes())
+                for p in resolved}
+    return {p.as_posix(): _digest(p.read_bytes()) for p in resolved}
 
 
 def release_integrity_manifest(data_files: dict[str, bytes],
