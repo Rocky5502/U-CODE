@@ -34,16 +34,23 @@ plus [frozen, CI-verified twelve-stratum summary](data/curated/2026-10-27/frozen
 [full data card and seven-day gated pilot schedule](data/curated/README.md),
 [deterministic offline cleaning library](src/ucode/dataset_curation.py)
 and [dataset builder](scripts/build_clean_pr_dataset.py).
-The builder joins all 120 canonical audit entries, preserves failures,
-checks immutable base/head/merge SHA references and lineage hints,
-separates search from changed-path languages, prevents unsupported
-promotion to executable tasks and exports **four small source-free
-files**, including `clean_metadata_120.csv`, a language table,
-and a 12-item manual review queue. CI attaches these as
+The stricter [technical-quality auditor](scripts/audit_dataset_quality.py)
+joins all 120 canonical audit entries, preserves the retrieval failure,
+checks **exact** raw-to-clean commit identities, detects structural
+duplicate, owner and fork-lineage review flags, distinguishes queried
+from changed-source languages, and fails closed on unsupported approval
+or leaked hidden-evaluator fields. It produces **eight compact,
+source-free files** including the four cleaning outputs,
+`dataset_schema.json`, `quality_report.json`,
+`manual_lineage_and_rights_flags.json` and a portable SHA256
+`release_integrity.json`. CI publishes these as
 `ucode-pr-metadata-clean-v1` for independent inspection.
+See the [Scientific Data readiness gates](docs/SCIENTIFIC_DATA_READINESS_2026-10-27.md):
+our current metadata resource is **not** an independently verified
+executable benchmark or a submission-ready Nature Data Descriptor.
 
 ```bash
-python -m scripts.build_clean_pr_dataset --output-dir dist/datasets/ucode_pr_metadata_v1
+python -m scripts.audit_dataset_quality --output-dir dist/datasets/ucode_pr_metadata_v1
 ```
 
 **Scope and one-week limitation:** metadata cleaning is inexpensive
