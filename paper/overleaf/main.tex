@@ -705,6 +705,36 @@ and independently tested executable task resource
 is a \emph{future output}, not a property of this
 metadata-only release.
 
+\paragraph{Conservative cross-repository lineage graph.}
+To make potential contamination review explicit, a
+second metadata-only algorithm constructs an auditable
+graph over all $120$ discovery PR records.
+Edges denote coincident fork-parent hints,
+shared identical recorded Git commit identifiers
+(with commit role preserved), or a common repository
+owner. The first two edge classes form
+\emph{candidate} provenance components; common
+owner edges are recorded as warnings \emph{without}
+automatically joining component families.
+To avoid quadratic blow-up in large repositories,
+each same-key group is represented by a deterministic
+star, and proposed component identifiers derive
+from the sorted member IDs via SHA256.
+In the frozen $120$-PR snapshot, this procedure
+identified \emph{nine same-owner warning edges},
+zero matched fork-parent/commit pairs across
+different PR records, and thus $120$
+single-record \emph{candidate} provenance components.
+Crucially, a lack of linked metadata does
+\emph{not} establish distinct source contents
+or independent engineering tasks: common
+upstream code, copied tests and duplicated
+issues remain unmeasured. Accordingly,
+the algorithm marks the entire train/test
+split \emph{blocked pending independent
+adjudication}, and neither discards records
+nor asserts benchmark independence.
+
 \paragraph{Prospective large multilingual source (not incorporated).}
 For a possible independent, larger task-admission pool,
 we registered the public SWE-rebench~V2 dataset
@@ -721,7 +751,12 @@ normalize candidate language aliases to the original
 twelve query-language categories, and flag
 same-repository/base-revision overlap for review.
 The adapter requires an immutable source revision and
-a locally obtained Parquet snapshot; neither the
+a locally obtained Parquet snapshot. Its field
+projection protects evaluator-only columns
+and validates text against CSV formula/control
+injection; documented timestamp representations
+are normalized conservatively without inferring
+source-era task validity. Neither the
 published $32{,}079$ rows nor their test environments
 have been imported, replayed or approved in the
 present study. Original dataset-level licensing
