@@ -1184,6 +1184,23 @@ it against the existing twelve-candidate review
 packets. This advances provenance screening
 \emph{without} declaring either task executable.
 
+\paragraph{First-page issue-event provenance, not issue-body version history.}
+A subsequent read-only audit retrieved the first public GitHub
+issue-Events API page (100-event request limit) for both pilot leads
+and pinned only event IDs, types and UTC timestamps. In the
+$152$-second PHP pre-PR window, we observed one labeling and two
+assignment events; in the $8$-second Go window, we observed two
+assignment events. The first retrieved pages also record post-PR
+connection and closure events. These metadata observations increase
+traceability of work assignment but are not a complete independently
+authenticated event history or immutable snapshots of issue
+descriptions. In particular, absence of an edit event does not prove
+that the current task text was present at PR creation. A dedicated
+offline verifier checks candidate identity, chronology, event
+uniqueness, and fail-closed no-approval claims. No task, test oracle,
+source rights, or real experimental endpoint is admitted by this
+audit; the candidate denominator remains zero.
+
 \paragraph{Immutable pre-fix repository-tree provenance.}
 We additionally inspected each original public Git
 commit's tree object through read-only GitHub APIs,
