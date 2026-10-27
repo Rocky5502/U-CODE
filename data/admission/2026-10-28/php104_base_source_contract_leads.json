@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0",
+  "stage": "PHP104_READ_ONLY_BASE_SOURCE_CONTRACT_LEADS",
+  "observed_on": "2026-10-28",
+  "candidate_id": 104,
+  "repository": "mvdbos/php-spider",
+  "parent_issue_url": "https://github.com/mvdbos/php-spider/issues/166",
+  "parent_issue_created_at": "2026-10-22T22:52:00Z",
+  "parent_issue_updated_at": "2026-10-23T09:03:25Z",
+  "child_issue_url": "https://github.com/mvdbos/php-spider/issues/168",
+  "base_commit": "25e9b1cf855669c24ba1609c7d4cfcda17ac6217",
+  "base_tree_sha": "6924b6560484f3c28fcbb7359a15df2540c55d22",
+  "parent_issue_body_at_pr_time_archived": false,
+  "independent_pre_fix_task_spec_approved": false,
+  "source_rights_cleared": false,
+  "held_out_oracle_approved": false,
+  "third_party_code_executed": false,
+  "executable_task_admitted": false,
+  "source_observations": [
+    {
+      "id": "FILE_LAYOUT_PATH_COMPLETION",
+      "path": "src/PersistenceHandler/FilePersistenceHandler.php",
+      "git_blob_sha": "1edebb766b53d2117972a8bafaff27d716b55163",
+      "evidence_level": "READ_ONLY_UNEXECUTED_SOURCE_OBSERVATION"
+    },
+    {
+      "id": "FILE_LAYOUT_BASENAME_ENCODING",
+      "path": "src/PersistenceHandler/FilePersistenceHandler.php",
+      "git_blob_sha": "1edebb766b53d2117972a8bafaff27d716b55163",
+      "evidence_level": "READ_ONLY_UNEXECUTED_SOURCE_OBSERVATION"
+    },
+    {
+      "id": "SERIALIZED_RESOURCE_WRITER",
+      "path": "src/PersistenceHandler/FileSerializedResourcePersistenceHandler.php",
+      "git_blob_sha": "96d3e275e091c50d510687a3d9bbf75b4c69c369",
+      "evidence_level": "READ_ONLY_UNEXECUTED_SOURCE_OBSERVATION"
+    },
+    {
+      "id": "CACHE_LOOKUP_AND_FRESHNESS",
+      "path": "src/Filter/Prefetch/CachedResourceFilter.php",
+      "git_blob_sha": "7674093fb5be90b082cbd2b35565cf506944d9fa",
+      "evidence_level": "READ_ONLY_UNEXECUTED_SOURCE_OBSERVATION"
+    },
+    {
+      "id": "CACHE_TEST_FIXTURE_LAYOUT_DUPLICATION",
+      "path": "tests/Filter/Prefetch/CachedResourceFilterTest.php",
+      "git_blob_sha": "e6c9e6e2ad94c69b8ec55c77642f341626cf601e",
+      "evidence_level": "READ_ONLY_UNEXECUTED_SOURCE_OBSERVATION"
+    }
+  ]
+}
