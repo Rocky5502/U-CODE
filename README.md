@@ -16,6 +16,47 @@ U-CODE studies **when a software engineering agent should test, retrieve context
 
 <sub>Figure 1. Proposed U-CODE architecture. The top row is the risk-aware agent policy (task → interventions → evidence modeling → BES → controlled execution → release/abstention); the curved teal arrow returns **visible** execution feedback from the execution stage to BES. The lower research lane independently admits tasks, seals the functional oracle, evaluates released artifacts, and summarizes evidence. **Architectural design, not a completed or validated experimental result.** [View scalable SVG](docs/figures/ucode-framework.svg).</sub>
 
+## New methodological falsifier and real pre-fix provenance (27 October 2026)
+
+**Methodology:** [U-CODE novelty and falsification ledger](docs/UCODE_NOVELTY_FALSIFIERS_AND_MATHEMATICS_2026-10-27.md)
+clarifies that VOI, search, verification, abstention and robust optimization
+are established ideas. Our proposed scientific contribution is the **measured
+incremental effect of buying history-dependent diagnostic evidence versus
+candidate generation/repair under five shared hard resource limits**,
+including model misspecification checks, when compared fairly with
+SWE-Search, SWE-Verifier, RETRACE, and PATSSEL. No real experimental
+reliability effect or statistical risk certificate is claimed.
+
+The new [scenario-robust evidence audit](src/ucode/scenario_robust_evidence.py)
+calculates finite-model best/worst-case **one-step** net diagnostic gain,
+uses frozen history-conditional observation rows, enforces all five budget
+caps, and conservatively stops if no probe benefits in all declared
+scenarios. This is a deterministic analytical controller, NOT an
+integrated six-model repository agent or general robust Bayesian
+planning theorem. Reproduce the synthetic counterexample using
+`python -m examples.scenario_robust_evidence_smoke`.
+
+**Real metadata progress:** two prioritized PHP and Go PRs now have
+[original GitHub issue chronology observations](data/admission/2026-10-27/two_candidate_issue_chronology_metadata.json)
+and [immutable pre-fix Git commit/tree and source/toolchain blob observations](data/admission/2026-10-27/two_candidate_pre_fix_tree_inventory.json).
+The original issues precede the PRs by 152 and 8 seconds respectively,
+but the original issue text has NOT been archived as of PR creation.
+The PHP/Go original tree lists 171/88 entries and contains checked
+production/toolchain paths, respectively. First-party offline validators
+reject forged IDs, path traversal, wrong tree/commit SHA substitutions
+and unsupported claims of source rights, actual build or independent
+functional tests:
+
+```bash
+python -m scripts.verify_two_issue_chronologies
+python -m scripts.verify_pre_fix_git_trees
+```
+
+**Still blocked:** complete snapshot rights review, independent pre-fix
+specifications, safe source checkout, hermetic build, evaluator-only oracle,
+final family-safe split, and real six-checkpoint model/agent runs.
+These two source trees are STRUCTURALLY OBSERVED but not executed.
+
 ## Independent A/B manual evidence review for the 12 pending tasks (27 October 2026)
 
 A new [two-reviewer worksheet and non-automatic disagreement protocol](docs/INDEPENDENT_REVIEWER_ADJUDICATION_2026-10-27.md)
