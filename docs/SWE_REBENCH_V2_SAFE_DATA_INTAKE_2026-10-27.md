@@ -39,6 +39,17 @@ in a separately reviewed environment (not a default CI dependency).
 No remote download, model call, sandbox test, code execution,
 model weights or GPU rental is performed by this script.
 
+**Input hardening (27 October 2026).** SWE-rebench's documentation
+describes `created_at` both as an ISO-like source string and,
+in one data-dictionary section, an int64 Unix timestamp in
+milliseconds. The adapter now preserves safe source strings and
+accepts bounded integer millisecond timestamps as explicitly
+UTC-normalized output. Malformed dates, numeric image-name
+metadata, unsafe spreadsheet formulas (leading `=`, `+`,
+`-`, `@`) and control characters are recorded as
+*metadata exclusions*, not silently converted to plausible tasks.
+Never execute or dereference the untrusted image-name field.
+
 The output is a source-only candidate CSV, an explicit exclusion
 record, a per-language/count report and SHA256 for local source
 Parquet files. It normalizes aliases (\`py\`, \`ts\`, \`js\`,
