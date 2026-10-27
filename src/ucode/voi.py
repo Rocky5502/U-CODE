@@ -15,7 +15,7 @@ from typing import Sequence
 
 
 def _probability(value: float, name: str) -> float:
-    if not isfinite(value) or not 0 <= value <= 1:
+    if type(value) not in (int, float) or not isfinite(value) or not 0 <= value <= 1:
         raise ValueError(f"{name} must be finite in [0,1]")
     return float(value)
 
@@ -39,7 +39,7 @@ class DiagnosticAction:
             raise ValueError("diagnostic action needs a name")
         _probability(self.sensitivity, "sensitivity")
         _probability(self.specificity, "specificity")
-        if not isfinite(self.cost) or self.cost <= 0:
+        if type(self.cost) not in (int, float) or not isfinite(self.cost) or self.cost <= 0:
             raise ValueError("diagnostic cost must be positive finite")
 
 
@@ -59,7 +59,7 @@ class ReleaseRule:
         _probability(self.max_predicted_failure, "max_predicted_failure")
         for name in ("correct_reward", "failure_penalty", "unit_cost_penalty"):
             v = getattr(self, name)
-            if not isfinite(v) or v < 0:
+            if type(v) not in (int, float) or not isfinite(v) or v < 0:
                 raise ValueError(f"{name} must be finite and nonnegative")
 
 
@@ -129,7 +129,9 @@ def choose_diagnostic(
     Separate full-policy budgets must still enforce tokens/tests/GPU/wall.
     """
     _probability(prior_acceptable, "prior_acceptable")
-    if not isfinite(remaining_scalar_budget) or remaining_scalar_budget < 0:
+    if (type(remaining_scalar_budget) not in (int, float)
+            or not isfinite(remaining_scalar_budget)
+            or remaining_scalar_budget < 0):
         raise ValueError("remaining_scalar_budget must be nonnegative finite")
     best = None
     for action in actions:
