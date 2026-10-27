@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.0",
+  "stage": "ISSUE_EVENT_FIRST_PAGE_REVIEW_ONLY",
+  "observed_on": "2026-10-28",
+  "records": [
+    {
+      "candidate_id": 104,
+      "repository": "mvdbos/php-spider",
+      "issue_url": "https://github.com/mvdbos/php-spider/issues/168",
+      "events_api_url": "https://api.github.com/repos/mvdbos/php-spider/issues/168/events?per_page=100",
+      "page_size": 100,
+      "full_history_verified": false,
+      "issue_body_snapshot_verified": false,
+      "task_admitted": false,
+      "events": [
+        {
+          "event_id": 34001095385,
+          "event": "labeled",
+          "created_at": "2026-10-22T22:53:12Z"
+        },
+        {
+          "event_id": 34001258048,
+          "event": "assigned",
+          "created_at": "2026-10-22T22:55:35Z"
+        },
+        {
+          "event_id": 34001258220,
+          "event": "assigned",
+          "created_at": "2026-10-22T22:55:36Z"
+        },
+        {
+          "event_id": 34001277968,
+          "event": "connected",
+          "created_at": "2026-10-22T22:55:53Z"
+        },
+        {
+          "event_id": 34001759558,
+          "event": "closed",
+          "created_at": "2026-10-22T23:03:40Z"
+        }
+      ]
+    },
+    {
+      "candidate_id": 43,
+      "repository": "PlayHuai/eighty-point-huai-an",
+      "issue_url": "https://github.com/PlayHuai/eighty-point-huai-an/issues/29",
+      "events_api_url": "https://api.github.com/repos/PlayHuai/eighty-point-huai-an/issues/29/events?per_page=100",
+      "page_size": 100,
+      "full_history_verified": false,
+      "issue_body_snapshot_verified": false,
+      "task_admitted": false,
+      "events": [
+        {
+          "event_id": 34049313013,
+          "event": "assigned",
+          "created_at": "2026-10-23T12:18:50Z"
+        },
+        {
+          "event_id": 34049313426,
+          "event": "assigned",
+          "created_at": "2026-10-23T12:18:51Z"
+        },
+        {
+          "event_id": 34049342526,
+          "event": "connected",
+          "created_at": "2026-10-23T12:19:13Z"
+        },
+        {
+          "event_id": 34053227583,
+          "event": "closed",
+          "created_at": "2026-10-23T13:07:53Z"
+        }
+      ]
+    }
+  ]
+}
