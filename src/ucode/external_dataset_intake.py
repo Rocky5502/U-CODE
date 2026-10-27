@@ -12,6 +12,7 @@ import io
 import re
 from collections import Counter, defaultdict
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from hashlib import sha256
 from pathlib import Path
 
@@ -37,6 +38,31 @@ LANGUAGE_MAP = {
     "kotlin": "Kotlin", "kt": "Kotlin",
     "php": "PHP", "ruby": "Ruby", "rb": "Ruby",
 }
+def _safe_metadata_text(value, *, max_chars=512):
+    """Never emit spreadsheet formulas or control sequences from foreign rows."""
+    return (type(value) is str and len(value) <= max_chars
+            and not value.startswith(("=", "+", "-", "@", "\t", "\r", "\n"))
+            and all(ord(c) >= 32 and ord(c) != 127 for c in value))
+
+
+def _untrusted_created_at(value):
+    """SWE-rebench documentation has described this as string or int64 ms.
+
+    Convert only millisecond integers to UTC; preserve well-formed timestamp
+    strings verbatim rather than claiming they have been time-zone verified.
+    """
+    if value is None:
+        return ""
+    if type(value) is int:
+        if not 946684800000 <= value <= 4102444800000:
+            raise ValueError("upstream epoch milliseconds out of supported range")
+        return datetime.fromtimestamp(
+            value / 1000, tz=timezone.utc).isoformat()
+    if not _safe_metadata_text(value, max_chars=64):
+        raise ValueError("untrusted timestamp text malformed")
+    return value
+
+
 SHA40 = re.compile(r"^[0-9a-f]{40}$")
 REPO = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
 FIELDS = (
@@ -107,10 +133,19 @@ def screen_swe_rebench_v2(rows, *, revision: str,
             excluded.append({"instance_id": uid,
                              "reason": "missing_per_repository_license_metadata"})
             continue
-        if any(row.get(k) is not None and type(row[k]) is not str
-               for k in ("created_at", "image_name")):
+        try:
+            created_at = _untrusted_created_at(row.get("created_at"))
+        except ValueError:
             excluded.append({"instance_id": uid,
-                             "reason": "malformed_metadata_string"})
+                             "reason": "invalid_creation_timestamp"})
+            continue
+        image_name = row.get("image_name") or ""
+        if (not _safe_metadata_text(uid, max_chars=256)
+            or not _safe_metadata_text(raw_lang, max_chars=100)
+            or not _safe_metadata_text(license_id, max_chars=256)
+            or not _safe_metadata_text(image_name, max_chars=512)):
+            excluded.append({"instance_id": uid,
+                             "reason": "unsafe_spreadsheet_or_control_metadata"})
             continue
         base_clusters[(repo.casefold(), rev)].append(uid)
         kept.append({
@@ -122,8 +157,8 @@ def screen_swe_rebench_v2(rows, *, revision: str,
             "normalized_search_scope_language": lang,
             "upstream_language_label": raw_lang,
             "repository_license_metadata": license_id,
-            "upstream_created_at_unverified": row.get("created_at") or "",
-            "upstream_image_name_untrusted": row.get("image_name") or "",
+            "upstream_created_at_unverified": created_at,
+            "upstream_image_name_untrusted": image_name,
             "related_to_existing_discovery_repo": "POTENTIAL_OVERLAP_REVIEW"
             if repo.casefold() in existing else "NOT_MATCHED_BY_NAME_ONLY",
             "same_base_commit_cluster_hint": "",  # Filled after stream complete
@@ -160,6 +195,8 @@ def screen_swe_rebench_v2(rows, *, revision: str,
             r["related_to_existing_discovery_repo"] != "NOT_MATCHED_BY_NAME_ONLY"
             for r in kept),
         "candidate_shared_base_repo_sha_groups": len(clusters),
+        "timestamp_format": "unverified upstream strings OR converted epoch milliseconds UTC",
+        "spreadsheet_formula_cells_allowed": False,
         "independent_executable_task_admissions": 0,
         "evaluation_gold_or_test_patches_exposed": False,
         "model_inference_executed": False,
