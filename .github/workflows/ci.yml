@@ -64,6 +64,15 @@ jobs:
           name: ucode-admission-review-only-v1
           path: dist/ucode-admission-review-only/
           if-no-files-found: error
+      - name: Generate independent A/B reviewer evidence worksheets (no approval)
+        run: python -m scripts.export_independent_review_forms --output-dir dist/ucode-independent-reviewers-only
+      - name: Publish independent pending reviewer worksheets for offline adjudication
+        if: matrix.python-version == '3.12'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ucode-two-reviewer-forms-PENDING-v1
+          path: dist/ucode-independent-reviewers-only/
+          if-no-files-found: error
       - name: Check real PR task-admission dossiers against immutable audit (no execution)
         run: python -m scripts.check_task_admission
       - name: Validate prospectively unsealed evaluator-only metadata (no oracle execution)
