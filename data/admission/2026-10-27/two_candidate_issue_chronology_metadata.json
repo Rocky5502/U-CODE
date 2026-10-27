@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "source_provenance": "Read-only official GitHub pull-request and issue REST API observations on 2026-10-27; only selected metadata, no source clone or untrusted issue text copied",
+  "status": "TWO_REAL_PR_CHRONOLOGY_LEADS_NOT_EXECUTABLE_TASKS",
+  "records": [
+    {
+      "candidate_id": 104,
+      "repository": "mvdbos/php-spider",
+      "pr_number": 172,
+      "issue_number": 168,
+      "issue_url": "https://github.com/mvdbos/php-spider/issues/168",
+      "pr_url": "https://github.com/mvdbos/php-spider/pull/172",
+      "issue_title": "Consolidate file-layout rules and verify cache compatibility",
+      "issue_created_at": "2026-10-22T22:53:10Z",
+      "issue_updated_at": "2026-10-22T23:03:40Z",
+      "issue_body_chars_observed": 1206,
+      "pr_created_at": "2026-10-22T22:55:42Z",
+      "pr_base_sha": "25e9b1cf855669c24ba1609c7d4cfcda17ac6217",
+      "pr_head_sha": "40cdfdb4d7b6eb8afebbd548ea87c7ed4805808a",
+      "pr_body_closing_reference_verified": true,
+      "issue_text_at_pr_creation_immutably_archived": false,
+      "source_issue_is_pull_request": false,
+      "independently_verified_pre_pr_specification": false,
+      "independent_oracle_verified": false,
+      "source_rights_verified": false,
+      "executable_task_approved": false
+    },
+    {
+      "candidate_id": 43,
+      "repository": "PlayHuai/eighty-point-huai-an",
+      "pr_number": 30,
+      "issue_number": 29,
+      "issue_url": "https://github.com/PlayHuai/eighty-point-huai-an/issues/29",
+      "pr_url": "https://github.com/PlayHuai/eighty-point-huai-an/pull/30",
+      "issue_title": "T10",
+      "issue_created_at": "2026-10-23T12:18:50Z",
+      "issue_updated_at": "2026-10-23T13:07:52Z",
+      "issue_body_chars_observed": 33,
+      "pr_created_at": "2026-10-23T12:18:58Z",
+      "pr_base_sha": "ec41b1b33f5a4d46a8398fb6ccc33f25336fdb8a",
+      "pr_head_sha": "e06b7e5fad881f4d34752eaf98615f84dbf57db3",
+      "pr_body_closing_reference_verified": true,
+      "issue_text_at_pr_creation_immutably_archived": false,
+      "source_issue_is_pull_request": false,
+      "independently_verified_pre_pr_specification": false,
+      "independent_oracle_verified": false,
+      "source_rights_verified": false,
+      "executable_task_approved": false
+    }
+  ],
+  "notes": [
+    "Issue creation predates PR by 152 sec for candidate 104 and 8 sec for candidate 43; chronology is observable, but an issue body can change after creation.",
+    "Issue updated_at is after PR creation; this timestamp may include status closure and does NOT prove that issue text was edited. Nor does it freeze its original content.",
+    "Candidate 104 current issue body has detailed acceptance criteria; candidate 43 issue currently has an exceptionally short task label. Neither observed body is an immutable pre-fix specification.",
+    "PR descriptions contain post-fix patch information, so must NEVER be passed as task-era prompts.",
+    "No third-party source code, release rights clearance, or independent hidden oracle is included."
+  ]
+}
