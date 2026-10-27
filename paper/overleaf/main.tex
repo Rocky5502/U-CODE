@@ -1,10 +1,11 @@
-% U-CODE prospective journal manuscript; scientific protocol only (2026-10-24).
+% U-CODE prospective journal manuscript; scientific protocol only (updated 2026-10-27).
 % NOT SUBMISSION READY: no independent execution data, risk certificates or RQ results.
 % Obtain sn-jnl.cls and publisher BST files from official Springer Nature template.
 % https://www.overleaf.com/latex/templates/springer-nature-latex-template/myxmhdsbzkyd
 \documentclass[pdflatex,sn-basic]{sn-jnl}
 
 \usepackage{amsmath,amssymb}
+\usepackage{url}
 \usepackage{graphicx}
 \usepackage{booktabs}
 
@@ -30,11 +31,11 @@ benefit of allocating resources between \emph{evidence acquisition} and
 We formulate this allocation as a partially observed decision problem
 with independently enforced limits on tokens, test calls, GPU time,
 CPU time, and wall time. We distinguish the information value of
-diagnostics from the candidate-space value of generation, explicitly
-model dependence between sequential tests, and develop finite-horizon
-and finite-scenario one-step reference controllers. The latter compares
-conditional diagnostic evidence values against prospective generation
-and repair forecasts while retaining the option to release or abstain.
+diagnostics from the candidate-space value of generation, model dependence
+between sequential tests, and develop finite-horizon and finite-scenario
+reference controllers. A restricted one-step extension compares diagnostic
+and generative forecasts under the same frozen model scenarios while
+retaining the option to release or abstain.
 A provenance-audited collection of 120 discovered pull-request links
 across twelve query-language strata supports task screening, not yet
 an executable correctness benchmark. We specify independent task
@@ -679,6 +680,74 @@ actual repair improvement. The full adaptive
 multi-patch integration and fitted, independently
 tested transition kernels remain future
 engineering and empirical tasks.
+
+\paragraph{Joint diagnostic-and-generation scenario audit.}
+As an additional \emph{one-step} sensitivity check,
+we now evaluate the two action categories under
+the \emph{same indexed finite set} of possible
+models. Each frozen scenario is a named pair
+$\Xi^{(k)}=(K^{(k)},\widehat U_{\rm gen}^{(k)})$,
+where $K^{(k)}$ supplies a visible-history
+diagnostic kernel and $\widehat U_{\rm gen}^{(k)}$
+supplies prospective terminal utility for every
+feasible generation or repair action. Define
+$g^{(k)}(a\mid h_t)$ by Eq.~\eqref{eq:robust-gain}
+for diagnostics and by
+\begin{equation}
+ g^{(k)}_{\rm gen}(a\mid h_t)
+ =\widehat U_{\rm gen}^{(k)}(a\mid h_t)
+ -U_0(p_t)-\boldsymbol\lambda^\top\mathbf c(a)
+ \label{eq:joint-scenario-generator}
+\end{equation}
+for candidate-producing actions. All scenarios
+must specify the forecast for every feasible
+candidate action; partial per-action scenario
+sets are forbidden because they bias the comparison.
+The restricted one-step decision is
+\begin{equation}
+ a^\star\in
+ \underset{\substack{a\in\mathcal A_t,\;
+       \mathbf c(a)\preceq\mathbf b_t\\
+       \min_{k}g^{(k)}(a\mid h_t)>0}}
+ {\operatorname{arg\,max}}
+ \min_{k}g^{(k)}(a\mid h_t),
+ \label{eq:joint-scenario-allocation}
+\end{equation}
+where an empty feasible set yields the
+unchanged release-or-abstain terminal decision.
+This is standard finite-set maximin optimization,
+not a new proof of robust POMDP optimality.
+It improves the \emph{symmetry of the sensitivity
+audit}: optimistic generator forecasts can now
+be contradicted by another frozen scenario,
+just as diagnostic forecasts can. Named scenario
+IDs ensure that the same alternatives are assessed
+for every action, while the program rejects
+missing likelihood rows, missing generative
+utilities, duplicate scenario IDs, action
+re-purchases and any five-resource violation.
+These are \emph{code-level properties} under
+synthetic forecasts, not evidence of calibration,
+true-model coverage, executable patch success,
+or improved human-developer outcomes.
+
+\paragraph{Algorithmic completeness and limitations.}
+The one-step nominal, one-step finite-scenario,
+and diagnostic-only look-ahead implementations
+are \emph{different reference restrictions}.
+The full architecture in Eq.~\eqref{eq:bellman}
+would additionally require learned,
+sequentially valid generative transitions,
+a changing candidate archive, model-loading
+and repair adapters, and sandboxed independent
+evaluation. None of these missing capabilities
+is established by multiplying synthetic tests
+or by running the mathematical examples.
+The new joint-scenario policy is an
+\emph{exploratory method extension}; it does
+not silently enter the existing eight-policy
+confirmatory matrix until a preregistered
+evaluation update is approved.
 
 Strong equal-budget baselines include no search, fixed testing, random
 tools, cost-only allocation, uncertainty-only regeneration,
@@ -1925,9 +1994,20 @@ falsifiable, budget-aware evidence-acquisition research protocol.
 
 \textbf{Competing interests.} To be declared by the authors.
 
-\textbf{Data and code availability.} Source-code and metadata releases are
-subject to source licenses and data-sharing approvals. Final URLs and
-reproducibility statements will be provided after artifact validation.
+\textbf{Data and code availability.}
+The current analytical reference implementations, synthetic
+tests, source-only PR discovery metadata, quality reports,
+and manuscript source are versioned at
+\url{https://github.com/Rocky5502/U-CODE}.
+The 120 linked PRs are \emph{discovery metadata},
+not an independently admitted executable task dataset.
+Third-party repository sources and model weights are
+not redistributed by this manuscript. A permanent
+dataset DOI, final archival version, independent
+task oracles, author-verified source permissions
+and reproducible empirical run receipts remain
+pending; the GitHub record alone does not satisfy
+those final publication requirements.
 
 \textbf{Author contributions.} To be completed and approved by all authors.
 
