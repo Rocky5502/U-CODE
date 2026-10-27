@@ -40,7 +40,8 @@ def validate_handoff_snapshot(register: dict, *, root=ROOT) -> dict:
     protocol = json.loads((root / register["protocol"]).read_text("utf-8"))
     roster = json.loads((root / "configs/accepted_six_model_study_2026-10-25.json").read_text("utf-8"))
     if (protocol["model_ids"] != [m["model_id"] for m in roster["models"]]
-            or register["models"]["selected_for_planning"] != len(protocol["model_ids"]) != 6):
+            or len(protocol["model_ids"]) != 6
+            or register["models"]["selected_for_planning"] != 6):
         raise ValueError("model roster differs from selected confirmatory model registry")
     if (register["study"]["confirmatory_policies"] != len(protocol["policy_ids"])
             or register["study"]["primary_treatment"] != protocol["primary_treatment"]
