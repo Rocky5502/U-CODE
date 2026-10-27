@@ -81,6 +81,69 @@ refresh live `main` CI and current source hashes before a new sprint.
 
 ---
 
+## 27 OCTOBER 2026 — REAL SOURCE-TREE PRE-FIX AUDIT + ROBUST MIXED PLANNER
+
+**This addendum is newer than prior 746-test reviewer milestones.
+Refresh GitHub HEAD and CI before reporting any verified numbers.**
+
+- The original discovery frame is still **120 distinct PR links /
+  repository-name strings across 12 search-language strata**, 119
+  metadata reads, 62 source-path leads. It is **NOT** 120 executable
+  source repos and there are **zero independently approved tasks**.
+- We directly inspected official GitHub API PR/issue records and
+  pre-fix commit/tree objects for candidate #104 (PHP:
+  mvdbos/php-spider PR #172, issue #168) and #43 (Go:
+  PlayHuai/eighty-point-huai-an PR #30, issue #29).
+  Original issues precede PR creation by **152 sec and 8 sec**.
+  Current issue bodies are NOT verified unchanged at PR creation;
+  updates/closure occur afterward. No source code was cloned or run.
+- [Original issue timestamps](../data/admission/2026-10-27/two_candidate_issue_chronology_metadata.json)
+  and [pinned pre-fix Git object/tree/blob inventory](../data/admission/2026-10-27/two_candidate_pre_fix_tree_inventory.json)
+  include PHP base tree SHA
+  `6924b6560484f3c28fcbb7359a15df2540c55d22`
+  (171 paths) and Go tree SHA
+  `e53fb011857926632c4a4ec8752425e0f2b41559`
+  (88 paths). Confirmed two existing changed production
+  files per candidate and Composer/PHPUnit vs Go module config.
+  [Read-only validators](../src/ucode/pre_fix_tree_audit.py)
+  and [chronology checker](../src/ucode/issue_chronology.py)
+  reject false task approval, swapped commits, fabricated provenance
+  and path traversal; structural source presence is NOT a build.
+- [Scenario diagnostic ambiguity method](../src/ucode/scenario_robust_evidence.py)
+  computes finite-scenario worst/best one-step conditional
+  evidence gain, with five hard resource caps, and abstains from
+  model-sensitive tests. [One-step MIXED decision planner](../src/ucode/robust_mixed_intervention.py)
+  chooses between those conservative diagnostics,
+  generating/repairing via **point** terminal-value forecasts,
+  or stop. It does NOT guarantee robustness to faulty generative
+  forecasts or solve the full multi-step POMDP.
+- [Prospective formal math/novelty/negative controls](UCODE_NOVELTY_FALSIFIERS_AND_MATHEMATICS_2026-10-27.md)
+  distinguishes original question from prior SWE-Search,
+  SWE-Verifier and PATSSEL. The main Springer paper
+  `paper/overleaf/main.tex` now includes the finite-scenario
+  min-max evidence-gain equations, an explicit restricted
+  one-step mixed-action equation, and source evidence warnings.
+  Original confirmatory 8-policy registration remains unchanged;
+  robust new variant is exploratory until preregistered.
+- Synthetic reproducibility:
+  `python -m examples.scenario_robust_evidence_smoke`
+  and `python -m examples.robust_mixed_smoke`.
+  Source metadata:
+  `python -m scripts.verify_two_issue_chronologies`
+  and `python -m scripts.verify_pre_fix_git_trees`.
+- Intermediate CI [40496727050](https://github.com/Rocky5502/U-CODE/actions/runs/40496727050)
+  verified **807 tests passed on each Python 3.10 and 3.12**.
+  Later GitHub commits and workflow run MUST be checked live.
+- **Next REAL science gates:** manually qualify file-specific
+  permissions; immutable task-era spec, evaluator-only held-out
+  behavioral oracle, reproducible isolated builds, actual model
+  inference/adapter and budget meters. Only then can the
+  primary paired evaluation generate useful effect estimates.
+  Do not promise a full 12-language validated code dataset in one
+  week with zero runnable tasks.
+
+---
+
 ## 27 OCTOBER 2026 — TWO-REVIEWER SCIENTIFIC EVIDENCE GATE
 
 This new review apparatus is COMPLETE AS CODE, but HUMAN REVIEW IS **NOT**.
