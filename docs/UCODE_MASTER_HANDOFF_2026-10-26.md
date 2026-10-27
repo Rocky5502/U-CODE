@@ -12,6 +12,49 @@
 
 ---
 
+## 27 OCTOBER 2026 — CROSS-ROLE LINEAGE AUDIT & EXTERNAL-METADATA HARDENING
+
+**Supersedes the earlier dataset claim of 707 offline tests.** Always
+refresh live `main` CI and current source hashes before a new sprint.
+
+- [Conservative leakage graph](../src/ucode/lineage_risk_graph.py),
+  [offline graph runner](../scripts/audit_lineage_risks.py),
+  [SHA256 re-verifier](../scripts/verify_lineage_review.py),
+  [adversarial tests](../tests/test_lineage_risk_graph.py)
+  and [methodological ledger](PR_LINEAGE_REVIEW_2026-10-27.md)
+  flag metadata overlap across shared fork-parent, Git commit SHA
+  (including head-to-base cross-role) and common GitHub owner.
+  Frozen 120-record audit found **nine owner warning edges**,
+  zero shared cross-record fork-parent/Git-SHA edges,
+  120 provisional candidate provenance components,
+  **zero independently adjudicated duplicates or leakage-safe splits**.
+  Absence of metadata edges is NOT source-code independence evidence.
+- Graph export is a **separate four-file reviewer artifact**
+  `ucode-lineage-review-only-v1`, alongside (NOT merged into)
+  the eight-file `ucode-pr-metadata-clean-v1` quality release.
+  Both outputs are generated and re-verified in GitHub CI.
+- [External SWE-rebench V2 intake](../src/ucode/external_dataset_intake.py)
+  now handles bounded epoch-millisecond timestamps and string
+  timestamps and excludes unsafe foreign spreadsheet formulas/control
+  metadata while retaining all exclusions in screening denominators.
+  [Input hardening tests](../tests/test_external_dataset_intake.py)
+  cover this. Upstream 32,079-row Parquet has NOT been imported.
+- [Springer ASE Methods](../paper/overleaf/main.tex) documents the
+  nine owner warnings, zero matched source-hint components,
+  no frozen split, and safe optional metadata intake. GitHub
+  Overleaf sources updated; external live Overleaf remains unsynced.
+- **Verified intermediate CI:**
+  [run 40428161725](https://github.com/Rocky5502/U-CODE/actions/runs/40428161725)
+  passed **726/726** on Python 3.10 and **726/726** on Python 3.12,
+  including both source-free output verifier steps.
+  Source/doc edits afterward require their own final HEAD CI.
+- Still **0 admitted executable tasks, 0 verified real six-model
+  inferences, 0 independent held-out oracle trials or attested
+  five-dimensional metering**. Do not claim Nature Scientific Data
+  submission readiness or one-week full experiment completion.
+
+---
+
 ## 27 OCTOBER 2026 — REPRODUCIBLE DATA QUALITY & MULTILINGUAL SOURCE ADDENDUM
 
 **This addendum supersedes earlier statements that U-CODE has only the
