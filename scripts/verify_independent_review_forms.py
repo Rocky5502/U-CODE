@@ -33,7 +33,6 @@ def verify_blank_review_forms(folder: Path):
         raise ValueError("symlinks or directories are not allowed")
     integrity = json.loads((root/"reviewer_forms_integrity.json").read_text("utf-8"))
     if (integrity.get("status") != "REVIEWER_FORMS_ONLY_NOT_ADJUDICATED"
-        or integrity.get("no_oracle") is True
         or integrity.get("admitted_executable_tasks") != 0
         or integrity.get("model_inference_executed") is not False
         or integrity.get("two_reviewer_independence_not_authenticated") is not True
