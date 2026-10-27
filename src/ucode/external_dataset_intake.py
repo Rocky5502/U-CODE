@@ -149,6 +149,11 @@ def screen_swe_rebench_v2(rows, *, revision: str,
             excluded.append({"instance_id": uid,
                              "reason": "unsafe_spreadsheet_or_control_metadata"})
             continue
+        if any(len(row[k]) > 512 or any(ord(c) < 32 for c in row[k])
+               for k in ("license", "created_at", "image_name")
+               if row[k] is not None):
+            excluded.append({"instance_id": uid, "reason": "unsafe_metadata_length_or_control_character"})
+            continue
         base_clusters[(repo.casefold(), rev)].append(uid)
         kept.append({
             "source_dataset": SWE_REBENCH_V2_DATASET,
