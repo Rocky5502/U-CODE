@@ -178,6 +178,66 @@ The six-model/ASE pilot remains blocked by legitimate independent evidence.
 
 ---
 
+## 27 OCTOBER 2026 — POLISHED SPRINGER SOURCE & SHARED-SCENARIO ONE-STEP RESEARCH
+
+**Latest canonical source:** `paper/overleaf/main.tex`,
+`paper/overleaf/references.bib` on GitHub main (always check
+HEAD and CI before reporting status). Live Overleaf project has
+NOT been edited, authenticated or PDF-compiled.
+
+**Manuscript revision:** abstract (~190 words), Introduction
+with concrete falsifiers, Related Work boundary incl.
+PATSSEL, mixed evidence/generation method, fully shared
+finite-scenario diagnostic/generator marginal utility
+in Eqs. for one-step minmax, Results with strict
+zero-effectiveness-claims boundary, and factual GitHub
+code/data availability statement. All 22 in-text references
+resolve to in-repo BibTeX keys. Springer `sn-jnl` publisher
+class remains external: source ZIP != compiled PDF.
+
+**New source audit:** `scripts/audit_overleaf_sources.py`
+with `tests/test_overleaf_source_audit.py` checks 22
+bibliography keys, labels, balanced environments, expected
+abstract/keyword lengths, journal class declaration and
+prospective (not completed) empirical Results. CI now
+runs this before Overleaf ZIP export.
+
+**Algorithms:** `src/ucode/joint_scenario_action.py`
+adds a finite, named, frozen **shared scenario set** for
+BOTH diagnostics and generative/repair forecasts, with
+hard five-vector budget and strict missing-forecast
+rejection. Its predecessor
+`src/ucode/robust_mixed_intervention.py` stress-tests
+diagnostics but only point-forecasts generated patches.
+New `tests/test_joint_scenario_action.py` synthetic
+falsifiers and `examples/joint_scenario_action_smoke.py`
+preserve this distinction. This is ONE-STEP finite-scenario
+minimax, not an integrated multi-step POMDP/agent or
+statistical risk guarantee. Input hardening in
+`src/ucode/vector_policy.py` and `src/ucode/voi.py`
+rejects boolean-as-integer quota/price/probability values;
+new `tests/test_input_type_falsifiers.py` enforce it.
+
+**Verified intermediate 2026-10-27 CI checkpoint:**
+[run 40500085160](https://github.com/Rocky5502/U-CODE/actions/runs/40500085160)
+passed **851/851** tests on Python 3.10 and 3.12,
+manuscript source audit and joint-scenario CLI example.
+Newer commits require re-verification; read latest
+workflow statuses and download source artifact from
+the latest fully successful run.
+
+**Remaining real research gates unchanged:** **zero
+admitted executable tasks** from 120 metadata-only
+PR records/12 query languages; human source-rights
+adjudication; independent task-era specification;
+sealed behavioral oracle; safe isolated runner with
+real five-resource meters; pinned 6 model inference
+revisions; preregistered candidate parity and paired
+held-out evaluation. Do not fabricate outcomes,
+paper acceptance or Nature Data descriptor readiness.
+
+---
+
 ## 27 OCTOBER 2026 — REPRODUCIBLE DATA QUALITY & MULTILINGUAL SOURCE ADDENDUM
 
 **This addendum supersedes earlier statements that U-CODE has only the
