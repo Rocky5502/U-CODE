@@ -16,6 +16,61 @@ U-CODE studies **when a software engineering agent should test, retrieve context
 
 <sub>Figure 1. Proposed U-CODE architecture. The top row is the risk-aware agent policy (task → interventions → evidence modeling → BES → controlled execution → release/abstention); the curved teal arrow returns **visible** execution feedback from the execution stage to BES. The lower research lane independently admits tasks, seals the functional oracle, evaluates released artifacts, and summarizes evidence. **Architectural design, not a completed or validated experimental result.** [View scalable SVG](docs/figures/ucode-framework.svg).</sub>
 
+## Springer manuscript and joint-scenario research update (27 October 2026)
+
+**Canonical article source:** [paper/overleaf/main.tex](paper/overleaf/main.tex)
+and [references.bib](paper/overleaf/references.bib). The abstract
+and contribution statement now separate established work
+(SWE-Search, SWE-Verifier, PATSSEL, Bayesian value of information)
+from the testable proposed contribution: **whether conditionally
+dependent diagnostic evidence is worth purchasing instead of
+generating/repairing another patch under five equal hard resource
+budgets**. The Springer Methods sections include one-step
+finite-scenario model sensitivity, limited generative point-forecast
+comparisons, and the newer **joint-scenario diagnostic and generation
+minimax equation**. The Results section is explicitly a status report
+with **zero confirmed empirical effectiveness results**.
+
+**New algorithms:**
+[full joint-scenario one-step selector](src/ucode/joint_scenario_action.py)
+uses the SAME frozen set of alternative diagnostic and
+generator/repair forecasts for every feasible action, and
+abstains/releases if no feasible intervention has positive
+worst-scenario marginal terminal utility. This remains a
+restricted one-step analytical reference, NOT a statistically
+robust or fully running repository coding agent. Upstream
+[one-step mixed reference](src/ucode/robust_mixed_intervention.py)
+uses point generation forecasts; their distinct assumptions are
+documented explicitly. We also reject Python bool-as-int
+substitution for probability, token/test/GPU/CPU/wall quotas,
+resource prices, and release penalties.
+
+**Reproducibility and review:** the
+[manuscript source auditor](scripts/audit_overleaf_sources.py)
+checks the publisher-class declaration, 150--250 word abstract,
+4--6 keywords, all citations and cross-references, balanced
+environments and no fabricated completed Results. This is
+NOT an actual LaTeX PDF compile. Run:
+
+```bash
+python -m scripts.audit_overleaf_sources
+python -m examples.joint_scenario_action_smoke
+python -m unittest discover -s tests -v
+python -m scripts.export_overleaf --output dist/UCODE_Overleaf_sources.zip
+```
+
+The [Overleaf README](paper/overleaf/README.md) explains why
+GitHub changes do not automatically modify an existing live
+Overleaf project; imports require the official Springer
+`sn-jnl.cls` project and reconciliation of collaborator edits.
+
+**Empirical blockers unchanged:** 120 clean PR *metadata* records
+over twelve search-language strata, zero independently accepted
+executable tasks, no authenticated evaluator/hidden oracle
+or six-checkpoint GPU runs. The paper is not yet submission-ready.
+The generated source ZIP, not a verified rendered PDF, is
+attached to passing GitHub CI.
+
 ## New methodological falsifier and real pre-fix provenance (27 October 2026)
 
 **Methodology:** [U-CODE novelty and falsification ledger](docs/UCODE_NOVELTY_FALSIFIERS_AND_MATHEMATICS_2026-10-27.md)
