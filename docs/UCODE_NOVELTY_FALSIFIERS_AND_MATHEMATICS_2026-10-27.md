@@ -15,7 +15,7 @@ Therefore we cannot claim inventing uncertainty, search, verification, debugging
 
 An adaptive repository coding agent allocates a shared, independently metered, hard FIVE-resource budget among (1) patch candidate generation/repair, (2) diagnostic evidence acquisition, and (3) release/abstention, where tests can be correlated and uncertain diagnostic likelihood estimates can change the action ranking. The incremental scientific claim is whether this evidence-aware action policy improves held-out full-task correctness over cost-matched uncertainty-removed search and recent verification policies.
 
-Distinct modules exist for one-step vector policy, bounded single-candidate lookahead, history-conditional correlated evidence, joint candidate archive, and one-step frozen-scenario model sensitivity. THEY ARE NOT YET VALIDATED AS AN INTEGRATED END-TO-END SIX-MODEL REPOSITORY AGENT.
+Distinct modules exist for one-step vector policy, bounded single-candidate lookahead, history-conditional correlated evidence, joint candidate archive and one-step frozen-scenario model sensitivity. A NEW one-step mixed-action module now selects between **worst-scenario diagnostic evidence** and **generation/repair point forecasts** on the same expected terminal-utility scale. It preserves every hard five-resource cap and can decide to stop. See src/ucode/robust_mixed_intervention.py and tests/test_robust_mixed_intervention.py. This mixed action module is NOT a robust generator: its generative forecasts are point estimates, and it is **NOT AN INTEGRATED END-TO-END SIX-MODEL REPOSITORY AGENT**.
 
 ## Mathematical one-step diagnostic sensitivity
 
