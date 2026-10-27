@@ -1,0 +1,87 @@
+{
+  "schema_version": "1.0",
+  "as_of_date": "2026-10-27",
+  "stage": "OFFICIAL_GITHUB_PRE_FIX_COMMIT_TREE_METADATA_ONLY_NO_SOURCE_CLONES",
+  "source_api": "GitHub REST git/commits/{base_sha} and git/trees/{commit_tree_sha}?recursive=1",
+  "records": [
+    {
+      "candidate_id": 104,
+      "repository": "mvdbos/php-spider",
+      "pr_url": "https://github.com/mvdbos/php-spider/pull/172",
+      "base_commit": "25e9b1cf855669c24ba1609c7d4cfcda17ac6217",
+      "base_tree_sha": "6924b6560484f3c28fcbb7359a15df2540c55d22",
+      "tree_recursion_truncated": false,
+      "observed_tree_entries": 171,
+      "baseline_root_license_blob_sha": "9d2375c29942233e3b646d51210ebc67235df873",
+      "toolchain_metadata": [
+        {
+          "path": "composer.json",
+          "git_blob_sha": "8924dc7ca160eecf5aa98500b7c20a0ed3d865d5"
+        },
+        {
+          "path": "phpunit.xml.dist",
+          "git_blob_sha": "0b4849b8a7545d4e3c7f9eb1f323a682386cb25d"
+        }
+      ],
+      "observed_existing_source": [
+        {
+          "path": "src/Filter/Prefetch/CachedResourceFilter.php",
+          "git_blob_sha": "7674093fb5be90b082cbd2b35565cf506944d9fa"
+        },
+        {
+          "path": "src/PersistenceHandler/FilePersistenceHandler.php",
+          "git_blob_sha": "1edebb766b53d2117972a8bafaff27d716b55163"
+        }
+      ],
+      "observed_expected_new_source_not_at_base": [
+        "src/PersistenceHandler/FilePersistenceLayout.php"
+      ],
+      "base_tree_structure_verified": true,
+      "real_build_executed": false,
+      "source_code_downloaded": false,
+      "source_file_redistribution_approved": false,
+      "independent_oracle_verified": false,
+      "experiment_eligible": false
+    },
+    {
+      "candidate_id": 43,
+      "repository": "PlayHuai/eighty-point-huai-an",
+      "pr_url": "https://github.com/PlayHuai/eighty-point-huai-an/pull/30",
+      "base_commit": "ec41b1b33f5a4d46a8398fb6ccc33f25336fdb8a",
+      "base_tree_sha": "e53fb011857926632c4a4ec8752425e0f2b41559",
+      "tree_recursion_truncated": false,
+      "observed_tree_entries": 88,
+      "baseline_root_license_blob_sha": "c15f68715092a3b55253f80bd1fa6af08d6b0879",
+      "toolchain_metadata": [
+        {
+          "path": "server/go.mod",
+          "git_blob_sha": "0933c3551c51527a752bc5cca0bd47581fc304a5"
+        }
+      ],
+      "observed_existing_source": [
+        {
+          "path": "server/internal/persistence/mysql/store.go",
+          "git_blob_sha": "a6e58d2b93b72fa5e686c2350dfea3d5206662e5"
+        },
+        {
+          "path": "server/internal/settlement/repository.go",
+          "git_blob_sha": "35a4d4747a1e1bb6dab470bce448a0db288e4e09"
+        }
+      ],
+      "observed_expected_new_source_not_at_base": [],
+      "base_tree_structure_verified": true,
+      "real_build_executed": false,
+      "source_code_downloaded": false,
+      "source_file_redistribution_approved": false,
+      "independent_oracle_verified": false,
+      "experiment_eligible": false
+    }
+  ],
+  "limitations": [
+    "Git commit and tree SHA from official metadata; no independent raw object SHA recomputation performed.",
+    "Root LICENSE Git blob SHA is an indicator for manual rights review, not file-level permission adjudication.",
+    "Presence of pre-fix production files and build config does NOT show that source dependencies install or tests run.",
+    "Immutable pre-fix task wording and independent evaluator-only tests are not established.",
+    "Structure-only audit, not an execution benchmark; no six-model inference performed."
+  ]
+}
