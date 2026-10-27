@@ -21,22 +21,28 @@
 % PROSPECTIVE ABSTRACT ONLY. Replace with a supported results abstract after
 % verified experiments. Never present a proposed evaluation as completed.
 \abstract{%
-Coding agents may generate plausible software patches while missing defects that
-are costly to discover after deployment. Under bounded computing resources, an
-agent must decide whether to generate another patch, retrieve relevant context,
-run diagnostic tests, inspect code statically, attempt a repair, or stop.
-Existing research has examined uncertainty-based code revision, software-agent
-search, selective action verification, and multi-objective configuration
-optimization. What remains to be established is whether jointly modeling the
-value of acquiring different forms of verification evidence improves the
-reliability of patches ultimately released at matched resource budgets.
-We formulate this question as a risk-constrained partially observed sequential
-decision problem, distinguishing the information value of diagnostics from the
-candidate-space gains of generation and repair. We specify selective-error and
-coverage estimands, budget-matched policy controls, and a leakage-resistant
-evaluation using independently checked repository tasks. This version presents
-a research protocol and an analytical reference implementation only; real-world
-reliability gains and statistical risk guarantees have not yet been established.
+Repository-level coding agents must decide whether to generate another patch,
+repair an existing candidate, purchase diagnostic evidence, or terminate
+before exhausting their resources. Prior work has studied software-agent
+search, selective verification, and adaptive code repair, but the incremental
+benefit of allocating resources between \emph{evidence acquisition} and
+\emph{candidate production} remains to be measured under matched budgets.
+We formulate this allocation as a partially observed decision problem
+with independently enforced limits on tokens, test calls, GPU time,
+CPU time, and wall time. We distinguish the information value of
+diagnostics from the candidate-space value of generation, explicitly
+model dependence between sequential tests, and develop finite-horizon
+and finite-scenario one-step reference controllers. The latter compares
+conditional diagnostic evidence values against prospective generation
+and repair forecasts while retaining the option to release or abstain.
+A provenance-audited collection of 120 discovered pull-request links
+across twelve query-language strata supports task screening, not yet
+an executable correctness benchmark. We specify independent task
+admission, sealed-oracle evaluation, resource-matched controls, and
+selective-risk/coverage outcomes to test the approach. All current
+algorithm tests are synthetic or metadata-only; neither improved
+repair reliability nor statistical risk guarantees have yet been
+demonstrated.
 }
 
 \keywords{search-based software engineering, coding agents,
@@ -61,12 +67,36 @@ configurations \cite{gong2025ga4gc}, replay-based test-time scaling
 \cite{zou2026sweverifier}. We therefore do \emph{not} claim the first
 uncertainty-aware or multi-objective coding-agent search.
 
-Our falsifiable question is whether a \emph{calibrated, risk-aware allocation
-across heterogeneous diagnostics and generative interventions} can improve
-independently verified full-task success under the same vector resource
-budget, without concealing failures through excessive abstention.
-The present paper is a \emph{pre-experimental research draft}, not a report
-of measured improvements.
+Our falsifiable question is whether a \emph{calibrated, risk-aware
+allocation between diagnostic evidence and generative interventions}
+can improve independently verified full-task success at an identical
+five-dimensional budget, without hiding failures through excessive
+abstention. Unlike an additional candidate-generation step, a
+diagnostic may leave the patch set unchanged while altering its
+estimated acceptability; two diagnostics may also repeat information
+about the same defect. These distinctions require an explicitly
+history-dependent decision model, rather than counting tool calls as
+interchangeable search steps.
+
+\paragraph{Contributions and falsifiers (pre-experimental).}
+We (i) formulate evidence acquisition and patch production on a
+common terminal-utility scale with five hard resource constraints,
+a release/abstain decision, and measurable wrong-release risk
+\emph{alongside} coverage;
+(ii) implement finite-horizon and history-conditioned diagnostic
+controllers together with a finite-scenario sensitivity check and
+a restricted, one-step mixed diagnostic/generation selector;
+(iii) curate and audit a 120-link, twelve-query-language PR
+\emph{discovery} dataset with explicit source, license, task and
+oracle admission gates; and
+(iv) preregister a paired, budget-matched evaluation against
+uncertainty-free search and selective verification.
+These are implemented methodology and experimental design
+contributions, not demonstrated increases in real-task success.
+The empirical effectiveness hypothesis is falsified if the proposed
+policy does not improve independently verified full-task success
+at comparable coverage, safety outcomes, and resource consumption.
+The complete six-model software-agent experiment remains pending.
 
 \section{Related Work and Novelty Boundary}\label{sec:related}
 
@@ -77,16 +107,14 @@ issue-resolution tasks with programmatic evaluation, and SWE-agent
 establishes an interface for repository editing and test execution
 \cite{jimenez2024swebench,yang2024sweagent}. These precede U-CODE.
 
-PATSSEL adaptively selects debugging versus regeneration
-using generated verifier tests; its demonstrated
-performance makes the debug-versus-regenerate
-decision itself established prior work
-\cite{kulkarni2026pats}. U-CODE therefore targets
-the extra causal effect of purchasing \emph{evidence}
-rather than more candidates under identical
-vector budgets and frozen likelihood alternatives.
-SWE-Search applies Monte Carlo tree search and iterative refinement to
-software repair \cite{antoniades2025swesearch}. SWE-Replay reuses
+PATSSEL studies test-guided selection between debugging and
+regeneration \cite{kulkarni2026pats}; this choice alone is
+therefore not novel. Our narrower hypothesis concerns the
+incremental value of \emph{acquiring and combining diagnostic
+evidence about an existing patch} relative to generating or
+repairing another candidate under identical vector budgets.
+SWE-Search applies Monte Carlo tree search and iterative refinement
+to software repair \cite{antoniades2025swesearch}. SWE-Replay reuses
 trajectories and intermediate search states to reduce redundant
 test-time computation \cite{ding2026swereplay}. GA4GC performs
 multi-objective optimization of agent prompts/configuration
@@ -1860,9 +1888,24 @@ evaluation; no empirical model or task result is implied.
 
 \section{Results}\label{sec:results}
 % NO EMPIRICAL RQ RESULTS EXIST AT THIS MANUSCRIPT STATE.
-% Add tables and figures ONLY after executable, revision-pinned runs and
-% independently recomputed metrics are committed. Do NOT cite toy VOI as
-% empirical proof of improvement.
+% Add policy outcomes and uncertainty intervals ONLY after qualified
+% revision-pinned, independent-oracle trials and independently recomputed
+% results are committed. The following status is not an effectiveness RQ.
+\paragraph{Evidence status, not performance findings.}
+The source-controlled software includes analytic finite-horizon,
+conditional-likelihood, finite-scenario, and one-step mixed-action
+reference implementations with deterministic synthetic tests.
+The PR discovery audit covers $120$ distinct repository-name/PR-link
+records across twelve search-language strata, but it does not
+establish $120$ runnable task instances. Two candidate repositories
+have additional read-only pre-fix Git tree and issue chronology
+evidence. None has yet completed independent task admission, sealed
+oracle replay or a six-model paired policy trial. Therefore no
+verified success-rate difference, selective wrong-release risk,
+resource efficiency improvement, statistical guarantee, or
+cross-language generalization result is reported. The eventual
+primary comparison in Eq.~\eqref{eq:paired} must remain unfilled
+until these prerequisites are met.
 
 \section{Discussion and Threats to Validity}\label{sec:discussion}
 Leading threats are unreliable PR authorship inference, repository-primary
