@@ -1,4 +1,16 @@
 # U-CODE — NEW-CHAT MASTER TAKEOVER PROMPT AND SCIENTIFIC HANDOVER (V3)
+> **27 OCT 2026 — EVALUATOR-BLIND REFERENCE SPRINT (post-V3 addendum):**
+> Draft PR [#8](https://github.com/Rocky5502/U-CODE/pull/8) adds
+> `task_view_boundary.py`, `blind_policy_trace.py`, adversarial tests
+> and [a security-limit note](BLIND_POLICY_EVALUATOR_BOUNDARY_2026-10-27.md).
+> The typed policy API contains NO hidden evaluator callback; tools must
+> reserve and report five-resource vectors. Receipt validation is not
+> authenticated metering and the runner does not execute third-party code.
+> **Zero independently admitted tasks, zero real model/pilot outcomes.**
+> Recheck actual GitHub HEAD and CI; the older counts below remain the
+> verified handover snapshot, NOT a live test count. Existing six models
+> and eight confirmatory policies remain unchanged.
+>
 **Version:** 3.0; prepared 27 October 2026.  
 **Repository:** https://github.com/Rocky5502/U-CODE (canonical working branch: main)  
 **Target:** Springer *Automated Software Engineering* — special issue *Search-Based Software Engineering in the Era of LLMs and Agentic Systems*. Planning deadline: **30 January 2027**, recheck the publisher.  
