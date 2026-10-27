@@ -107,6 +107,39 @@ class ExternalIntakeTests(unittest.TestCase):
         self.assertFalse(r["model_inference_executed"])
         self.assertEqual(r["independent_executable_task_admissions"], 0)
 
+    def test_documented_epoch_milliseconds_normalized_to_utc(self):
+        case = row("millis", created_at=1624321293000)
+        got = screen_swe_rebench_v2([case], revision=REV)
+        self.assertEqual(len(got.candidates), 1)
+        self.assertTrue(got.candidates[0]["upstream_created_at_unverified"]
+                        .endswith("+00:00"))
+
+    def test_timestamp_invalid_types_rejected_without_losing_denominator(self):
+        for value in (True, 1.3, 5, 99999999999999999999, "\\tbad"):
+            with self.subTest(value=value):
+                a = screen_swe_rebench_v2(
+                    [row("one", created_at=value), row("two")], revision=REV)
+                self.assertEqual(a.report["rows_scanned_in_LOCAL_snapshot"], 2)
+                self.assertEqual(a.report["excluded_metadata_rows"], 1)
+                self.assertEqual(a.report["metadata_candidate_rows_kept"], 1)
+
+    def test_spreadsheet_injection_from_metadata_is_excluded(self):
+        for field, val in (("instance_id", "=2+2"),
+                           ("image_name", "@HYPERLINK(1)"),
+                           ("license", "+SUM(1,2)"),
+                           ("created_at", "=2025"),
+                           ("image_name", "safe\\nline")):
+            with self.subTest(field=field):
+                a = screen_swe_rebench_v2(
+                    [row("normal", **{field: val})], revision=REV)
+                self.assertEqual(a.report["metadata_candidate_rows_kept"], 0)
+                self.assertEqual(a.report["excluded_metadata_rows"], 1)
+
+    def test_image_name_numeric_fails_metadata_type_check(self):
+        a = screen_swe_rebench_v2(
+            [row("normal", image_name=0)], revision=REV)
+        self.assertEqual(a.report["excluded_metadata_rows"], 1)
+
     def test_invalid_parquet_batch_size_fails_without_dependency(self):
         with self.assertRaisesRegex(ValueError, "batch size"):
             list(read_local_parquet_projected([], batch_size=0))
