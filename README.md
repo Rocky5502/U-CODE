@@ -61,6 +61,37 @@ separate sealed correctness oracles. The one-week target is an
 **engineering/qualification pilot**, not a guarantee of 12-language
 or six-model full experimental Results.
 
+## Conservative 120-PR lineage and contamination review (27 October 2026)
+
+U-CODE now reconstructs a [deterministic metadata provenance graph](src/ucode/lineage_risk_graph.py)
+from all 120 source PR records, looking for matching
+fork-parent hints, identical Git SHA values (even across
+base/head/merge roles), and separately **same-owner warnings**.
+The frozen audit has **nine same-owner warning edges**, zero
+cross-record shared-commit/fork-parent edges, and 120
+provisional single-record components. **This is not proof
+that the code is independent**; content-level near-duplicates,
+issue overlap, reused tests and unauthorized train/test
+leakage have not yet been inspected. No experimental split
+is certified. See the [lineage review ledger](docs/PR_LINEAGE_REVIEW_2026-10-27.md).
+
+The [graph exporter](scripts/audit_lineage_risks.py)
+produces four compact text-only files in its **own CI
+artifact**, `ucode-lineage-review-only-v1`, kept
+separate from the eight-file dataset-quality ZIP.
+[SHA256 verifier](scripts/verify_lineage_review.py)
+and [adversarial tests](tests/test_lineage_risk_graph.py)
+check cross-role ancestry flags, source-of-truth consistency,
+zero task admissions and tamper resistance.
+
+The optional [SWE-rebench V2 metadata intake](src/ucode/external_dataset_intake.py)
+also accepts verified Unix-millisecond timestamps as
+well as safe upstream string fields; external CSV
+formula/control characters and malformed metadata
+are excluded with explicit attrition reasons.
+This is **not** execution or qualification of
+the third-party 32,079-task source.
+
 ## Optional larger multilingual benchmark screening (not run)
 
 The [SWE-rebench V2 public dataset](https://huggingface.co/datasets/nebius/SWE-rebench-V2)
