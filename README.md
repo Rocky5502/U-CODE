@@ -31,10 +31,19 @@ The new [scenario-robust evidence audit](src/ucode/scenario_robust_evidence.py)
 calculates finite-model best/worst-case **one-step** net diagnostic gain,
 uses frozen history-conditional observation rows, enforces all five budget
 caps, and conservatively stops if no probe benefits in all declared
-scenarios. This is a deterministic analytical controller, NOT an
-integrated six-model repository agent or general robust Bayesian
-planning theorem. Reproduce the synthetic counterexample using
-`python -m examples.scenario_robust_evidence_smoke`.
+scenarios. A new [mixed evidence-versus-generation reference](src/ucode/robust_mixed_intervention.py)
+compares those conservative diagnostic scores with separately frozen
+generation/repair terminal-utility POINT forecasts on the same
+utility scale, using the same five hard budgets. Unlike diagnostics,
+generative forecasts are not scenario-robust. These are deterministic
+analytical controllers, NOT an integrated six-model repository agent,
+a verified full-task result, or general robust POMDP theorem.
+Reproduce both synthetic falsifiers:
+
+```bash
+python -m examples.scenario_robust_evidence_smoke
+python -m examples.robust_mixed_smoke
+```
 
 **Real metadata progress:** two prioritized PHP and Go PRs now have
 [original GitHub issue chronology observations](data/admission/2026-10-27/two_candidate_issue_chronology_metadata.json)
