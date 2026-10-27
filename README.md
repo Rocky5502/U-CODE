@@ -1,5 +1,8 @@
 # U-CODE
 
+> **Continue in a new ChatGPT session (27 Oct 2026):** [U-CODE V3 research handoff and copy/paste activation prompt](docs/UCODE_NEW_CHAT_MASTER_HANDOFF_V3_2026-10-27.md) · [machine-readable remaining scientific gates](configs/ucode_work_remaining_gates_2026-10-27.json). This links the actual 120-PR metadata screen, six-model/8-policy frozen planning roster, source-only Overleaf manuscript and **unblocked next work**. Recheck GitHub HEAD/CI; the handoff's run number is a dated verified baseline, not a promise of future CI success. **0 independently admitted executable tasks and 0 measured six-model results** remain the boundary.
+
+
 **Uncertainty-Guided Search for Reliable AI-Generated Software**
 
 > Research-stage framework. No effectiveness claims, completed model experiments, or verified 120-repository corpus are asserted.
