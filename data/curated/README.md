@@ -107,6 +107,28 @@ a fully curated multilingual executable software repair dataset.
 The latter needs independent annotation and task re-execution,
 lineage-safe splits, license review, and an archived DOI release.
 
+## Companion metadata-only lineage review graph
+
+Reproduce the conservative [lineage graph](../../src/ucode/lineage_risk_graph.py)
+using:
+
+```bash
+python -m scripts.audit_lineage_risks --output-dir dist/ucode-lineage-review
+python -m scripts.verify_lineage_review dist/ucode-lineage-review
+```
+
+It generates a **separate** four-file reviewer-warning artifact, not
+an extension of the eight-file cleaned dataset. The fixed source
+snapshot produces 120 provisional single-record ancestry
+components and nine owner-only warning links, with no
+matching cross-record fork-parent/commit SHA links.
+Cross-role matches (one PR head equals another PR base)
+are explicitly supported by the algorithm.
+These findings are NOT evidence of source-content
+uniqueness or a leakage-free train/test split.
+All split and runnable-task approval flags remain blocked.
+See the [formal review ledger](../../docs/PR_LINEAGE_REVIEW_2026-10-27.md).
+
 ## What the pipeline CANNOT claim
 
 1. Bot-authored/merged PR metadata is not evidence of line-level AI
