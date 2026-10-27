@@ -2,7 +2,12 @@
 from copy import deepcopy
 from dataclasses import replace
 from hashlib import sha256
+from pathlib import Path
+import tempfile
 import unittest
+
+from scripts.audit_lineage_risks import run as build_review_bundle
+from ucode.lineage_graph_verify import verify_lineage_review
 
 from scripts.build_clean_pr_dataset import SOURCE, AUDIT_DIR
 from scripts.summarize_audit import load_manifest, load_records
@@ -140,6 +145,24 @@ class LineageRiskTests(unittest.TestCase):
         self.assertLess(sum(len(x) for x in exports.values()), 200_000)
         self.assertTrue(all("NOT_SPLIT" in name or "REVIEW_ONLY" in name
                             for name in exports))
+
+    def test_lineage_artifact_verification_and_tamper(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            build_review_bundle(Path(tmp))
+            result = verify_lineage_review(tmp)
+            self.assertEqual(result["candidate_records"], 120)
+            self.assertFalse(result["verified_leakage_free_split"])
+            file = Path(tmp, "potential_cross_task_links_REVIEW_ONLY.csv")
+            file.write_bytes(file.read_bytes() + b"forged,edge,metadata\n")
+            with self.assertRaisesRegex(ValueError, "SHA256 mismatch"):
+                verify_lineage_review(tmp)
+
+    def test_lineage_artifact_missing_file_fails(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            build_review_bundle(Path(tmp))
+            Path(tmp, "lineage_graph_report.json").unlink()
+            with self.assertRaisesRegex(ValueError, "unexpected, missing"):
+                verify_lineage_review(tmp)
 
     def test_component_labels_consistent(self):
         graph = build_lineage_risk_graph(CLEAN, AUDIT)
