@@ -1201,6 +1201,26 @@ uniqueness, and fail-closed no-approval claims. No task, test oracle,
 source rights, or real experimental endpoint is admitted by this
 audit; the candidate denominator remains zero.
 
+\paragraph{PHP parent issue and base-era compatibility observations.}
+Further read-only reconstruction of candidate~104 found parent
+issue~166 created $222$ seconds before PR~172 and $70$ seconds
+before child issue~168. Its currently observable description
+concerns shared persistence/cache filename rules, but the
+description was updated after PR creation; its as-of-PR wording
+has not been independently archived. We therefore refuse
+to treat its current text as a frozen agent-facing task.
+Separately, we inspected four Git blobs pinned to the pre-fix
+base tree: the original persistence-layout hooks, serialized
+resource writer, cache lookup/freshness filter, and
+pre-existing cache-filter tests. Five source-behavior
+leads document legacy path completion, basename encoding,
+serialization, lookup/freshness and duplicated test-fixture
+path construction. These are static evidence candidates,
+not executed contracts or independent held-out oracles.
+They inform a prospective external review of compatibility
+and writer-to-reader behavior but neither source rights
+nor executable task approval has been obtained.
+
 \paragraph{Immutable pre-fix repository-tree provenance.}
 We additionally inspected each original public Git
 commit's tree object through read-only GitHub APIs,
