@@ -115,7 +115,7 @@ class ExternalIntakeTests(unittest.TestCase):
                         .endswith("+00:00"))
 
     def test_timestamp_invalid_types_rejected_without_losing_denominator(self):
-        for value in (True, 1.3, 5, 99999999999999999999, "\\tbad"):
+        for value in (True, 1.3, 5, 99999999999999999999, chr(9) + "bad"):
             with self.subTest(value=value):
                 a = screen_swe_rebench_v2(
                     [row("one", created_at=value), row("two")], revision=REV)
@@ -128,7 +128,7 @@ class ExternalIntakeTests(unittest.TestCase):
                            ("image_name", "@HYPERLINK(1)"),
                            ("license", "+SUM(1,2)"),
                            ("created_at", "=2025"),
-                           ("image_name", "safe\\nline")):
+                           ("image_name", "safe" + chr(10) + "line")):
             with self.subTest(field=field):
                 a = screen_swe_rebench_v2(
                     [row("normal", **{field: val})], revision=REV)
