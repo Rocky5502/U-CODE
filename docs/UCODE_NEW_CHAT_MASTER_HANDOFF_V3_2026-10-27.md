@@ -29,6 +29,24 @@
 > independent sealed oracles; 0 model outcomes**. Six-model and eight-policy
 > prospective rosters unchanged.
 >
+> **28 OCT 2026 — PHP #104 SOURCE-ERA CONTRACT SPRINT (POST-V3 ADDENDUM):**
+> Read-only official GitHub inspection located parent issue
+> [#166](https://github.com/mvdbos/php-spider/issues/166),
+> created at 22:52:00 UTC, **222s before PR #172** and **70s before**
+> child issue #168. Its *current* body is not an immutable historical
+> snapshot and must not be passed as a validated pre-fix task prompt.
+> At pinned original base commit `25e9b1cf855669c24ba1609c7d4cfcda17ac6217`,
+> four Git blobs exposed five reviewable source-behavior leads
+> (path completion, basename encoding, serialized writer, cache freshness,
+> duplicated original fixture). The
+> [review note](PHP104_BASE_SOURCE_CONTRACT_REVIEW_2026-10-28.md),
+> `src/ucode/php104_source_contract_audit.py` and first-party
+> nonpromotion tests are **source-only feasibility evidence**;
+> no PHP code was run, no original issue body was independently frozen,
+> no rights/oracles/sandbox attested, and **zero tasks are admitted**.
+> Preserve the six model IDs and eight policies. Refresh HEAD and both
+> Python CI jobs; previous handover counts are only historical.
+>
 **Version:** 3.0; prepared 27 October 2026.  
 **Repository:** https://github.com/Rocky5502/U-CODE (canonical working branch: main)  
 **Target:** Springer *Automated Software Engineering* — special issue *Search-Based Software Engineering in the Era of LLMs and Agentic Systems*. Planning deadline: **30 January 2027**, recheck the publisher.  
