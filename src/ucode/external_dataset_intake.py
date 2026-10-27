@@ -139,7 +139,9 @@ def screen_swe_rebench_v2(rows, *, revision: str,
             excluded.append({"instance_id": uid,
                              "reason": "invalid_creation_timestamp"})
             continue
-        image_name = row.get("image_name") or ""
+        image_name = row.get("image_name")
+        if image_name is None:
+            image_name = ""
         if (not _safe_metadata_text(uid, max_chars=256)
             or not _safe_metadata_text(raw_lang, max_chars=100)
             or not _safe_metadata_text(license_id, max_chars=256)
