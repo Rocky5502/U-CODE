@@ -28,7 +28,9 @@
     "independent_functional_oracles": 0,
     "executable_original_source_snapshots": 0,
     "lossless_language_distribution_established": false,
-    "labels_are_query_strata_not_verified_changed_language": true
+    "labels_are_query_strata_not_verified_changed_language": true,
+    "issue_event_first_page_leads": 2,
+    "issue_body_as_of_pr_verified": 0
   },
   "models": {
     "selected_for_planning": 6,
@@ -184,5 +186,33 @@
     "full_real_agent_integration_completed": false,
     "old_snapshot_fields_are_historical": true,
     "latest_code_ci": "CHECK_GITHUB_ACTIONS_AFTER_FINAL_COMMIT"
+  },
+  "progress_2026_10_28": {
+    "stage": "FIRST_PAGE_PUBLIC_GITHUB_ISSUE_EVENTS_REVIEW_ONLY",
+    "source": "data/admission/2026-10-28/two_candidate_issue_event_first_pages.json",
+    "reviewer_note": "docs/ISSUE_EVENT_WINDOW_ADMISSION_REVIEW_2026-10-28.md",
+    "candidate_ids": [
+      43,
+      104
+    ],
+    "observed_events": {
+      "candidate_43": 4,
+      "candidate_104": 5
+    },
+    "verified_pre_pr_issue_body_snapshots": 0,
+    "independent_oracle_attestations": 0,
+    "independently_admitted_tasks": 0,
+    "api_pagination_or_entire_history_verified": false,
+    "source_file_rights_cleared": false,
+    "language_or_full_patch_task_execution": false,
+    "confirmatory_protocol_changed": false,
+    "source_only_overleaf_work_in_branch": true,
+    "verified_offline_ci_intermediate": {
+      "run_id": 40547436152,
+      "git_head": "7a3bc65cf97c9379c9f063a616c92d0d7cf69ec9",
+      "python_310_passed": 890,
+      "python_312_passed": 890
+    },
+    "final_commit_and_ci": "CHECK_AFTER_MERGE"
   }
 }

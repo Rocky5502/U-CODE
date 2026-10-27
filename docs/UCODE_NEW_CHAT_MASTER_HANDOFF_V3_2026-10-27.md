@@ -1,6 +1,6 @@
 # U-CODE — NEW-CHAT MASTER TAKEOVER PROMPT AND SCIENTIFIC HANDOVER (V3)
 > **27 OCT 2026 — EVALUATOR-BLIND REFERENCE SPRINT (post-V3 addendum):**
-> Draft PR [#8](https://github.com/Rocky5502/U-CODE/pull/8) adds
+> Merged PR [#8](https://github.com/Rocky5502/U-CODE/pull/8) added
 > `task_view_boundary.py`, `blind_policy_trace.py`, adversarial tests
 > and [a security-limit note](BLIND_POLICY_EVALUATOR_BOUNDARY_2026-10-27.md).
 > The typed policy API contains NO hidden evaluator callback; tools must
@@ -10,6 +10,24 @@
 > Recheck actual GitHub HEAD and CI; the older counts below remain the
 > verified handover snapshot, NOT a live test count. Existing six models
 > and eight confirmatory policies remain unchanged.
+>
+> **28 OCT 2026 — SOURCE-ERA ISSUE EVENT SPRINT (POST-V3 ADDENDUM):**
+> A read-only first-page GitHub Events API audit was added for candidate #104
+> PHP issue #168 (5 observed events) and #43 Go issue #29 (4 observed
+> events). In the 152s/8s pre-PR windows, we observed 3/2 events. These
+> are real public event timestamps, **not** a versioned history of the issue
+> body. The audit explicitly refuses self-approval, hidden-gold data,
+> missing identities, forged timestamps and event duplicates.
+> See [the reviewer-only evidence and limitations](ISSUE_EVENT_WINDOW_ADMISSION_REVIEW_2026-10-28.md),
+> `src/ucode/issue_event_window_audit.py`,
+> `data/admission/2026-10-28/two_candidate_issue_event_first_pages.json`
+> and `scripts/verify_issue_event_windows.py`. In an intermediate
+> GitHub run [40547436152](https://github.com/Rocky5502/U-CODE/actions/runs/40547436152),
+> **890 offline tests passed on Python 3.10 and 3.12**. This is NOT
+> final post-merge CI: check live main. Still **0 pre-PR issue-body
+> snapshots independently verified; 0 admitted runnable tasks; 0
+> independent sealed oracles; 0 model outcomes**. Six-model and eight-policy
+> prospective rosters unchanged.
 >
 **Version:** 3.0; prepared 27 October 2026.  
 **Repository:** https://github.com/Rocky5502/U-CODE (canonical working branch: main)  

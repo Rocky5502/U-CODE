@@ -39,6 +39,8 @@ jobs:
         run: python -m examples.scenario_robust_evidence_smoke
       - name: Validate official pre-PR issue chronology for two source leads (NO task admission)
         run: python -m scripts.verify_two_issue_chronologies
+      - name: Audit public GitHub issue event first pages (NO source or spec admission)
+        run: python -m scripts.verify_issue_event_windows
       - name: Validate pinned pre-fix Git tree and toolchain path evidence (NO checkout)
         run: python -m scripts.verify_pre_fix_git_trees
       - name: Audit and package source-free 120-PR metadata dataset (NO executable tasks)
