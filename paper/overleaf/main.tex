@@ -616,6 +616,42 @@ a frozen controller on independently sealed tasks.
 A model ensemble selected after seeing test outcomes
 would invalidate this experimental design.
 
+\paragraph{Mixed evidence-versus-generation one-step decision.}
+To test the central allocation concept rather than
+isolated diagnostic selection alone, we additionally
+implemented a \emph{pure one-step mixed-action
+reference}: each diagnostic is ranked by the
+worst net value in Eq.~\eqref{eq:robust-bounds};
+each generation/repair action is ranked by a
+separately frozen \emph{point} forecast
+\begin{equation}
+ \widehat g_{\mathrm{gen}}(a\mid h_t)
+ =\widehat{\mathbb E}[U_0(h_{t+1})\mid h_t,a]
+ -U_0(h_t)-\boldsymbol\lambda^\top\mathbf c(a).
+ \label{eq:robust-mixed}
+\end{equation}
+The action with the largest strictly positive
+feasible score is selected, or else the controller
+makes its original terminal release/abstention
+decision. This combines the two action categories
+on a common value scale while preserving all
+five hard resource constraints and refusing
+silent missing likelihoods. Importantly,
+\emph{only the diagnostic forecast} is
+stress-tested over the scenario ensemble;
+the generative point estimate may itself be
+wrong. This controller therefore cannot be
+described as a robust joint POMDP solver.
+A toy counterexample shows an uncertain
+diagnostic losing to a positive generation
+forecast, while consistently strong evidence
+reverses the ordering. It is a mathematical
+witness, not a model-generated patch or
+actual repair improvement. The full adaptive
+multi-patch integration and fitted, independently
+tested transition kernels remain future
+engineering and empirical tasks.
+
 Strong equal-budget baselines include no search, fixed testing, random
 tools, cost-only allocation, uncertainty-only regeneration,
 search without uncertainty, raw-risk and calibrated-risk ablations,
