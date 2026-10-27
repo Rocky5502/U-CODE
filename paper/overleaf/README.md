@@ -1,4 +1,4 @@
-# U-CODE: Springer Nature / Overleaf working draft (2026-10-24)
+# U-CODE: Springer Nature / Overleaf working draft (updated 2026-10-27)
 
 **Prospective LaTeX manuscript skeleton, NOT a submission-ready paper.**
 
@@ -38,6 +38,47 @@ the official template. The current abstract is explicitly prospective, Results c
 findings, and author declarations remain placeholders. Each must be replaced
 or verified before submission.
 No direct write to a user's actual Overleaf project has occurred.
+
+## Scientific and manuscript integrity checks (27 October 2026)
+
+The canonical LaTeX manuscript now has a tightened ~200-word
+prospective abstract, explicit contributions/falsifiers, corrected
+novelty boundaries (SWE-Search, SWE-Verifier, PATSSEL),
+history-conditioned evidence equations, and a **one-step
+joint-scenario diagnostic-versus-generation allocation equation**
+covering the same alternative model scenarios and five measured
+resource dimensions. **This is an offline algorithmic reference,
+not a fully deployed code-repair agent or a real verified task result.**
+
+The manuscript provides status-only methodological observations
+in the Results section; no claims of actual repair-rate gains,
+a population risk certificate, completed six-model inference,
+or executable 120-repository benchmark are permitted.
+
+Run the source audit before exporting:
+
+```bash
+python -m scripts.audit_overleaf_sources
+python -m unittest discover -s tests -v
+python -m examples.joint_scenario_action_smoke
+```
+
+The audit checks Springer `sn-jnl` class declaration, 150--250
+abstract-word target, six indexed keywords, every in-text bibliography
+key, all equation/figure/table cross-references, balanced LaTeX
+environments and unaltered prospective-results integrity.
+**Source lint does not compile LaTeX, validate bibliography facts,
+read the formatted PDF, confirm peer-review readiness, or sync to a
+live Overleaf project.** Existing GitHub CI generates a source-only
+bundle after passing the audit. Import that bundle into the official
+Springer Nature project, preserve publisher class files and run an
+actual Overleaf PDF compile and visual inspection.
+
+The observed dataset stage remains only 120 audited PR metadata
+records (12 GitHub query-language strata), **0 independently
+admitted executable tasks**. Model weights and GPU inference are
+not verified. Paper declarations and contributions still require
+human author confirmation.
 
 ## Reproducible Overleaf source export from this monorepo
 
