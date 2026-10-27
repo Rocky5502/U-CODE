@@ -76,6 +76,30 @@ class LineageRiskTests(unittest.TestCase):
                             and x["source_role"] == "base_sha"
                             for x in graph.edges))
 
+    def test_cross_role_head_to_base_shared_commit_is_flagged(self):
+        rows = deepcopy(CLEAN.rows)
+        audits = deepcopy(AUDIT)
+        shared_sha = rows[0]["head_sha"]
+        rows[1]["base_sha"] = shared_sha
+        for record in audits:
+            if record["candidate_id"] == 2:
+                record["base_sha"] = shared_sha
+                break
+        graph = build_lineage_risk_graph(
+            replace(CLEAN, rows=tuple(rows)), audits)
+        edges = [e for e in graph.edges
+                 if e["relation"] == "CROSS_RECORD_GIT_SHA"
+                 and {e["first_candidate_id"], e["second_candidate_id"]}
+                 == {1, 2}]
+        self.assertTrue(edges)
+        self.assertTrue(any("head_sha" in e["source_role"]
+                            and "base_sha" in e["source_role"]
+                            for e in edges))
+        self.assertEqual(
+            graph.components[0]["potential_lineage_component_sha256"],
+            graph.components[1]["potential_lineage_component_sha256"])
+        self.assertFalse(graph.summary["independent_train_test_split_frozen"])
+
     def test_forged_sha_link_rejected(self):
         rows = deepcopy(CLEAN.rows)
         rows[1]["base_sha"] = rows[0]["base_sha"]
