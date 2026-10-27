@@ -40,6 +40,8 @@ jobs:
           if-no-files-found: error
       - name: Export conservative provenance overlap graph (NO task split)
         run: python -m scripts.audit_lineage_risks --output-dir dist/ucode-lineage-review
+      - name: Verify lineage-review SHA256 and blocked-split integrity
+        run: python -m scripts.verify_lineage_review dist/ucode-lineage-review
       - name: Publish metadata-only lineage warnings for reviewer adjudication
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
