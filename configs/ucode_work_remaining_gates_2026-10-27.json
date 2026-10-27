@@ -1,0 +1,167 @@
+{
+  "schema_version": "1.0",
+  "snapshot_date": "2026-10-27",
+  "project": "U-CODE — Uncertainty-Guided Search for Reliable AI-Generated Software",
+  "repository": "https://github.com/Rocky5502/U-CODE",
+  "target_venue": "Springer Automated Software Engineering SBSE/LLM-agent special issue",
+  "target_deadline": "2027-01-30",
+  "snapshot_verified_git_head": "fa8621c54ebd3df4d4ac06b181dff7123aee9617",
+  "snapshot_verified_ci_run_id": 40500479955,
+  "snapshot_offline_tests_per_python_version": 851,
+  "python_versions": [
+    "3.10",
+    "3.12"
+  ],
+  "protocol": "configs/confirmatory_sbse_protocol_2026-10-25.json",
+  "human_review_form_status": "192_BLANK_FORMS_ZERO_HUMAN_REVIEWS",
+  "source_data": {
+    "discovered_pr_links": 120,
+    "distinct_repository_names": 120,
+    "language_search_strata": 12,
+    "pr_metadata_retrieved": 119,
+    "production_source_path_leads": 62,
+    "first_pass_manual_review_leads": 14,
+    "manual_shortlist": 12,
+    "qualified_executable_tasks": 0,
+    "issue_pre_pr_chronology_leads": 2,
+    "pinned_git_source_tree_leads": 2,
+    "independent_functional_oracles": 0,
+    "executable_original_source_snapshots": 0,
+    "lossless_language_distribution_established": false,
+    "labels_are_query_strata_not_verified_changed_language": true
+  },
+  "models": {
+    "selected_for_planning": 6,
+    "checkpoints_revision_pinned": 0,
+    "checkpoint_weights_verified": 0,
+    "real_inference_runs_verified": 0
+  },
+  "study": {
+    "confirmatory_policies": 8,
+    "primary_treatment": "ucode_conditional_bes",
+    "primary_control": "no_uncertainty_search",
+    "seed_values_frozen": false,
+    "real_policy_effects_measured": 0,
+    "resource_vector": [
+      "tokens",
+      "test_calls",
+      "gpu_seconds",
+      "cpu_seconds",
+      "wall_seconds"
+    ],
+    "sample_size_frozen": false,
+    "real_infrastructure_attested": false
+  },
+  "paper": {
+    "canonical_source": "paper/overleaf/main.tex",
+    "bibliography": "paper/overleaf/references.bib",
+    "source_only_overleaf_export": true,
+    "external_live_overleaf_project_synced": false,
+    "actual_springer_pdf_compiled_and_inspected": false,
+    "all_contributor_details_verified": false,
+    "results_present_as_real_study": false,
+    "analytic_synthetic_and_metadata_status_results_only": true
+  },
+  "next_work": [
+    {
+      "id": "P0-1",
+      "priority": "P0",
+      "issue": 7,
+      "title": "Independently qualify PHP/Go pre-fix task specifications and evaluator-only functional oracle",
+      "status": "BLOCKED_EXTERNAL_EVIDENCE",
+      "deliverable": "source-era spec snapshots, signed rights/reviewer records, independently authored sealed evaluator oracle",
+      "exit_criteria": "one actually approved runnable task with independently replayed hidden oracle, all 8 admission gates attested"
+    },
+    {
+      "id": "P0-2",
+      "priority": "P0",
+      "issue": 2,
+      "title": "Build secure rootless network-disabled reproducible third-party repo runner",
+      "status": "NOT_VERIFIED",
+      "deliverable": "pinned OS/build image, no network, read-only source snapshot, quotas and test isolation",
+      "exit_criteria": "independent security approval and measured five-resource enforcement"
+    },
+    {
+      "id": "P0-3",
+      "priority": "P0",
+      "issue": 5,
+      "title": "Pin model checkpoints and validate single A100-80GB inference one at a time",
+      "status": "PENDING_AFTER_TASK_AND_SECURITY_GATES",
+      "deliverable": "6 exact HF revisions, tokenizer/chat templates, licenses, peak VRAM, throughput and engine receipts",
+      "exit_criteria": "every claimed model tested, checkpoint and engine revisions frozen; no unsupported concurrency assumptions"
+    },
+    {
+      "id": "P0-4",
+      "priority": "P0",
+      "issue": 4,
+      "title": "Integrate candidate archive, conditional evidence, generate/retrieve/repair adapters and stop into replayable policy loop",
+      "status": "REFERENCE_MODULES_EXIST_END_TO_END_NOT_RUN",
+      "deliverable": "deterministic bounded agent trace state machine with policy-neutral, evaluator-blind observations",
+      "exit_criteria": "full trace replay on independently qualified sandbox tasks; measured budget enforcement and 0 oracle leakage"
+    },
+    {
+      "id": "P1-5",
+      "priority": "P1",
+      "issue": 3,
+      "title": "Train and calibrate diagnostic/generation forecasts only on independent training repo families",
+      "status": "NOT_STARTED_REAL_DATA",
+      "deliverable": "train/calibration/test split receipts, reliability/coverage estimates, frozen likelihood/scenario models",
+      "exit_criteria": "no held-out labels in training, family overlap adjudicated, pre-outcome calibration quantified"
+    },
+    {
+      "id": "P1-6",
+      "priority": "P1",
+      "issue": 4,
+      "title": "Faithfully implement budget-matched baselines and proposal parity",
+      "status": "REFERENCE_ONLY_NOT_EXECUTED",
+      "deliverable": "blind search, fixed testing, BES independent/conditional, selective verifier, MCTS, replay audit",
+      "exit_criteria": "identical assigned model/task/seed/tool/5-resource vector and documented fidelity deviations"
+    },
+    {
+      "id": "P1-7",
+      "priority": "P1",
+      "issue": 2,
+      "title": "Expand only rights-cleared executable coverage across actual changed-source languages",
+      "status": "METADATA_ONLY",
+      "deliverable": "task cards, dependencies and language-grounded attrition/reason table",
+      "exit_criteria": "report exact admitted task count, repo-family coverage; do not force 12 languages"
+    },
+    {
+      "id": "P1-8",
+      "priority": "P1",
+      "issue": 6,
+      "title": "Run preregistered small matched feasibility pilot and real paired experiment",
+      "status": "BLOCKED_ON_P0",
+      "deliverable": "releases, independent verdicts, matched five-resource receipts, paired estimates and uncertainty",
+      "exit_criteria": "no fabricated outcomes; full assigned denominator including no-release, timeout and infrastructure uncertainty"
+    },
+    {
+      "id": "P1-9",
+      "priority": "P1",
+      "issue": 6,
+      "title": "Compile and visually review actual Springer sn-jnl PDF and update live Overleaf only with authenticated project access",
+      "status": "SOURCE_LINT_ONLY",
+      "deliverable": "real PDF inspection, errors/warnings removed, author-approved final declarations",
+      "exit_criteria": "PDF renders all tables/equations/figures/citations and live source not overwritten blindly"
+    },
+    {
+      "id": "P2-10",
+      "priority": "P2",
+      "issue": 6,
+      "title": "Prepare archival release and evaluate separate Scientific Data Data Descriptor",
+      "status": "NOT_READY",
+      "deliverable": "approved archived code/data, rights, independent validation, versioned DOI where appropriate",
+      "exit_criteria": "complete reusable dataset with source permissions and independent executable technical-validation evidence"
+    }
+  ],
+  "rules": [
+    "Do not infer software execution from tests of synthetic reference code",
+    "Zero independent task admission until external human/runner/oracle evidence exists",
+    "No paid GPU without approved rights/security gates and measured pilot duration",
+    "No unverified live Overleaf synchronization or PDF compile claims",
+    "Do not include hidden evaluation labels or post-fix patches in agent prompts",
+    "No fabricated human reviewer signatures or external experiments",
+    "Respect separate CALM-SE and OpenCoderX-E research overlap boundaries",
+    "Source-only PR metadata does not equal 120 runnable repos or 12 confirmed changed languages"
+  ]
+}
