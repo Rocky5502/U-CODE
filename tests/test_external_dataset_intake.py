@@ -140,6 +140,23 @@ class ExternalIntakeTests(unittest.TestCase):
             [row("normal", image_name=0)], revision=REV)
         self.assertEqual(a.report["excluded_metadata_rows"], 1)
 
+    def test_control_characters_are_not_emitted_to_public_csv(self):
+        x = screen_swe_rebench_v2(
+            [row("bad", image_name="safe\\nFORGED"),
+             row("good")], revision=REV)
+        self.assertEqual(x.report["metadata_candidate_rows_kept"], 2)
+        y = screen_swe_rebench_v2(
+            [row("bad", image_name="safe\nFORGED"),
+             row("good")], revision=REV)
+        self.assertEqual(y.report["excluded_metadata_rows"], 1)
+        self.assertNotIn("FORGED", csv_release(y))
+
+    def test_oversized_upstream_metadata_excluded(self):
+        y = screen_swe_rebench_v2(
+            [row("bad", license_id="X"*513), row("good")],
+            revision=REV)
+        self.assertEqual(y.report["excluded_metadata_rows"], 1)
+
     def test_invalid_parquet_batch_size_fails_without_dependency(self):
         with self.assertRaisesRegex(ValueError, "batch size"):
             list(read_local_parquet_projected([], batch_size=0))
