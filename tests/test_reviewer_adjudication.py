@@ -6,6 +6,7 @@ from tempfile import TemporaryDirectory
 import unittest
 
 from scripts.export_independent_review_forms import export_blank_reviewer_forms
+from scripts.verify_independent_review_forms import verify_blank_review_forms
 from ucode.pending_review_packets import create_pending_review_packets
 from ucode.reviewer_adjudication import (
     REQUIRED_GATES, adjudicate_review_disagreement, blank_independent_forms,
@@ -102,6 +103,28 @@ class IndependentReviewerProtocolTests(unittest.TestCase):
         a[0]["oracle_passed"] = True
         with self.assertRaisesRegex(ValueError, "schema drift"):
             adjudicate_review_disagreement(self.packets, a, b)
+
+    def test_reviewer_export_is_independently_verifiable(self):
+        with TemporaryDirectory() as folder:
+            export_blank_reviewer_forms(Path(folder))
+            result = verify_blank_review_forms(Path(folder))
+            self.assertEqual(result["forms_verified"], 192)
+            self.assertFalse(result["human_identity_authenticated"])
+
+    def test_reviewer_export_modified_after_hash_fails(self):
+        with TemporaryDirectory() as folder:
+            export_blank_reviewer_forms(Path(folder))
+            p = Path(folder, "reviewer_A_96_PENDING.jsonl")
+            p.write_bytes(p.read_bytes()+b"\\nunauthorized change\\n")
+            with self.assertRaisesRegex(ValueError, "SHA256"):
+                verify_blank_review_forms(Path(folder))
+
+    def test_reviewer_export_injected_gold_file_fails(self):
+        with TemporaryDirectory() as folder:
+            export_blank_reviewer_forms(Path(folder))
+            Path(folder, "leaked_gold_patch.json").write_text("{}")
+            with self.assertRaisesRegex(ValueError, "unexpected"):
+                verify_blank_review_forms(Path(folder))
 
     def test_export_carries_no_claimed_human_findings(self):
         with TemporaryDirectory() as folder:
