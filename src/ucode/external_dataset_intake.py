@@ -149,10 +149,12 @@ def screen_swe_rebench_v2(rows, *, revision: str,
             excluded.append({"instance_id": uid,
                              "reason": "unsafe_spreadsheet_or_control_metadata"})
             continue
-        if any(len(row[k]) > 512 or any(ord(c) < 32 for c in row[k])
-               for k in ("license", "created_at", "image_name")
-               if row[k] is not None):
-            excluded.append({"instance_id": uid, "reason": "unsafe_metadata_length_or_control_character"})
+        # The normalized timestamp may originate as integer epoch milliseconds.
+        # Never attempt len()/iteration on raw created_at: its type was
+        # already checked by _untrusted_created_at above.
+        if not _safe_metadata_text(created_at, max_chars=64):
+            excluded.append({"instance_id": uid,
+                             "reason": "unsafe_normalized_creation_timestamp"})
             continue
         base_clusters[(repo.casefold(), rev)].append(uid)
         kept.append({
