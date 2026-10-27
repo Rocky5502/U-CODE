@@ -92,6 +92,23 @@ are excluded with explicit attrition reasons.
 This is **not** execution or qualification of
 the third-party 32,079-task source.
 
+## Human review packets: twelve PR leads, 96 open evidence gates
+
+The [pending dossier generator](scripts/export_pending_review_packets.py)
+converts the original 12-item diversity-aware manual shortlist into
+**twelve independent-review metadata forms**; they are checked against
+each original PR URL, revision and modified source/test path by
+the [existing task-admission validator](scripts/check_task_admission.py).
+Each form has eight `PENDING` evidence gates, making **96 open
+reviews, zero approved tasks**. GitHub CI publishes them separately
+as `ucode-admission-review-only-v1`; see the
+[human-review protocol](docs/PENDING_TWELVE_TASK_REVIEW_PACKETS_2026-10-27.md).
+
+**Never provide these reviewer packets directly to a model:** they
+include post-PR identifiers and changed test paths which can
+leak the solution. The executable agent-visible task
+representation and genuinely sealed oracle are still absent.
+
 ## Optional larger multilingual benchmark screening (not run)
 
 The [SWE-rebench V2 public dataset](https://huggingface.co/datasets/nebius/SWE-rebench-V2)
