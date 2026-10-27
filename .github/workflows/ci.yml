@@ -31,6 +31,8 @@ jobs:
         run: python -m ucode.model_readiness
       - name: Reproduce mixed evidence versus generation switch (synthetic ONLY)
         run: python -m examples.robust_mixed_smoke
+      - name: Verify joint scenario evidence and generation minmax (synthetic ONLY)
+        run: python -m examples.joint_scenario_action_smoke
       - name: Reproduce finite-scenario evidence ambiguity witness (synthetic ONLY)
         run: python -m examples.scenario_robust_evidence_smoke
       - name: Validate official pre-PR issue chronology for two source leads (NO task admission)
