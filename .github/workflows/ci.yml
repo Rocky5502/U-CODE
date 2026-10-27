@@ -53,6 +53,17 @@ jobs:
         run: python -m scripts.summarize_audit --audit-dir data/audits/2026-10-24 --manifest data/discovery/agent_pr_candidates_120.csv
       - name: Display noneligible source-path leads for human review (no network)
         run: python -m scripts.triage_review_queue --limit 12
+      - name: Produce twelve reviewer-only evidence packets with 96 open admission gates
+        run: python -m scripts.export_pending_review_packets --output-dir dist/ucode-admission-review-only
+      - name: Validate all generated pending reviewer packets against canonical audit
+        run: python -m scripts.check_task_admission --dossiers dist/ucode-admission-review-only/review_packet_12_PENDING.jsonl
+      - name: Publish human-only pending admission review packet
+        if: matrix.python-version == '3.12'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ucode-admission-review-only-v1
+          path: dist/ucode-admission-review-only/
+          if-no-files-found: error
       - name: Check real PR task-admission dossiers against immutable audit (no execution)
         run: python -m scripts.check_task_admission
       - name: Validate prospectively unsealed evaluator-only metadata (no oracle execution)
