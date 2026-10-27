@@ -9,6 +9,26 @@ leads, but **no independently admitted runnable task**. The
 [12 pending evidence packets](../src/ucode/pending_review_packets.py) are
 reviewer-only, not agent-visible inputs. All six LLMs remain unexecuted.
 
+## Independent integrity re-verification
+
+After export or after downloading the GitHub Actions artifact, run:
+
+```bash
+python -m scripts.verify_independent_review_forms \
+    dist/ucode-independent-reviewers-only
+```
+
+The separate validator checks exact four-file contents, disallows
+unexpected files and symlinks, verifies per-file SHA256 digests,
+recomputes the twelve candidate packet identities from canonical
+source metadata, and independently confirms zero completed
+human reviews. Changing even a single review cell invalidates
+the release receipt. The integrity check authenticates consistency
+against the locally trusted Git checkout **only**; it does not prove
+that a reviewer is an independent human or that their evidence is true.
+Actual populated reviews must be archived with separately verified
+provenance, not falsely passed through the blank-form checker.
+
 ## Completed engineering
 
 [Independent-review validator](../src/ucode/reviewer_adjudication.py) and
