@@ -1042,6 +1042,33 @@ it against the existing twelve-candidate review
 packets. This advances provenance screening
 \emph{without} declaring either task executable.
 
+\paragraph{Immutable pre-fix repository-tree provenance.}
+We additionally inspected each original public Git
+commit's tree object through read-only GitHub APIs,
+without cloning source or executing code. The
+PHP base commit resolves to Git tree object
+\texttt{6924b6560484f3c28fcbb7359a15df2540c55d22}
+(171 indexed paths), with the original cache filter
+and persistence handler source files, Composer
+manifest, PHPUnit configuration and root license
+blob present. The newly added shared layout file
+is absent at this pre-fix revision. The Go base
+commit resolves to tree
+\texttt{e53fb011857926632c4a4ec8752425e0f2b41559}
+(88 indexed paths), with both changed settlement/
+persistence files and the module manifest present.
+A first-party offline structural audit cross-checks
+these source blob references against the canonical
+PR candidate dossiers, distinguishes Git commit
+IDs from Git tree-object IDs and rejects false
+rights, build, oracle or task-eligibility claims.
+This is reproducible \emph{source presence} evidence,
+not a successful source checkout, executable test
+or license clearance. Authenticating the raw Git
+objects independently of the GitHub API, verifying
+dependency closure, and reconstructing pre-fix
+specifications remain separate gates.
+
 
 Each dossier explicitly tracks eight distinct
 pre-execution evidence gates: immutable pre-fix task
