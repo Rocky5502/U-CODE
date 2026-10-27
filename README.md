@@ -16,6 +16,32 @@ U-CODE studies **when a software engineering agent should test, retrieve context
 
 <sub>Figure 1. Proposed U-CODE architecture. The top row is the risk-aware agent policy (task → interventions → evidence modeling → BES → controlled execution → release/abstention); the curved teal arrow returns **visible** execution feedback from the execution stage to BES. The lower research lane independently admits tasks, seals the functional oracle, evaluates released artifacts, and summarizes evidence. **Architectural design, not a completed or validated experimental result.** [View scalable SVG](docs/figures/ucode-framework.svg).</sub>
 
+## Independent A/B manual evidence review for the 12 pending tasks (27 October 2026)
+
+A new [two-reviewer worksheet and non-automatic disagreement protocol](docs/INDEPENDENT_REVIEWER_ADJUDICATION_2026-10-27.md)
+extends the existing frozen 12-candidate [pending admission packets](docs/PENDING_TWELVE_TASK_REVIEW_PACKETS_2026-10-27.md).
+The offline [export script](scripts/export_independent_review_forms.py)
+creates separate A/B pending human evidence forms, with **96 assessment
+cells per reviewer (192 total)**. The [validator](src/ucode/reviewer_adjudication.py)
+checks immutable candidate/PR/packet identities, duplicate/missing gates,
+reviewer evidence digests, independent reviewer identity declarations
+and disagreement across nonpending gate pairs. It NEVER automatically
+authorizes task execution, even on agreement.
+
+```bash
+python -m scripts.export_independent_review_forms --output-dir dist/ucode-independent-reviewers-only
+```
+
+The generated forms contain **zero completed assessments, zero
+independently approved executable tasks and zero observed reviewer
+agreement statistics**. Real independent reviewers, verified file
+licenses, sealed test oracles and audited safe execution are needed
+before six-model experiments; these are *engineering instruments*,
+not completed human annotations or finished empirical Results.
+GitHub CI attaches the output as
+`ucode-two-reviewer-forms-PENDING-v1`. Never expose these reviewer-only,
+post-PR records to code-generation agents.
+
 ## Compact 120-repository dataset cleaning (27 October 2026)
 
 The original 120 unique repository-name/PR-link discovery records span
