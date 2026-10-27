@@ -127,7 +127,7 @@ def build_lineage_risk_graph(clean: CuratedDataset, audits: list[dict]) -> Leaka
 
     lineage = defaultdict(list)
     owners = defaultdict(list)
-    commit_refs: dict[tuple[str, str], list[int]] = defaultdict(list)
+    commit_refs: dict[str, list[tuple[int, str]]] = defaultdict(list)
     for i in id_list:
         row = by_id[i]
         audit = by_audit[i]
@@ -139,12 +139,24 @@ def build_lineage_risk_graph(clean: CuratedDataset, audits: list[dict]) -> Leaka
             if sha:
                 if sha != (audit.get(role) or ""):
                     raise ValueError("forged commit identity")
-                commit_refs[(role, sha)].append(i)
+                commit_refs[sha].append((i, role))
 
     grouped(lineage, "SAME_FORK_PARENT_HINT")
-    for (role, sha), items in sorted(commit_refs.items()):
-        grouped({"same_commit": items}, "CROSS_RECORD_GIT_SHA",
-                role=role)
+    for sha, occurrences in sorted(commit_refs.items()):
+        # Cross-role reuse also matters: another PR's BASE can equal
+        # this PR's HEAD or MERGE commit. Group by SHA across all roles.
+        by_candidate = defaultdict(set)
+        for i, role in occurrences:
+            by_candidate[i].add(role)
+        members = sorted(by_candidate)
+        if len(members) < 2:
+            continue
+        first = members[0]
+        for member in members[1:]:
+            left = "+".join(sorted(by_candidate[first]))
+            right = "+".join(sorted(by_candidate[member]))
+            label = left if left == right else left + " -> " + right
+            edge(first, member, "CROSS_RECORD_GIT_SHA", role=label)
     grouped(owners, "SAME_REPOSITORY_OWNER_HINT")
 
     by_component = defaultdict(list)
