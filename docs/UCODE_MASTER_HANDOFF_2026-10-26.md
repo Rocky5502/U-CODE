@@ -81,6 +81,40 @@ refresh live `main` CI and current source hashes before a new sprint.
 
 ---
 
+## 27 OCTOBER 2026 — TWO-REVIEWER SCIENTIFIC EVIDENCE GATE
+
+This new review apparatus is COMPLETE AS CODE, but HUMAN REVIEW IS **NOT**.
+The six-model/ASE pilot remains blocked by legitimate independent evidence.
+
+- [Dual reviewer validator](../src/ucode/reviewer_adjudication.py)
+  derives 96 independent candidate-gate pairs for the frozen
+  12 shortlisted PRs (eight required gate checks per case) and validates
+  separate reviewer A/B evidence, immutable PR identities, differing
+  reviewer identity declarations, and nonpending rationales.
+- [Export script](../scripts/export_independent_review_forms.py)
+  produces 192 **blank** pending reviewer cells in independently
+  distributable A/B files plus a status report and SHA256 manifest.
+  [Independent verifier](../scripts/verify_independent_review_forms.py)
+  binds the worksheets to canonical review-packet checksums, rejects
+  forged files or changed digests and ensures no fabricated verdicts.
+- [Method and human-review limitations](INDEPENDENT_REVIEWER_ADJUDICATION_2026-10-27.md).
+  Source packet and exported forms contain post-fix PR URL; **reviewer
+  only, never agent-visible task content**.
+- ASE paper `paper/overleaf/main.tex` now discloses **the protocol,
+  not completed annotation findings**. Zero human reviews, zero
+  measurable inter-reviewer agreements, zero admitted executable tasks.
+- Prior GitHub CI run [40448392000](https://github.com/Rocky5502/U-CODE/actions/runs/40448392000)
+  passed 746/746 offline tests in both Python 3.10 and 3.12;
+  update with later CI after subsequent commits.
+- Fixed real prior crash (run 40434521178) where the new metadata
+  safety filter erroneously called len() on a valid integer
+  SWE-rebench V2 `created_at` millisecond timestamp.
+  Fix committed at `a319ea2039e5` and verified passing in
+  run [40447707188](https://github.com/Rocky5502/U-CODE/actions/runs/40447707188).
+  Dataset source snapshot itself still not downloaded.
+
+---
+
 ## 27 OCTOBER 2026 — REPRODUCIBLE DATA QUALITY & MULTILINGUAL SOURCE ADDENDUM
 
 **This addendum supersedes earlier statements that U-CODE has only the
