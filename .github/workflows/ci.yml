@@ -66,6 +66,8 @@ jobs:
           if-no-files-found: error
       - name: Generate independent A/B reviewer evidence worksheets (no approval)
         run: python -m scripts.export_independent_review_forms --output-dir dist/ucode-independent-reviewers-only
+      - name: Validate independent reviewer worksheets, original packet identities and hashes
+        run: python -m scripts.verify_independent_review_forms dist/ucode-independent-reviewers-only
       - name: Publish independent pending reviewer worksheets for offline adjudication
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
