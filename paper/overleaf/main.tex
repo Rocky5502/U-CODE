@@ -77,6 +77,14 @@ issue-resolution tasks with programmatic evaluation, and SWE-agent
 establishes an interface for repository editing and test execution
 \cite{jimenez2024swebench,yang2024sweagent}. These precede U-CODE.
 
+PATSSEL adaptively selects debugging versus regeneration
+using generated verifier tests; its demonstrated
+performance makes the debug-versus-regenerate
+decision itself established prior work
+\cite{kulkarni2026pats}. U-CODE therefore targets
+the extra causal effect of purchasing \emph{evidence}
+rather than more candidates under identical
+vector budgets and frozen likelihood alternatives.
 SWE-Search applies Monte Carlo tree search and iterative refinement to
 software repair \cite{antoniades2025swesearch}. SWE-Replay reuses
 trajectories and intermediate search states to reduce redundant
@@ -535,6 +543,79 @@ dependence handling against unconditional-likelihood
 BES, with the same budgets and held-out task histories.
 A performance improvement is not assumed.
 
+\subsection{Finite-scenario evidence robustness (new reference check)}
+\label{sec:robust-evidence}
+
+Calibrating a single history-conditional diagnostic kernel does
+not establish its accuracy on a held-out repository family,
+especially when tests are strongly correlated or rare.
+We therefore implement a \emph{one-step model-sensitivity audit}:
+let $\mathcal K=\{K^{(1)},\dots,K^{(m)}\}$ be a finite,
+\emph{prospectively frozen} collection of alternative conditional
+likelihood hypotheses sharing the current visible belief $p_t$
+and history $h_t$. These are possible evidence models,
+\emph{not} a confidence region for the true data-generating process.
+For a feasible diagnostic $a$ we compute
+\begin{align}
+ g(a,K^{(k)}\mid h_t)
+ &=\sum_{o\in\{+,-\}}\rho^{(k)}_{a,o}(h_t)
+ U_0\bigl(p^{(k)}_{t+1}(o)\bigr)
+ -U_0(p_t)-\boldsymbol\lambda^\top\mathbf c(a),
+ \label{eq:robust-gain}\\
+ \underline g(a)&=\min_{k=1,\dots,m}
+      g(a,K^{(k)}\mid h_t), \qquad
+ \overline g(a)=\max_{k=1,\dots,m}
+      g(a,K^{(k)}\mid h_t),
+ \label{eq:robust-bounds}\\
+ a^\star&\in\arg\max_{\substack{
+    a\in\mathcal A_{\rm obs}\\
+    \mathbf c(a)\preceq\mathbf b_t,\;
+    \underline g(a)>0}}\underline g(a).
+ \label{eq:robust-probe}
+\end{align}
+The controller instead takes its available terminal
+release/abstain decision when this set is empty.
+A diagnostic is \emph{scenario-sensitive} when
+$\underline g(a)\le0<\overline g(a)$; it is strictly
+beneficial for all listed models only when
+$\underline g(a)>0$. If $\overline g(a)\le0$, it
+does not improve \emph{one-step} net utility
+under any of the supplied models. This does
+not license removal from a longer-horizon search:
+an initially unproductive diagnostic may create
+option value for future evidence purchases.
+
+\paragraph{Restricted optimality and falsifier.}
+With a fixed one-step action set and the specified finite
+kernel ensemble, selecting the largest positive lower
+gain or stopping is a \emph{maximin decision by definition}.
+This follows by separately computing the minimum expected
+one-step terminal value for each feasible action and
+including a free stop action of zero marginal gain.
+It does \emph{not} certify statistical coverage,
+true-model membership, robustness to unrestricted
+shift, multi-step optimality or software correctness.
+In a synthetic $p=.5$ example with a $p\ge.9$
+release gate and cost $.01$, a perfect diagnostic
+has predicted net gain $.49$, whereas a
+sensitivity/specificity-$.8$ diagnostic has net
+gain $-.01$. If both kernels remain plausible
+for the \emph{same} action, the robust one-step
+decision stops: its gain interval is
+$[-.01,.49]$. When both scenarios assign
+strong diagnostic accuracy and strictly
+positive net value, it purchases the test.
+The first-party tests reproduce these values,
+validate history-specific row requirements,
+and prevent bypassing any of five hard budgets.
+These are \emph{synthetic model-falsification cases}.
+Future comparisons must fit hypotheses only on
+training task families, assess their stability
+on a disjoint calibration partition, and evaluate
+a frozen controller on independently sealed tasks.
+A model ensemble selected after seeing test outcomes
+would invalidate this experimental design.
+
 Strong equal-budget baselines include no search, fixed testing, random
 tools, cost-only allocation, uncertainty-only regeneration,
 search without uncertainty, raw-risk and calibrated-risk ablations,
@@ -938,6 +1019,29 @@ their installability and transitive version closure
 remain untested. PR-authored unit tests are
 \emph{not} evaluator-only held-out test oracles.
 Neither candidate has been built or executed.
+
+\paragraph{Observed original-issue chronology, not frozen task text.}
+In a further read-only verification against the official
+GitHub issue and pull-request endpoints, PHP
+PR~172 references issue~168, which was created
+$152$ seconds before the PR. Go PR~30 references
+issue~29, which was created only $8$ seconds
+before the PR. Both issue records were subsequently
+updated (the observed update times also coincide
+with closure), so their currently retrieved bodies
+cannot be assumed identical to the issue wording
+visible at the moment of PR creation. The current
+PHP issue contains relatively specific acceptance
+criteria, while the current Go issue has a short
+high-level request; neither has an independently
+archived as-of-PR task statement or held-out
+functional oracle. We pin the URLs, creation
+timestamps and known PR base/head SHAs in a
+separate source-free chronology ledger and check
+it against the existing twelve-candidate review
+packets. This advances provenance screening
+\emph{without} declaring either task executable.
+
 
 Each dossier explicitly tracks eight distinct
 pre-execution evidence gates: immutable pre-fix task
