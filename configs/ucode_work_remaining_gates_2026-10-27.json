@@ -30,7 +30,10 @@
     "lossless_language_distribution_established": false,
     "labels_are_query_strata_not_verified_changed_language": true,
     "issue_event_first_page_leads": 2,
-    "issue_body_as_of_pr_verified": 0
+    "issue_body_as_of_pr_verified": 0,
+    "php104_parent_issue_created_before_pr_seconds": 222,
+    "php104_pinned_pre_fix_source_behavior_leads": 5,
+    "independently_verified_prefixed_specifications": 0
   },
   "models": {
     "selected_for_planning": 6,
@@ -214,5 +217,24 @@
       "python_312_passed": 890
     },
     "final_commit_and_ci": "CHECK_AFTER_MERGE"
+  },
+  "progress_2026_10_28_php104": {
+    "stage": "READ_ONLY_PRE_FIX_SOURCE_CONTRACT_CANDIDATES_NOT_TASK_APPROVAL",
+    "candidate_id": 104,
+    "reviewed_parent_issue_url": "https://github.com/mvdbos/php-spider/issues/166",
+    "parent_created_before_child_seconds": 70,
+    "parent_created_before_pr_seconds": 222,
+    "immutable_original_parent_issue_body_verified": false,
+    "distinct_pre_fix_source_git_blobs_observed": 4,
+    "static_source_behavior_leads": 5,
+    "code": "src/ucode/php104_source_contract_audit.py",
+    "evidence": "data/admission/2026-10-28/php104_base_source_contract_leads.json",
+    "methodology": "docs/PHP104_BASE_SOURCE_CONTRACT_REVIEW_2026-10-28.md",
+    "source_rights_approved": false,
+    "independent_hidden_functional_oracle_verified": false,
+    "real_php_executions": 0,
+    "independently_approved_executable_tasks": 0,
+    "six_models_or_eight_policies_changed": false,
+    "status": "BLOCKED_REAL_INDEPENDENT_SPEC_RIGHTS_ORACLE_AND_SANDBOX"
   }
 }
