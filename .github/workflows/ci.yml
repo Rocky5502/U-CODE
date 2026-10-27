@@ -27,6 +27,12 @@ jobs:
         run: python -m scripts.validate_framework_figure
       - name: Print six-model selected planning roster with hard readiness blockers
         run: python -m ucode.model_readiness
+      - name: Reproduce finite-scenario evidence ambiguity witness (synthetic ONLY)
+        run: python -m examples.scenario_robust_evidence_smoke
+      - name: Validate official pre-PR issue chronology for two source leads (NO task admission)
+        run: python -m scripts.verify_two_issue_chronologies
+      - name: Validate pinned pre-fix Git tree and toolchain path evidence (NO checkout)
+        run: python -m scripts.verify_pre_fix_git_trees
       - name: Audit and package source-free 120-PR metadata dataset (NO executable tasks)
         run: python -m scripts.audit_dataset_quality --output-dir dist/ucode-pr-metadata-clean
       - name: Verify exported eight-file dataset SHA256 and no extra labels
