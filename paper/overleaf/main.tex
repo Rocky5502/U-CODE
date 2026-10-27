@@ -735,6 +735,30 @@ split \emph{blocked pending independent
 adjudication}, and neither discards records
 nor asserts benchmark independence.
 
+\paragraph{No-execution admission review packets.}
+For the twelve diversity-aware PR metadata leads,
+we also generate **reviewer-only** admission
+dossiers linked to the canonical GitHub URL,
+base/head/merge revision hashes and changed
+source/test path inventories. Each dossier has
+eight mandatory evidence gates for immutable
+pre-fix environment, line-level provenance,
+file-level rights, independent functional
+oracle, oracle secrecy/split, isolated sandbox,
+reproducible toolchain and physical resource
+limits. The frozen initial queue therefore
+contains $12\times 8=96$ explicit \emph{pending}
+evidence checks, zero independent reviewer
+approvals and zero executable task admissions.
+A separate validator replays every packet
+against the canonical audited source records
+and rejects any self-asserted eligible state.
+Packet creation is a reproducible way to
+organize human adjudication, not a substitute
+for performing it; neither changed PR tests
+nor merged PR status can be elevated to
+sealed correctness evidence by these forms.
+
 \paragraph{Prospective large multilingual source (not incorporated).}
 For a possible independent, larger task-admission pool,
 we registered the public SWE-rebench~V2 dataset
