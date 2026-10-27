@@ -30,7 +30,7 @@ class ResourceVector:
     def __post_init__(self) -> None:
         for field in RESOURCE_FIELDS:
             value = getattr(self, field)
-            if not isinstance(value, (int, float)) or not isfinite(value) or value < 0:
+            if type(value) not in (int, float) or not isfinite(value) or value < 0:
                 raise ValueError(f"{field} must be finite nonnegative")
         for field in ("tokens", "test_calls"):
             value = getattr(self, field)
@@ -67,7 +67,7 @@ class ResourcePrices:
     def __post_init__(self) -> None:
         for field in RESOURCE_FIELDS:
             value = getattr(self, field)
-            if not isinstance(value, (int, float)) or not isfinite(value) or value < 0:
+            if type(value) not in (int, float) or not isfinite(value) or value < 0:
                 raise ValueError(f"{field} price must be finite nonnegative")
 
 
@@ -98,7 +98,8 @@ class GenerativeForecast:
             raise ValueError("generative type must be generate or repair")
         if self.cost.is_free():
             raise ValueError("nonterminal generation must consume a resource")
-        if (not isfinite(self.expected_terminal_value_after)
+        if (type(self.expected_terminal_value_after) not in (int, float)
+                or not isfinite(self.expected_terminal_value_after)
                 or self.expected_terminal_value_after < 0):
             raise ValueError("predicted terminal utility must be finite nonnegative")
 
