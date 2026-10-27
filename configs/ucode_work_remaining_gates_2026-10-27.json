@@ -95,7 +95,7 @@
       "priority": "P0",
       "issue": 4,
       "title": "Integrate candidate archive, conditional evidence, generate/retrieve/repair adapters and stop into replayable policy loop",
-      "status": "REFERENCE_MODULES_EXIST_END_TO_END_NOT_RUN",
+      "status": "EVALUATOR_BLIND_FIVE_RESOURCE_REFERENCE_TRACE_ADDED_NO_REAL_EXECUTION",
       "deliverable": "deterministic bounded agent trace state machine with policy-neutral, evaluator-blind observations",
       "exit_criteria": "full trace replay on independently qualified sandbox tasks; measured budget enforcement and 0 oracle leakage"
     },
@@ -163,5 +163,26 @@
     "No fabricated human reviewer signatures or external experiments",
     "Respect separate CALM-SE and OpenCoderX-E research overlap boundaries",
     "Source-only PR metadata does not equal 120 runnable repos or 12 confirmed changed languages"
-  ]
+  ],
+  "progress_after_snapshot": {
+    "date": "2026-10-27",
+    "scope": "REFERENCE_ONLY_NO_INDEPENDENT_TASK_ADMISSION",
+    "branch": "research/task-view-firewall-20261027",
+    "pull_request": 8,
+    "files": [
+      "src/ucode/task_view_boundary.py",
+      "src/ucode/blind_policy_trace.py",
+      "tests/test_task_view_boundary.py",
+      "tests/test_blind_policy_trace.py",
+      "docs/BLIND_POLICY_EVALUATOR_BOUNDARY_2026-10-27.md"
+    ],
+    "policy_visible_inputs": "STRICT_TYPED_VIEW_AND_PUBLIC_TOOL_RECEIPTS",
+    "sealed_oracle_during_policy": "NO_EVALUATOR_CALLBACK_IN_REFERENCE_API",
+    "actual_five_resource_enforcement_verified": false,
+    "tool_receipts_independently_attested": false,
+    "independently_admitted_tasks": 0,
+    "full_real_agent_integration_completed": false,
+    "old_snapshot_fields_are_historical": true,
+    "latest_code_ci": "CHECK_GITHUB_ACTIONS_AFTER_FINAL_COMMIT"
+  }
 }

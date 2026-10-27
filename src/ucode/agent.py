@@ -1,7 +1,9 @@
-"""Pluggable agent orchestration; external execution must be sandboxed.
+"""Legacy scalar-budget agent for offline mocks, NOT a held-out pilot runner.
 
-The runner never executes generated code, imports third-party repos, or exposes
-secrets to the LLM. Supply a separately isolated verifier for actual experiments.
+This reference forwards provided verifier feedback into future policy choices.
+A hidden evaluator MUST NOT be connected here; use blind_policy_trace for a
+schema-separated, five-resource policy trace and a separate sealed evaluator.
+Neither implementation runs untrusted code or certifies sandbox isolation.
 """
 from dataclasses import dataclass
 from typing import Callable, Sequence

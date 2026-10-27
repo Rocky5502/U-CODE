@@ -1086,7 +1086,16 @@ pilot registrations contain no sealed oracle
 files, oracle commitments, signed runner
 attestations or executable-task authorizations.
 Software tests check metadata separation, not
-host-level security isolation.
+host-level security isolation. A separate evaluator-blind offline
+policy-trace prototype accepts only this restricted task view and a
+policy-visible tool adapter; it exposes no hidden-evaluator callback.
+Each nonterminal action reserves a five-component cost bound before
+dispatch, and missing, mismatched, or over-budget tool receipts terminate
+without an authorized release. It returns only a candidate pending
+independent assessment, not a correctness label. These interface tests
+neither authenticate free-text diagnostic feedback nor enforce actual
+runtime quotas; an independently attested sandbox and sealed evaluator
+remain necessary before any empirical effectiveness claim.
 
 \paragraph{Specification ambiguity and nonunique gold outputs.}
 Further analysis of the Go task's pre-fix
