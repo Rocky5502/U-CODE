@@ -12,6 +12,32 @@
 
 ---
 
+## 27 OCTOBER 2026 — TWELVE HUMAN-ONLY ADMISSION PACKETS
+
+**This entry supersedes the earlier 726-test figure.**
+
+- `src/ucode/pending_review_packets.py` and
+  `scripts/export_pending_review_packets.py` construct a deterministic
+  **twelve-PR reviewer-only** packet from the original manual shortlist,
+  preserving PR URLs, base/head/merge SHAs and changed source/test paths,
+  validated via the existing `task_admission.py` gate checker.
+- All 12 packets have exactly **eight pending evidence gates**, for **96
+  pending / 0 approved / 0 admitted executable tasks**.
+  These are NOT agent-visible pre-fix prompts: post-PR references and
+  test-path metadata could leak solution information.
+- GitHub CI now builds and validates a third small source-free artifact
+  `ucode-admission-review-only-v1`, alongside the cleaned QC bundle,
+  conservative lineage graph ZIP, and source-only Overleaf bundle.
+- `paper/overleaf/main.tex` includes a Methods explanation of
+  how the pending packet population and 96-gate denominator
+  were created without fabricating human approvals.
+- [Reviewer packet protocol](PENDING_TWELVE_TASK_REVIEW_PACKETS_2026-10-27.md).
+- **Verified intermediate CI:** [run 40428768615](https://github.com/Rocky5502/U-CODE/actions/runs/40428768615)
+  passed **731/731 offline tests on Python 3.10 and Python 3.12**.
+  Subsequent README/handoff edits require final-head CI.
+
+---
+
 ## 27 OCTOBER 2026 — CROSS-ROLE LINEAGE AUDIT & EXTERNAL-METADATA HARDENING
 
 **Supersedes the earlier dataset claim of 707 offline tests.** Always
