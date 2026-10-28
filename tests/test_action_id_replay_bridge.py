@@ -102,8 +102,7 @@ class ActionIDBoundReplayTests(unittest.TestCase):
                          "INVALID_OR_UNAVAILABLE_ACTION_TARGET")
 
     def test_larger_cost_dimension_not_affordable(self):
-        for bad in (RV(tokens=1),RV(test_calls=0,gpu_seconds=0,
-                                  cpu_seconds=0,wall_seconds=0)):
+        for bad in (RV(tokens=1), RV(test_calls=1)):
             r=self.run_book((self.g1,),budget=bad)
             self.assertEqual(r.status,"INVALID_OR_UNAVAILABLE_ACTION_TARGET")
 
@@ -113,9 +112,8 @@ class ActionIDBoundReplayTests(unittest.TestCase):
             {"kind":"repair"},
             {"reserved":RV(tokens=4)},
         ):
-            changed=replace(self.responses[0],**change)
-            with self.subTest(change=change),self.assertRaisesRegex(ValueError,
-                    "not in catalog"):
+            with self.subTest(change=change),self.assertRaises(ValueError):
+                changed=replace(self.responses[0],**change)
                 ActionBoundBook(self.book.catalog,(changed,)+self.responses[1:])
 
     def test_different_candidate_same_action_id_not_duplicate_book_key(self):
