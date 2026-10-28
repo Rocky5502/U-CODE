@@ -103,7 +103,7 @@
       "priority": "P0",
       "issue": 4,
       "title": "Integrate candidate archive, conditional evidence, generate/retrieve/repair adapters and stop into replayable policy loop",
-      "status": "SYNTHETIC_UNIQUE_ACTION_AND_CANDIDATE_LINEAGE_REFERENCE_ONLY_NO_REAL_ADAPTER",
+      "status": "SYNTHETIC_ADAPTIVE_TWO_REFERENCE_POLICIES_ACTION_ID_CANDIDATE_BOUND_NOT_REAL",
       "deliverable": "deterministic bounded agent trace state machine with policy-neutral, evaluator-blind observations",
       "exit_criteria": "full trace replay on independently qualified sandbox tasks; measured budget enforcement and 0 oracle leakage"
     },
@@ -121,7 +121,7 @@
       "priority": "P1",
       "issue": 4,
       "title": "Faithfully implement budget-matched baselines and proposal parity",
-      "status": "ALL_EIGHT_POLICY_NAMES_SHADOW_WIRED_NO_FAITHFUL_EXECUTABLE_COMPARATORS",
+      "status": "TWO_SCOPED_SYNTHETIC_ADAPTIVE_REFERENCE_CONTROLS_NOT_EIGHT_FAITHFUL_MODELS",
       "deliverable": "blind search, fixed testing, BES independent/conditional, selective verifier, MCTS, replay audit",
       "exit_criteria": "identical assigned model/task/seed/tool/5-resource vector and documented fidelity deviations"
     },
@@ -373,5 +373,28 @@
       ]
     },
     "post_merge_ci": "VERIFY_GITHUB_MAIN"
+  },
+  "progress_2026_10_29_adaptive_reference": {
+    "stage": "SYNTHETIC_ADAPTIVE_BASELINES_NOT_EMPIRICAL",
+    "source": "src/ucode/adaptive_reference_replay.py",
+    "tests": "tests/test_adaptive_reference_replay.py",
+    "smoke": "scripts/smoke_adaptive_reference_replay.py",
+    "report": "docs/ADAPTIVE_SYNTHETIC_BASELINE_REPLAY_2026-10-29.md",
+    "implemented_reference_names": [
+      "fixed_testing",
+      "no_uncertainty_search"
+    ],
+    "registered_policy_names_total": 8,
+    "registered_policies_faithfully_implemented_end_to_end": 0,
+    "scope": "per-step decisions depend on candidate-bound synthetic public observations",
+    "simple_negative_diagnostic_demo": "fixed reference abstains; uncertainty-free beam optionally attempts repair",
+    "external_exec_count": 0,
+    "independently_admitted_real_tasks": 0,
+    "independent_hidden_oracle_verdicts": 0,
+    "model_inferences": 0,
+    "authenticated_resource_meter": false,
+    "real_measured_policy_effects": 0,
+    "original_six_model_eight_policy_rosters_unchanged": true,
+    "ci": "check actual GitHub branch and merged main run"
   }
 }
