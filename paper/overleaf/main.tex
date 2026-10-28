@@ -1303,6 +1303,25 @@ Independent policy implementations and an approved
 sandbox, meter, immutable tasks and sealed oracle
 remain prerequisites for actual RQ3 comparisons.
 
+\paragraph{Policy-neutral frozen public-response replay (synthetic only).}
+The eight-slot offline harness additionally supports a frozen
+public response book keyed by diagnostic or generative action,
+its within-arm occurrence number and, for candidate-dependent
+actions, the current candidate SHA-256. A single immutable book
+is shared across the eight policy arms of each artificial
+task--model--seed--budget context. The book records bounded
+synthetic text, typed five-resource consumption and the
+predeclared reservation. It rejects duplicate action keys,
+different candidate targets, unregistered extra calls and
+reservation mismatch. A deterministic manifest checksum
+makes this synthetic ledger reproducible, but does not
+authenticate runtime outcomes, actual model sampling or
+trusted metering. The smoke run uses six model \emph{names}
+and eight placeholder policy slots without executing an
+LLM or third-party program. This narrows a reproducibility
+gap in reference comparisons; it provides neither an
+independent test oracle nor a measured RQ3 effect.
+
 \paragraph{Prospective PHP evaluator independence and rights review.}
 The pinned PHP base commit carries a recorded Git
 timestamp $2{,}661$ seconds before creation of parent

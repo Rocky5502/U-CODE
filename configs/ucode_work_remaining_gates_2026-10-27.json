@@ -103,7 +103,7 @@
       "priority": "P0",
       "issue": 4,
       "title": "Integrate candidate archive, conditional evidence, generate/retrieve/repair adapters and stop into replayable policy loop",
-      "status": "EVALUATOR_BLIND_EIGHT_ARM_SHADOW_WIRING_ONLY_REAL_CALLBACKS_UNVERIFIED",
+      "status": "SYNTHETIC_EIGHT_ARM_AND_SHARED_PUBLIC_REPLAY_REFERENCE_ONLY",
       "deliverable": "deterministic bounded agent trace state machine with policy-neutral, evaluator-blind observations",
       "exit_criteria": "full trace replay on independently qualified sandbox tasks; measured budget enforcement and 0 oracle leakage"
     },
@@ -326,5 +326,25 @@
       "python_312_offline_tests": 960
     },
     "post_merge_ci": "CHECK_AFTER_MERGE"
+  },
+  "progress_2026_10_28_frozen_replay": {
+    "stage": "SYNTHETIC_SHARED_PUBLIC_RESPONSE_BOOK_NO_EXECUTION",
+    "source": "src/ucode/frozen_public_replay.py",
+    "smoke": "scripts/smoke_frozen_public_replay.py",
+    "research_note": "docs/FROZEN_PUBLIC_REPLAY_INTEGRITY_2026-10-28.md",
+    "tests": "tests/test_frozen_public_replay.py",
+    "model_names": 6,
+    "policy_names": 8,
+    "synthetic_arm_wirings": 48,
+    "synthetic_task_count": 1,
+    "independent_tasks_admitted": 0,
+    "independent_oracles_verified": 0,
+    "model_inferences": 0,
+    "actual_meter_attested": false,
+    "all_eight_faithful_policies_complete": false,
+    "independent_sampling_fairness_proven": false,
+    "real_task_accuracy_results": 0,
+    "open_next_gate": "MATCH_RICH_ACTION_IDS_AND_HARDWARE_ATTESTED_REPLAY_AFTER_TASK_ADMISSION",
+    "final_ci": "VERIFY_LATEST_GITHUB"
   }
 }
