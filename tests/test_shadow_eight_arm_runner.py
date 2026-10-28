@@ -74,7 +74,7 @@ class ShadowEightArmTests(unittest.TestCase):
         self.tools=public_factory
         self.views={"SYNTHETIC_OFFLINE_TASK":self.task}
 
-    def run(self,assignments=None, handlers=None, task_views=None, tools=None, study=None):
+    def check(self,assignments=None, handlers=None, task_views=None, tools=None, study=None):
         return run_shadow_eight_arm_matrix(
             self.study if study is None else study,
             self.assignments if assignments is None else assignments,
@@ -83,7 +83,7 @@ class ShadowEightArmTests(unittest.TestCase):
             self.tools if tools is None else tools)
 
     def test_all_eight_arms_all_six_names_share_blind_tool_contract(self):
-        x=self.run()
+        x=self.check()
         self.assertEqual(x.total_shadow_arm_wirings,48)
         self.assertEqual({a.policy_id for a in x.arms},set(self.policy_ids))
         self.assertEqual({a.model_id for a in x.arms},set(self.model_ids))
@@ -101,11 +101,11 @@ class ShadowEightArmTests(unittest.TestCase):
         self.assertEqual(len(self.calls),96)
 
     def test_deterministic_replay_and_no_raw_patch_in_output(self):
-        x=self.run()
+        x=self.check()
         digest=x.arms[0].visible_trace_sha256
         self.assertEqual(x.declared_assignment_sha256,
-                         self.run(tuple(reversed(self.assignments))).declared_assignment_sha256)
-        self.assertEqual(digest,self.run().arms[0].visible_trace_sha256)
+                         self.check(tuple(reversed(self.assignments))).declared_assignment_sha256)
+        self.assertEqual(digest,self.check().arms[0].visible_trace_sha256)
         self.assertNotIn("SYNTHETIC patch only",str(x))
 
     def test_five_budget_mismatch_rejected_before_any_callback(self):
@@ -113,41 +113,41 @@ class ShadowEightArmTests(unittest.TestCase):
         rows[0]=replace(rows[0],resource_cap=RV(tokens=31,test_calls=2,
                             gpu_seconds=1,cpu_seconds=2,wall_seconds=3))
         with self.assertRaisesRegex(ValueError,"budget"):
-            self.run(tuple(rows))
+            self.check(tuple(rows))
         self.assertEqual(self.calls,[])
 
     def test_mismatched_task_spec_rejected_before_any_callback(self):
         rows=list(self.assignments)
         rows=[replace(x,task_spec_sha256="c"*64) for x in rows]
         with self.assertRaisesRegex(ValueError,"task/spec"):
-            self.run(tuple(rows))
+            self.check(tuple(rows))
         self.assertEqual(self.calls,[])
 
     def test_missing_policy_arm_rejected_before_any_callback(self):
         with self.assertRaisesRegex(ValueError,"incomplete"):
-            self.run(self.assignments[:-1])
+            self.check(self.assignments[:-1])
         self.assertEqual(self.calls,[])
 
     def test_missing_policy_factory_rejected_before_any_callback(self):
         h=dict(self.handlers)
         del h[self.policy_ids[0]]
         with self.assertRaisesRegex(ValueError,"eight policy handler"):
-            self.run(handlers=h)
+            self.check(handlers=h)
         self.assertEqual(self.calls,[])
 
     def test_additional_oracle_approval_in_registration_forbidden(self):
         bad=dict(self.views)
         bad["hidden_oracle"]="SECRET"
         with self.assertRaisesRegex(ValueError,"missing/extra"):
-            self.run(task_views=bad)
+            self.check(task_views=bad)
         self.assertEqual(self.calls,[])
         with self.assertRaises(TypeError):
-            self.run(oracle_verdicts=[])
+            self.check(oracle_verdicts=[])
 
     def test_incorrect_pre_fix_base_rejected_before_callback(self):
         rows=[replace(x,pre_fix_base_sha40="0"*40) for x in self.assignments]
         with self.assertRaisesRegex(ValueError,"task/spec"):
-            self.run(tuple(rows))
+            self.check(tuple(rows))
         self.assertEqual(self.calls,[])
 
     def test_adapter_cost_overrun_fails_closed_without_released_patch(self):
@@ -155,7 +155,7 @@ class ShadowEightArmTests(unittest.TestCase):
             def tool(*args):
                 return PublicToolReceipt("generate",RV(tokens=11),patch="SYNTHETIC")
             return tool
-        x=self.run(tools=factory)
+        x=self.check(tools=factory)
         self.assertEqual({a.terminal_status for a in x.arms},{"TOOL_COST_OVERRUN"})
         self.assertTrue(all(a.patch_sha256 is None and
                             not a.accounting_verified_by_schema_only
@@ -166,7 +166,7 @@ class ShadowEightArmTests(unittest.TestCase):
             def tool(*args):
                 raise RuntimeError("secret private oracle should never appear")
             return tool
-        x=self.run(tools=factory)
+        x=self.check(tools=factory)
         self.assertEqual({a.terminal_status for a in x.arms},
                          {"TOOL_FAILED_COST_UNVERIFIED"})
         self.assertNotIn("private oracle",str(x))
@@ -174,7 +174,7 @@ class ShadowEightArmTests(unittest.TestCase):
     def test_abstentions_remain_in_full_denominator_not_successes(self):
         def factory(row):
             return lambda s: BlindAction("abstain",RV())
-        x=self.run(handlers={p:factory for p in self.policy_ids})
+        x=self.check(handlers={p:factory for p in self.policy_ids})
         self.assertEqual(x.total_shadow_arm_wirings,48)
         self.assertTrue(all(a.terminal_status=="ABSTAINED" and
                             a.patch_sha256 is None and a.public_action_count==0
@@ -185,16 +185,16 @@ class ShadowEightArmTests(unittest.TestCase):
         def factory(row):
             return None
         with self.assertRaisesRegex(TypeError,"callable"):
-            self.run(handlers={p:factory for p in self.policy_ids})
+            self.check(handlers={p:factory for p in self.policy_ids})
 
     def test_registry_must_retain_all_six_models(self):
         reduced=FrozenStudy(self.study.task_lineages,self.model_ids[:-1],
                             self.policy_ids,self.study.seeds,self.study.budgets)
         with self.assertRaisesRegex(ValueError,"six planned models"):
-            self.run(study=reduced)
+            self.check(study=reduced)
 
     def test_status_not_falsely_promoted_to_real_evaluation(self):
-        x=self.run()
+        x=self.check()
         self.assertIn("NOT_EIGHT_FAITHFUL_ALGORITHMS",x.stage)
         self.assertFalse(any(hasattr(a,"oracle_passed") for a in x.arms))
 
