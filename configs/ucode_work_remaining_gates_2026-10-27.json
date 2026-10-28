@@ -33,7 +33,10 @@
     "issue_body_as_of_pr_verified": 0,
     "php104_parent_issue_created_before_pr_seconds": 222,
     "php104_pinned_pre_fix_source_behavior_leads": 5,
-    "independently_verified_prefixed_specifications": 0
+    "independently_verified_prefixed_specifications": 0,
+    "php104_reviewer_only_oracle_case_families": 10,
+    "php104_independently_authored_hidden_oracles": 0,
+    "php104_base_commit_created_before_parent_issue_seconds": 2661
   },
   "models": {
     "selected_for_planning": 6,
@@ -236,5 +239,27 @@
     "independently_approved_executable_tasks": 0,
     "six_models_or_eight_policies_changed": false,
     "status": "BLOCKED_REAL_INDEPENDENT_SPEC_RIGHTS_ORACLE_AND_SANDBOX"
+  },
+  "progress_2026_10_28_php104_oracle_blueprint": {
+    "stage": "PUBLIC_REVIEWER_PLAN_NOT_EXECUTABLE_ORACLE",
+    "branch": "research/php104-oracle-review-blueprint-20261028",
+    "evidence": "data/admission/2026-10-28/php104_oracle_review_blueprint_PUBLIC_NO_GOLD.json",
+    "validator": "src/ucode/php104_oracle_review_blueprint.py",
+    "protocol": "docs/PHP104_INDEPENDENT_ORACLE_REVIEW_PLAN_2026-10-28.md",
+    "observed_root_license": "MIT_NOTICE_AT_BASE_COMMIT_NOT_FILE_LEVEL_CLEARANCE",
+    "source_notice_files_observed": 4,
+    "pinned_base_precedes_parent_issue_seconds": 2661,
+    "review_only_case_families": 10,
+    "public_gold_output_bytes": 0,
+    "external_original_spec_attested": false,
+    "external_rights_adjudicated": false,
+    "external_independent_hidden_oracle_attested": false,
+    "independent_sandbox_meter_attested": false,
+    "eligible_real_tasks": 0,
+    "php_source_executed": 0,
+    "confirmed_benchmark_results": 0,
+    "historical_pr_and_new_prospective_task_strata_must_be_separate": true,
+    "original_six_models_and_eight_policies_preserved": true,
+    "latest_ci": "VERIFY_FROM_LIVE_GITHUB"
   }
 }
