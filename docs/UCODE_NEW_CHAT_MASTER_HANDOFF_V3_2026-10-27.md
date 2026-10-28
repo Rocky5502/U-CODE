@@ -81,6 +81,23 @@
 > measured effectiveness results**. Check actual current GitHub
 > commit/CI; prior test counts and the handoff snapshot are historic.
 >
+> **28 OCT 2026 — EIGHT-ARM SHADOW ORCHESTRATION SPRINT:**
+> The [integration technical note](EIGHT_POLICY_SHADOW_RUNNER_INTEGRATION_2026-10-28.md)
+> and `src/ucode/shadow_eight_arm_runner.py` wire the complete
+> 8 registered policy *slots* into the existing evaluator-blind,
+> five-vector controller only after strict M4 task/model/seed/
+> opportunity assignment parity. The 48-action-arm synthetic
+> smoke has six model names, one artificial task and identical
+> scripted placeholder controllers, **NOT six model loads,
+> eight faithful algorithm implementations or 48 experimental
+> task outcomes**. Real repo identities are rejected by the
+> shadow runner; independently metered isolated execution,
+> immutable rights-cleared task specs, independent sealed
+> oracle, real proposal parity and model checkpoint access
+> remain external gates. Read live GitHub HEAD/CI for latest
+> test counts. Avoid submitting these synthetic results as
+> Springer empirical evidence.
+>
 **Version:** 3.0; prepared 27 October 2026.  
 **Repository:** https://github.com/Rocky5502/U-CODE (canonical working branch: main)  
 **Target:** Springer *Automated Software Engineering* — special issue *Search-Based Software Engineering in the Era of LLMs and Agentic Systems*. Planning deadline: **30 January 2027**, recheck the publisher.  

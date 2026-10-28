@@ -109,6 +109,8 @@ jobs:
         run: python -m scripts.audit_shadow_assignment_parity
       - name: Cross-check six selected models against deployment and protocol (NO GPU)
         run: python -m scripts.audit_six_model_crosswalk
+      - name: Run six-name eight-slot evaluator-blind shadow smoke (NO real tasks/models)
+        run: python -m scripts.smoke_shadow_eight_arm_runner
       - name: Validate prospective SBSE eight-policy six-checkpoint registration
         run: python -m scripts.validate_sbse_protocol
       - name: Validate all six AI Galaxy model hardware and startup gates (offline)
