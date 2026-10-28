@@ -63,6 +63,24 @@
 > model effects**. The live GitHub CI, not historical counts, is
 > authoritative; preserve the six-model and eight-policy rosters.
 >
+> **28 OCT 2026 — PARALLEL M4/M5/M6 OFFLINE ENGINEERING SPRINT:**
+> The [engineering note](PARALLEL_M4_M5_M6_OFFLINE_SPRINT_2026-10-28.md)
+> describes three audited improvements: (1)
+> `shadow_assignment_parity.py` checks the complete eight-policy
+> assigned matrix for candidate-opportunity, shared public task/spec,
+> lineage, checkpoint, tool and five-budget equality; 96
+> `SYNTHETIC_ONLY` fixture rows are NOT 96 real trials.
+> (2) `scripts/audit_six_model_crosswalk.py` reconciles the
+> unchanged six selected checkpoints, A100 deployment references,
+> licensing/remote-code/precision risks and eight-policy register
+> without downloading weights or renting GPUs. (3) the Springer
+> manuscript now explicitly frames prospective RQ1–RQ6, including
+> RQ3 paired ITT verified full-task success and release-risk/coverage.
+> All gate registers remain BLOCKED for **0 admitted executable
+> tasks, 0 independently sealed oracles, 0 model executions, 0
+> measured effectiveness results**. Check actual current GitHub
+> commit/CI; prior test counts and the handoff snapshot are historic.
+>
 **Version:** 3.0; prepared 27 October 2026.  
 **Repository:** https://github.com/Rocky5502/U-CODE (canonical working branch: main)  
 **Target:** Springer *Automated Software Engineering* — special issue *Search-Based Software Engineering in the Era of LLMs and Agentic Systems*. Planning deadline: **30 January 2027**, recheck the publisher.  
