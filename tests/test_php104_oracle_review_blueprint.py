@@ -153,6 +153,11 @@ class PHP104OracleBlueprintTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "timezone aware"):
             self.check(x)
 
+    def test_reordered_php_go_rows_do_not_change_admission_or_base_time(self):
+        reordered = deepcopy(self.chronology)
+        reordered["records"].reverse()
+        self.assertEqual(self.check(chronology=reordered), self.check())
+
     def test_underlying_source_contract_cannot_be_changed(self):
         x = deepcopy(self.contract)
         x["parent_issue_created_at"] = "2026-10-22T22:55:41Z"
