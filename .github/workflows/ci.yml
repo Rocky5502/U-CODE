@@ -43,6 +43,8 @@ jobs:
         run: python -m scripts.verify_issue_event_windows
       - name: Validate PHP #104 source-era contract leads and parent issue identity (NO source execution)
         run: python -m scripts.verify_php104_source_contracts
+      - name: Check PHP #104 reviewer oracle blueprint (NO gold tests or PHP execution)
+        run: python -m scripts.verify_php104_oracle_blueprint
       - name: Validate pinned pre-fix Git tree and toolchain path evidence (NO checkout)
         run: python -m scripts.verify_pre_fix_git_trees
       - name: Audit and package source-free 120-PR metadata dataset (NO executable tasks)
