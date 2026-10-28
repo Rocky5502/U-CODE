@@ -111,6 +111,23 @@
 > metering, no eight-policy fidelity certification and no
 > measured success difference. Check latest main SHA and CI.
 >
+> **28 OCT 2026 — UNIQUE ACTION-ID + CANDIDATE-TARGET REPLAY BRIDGE:**
+> The [research integrity note](ACTION_ID_CANDIDATE_BOUND_REPLAY_2026-10-28.md)
+> and `src/ucode/action_id_replay_bridge.py` now connect
+> `matched_opportunities.py`'s unique one-use `SearchAction.action_id`,
+> `SharedSession` candidate/diagnostic archive and typed five-resource
+> receipts to a frozen public response book keyed by exact action ID
+> and candidate SHA256. Unlike the earlier kind/ordinal replay, mismatched
+> candidate selection, reused action ID, invalid release, overbudget
+> reservation and absent frozen responses are detected. The smoke
+> repeats one *identical scripted synthetic policy* under eight
+> registered names only. Intermediate CI run 40669382063 passed
+> **996/996 offline tests** each on Python 3.10/3.12; confirm actual
+> post-merge main CI and commit. **ZERO** admitted executable tasks,
+> independently sealed oracles, measured effects and authenticated
+> live LLM tool actions. All eight real algorithms still require
+> independent implementations/fidelity review.
+>
 **Version:** 3.0; prepared 27 October 2026.  
 **Repository:** https://github.com/Rocky5502/U-CODE (canonical working branch: main)  
 **Target:** Springer *Automated Software Engineering* — special issue *Search-Based Software Engineering in the Era of LLMs and Agentic Systems*. Planning deadline: **30 January 2027**, recheck the publisher.  
