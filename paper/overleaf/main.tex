@@ -99,6 +99,62 @@ policy does not improve independently verified full-task success
 at comparable coverage, safety outcomes, and resource consumption.
 The complete six-model software-agent experiment remains pending.
 
+\paragraph{Research questions and prospective estimands.}
+We preregister the following six questions; none presently has
+a measured answer. Their distinct evidentiary scopes prevent
+provenance screening from being mistaken for task correctness:
+\begin{enumerate}
+\item[\textbf{RQ1.}] \emph{Failure landscape:} Which
+correctness, security, efficiency and maintainability failure
+types occur in independently attributable agent-authored
+software changes, and how do their frequencies differ by
+repository and programming language? The prospective estimands
+are cohort-specific, manually audited failure prevalences
+with denominators and grouped uncertainty intervals; any
+human-authored comparison requires matched project context.
+\item[\textbf{RQ2.}] \emph{Uncertainty prediction:} How well
+do pre-outcome uncertainty signals predict independently
+evaluated full-task correctness and release risk? We plan
+Brier scores, calibration error, discrimination and
+risk--coverage curves with repository-group uncertainty
+intervals, fitting calibrators strictly outside held-out
+evaluation. Self-reported confidence is not presumed calibrated.
+\item[\textbf{RQ3.}] \emph{Equal-budget effectiveness:}
+Does history-conditional uncertainty-guided intervention
+search improve independently verified full-task success over
+the preregistered uncertainty-free search control at matched
+task/model/seed opportunities and the same five hard resource
+caps? The primary estimand is the paired
+intention-to-treat success difference over all assigned tasks;
+release coverage, wrong-release risk, and realized resource
+use are reported alongside it.
+\item[\textbf{RQ4.}] \emph{Intervention allocation:}
+When should an agent generate, retrieve, test, statically
+analyze, repair, request assistance, release or abstain?
+We examine recorded action frequencies, conditional
+decision context, and prospective randomized comparisons.
+Uncontrolled action trajectories alone do not support
+causal claims.
+\item[\textbf{RQ5.}] \emph{Generalization:} Are any
+measured effects robust on independent held-out repositories,
+language strata, model families and task-complexity groups?
+We plan subgroup estimates with exact independent task
+counts and exclusion or failure denominators, not pooled
+significance based on repeated correlated sessions.
+\item[\textbf{RQ6.}] \emph{Mechanism:} Which changes
+come from history-conditioned evidence, calibration,
+multi-objective search, generation/repair, retrieval,
+testing, and selective abstention? Frozen component
+ablations and contamination checks will distinguish
+mechanistic explanations from post-hoc favorable subsets.
+\end{enumerate}
+The eight named confirmatory policy arms and six selected
+model identities are fixed in the prospective protocol.
+The executable-task set, genuine oracle labels, final seeds
+and actual resource caps are \emph{not yet} frozen. Hence
+the questions are hypotheses and estimand definitions,
+not empirical findings.
+
 \section{Related Work and Novelty Boundary}\label{sec:related}
 
 \subsection{Repository-level agents and search}
