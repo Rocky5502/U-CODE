@@ -103,7 +103,7 @@
       "priority": "P0",
       "issue": 4,
       "title": "Integrate candidate archive, conditional evidence, generate/retrieve/repair adapters and stop into replayable policy loop",
-      "status": "SYNTHETIC_EIGHT_ARM_AND_SHARED_PUBLIC_REPLAY_REFERENCE_ONLY",
+      "status": "SYNTHETIC_UNIQUE_ACTION_AND_CANDIDATE_LINEAGE_REFERENCE_ONLY_NO_REAL_ADAPTER",
       "deliverable": "deterministic bounded agent trace state machine with policy-neutral, evaluator-blind observations",
       "exit_criteria": "full trace replay on independently qualified sandbox tasks; measured budget enforcement and 0 oracle leakage"
     },
@@ -346,5 +346,32 @@
     "real_task_accuracy_results": 0,
     "open_next_gate": "MATCH_RICH_ACTION_IDS_AND_HARDWARE_ATTESTED_REPLAY_AFTER_TASK_ADMISSION",
     "final_ci": "VERIFY_LATEST_GITHUB"
+  },
+  "progress_2026_10_28_action_id_replay": {
+    "stage": "SYNTHETIC_UNIQUE_ACTION_ID_CANDIDATE_BOUND_REPLAY_REFERENCE",
+    "source": "src/ucode/action_id_replay_bridge.py",
+    "adversarial_tests": "tests/test_action_id_replay_bridge.py",
+    "smoke": "scripts/smoke_action_id_replay_bridge.py",
+    "review": "docs/ACTION_ID_CANDIDATE_BOUND_REPLAY_2026-10-28.md",
+    "source_only_manuscript_updated": true,
+    "unique_action_ids_validated": true,
+    "candidate_target_verified_against_current_public_menu": true,
+    "shared_five_vector_ledger_validated": true,
+    "real_task_admissions": 0,
+    "real_model_calls": 0,
+    "sealed_independent_evaluator_labels": 0,
+    "trustworthy_metering_attested": false,
+    "implemented_all_eight_distinct_algorithms": false,
+    "live_policy_action_id_adapter_implemented": false,
+    "confirmed_model_effects": 0,
+    "intermediate_ci": {
+      "run": 40669382063,
+      "passed_per_python_version": 996,
+      "python_versions": [
+        "3.10",
+        "3.12"
+      ]
+    },
+    "post_merge_ci": "VERIFY_GITHUB_MAIN"
   }
 }
