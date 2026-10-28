@@ -47,6 +47,22 @@
 > Preserve the six model IDs and eight policies. Refresh HEAD and both
 > Python CI jobs; previous handover counts are only historical.
 >
+> **28 OCT 2026 — PHP #104 INDEPENDENT-ORACLE REVIEW BLUEPRINT:**
+> The original base commit at 22:07:39 UTC predates parent issue #166
+> creation at 22:52:00 UTC by **2,661 seconds**. Root MIT text and
+> original author/copyright notices were reviewed read-only in four
+> pinned source/test Git blobs. This is **not rights approval**.
+> A public [10-family evaluation design](PHP104_INDEPENDENT_ORACLE_REVIEW_PLAN_2026-10-28.md)
+> and fail-closed `php104_oracle_review_blueprint.py` checker now spell
+> out external reviewer requirements without shipping any hidden
+> expected outputs or tests. This document is NOT a sealed independent
+> oracle or a genuine source-era issue-body snapshot. Keep Path A
+> (authentic historical PR task) distinct from Path B (new prospective
+> source-based task), with separate denominators. **Zero qualified
+> executable tasks, zero verified independent hidden oracles, zero real
+> model effects**. The live GitHub CI, not historical counts, is
+> authoritative; preserve the six-model and eight-policy rosters.
+>
 **Version:** 3.0; prepared 27 October 2026.  
 **Repository:** https://github.com/Rocky5502/U-CODE (canonical working branch: main)  
 **Target:** Springer *Automated Software Engineering* — special issue *Search-Based Software Engineering in the Era of LLMs and Agentic Systems*. Planning deadline: **30 January 2027**, recheck the publisher.  

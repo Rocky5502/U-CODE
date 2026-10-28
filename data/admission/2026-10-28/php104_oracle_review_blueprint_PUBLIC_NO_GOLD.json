@@ -1,0 +1,127 @@
+{
+  "schema_version": "1.0",
+  "stage": "PHP104_EXTERNAL_ORACLE_BLUEPRINT_ONLY",
+  "candidate_id": 104,
+  "base_commit": "25e9b1cf855669c24ba1609c7d4cfcda17ac6217",
+  "base_commit_time": "2026-10-22T22:07:39Z",
+  "root_license_blob_sha": "9d2375c29942233e3b646d51210ebc67235df873",
+  "root_license_observed": "ROOT_MIT_NOTICE_REVIEW_NOT_CLEARED",
+  "copyright_notice_observations": [
+    {
+      "path": "src/PersistenceHandler/FilePersistenceHandler.php",
+      "blob_sha": "1edebb766b53d2117972a8bafaff27d716b55163",
+      "notice_type": "AUTHOR_AND_COPYRIGHT_HEADER_2021"
+    },
+    {
+      "path": "src/PersistenceHandler/FileSerializedResourcePersistenceHandler.php",
+      "blob_sha": "96d3e275e091c50d510687a3d9bbf75b4c69c369",
+      "notice_type": "AUTHOR_AND_COPYRIGHT_HEADER_2021"
+    },
+    {
+      "path": "src/Filter/Prefetch/CachedResourceFilter.php",
+      "blob_sha": "7674093fb5be90b082cbd2b35565cf506944d9fa",
+      "notice_type": "AUTHOR_DOCBLOCK_ONLY"
+    },
+    {
+      "path": "tests/Filter/Prefetch/CachedResourceFilterTest.php",
+      "blob_sha": "e6c9e6e2ad94c69b8ec55c77642f341626cf601e",
+      "notice_type": "COPYRIGHT_AND_ROOT_LICENSE_POINTER"
+    }
+  ],
+  "oracle_case_families": [
+    {
+      "case_id": "EMPTY_OR_ROOT_URI",
+      "witness_ids": [
+        "FILE_LAYOUT_PATH_COMPLETION"
+      ],
+      "stage": "PROPOSED_NO_ORACLE_CODE_OR_EXPECTED_OUTPUT",
+      "gold_output_included": false
+    },
+    {
+      "case_id": "TRAILING_SLASH_DIRECTORY",
+      "witness_ids": [
+        "FILE_LAYOUT_PATH_COMPLETION"
+      ],
+      "stage": "PROPOSED_NO_ORACLE_CODE_OR_EXPECTED_OUTPUT",
+      "gold_output_included": false
+    },
+    {
+      "case_id": "NESTED_URI_PATH",
+      "witness_ids": [
+        "FILE_LAYOUT_PATH_COMPLETION",
+        "FILE_LAYOUT_BASENAME_ENCODING"
+      ],
+      "stage": "PROPOSED_NO_ORACLE_CODE_OR_EXPECTED_OUTPUT",
+      "gold_output_included": false
+    },
+    {
+      "case_id": "ENCODED_BASENAME",
+      "witness_ids": [
+        "FILE_LAYOUT_BASENAME_ENCODING"
+      ],
+      "stage": "PROPOSED_NO_ORACLE_CODE_OR_EXPECTED_OUTPUT",
+      "gold_output_included": false
+    },
+    {
+      "case_id": "SPIDER_ID_NAMESPACE",
+      "witness_ids": [
+        "CACHE_LOOKUP_AND_FRESHNESS"
+      ],
+      "stage": "PROPOSED_NO_ORACLE_CODE_OR_EXPECTED_OUTPUT",
+      "gold_output_included": false
+    },
+    {
+      "case_id": "BASE_PATH_SEPARATOR",
+      "witness_ids": [
+        "FILE_LAYOUT_PATH_COMPLETION",
+        "CACHE_LOOKUP_AND_FRESHNESS"
+      ],
+      "stage": "PROPOSED_NO_ORACLE_CODE_OR_EXPECTED_OUTPUT",
+      "gold_output_included": false
+    },
+    {
+      "case_id": "REAL_WRITER_CACHE_LOOKUP",
+      "witness_ids": [
+        "SERIALIZED_RESOURCE_WRITER",
+        "CACHE_LOOKUP_AND_FRESHNESS"
+      ],
+      "stage": "PROPOSED_NO_ORACLE_CODE_OR_EXPECTED_OUTPUT",
+      "gold_output_included": false
+    },
+    {
+      "case_id": "CACHE_FRESHNESS_BOUNDARIES",
+      "witness_ids": [
+        "CACHE_LOOKUP_AND_FRESHNESS"
+      ],
+      "stage": "PROPOSED_NO_ORACLE_CODE_OR_EXPECTED_OUTPUT",
+      "gold_output_included": false
+    },
+    {
+      "case_id": "PROTECTED_NAMING_EXTENSION",
+      "witness_ids": [
+        "FILE_LAYOUT_PATH_COMPLETION"
+      ],
+      "stage": "PROPOSED_NO_ORACLE_CODE_OR_EXPECTED_OUTPUT",
+      "gold_output_included": false
+    },
+    {
+      "case_id": "INDEPENDENT_LEGACY_FIXTURE",
+      "witness_ids": [
+        "CACHE_TEST_FIXTURE_LAYOUT_DUPLICATION",
+        "SERIALIZED_RESOURCE_WRITER",
+        "CACHE_LOOKUP_AND_FRESHNESS"
+      ],
+      "stage": "PROPOSED_NO_ORACLE_CODE_OR_EXPECTED_OUTPUT",
+      "gold_output_included": false
+    }
+  ],
+  "source_file_rights_adjudicated": false,
+  "original_issue_text_sealed": false,
+  "independent_specification_reviewed": false,
+  "oracle_independently_authored": false,
+  "oracle_sealed_outside_repository": false,
+  "sandbox_attested": false,
+  "execution_metering_attested": false,
+  "task_admitted": false,
+  "php_executed": false
+}
