@@ -98,6 +98,19 @@
 > test counts. Avoid submitting these synthetic results as
 > Springer empirical evidence.
 >
+> **28 OCT 2026 — SHARED FROZEN PUBLIC RESPONSE REPLAY:**
+> Source-only `frozen_public_replay.py` and
+> [reference note](FROZEN_PUBLIC_REPLAY_INTEGRITY_2026-10-28.md)
+> now freeze candidate-indexed public tool results by action, occurrence
+> and target SHA. The SAME book is used for all eight registered
+> policy slots within each synthetic task/model/seed/budget group.
+> Unexpected calls and substitution attempts fail closed.
+> `scripts/smoke_frozen_public_replay.py` exercises **48 synthetic
+> arm integrations**, not model inference or executable repair.
+> No independent task admissions, no sealed oracles, no trusted
+> metering, no eight-policy fidelity certification and no
+> measured success difference. Check latest main SHA and CI.
+>
 **Version:** 3.0; prepared 27 October 2026.  
 **Repository:** https://github.com/Rocky5502/U-CODE (canonical working branch: main)  
 **Target:** Springer *Automated Software Engineering* — special issue *Search-Based Software Engineering in the Era of LLMs and Agentic Systems*. Planning deadline: **30 January 2027**, recheck the publisher.  
