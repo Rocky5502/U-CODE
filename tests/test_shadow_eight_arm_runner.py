@@ -116,6 +116,17 @@ class ShadowEightArmTests(unittest.TestCase):
             self.check(tuple(rows))
         self.assertEqual(self.calls,[])
 
+    def test_unapproved_real_task_identity_cannot_invoke_any_callback(self):
+        actual_view=parse_agent_task_view({
+            "repository":"mvdbos/php-spider",
+            "base_sha":self.task.base_sha,
+            "prefixed_spec":self.task.prefixed_spec,
+            "spec_sha256":self.task.spec_sha256,
+        })
+        with self.assertRaisesRegex(ValueError,"cannot accept real"):
+            self.check(task_views={"SYNTHETIC_OFFLINE_TASK":actual_view})
+        self.assertEqual(self.calls,[])
+
     def test_mismatched_task_spec_rejected_before_any_callback(self):
         rows=list(self.assignments)
         rows=[replace(x,task_spec_sha256="c"*64) for x in rows]
