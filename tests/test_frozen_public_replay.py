@@ -96,6 +96,22 @@ class FrozenReplayTests(unittest.TestCase):
         self.assertFalse(r.authenticated_shared_sampling)
         self.assertEqual(r.sealed_oracle_results,0)
 
+    def test_policy_specific_abstention_does_not_change_shared_replay_book(self):
+        normal_factory=self.handlers[self.policies[0]]
+        def alternate(row):
+            if row.policy_id==self.policies[0]:
+                return lambda st: BlindAction("abstain",RV())
+            return normal_factory(row)
+        x=self.run_book(handlers={p:alternate for p in self.policies})
+        by_policy={p:{a.terminal_status for a in x.shadow.arms
+                      if a.policy_id==p} for p in self.policies}
+        self.assertEqual(by_policy[self.policies[0]],{"ABSTAINED"})
+        self.assertTrue(all(by_policy[p]==
+                            {"RELEASED_PENDING_INDEPENDENT_EVALUATION"}
+                            for p in self.policies[1:]))
+        self.assertEqual(x.matched_contexts,6)
+        self.assertEqual(x.sealed_oracle_results,0)
+
     def test_manifest_digest_order_independent(self):
         x=self.run_book()
         y=self.run_book(rows=tuple(reversed(self.rows)))
