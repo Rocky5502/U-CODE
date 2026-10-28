@@ -103,7 +103,7 @@
       "priority": "P0",
       "issue": 4,
       "title": "Integrate candidate archive, conditional evidence, generate/retrieve/repair adapters and stop into replayable policy loop",
-      "status": "EVALUATOR_BLIND_REFERENCE_AND_SHADOW_PARITY_ADDED_END_TO_END_REAL_NOT_RUN",
+      "status": "EVALUATOR_BLIND_EIGHT_ARM_SHADOW_WIRING_ONLY_REAL_CALLBACKS_UNVERIFIED",
       "deliverable": "deterministic bounded agent trace state machine with policy-neutral, evaluator-blind observations",
       "exit_criteria": "full trace replay on independently qualified sandbox tasks; measured budget enforcement and 0 oracle leakage"
     },
@@ -121,7 +121,7 @@
       "priority": "P1",
       "issue": 4,
       "title": "Faithfully implement budget-matched baselines and proposal parity",
-      "status": "EIGHT_POLICY_SHARED_SHADOW_OPPORTUNITIES_CHECKED_IMPLEMENTATIONS_UNVERIFIED",
+      "status": "ALL_EIGHT_POLICY_NAMES_SHADOW_WIRED_NO_FAITHFUL_EXECUTABLE_COMPARATORS",
       "deliverable": "blind search, fixed testing, BES independent/conditional, selective verifier, MCTS, replay audit",
       "exit_criteria": "identical assigned model/task/seed/tool/5-resource vector and documented fidelity deviations"
     },
@@ -300,5 +300,31 @@
     "unknown_external_review_status": "STILL_PENDING",
     "notes": "Shadow assignment hash agreement is asserted planning equality, not authenticated equal candidate draws or an executed comparison",
     "final_post_merge_commit_ci": "CHECK_GITHUB_AFTER_MERGE"
+  },
+  "progress_2026_10_28_eight_arm_shadow": {
+    "stage": "SYNTHETIC_ONLY_FULL_REGISTERED_ARM_INTERFACE_WIRING",
+    "runner": "src/ucode/shadow_eight_arm_runner.py",
+    "tests": "tests/test_shadow_eight_arm_runner.py",
+    "smoke": "scripts/smoke_shadow_eight_arm_runner.py",
+    "methodology": "docs/EIGHT_POLICY_SHADOW_RUNNER_INTEGRATION_2026-10-28.md",
+    "synthetic_task_count": 1,
+    "model_names_not_loaded": 6,
+    "registered_policy_names_not_faithfully_implemented": 8,
+    "synthetic_arm_wirings": 48,
+    "real_task_admissions": 0,
+    "independently_verified_model_inferences": 0,
+    "independent_correctness_labels": 0,
+    "third_party_code_executions": 0,
+    "external_policy_fidelity_attestations": 0,
+    "real_sandbox_attested": false,
+    "model_runtimes_attested": false,
+    "resource_meters_trusted": false,
+    "explicitly_rejects_real_repository_identity": true,
+    "first_verified_branch_ci": {
+      "run_id": 40613709940,
+      "python_310_offline_tests": 960,
+      "python_312_offline_tests": 960
+    },
+    "post_merge_ci": "CHECK_AFTER_MERGE"
   }
 }
