@@ -20,8 +20,10 @@ was created at **22:52:00 UTC** (2,661 seconds later), child
 [issue #168](https://github.com/mvdbos/php-spider/issues/168)
 at **22:53:10 UTC**, and PR
 [#172](https://github.com/mvdbos/php-spider/pull/172)
-at **22:55:42 UTC**. This is a strong temporal boundary for **source
-code**; it is *not* a historical version archive of issue-body text.
+at **22:55:42 UTC**. This is a **recorded Git metadata ordering** for the source code;
+Git author/committer timestamps are not an independently notarized
+proof of when the Git object was first publicly accessible. It is
+also *not* a historical version archive of issue-body text.
 Both currently viewed issue bodies were last updated after PR creation.
 
 ### Rights observations (not legal permission certification)
