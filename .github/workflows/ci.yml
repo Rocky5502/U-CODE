@@ -105,6 +105,10 @@ jobs:
         run: python -m examples.blind_search_smoke
       - name: Validate frozen BES versus blind search opportunities and five budgets
         run: python -m examples.action_parity_smoke
+      - name: Audit synthetic eight-policy public-opportunity parity (NO agent trials)
+        run: python -m scripts.audit_shadow_assignment_parity
+      - name: Cross-check six selected models against deployment and protocol (NO GPU)
+        run: python -m scripts.audit_six_model_crosswalk
       - name: Validate prospective SBSE eight-policy six-checkpoint registration
         run: python -m scripts.validate_sbse_protocol
       - name: Validate all six AI Galaxy model hardware and startup gates (offline)
