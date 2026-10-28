@@ -115,7 +115,8 @@ def verify_php104_oracle_blueprint(
             raise ValueError("blueprint cannot self-approve missing external gates")
     base_at = _utc(blueprint["base_commit_time"])
     parent_at = _utc(source_contract["parent_issue_created_at"])
-    child_at = _utc(chronology["records"][0]["issue_created_at"])
+    child_record = next(x for x in chronology["records"] if x["candidate_id"] == 104)
+    child_at = _utc(child_record["issue_created_at"])
     if (base_at.isoformat() != "2026-10-22T22:07:39+00:00"
             or not base_at < parent_at < child_at):
         raise ValueError("source-era base commit must strictly predate issue text")
