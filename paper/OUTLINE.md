@@ -30,11 +30,16 @@ search-based software engineering; agentic code verification.
    gated SWE-chat, controlled DroidCollection, executable generated-code
    task cohorts. Source-level licenses, base SHA, sampling/attrition, manual
    annotation, partitioning, validation of oracle independence.
-6. **Experiment setup.** Pinned 4–6 models and 12 languages where coverage
-   supports it. Compare random search, static-first, fixed test, search
-   without uncertainty, confidence-only, quality-only and U-CODE. Equal
-   inference/test budgets and repeated seeds. Security and efficiency
-   verified separately.
+6. **Experiment setup (prospective).** Exactly six user-selected
+   open-weight model identities and eight preregistered policy arms; models
+   remain unpinned/unrun and the admission-ready task set is empty.
+   Twelve-language coverage is a proposed discovery target, NOT verified
+   runnable language strata. Compare the registered treatment against
+   `no_uncertainty_search` with the same assigned candidate opportunities,
+   frozen seeds, source era, and all five hard resource caps (tokens,
+   test calls, GPU seconds, CPU seconds, wall seconds). Report realized
+   resource use, all assigned denominators, coverage and failures.
+   Independent verifier-only correctness is never a policy input.
 7. **Results** — RESERVED; never add a numerical claim before actual runs.
    RQ1 failure taxonomy; RQ2 calibration; RQ3 equal-budget efficacy;
    RQ4 agent decisions; RQ5 OOD generality; RQ6 mechanism and ablations.
