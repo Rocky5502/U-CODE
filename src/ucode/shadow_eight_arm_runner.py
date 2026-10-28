@@ -113,6 +113,11 @@ def run_shadow_eight_arm_matrix(
     for task_id, view in task_views.items():
         if not isinstance(view, AgentTaskView):
             raise TypeError("only typed task view may be assigned")
+        # An explicit fixture-only gate prevents accidental invocation on a
+        # real repository while policy adapters and sandbox remain unapproved.
+        # A caller-supplied string prefix is NOT a security attestation.
+        if not task_id.startswith("SYNTHETIC_") or not view.repository.startswith("synthetic/"):
+            raise ValueError("shadow integration cannot accept real repository tasks")
         view_specs[task_id] = view
     # Audit the complete matrix before constructing policy callbacks,
     # to prevent partial execution on a malformed assignment grid.
