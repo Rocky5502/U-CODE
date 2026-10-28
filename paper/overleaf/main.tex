@@ -1322,6 +1322,26 @@ LLM or third-party program. This narrows a reproducibility
 gap in reference comparisons; it provides neither an
 independent test oracle nor a measured RQ3 effect.
 
+\paragraph{Unique action-ID and candidate-bound replay bridge.}
+We separately bridge the public matched-opportunity model,
+which assigns unique single-use action IDs and explicit
+candidate targets, to a non-executable frozen response
+catalogue. Unlike the earlier action-kind/ordinal smoke,
+each synthetic diagnostic or repair receipt is keyed by
+its action identity \emph{and} the targeted candidate
+SHA-256. The bridge checks the feasible candidate-action
+menu and all five nominal resource reservations before
+recording a source-free receipt, and preserves the
+generated/parent candidate lineage in a common trace.
+It rejects reused IDs, unattainable candidate targets,
+unrecorded public outcomes and invalid terminal release.
+No LLM generation, external code execution, independent
+resource measurement or hidden correctness evaluation
+occurs. This strengthens the prospective fair-replay
+protocol but supplies no new empirical RQ3 endpoint
+or evidence that all eight named policies have faithful
+end-to-end implementations.
+
 \paragraph{Prospective PHP evaluator independence and rights review.}
 The pinned PHP base commit carries a recorded Git
 timestamp $2{,}661$ seconds before creation of parent
