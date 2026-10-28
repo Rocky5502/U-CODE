@@ -129,7 +129,7 @@ class ShadowParityTests(unittest.TestCase):
             replace(self.rows[0],oracle_passed=True)
         with self.assertRaises(TypeError):
             AssignedOpportunity(**{**self.rows[0].__dict__,"hidden_test":"solution"})
-        with self.assertRaisesRegex(ValueError,"cannot certify real"):
+        with self.assertRaisesRegex(ValueError,"does not certify real"):
             replace(self.rows[0],stage="EXECUTED_VALIDATED")
 
     def test_no_ambiguous_commit_or_float_seed(self):
