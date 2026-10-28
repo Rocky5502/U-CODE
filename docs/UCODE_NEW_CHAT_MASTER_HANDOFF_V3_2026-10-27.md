@@ -128,6 +128,24 @@
 > live LLM tool actions. All eight real algorithms still require
 > independent implementations/fidelity review.
 >
+> **29 OCT 2026 — ADAPTIVE SOURCE-FREE BASELINE REPLAY (post-V3):**
+> The [adaptive reference note](ADAPTIVE_SYNTHETIC_BASELINE_REPLAY_2026-10-29.md)
+> documents `adaptive_reference_replay.py`, two actual
+> **synthetic/offline** action selectors and tests. Unlike #15's
+> manually preselected action sequences, `fixed_testing` and the
+> existing `no_uncertainty_search` heuristic now select live
+> candidate-bound actions based on public synthetic feedback and
+> consume receipts from the same immutable action-ID response book.
+> A negative diagnostic yields different action sequences in the
+> controlled smoke, NOT correctness differences. No hidden oracle
+> or real repository/model code is executed; no actual hardware meter
+> is authenticated. The other six policy arms remain unimplemented
+> as faithful experimental comparators. The preregistered six-model
+> / eight-policy names are unchanged. **Zero admitted tasks, zero
+> actual model inferences, zero measured policy effects.**
+> Check current GitHub `main` and postmerge CI; old counters below
+> are historical, not live!
+>
 **Version:** 3.0; prepared 27 October 2026.  
 **Repository:** https://github.com/Rocky5502/U-CODE (canonical working branch: main)  
 **Target:** Springer *Automated Software Engineering* — special issue *Search-Based Software Engineering in the Era of LLMs and Agentic Systems*. Planning deadline: **30 January 2027**, recheck the publisher.  

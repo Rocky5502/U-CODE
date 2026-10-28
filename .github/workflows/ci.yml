@@ -115,6 +115,8 @@ jobs:
         run: python -m scripts.smoke_frozen_public_replay
       - name: Replay unique candidate-targeted action IDs across scripted eight-slot fixture (NO LLM)
         run: python -m scripts.smoke_action_id_replay_bridge
+      - name: Exercise adaptive fixed-test and uncertainty-free policy selection (SYNTHETIC ONLY)
+        run: python -m scripts.smoke_adaptive_reference_replay
       - name: Validate prospective SBSE eight-policy six-checkpoint registration
         run: python -m scripts.validate_sbse_protocol
       - name: Validate all six AI Galaxy model hardware and startup gates (offline)

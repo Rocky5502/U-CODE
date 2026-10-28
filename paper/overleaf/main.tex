@@ -1342,6 +1342,27 @@ protocol but supplies no new empirical RQ3 endpoint
 or evidence that all eight named policies have faithful
 end-to-end implementations.
 
+\paragraph{Adaptive public-evidence references (synthetic only).}
+Beyond preselected action-ID traces, we now run two
+\emph{scoped reference controls} that select the next
+candidate-bound action adaptively from the same frozen
+public opportunity menu. A fixed-test reference generates
+a candidate, performs a single public test, and then
+releases after a positive visible test or abstains. The
+uncertainty-free search reference invokes an existing
+bounded beam selector again after each public receipt,
+using predeclared heuristic opportunity rewards without
+calibrated uncertainty or hidden correctness inputs.
+The shared synthetic demonstration deliberately presents
+a negative public test: the fixed-test rule abstains,
+whereas the heuristic selects an available repair first.
+This is a controlled difference in \emph{selected action
+sequence}, not a correctness gain, calibrated risk
+estimate or independent oracle measurement. These two
+scoped implementations do not yet establish fidelity to
+the full eight registered confirmatory policies; only
+pre-experimental source-free replay has been executed.
+
 \paragraph{Prospective PHP evaluator independence and rights review.}
 The pinned PHP base commit carries a recorded Git
 timestamp $2{,}661$ seconds before creation of parent
