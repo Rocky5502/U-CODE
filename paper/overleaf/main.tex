@@ -2335,6 +2335,118 @@ fully qualified task execution and evaluator-only
 oracle joins. The machine-readable status export is
 restricted to data quality and prospective readiness.
 
+\paragraph{Evaluator-side selective-release and attrition accounting.}
+To avoid success inflation from incomplete tool sessions, an
+additional post-terminal reporting contract requires the
+\emph{entire} frozen assignment matrix and the exact
+evaluator verdict for every released patch. Let $N_a$
+denote policy $a
+% NO EMPIRICAL RQ RESULTS EXIST AT THIS MANUSCRIPT STATE.
+% Add policy outcomes and uncertainty intervals ONLY after qualified
+% revision-pinned, independent-oracle trials and independently recomputed
+% results are committed. The following status is not an effectiveness RQ.
+\paragraph{Evidence status, not performance findings.}
+The source-controlled software includes analytic finite-horizon,
+conditional-likelihood, finite-scenario, and one-step mixed-action
+reference implementations with deterministic synthetic tests.
+The PR discovery audit covers $120$ distinct repository-name/PR-link
+records across twelve search-language strata, but it does not
+establish $120$ runnable task instances. Two candidate repositories
+have additional read-only pre-fix Git tree and issue chronology
+evidence. None has yet completed independent task admission, sealed
+oracle replay or a six-model paired policy trial. Therefore no
+verified success-rate difference, selective wrong-release risk,
+resource efficiency improvement, statistical guarantee, or
+cross-language generalization result is reported. The eventual
+primary comparison in Eq.~\eqref{eq:paired} must remain unfilled
+until these prerequisites are met.
+
+\section{Discussion and Threats to Validity}\label{sec:discussion}
+Leading threats are unreliable PR authorship inference, repository-primary
+versus patch-language mismatches, optional stopping, nonexchangeable
+repository groups, correlated diagnostic errors, benchmark contamination,
+incomplete hidden tests, distribution shift, source licensing, selective
+coverage collapse and cross-study overlap. Positive and negative effects,
+including false-acceptance failures, must remain visible.
+
+\section{Conclusions}\label{sec:conclusions}
+No reliability improvement, generalization effect or certified selective
+risk can presently be concluded. The contribution at this stage is a
+falsifiable, budget-aware evidence-acquisition research protocol.
+
+\section*{Statements and Declarations}
+\textbf{Funding.} To be completed and verified by the authors.
+
+\textbf{Competing interests.} To be declared by the authors.
+
+\textbf{Data and code availability.}
+The current analytical reference implementations, synthetic
+tests, source-only PR discovery metadata, quality reports,
+and manuscript source are versioned at
+\url{https://github.com/Rocky5502/U-CODE}.
+The 120 linked PRs are \emph{discovery metadata},
+not an independently admitted executable task dataset.
+Third-party repository sources and model weights are
+not redistributed by this manuscript. A permanent
+dataset DOI, final archival version, independent
+task oracles, author-verified source permissions
+and reproducible empirical run receipts remain
+pending; the GitHub record alone does not satisfy
+those final publication requirements.
+
+\textbf{Author contributions.} To be completed and approved by all authors.
+
+\textbf{Use of AI tools.} Generative AI assistance was used to develop
+research-code prototypes, synthetic adversarial tests and manuscript
+draft text. Human authors remain responsible for independently checking
+all code, references, analyses and claims before submission; this
+disclosure and the final author-approved record require verification.
+
+\bibliography{references}
+\end{document}
+s number of assigned cells, $r_a$
+observed releases with verdicts, $s_a$ independently
+judged successful releases, $w_a$ known erroneous
+releases, and $u_a$ infrastructure failures whose
+eventual release and task correctness are unknown.
+Under no additional outcome assumptions, we report
+the following conservative missingness envelopes:
+\begin{align}
+p_a^{\mathrm{ITT}} &\in
+ \bigl[s_a/N_a,\;(s_a+u_a)/N_a\bigr],
+ \label{eq:itt_missing_envelope}\\
+\mathrm{coverage}_a &\in
+ \bigl[r_a/N_a,\;(r_a+u_a)/N_a\bigr].
+ \label{eq:coverage_missing_envelope}
+\end{align}
+If $r_a+u_a>0$, the corresponding worst/best
+\emph{potential} conditional wrong-release fraction
+lies in
+$\bigl[w_a/(r_a+u_a),\;
+(w_a+u_a)/(r_a+u_a)\bigr]$.
+When no observed or potentially unknown run releases
+a patch, wrong-release risk remains undefined,
+not zero. The observed-release-only fraction $w_a/r_a$
+is separately labeled and is defined only for $r_a>0$.
+Measured timeouts and safety stops count as
+non-successes in the assigned-task denominator; they
+are not discarded as missing successes. We retain
+five separate per-assignment mean \emph{reported}
+cost components, which do not become independently
+authenticated metering evidence merely because a
+receipt declares them measured.
+
+The paired contrast continues to use task/model/seed/
+budget matching and worst/best infrastructure
+missingness bounds; a bootstrap point analysis is
+suppressed whenever any registered arm's outcome
+is incomplete. These envelopes are
+\emph{partial-identification sensitivity bounds,
+not confidence intervals, proofs of risk control,
+or verified experimental measurements}.
+The current tests use fabricated, openly labeled
+synthetic verdict fixtures exclusively.
+
 \section{Results}\label{sec:results}
 % NO EMPIRICAL RQ RESULTS EXIST AT THIS MANUSCRIPT STATE.
 % Add policy outcomes and uncertainty intervals ONLY after qualified
