@@ -36,6 +36,15 @@ specification, rights, sealed oracle and sandbox evidence are still required.
 
 The last pre-refactor `main` CI was green with 1,142 offline tests per Python version. **Always inspect the current [CI](https://github.com/Rocky5502/U-CODE/actions)** for the latest count, SHA and outcome.
 
+## Ten senior SE/AI research perspective audit (29 October 2026)
+
+The [ten-perspective source-code audit](docs/TEN_SENIOR_SE_AI_CODE_REVIEW_2026-10-29.md)
+documents concrete fixes to fork-lineage statistical grouping, metadata
+source validation, scalar-cost overflow and tiny-resource ledger reconciliation.
+It also distinguishes unimplemented experimental infrastructure from
+first-party passing tests. These are ten analytical disciplinary reviews,
+**not ten independent human researchers or proof of real-task performance**.
+
 ## Independent mathematical and 1,000-perspective review (29 October 2026)
 
 The [new source-grounded research audit](docs/RESEARCH_1000_PERSPECTIVE_MATH_DATA_AUDIT_2026-10-29.md)
