@@ -37,7 +37,7 @@
 
 **Primary falsifier:** Under genuinely identical task, fixed code/model revision, seed, public proposal/tool opportunities and independently enforced five-component limits, does `ucode_conditional_bes` improve *independently verified full-task pass per assigned cell* compared with `no_uncertainty_search` without unacceptable losses in coverage, false release, resource cost or task-family generalization? Null or negative results and matched strong baselines are publishable evidence about limitations, not data to suppress.
 
-**Six questions, preregistered in the paper:** RQ1 failure landscape/AI provenance; RQ2 pre-outcome uncertainty and calibration; RQ3 matched-budget effectiveness; RQ4 allocation of interventions; RQ5 policy and model robustness/ablation; RQ6 efficiency and generalization. Read the exact manuscript wording, not this shorthand, before revising.
+**Six questions, preregistered in the paper:** RQ1 failure landscape/AI provenance; RQ2 pre-outcome uncertainty and calibration; RQ3 matched-budget effectiveness; RQ4 allocation of interventions; RQ5 generalization across independent tasks, languages, models and complexity; RQ6 mechanistic ablations of evidence, calibration, search, generation/repair, retrieval, testing and abstention. Read the exact manuscript wording, not this shorthand, before revising.
 
 ## 2. The R0–R16 virtual research consortium: roles and deliverables
 
