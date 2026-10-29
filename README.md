@@ -36,6 +36,21 @@ specification, rights, sealed oracle and sandbox evidence are still required.
 
 The last pre-refactor `main` CI was green with 1,142 offline tests per Python version. **Always inspect the current [CI](https://github.com/Rocky5502/U-CODE/actions)** for the latest count, SHA and outcome.
 
+## First prospective task contract and evaluator-boundary hardening (29 October 2026)
+
+The [new prospective PHP #104 review contract](docs/NEW_PROSPECTIVE_PHP_TASK_BOUNDARY_AUDIT_2026-10-29.md)
+is now separately identified from the **unverified historical PR task**.
+Its proposal is linked to the original base-source Git blob inventory,
+but it has **no independent reviewer approval, private oracle, license
+clearance, isolated runner or experimental authorization**. CI validates
+the public source crosswalk and rejects fabricated approval fields.
+We also fixed cross-repository GitHub issue-reference substitution and
+unsafe Unicode control characters in policy-visible task views.
+
+```bash
+python -m scripts.validate_php104_prospective_draft
+```
+
 ## Executable first-party repair canary (29 October 2026)
 
 The [first-party executable canary and real-task admission report](docs/FIRST_PARTY_EXECUTABLE_CANARY_AND_REAL_TASK_GATE_2026-10-29.md)
