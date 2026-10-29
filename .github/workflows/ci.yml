@@ -43,6 +43,8 @@ jobs:
         run: python -m scripts.verify_two_issue_chronologies
       - name: Audit public GitHub issue event first pages (NO source or spec admission)
         run: python -m scripts.verify_issue_event_windows
+      - name: Quarantine post-PR current issue bodies (NO historical spec admission)
+        run: python -m scripts.audit_live_issue_spec_quarantine
       - name: Validate PHP #104 source-era contract leads and parent issue identity (NO source execution)
         run: python -m scripts.verify_php104_source_contracts
       - name: Check PHP #104 reviewer oracle blueprint (NO gold tests or PHP execution)
