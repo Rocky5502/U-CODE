@@ -67,7 +67,7 @@ execution, independent oracles and verified per-policy resource accounting.
 
 ---
 
-> **Continue in a new ChatGPT session (27 Oct 2026):** [U-CODE V3 research handoff and copy/paste activation prompt](docs/UCODE_NEW_CHAT_MASTER_HANDOFF_V3_2026-10-27.md) · [machine-readable remaining scientific gates](configs/ucode_work_remaining_gates_2026-10-27.json). This links the actual 120-PR metadata screen, six-model/8-policy frozen planning roster, source-only Overleaf manuscript and **unblocked next work**. Recheck GitHub HEAD/CI; the handoff's run number is a dated verified baseline, not a promise of future CI success. **0 independently admitted executable tasks and 0 measured six-model results** remain the boundary.
+> **Historical V3 handoff (27 October 2026):** [archived previous activation and cumulative evidence log](docs/UCODE_NEW_CHAT_MASTER_HANDOFF_V3_2026-10-27.md). For all **new** work, follow the [V4 canonical takeover](docs/UCODE_NEW_CHAT_MASTER_HANDOFF_V4_2026-10-29.md) and its [machine-readable evidence snapshot](configs/ucode_handoff_v4_2026-10-29.json).
 
 
 **Uncertainty-Guided Search for Reliable AI-Generated Software**
@@ -78,7 +78,8 @@ U-CODE studies **when a software engineering agent should test, retrieve context
 
 ## Continue U-CODE in a new ChatGPT chat
 
-**[Master scientific handoff — 26 October 2026](docs/UCODE_MASTER_HANDOFF_2026-10-26.md)** is the canonical continuation prompt. It includes the exact verified pre-handoff SHA/CI, all R0–R16 simulated research-team roles, research questions, code/experiment map, 120-PR audit outcomes, two real pilot dossiers, six prospective model choices, eight-policy study plan, Springer source locations, current scientific blockers, and the next executable research priorities. **Always recheck current GitHub main and CI before continuing**: this README/handoff commit advances the earlier 426-test checkpoint.
+**[V4 verified new-chat master handoff — 29 October 2026](docs/UCODE_NEW_CHAT_MASTER_HANDOFF_V4_2026-10-29.md)** is the authoritative startup and R0–R16 role handoff. It supersedes the [26 October historical scientific handoff](docs/UCODE_MASTER_HANDOFF_2026-10-26.md) for session activation. Verify current GitHub `main` and live CI before acting; the V4 commit and CI numbers are a historical snapshot, not permanent current status.
+
 
 ## Framework at a glance
 
