@@ -1,4 +1,22 @@
 # U-CODE — NEW-CHAT MASTER TAKEOVER PROMPT AND SCIENTIFIC HANDOVER (V3)
+> **29 OCT 2026 — CONDITIONAL BES THROUGH MATCHED PUBLIC ACTION-ID REPLAY:**
+> The first-party reference now connects history-conditioned finite-horizon
+> diagnostic BES to the candidate-bound shared public response ledger:
+> `src/ucode/conditional_bes_public_replay.py`,
+> [method note](CONDITIONAL_BES_MATCHED_PUBLIC_REPLAY_2026-10-29.md),
+> `scripts/smoke_conditional_bes_public_replay.py` and adversarial tests.
+> In a constructed two-probe world, `ucode_conditional_bes` (restricted
+> ONE-candidate, diagnostic-only local reference) chooses two positive
+> public diagnostics and releases pending independent evaluation;
+> `uncertainty_only` abstains after one because its hypothetical
+> posterior remains below the release gate. Same frozen catalogue,
+> fabricated public response book and five-vector limits; this is **NOT
+> correctness evidence**. A redundant-test counterexample makes the
+> conditional planner abstain. No real model calls, authentic oracles,
+> secure sandbox, training-data calibration or eight-faithful-policy
+> completion. Check final CI on main after merge. Paper changed in
+> repository only; **live Overleaf has not been synchronized**.
+>
 > **27 OCT 2026 — EVALUATOR-BLIND REFERENCE SPRINT (post-V3 addendum):**
 > Merged PR [#8](https://github.com/Rocky5502/U-CODE/pull/8) added
 > `task_view_boundary.py`, `blind_policy_trace.py`, adversarial tests
