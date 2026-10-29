@@ -50,8 +50,18 @@ class EvaluatorRegistration:
     def __post_init__(self):
         if type(self.candidate_id) is not int or not 1 <= self.candidate_id <= 120:
             raise ValueError("candidate ID outside frozen corpus")
-        if not self.repository or not self.issue_ref.startswith("https://github.com/"):
-            raise ValueError("repository and original issue required")
+        if (type(self.repository) is not str or
+                not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", self.repository) or
+                any(part in (".", "..") for part in self.repository.split("/"))):
+            raise ValueError("valid GitHub owner/repository identity required")
+        # A GitHub-looking URL must not cross to another repo, include a
+        # query/fragment, or point to a post-fix PR or an attacker endpoint.
+        # The historical text inside a valid issue remains UNVERIFIED.
+        if (type(self.issue_ref) is not str or
+                not re.fullmatch("https://github[.]com/" +
+                                 re.escape(self.repository) +
+                                 r"/issues/[1-9][0-9]*", self.issue_ref)):
+            raise ValueError("original issue URL must match source repository")
         if not isinstance(self.task_base_sha, str) or not _SHA40.fullmatch(self.task_base_sha):
             raise ValueError("base revision must be immutable git SHA40")
         if self.pre_fix_spec_blob_sha is not None and not _SHA40.fullmatch(
