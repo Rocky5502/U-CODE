@@ -170,6 +170,67 @@ class ConditionalEvidenceTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "horizon"):
             self.plan(kernel_for(False), horizon=5)
 
+    def test_branchwise_outside_option_reproduces_independent_exact_value(self):
+        # Independent rational arithmetic: B is an untouched archived patch
+        # with terminal utility 2*(23/25)-1 = 21/25. A has p=1/2 and a
+        # perfect diagnostic. Its two posterior values are 1 and 0.
+        # Expected value after test = (1/2)*max(1,21/25)
+        #                           + (1/2)*max(0,21/25) - 1/100
+        #                           = 91/100, NOT max(1/2,21/25).
+        from fractions import Fraction
+        incumbent=Fraction(21,25)
+        independent=(Fraction(1,2)*max(Fraction(1),incumbent)
+                     +Fraction(1,2)*max(Fraction(0),incumbent)
+                     -Fraction(1,100))
+        self.assertEqual(independent,Fraction(91,100))
+        perfect=ConditionalKernel((ConditionalRow("a",(),1,0),))
+        plan=plan_conditional(
+            ConditionalState(.5,ResourceVector(test_calls=1)),
+            [self.a],perfect,ResourcePrices(test_calls=.01),
+            self.rule,horizon=1,outside_option=float(incumbent))
+        self.assertEqual(plan.action,"a")
+        self.assertAlmostEqual(plan.stop_utility,.84)
+        self.assertAlmostEqual(plan.expected_net_utility,float(independent))
+        self.assertAlmostEqual(plan.expected_gain,.07)
+
+    def test_outside_option_is_terminal_fallback_not_extra_reward(self):
+        kernel=ConditionalKernel((ConditionalRow("a",(),1,0),))
+        state=ConditionalState(.5,ResourceVector(test_calls=1))
+        expensive=plan_conditional(
+            state,[self.a],kernel,ResourcePrices(test_calls=.1),
+            self.rule,horizon=1,outside_option=.84)
+        self.assertEqual(expensive.action,"abstain")
+        self.assertAlmostEqual(expensive.expected_net_utility,.84)
+        self.assertAlmostEqual(expensive.expected_gain,0)
+        self.assertAlmostEqual(expensive.stop_utility,.84)
+        # Without the incumbent, the same evidence has net value .4,
+        # and the planner should still select the candidate-specific test.
+        without=plan_conditional(
+            state,[self.a],kernel,ResourcePrices(test_calls=.1),
+            self.rule,horizon=1)
+        self.assertEqual(without.action,"a")
+        self.assertAlmostEqual(without.expected_net_utility,.4)
+
+    def test_outside_option_rejects_bool_negative_nan_and_infinity(self):
+        kernel=ConditionalKernel((ConditionalRow("a",(),1,0),))
+        state=ConditionalState(.5,ResourceVector(test_calls=1))
+        for bad in (-.1,float("nan"),float("inf"),float("-inf"),
+                    True,None,"0.8"):
+            with self.subTest(bad=bad),self.assertRaisesRegex(
+                    ValueError,"outside option"):
+                plan_conditional(
+                    state,[self.a],kernel,ResourcePrices(),
+                    self.rule,horizon=1,outside_option=bad)
+
+    def test_no_evidence_can_not_beat_stronger_incumbent(self):
+        state=ConditionalState(.5,ResourceVector(test_calls=0))
+        irrelevant=ConditionalKernel((ConditionalRow("a",(),.5,.5),))
+        plan=plan_conditional(
+            state,[self.a],irrelevant,ResourcePrices(),
+            self.rule,horizon=1,outside_option=.84)
+        self.assertEqual(plan.action,"abstain")
+        self.assertAlmostEqual(plan.expected_net_utility,.84)
+
     def test_single_diagnostic_can_be_bought_without_full_joint_kernel(self):
         k = ConditionalKernel((ConditionalRow("a", (), 1, 0),))
         result = self.plan(k, horizon=2, probes=[self.a])
