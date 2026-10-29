@@ -519,5 +519,23 @@
     "springer_pdf_compiled": false,
     "live_overleaf_synced": false,
     "verified_ci": "RECHECK_POST_MERGE_MAIN"
+  },
+  "current_new_chat_handoff_2026_10_29": {
+    "stage": "V4_HANDOFF_ONLY_NOT_AN_EMPIRICAL_STUDY",
+    "canonical_document": "docs/UCODE_NEW_CHAT_MASTER_HANDOFF_V4_2026-10-29.md",
+    "canonical_machine_snapshot": "configs/ucode_handoff_v4_2026-10-29.json",
+    "previous_handoff_retained": "docs/UCODE_NEW_CHAT_MASTER_HANDOFF_V3_2026-10-27.md",
+    "baseline_before_v4_sha": "56bf2e8ff31edb250e9d5f9cbc2219ddab235527",
+    "baseline_before_v4_ci_run_id": 40834818493,
+    "baseline_offline_tests_per_python_version": 1115,
+    "roles_in_handoff": 17,
+    "recheck_current_main_and_ci": true,
+    "pending_real_tasks": 0,
+    "pending_independent_oracles": 0,
+    "real_model_inference_verified": 0,
+    "real_effectiveness_results_measured": 0,
+    "overleaf_live_synced": false,
+    "latex_pdf_compiled": false,
+    "next_priority": "P0-1: independent source-era task/oracle evidence admission; P0-2: actual sandbox attestation; P0-4 integrated real agent"
   }
 }

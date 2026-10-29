@@ -1,4 +1,6 @@
 # U-CODE — NEW-CHAT MASTER TAKEOVER PROMPT AND SCIENTIFIC HANDOVER (V3)
+
+> **SUPERSEDED STARTUP GUIDE:** use [V4 research takeover (29 October 2026)](UCODE_NEW_CHAT_MASTER_HANDOFF_V4_2026-10-29.md) for new-chat activation, current methods, the recovered R0–R16 original roles, recent verified PRs and research gates. This V3 remains a dated historical log; its earlier baseline SHA/test count is not current.
 > **29 OCT 2026 — POST-TERMINAL ITT, RELEASE RISK AND MISSINGNESS REPORTING:**
 > [Evaluation-side accounting](../src/ucode/postterminal_accounting.py),
 > [adversarial tests](../tests/test_postterminal_accounting.py) and

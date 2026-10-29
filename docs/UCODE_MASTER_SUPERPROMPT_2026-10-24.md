@@ -1,4 +1,6 @@
 # U-CODE — PRINCIPAL-INVESTIGATOR MASTER SUPERPROMPT
+
+> **CURRENT STARTUP DOCUMENT:** [V4 full verified research handoff](UCODE_NEW_CHAT_MASTER_HANDOFF_V4_2026-10-29.md). This is the original R0–R16 role and study-planning source, retained for historical detail; the repository state and CI numbers here are older.
 **Version:** 1.0 · **Locked planning date:** 2026-10-24 (Asia/Singapore)  
 **Working project title:** U-CODE: Uncertainty-Guided Search for Reliable AI-Generated Software  
 **Repository:** https://github.com/Rocky5502/U-CODE  

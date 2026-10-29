@@ -23,6 +23,8 @@ jobs:
         run: python -m scripts.audit_overleaf_sources
       - name: Validate new-chat handoff against model, task and study registries (no real trial)
         run: python -m scripts.validate_research_handoff
+      - name: Validate canonical V4 takeover roles, frozen evidence and unblocked gate
+        run: python -m scripts.validate_v4_handoff
       - name: Reproduce synthetic BES look-ahead example (no external code)
         run: python -m examples.bes_lookahead_smoke
       - name: Reproduce dependent-versus-independent diagnostic example
