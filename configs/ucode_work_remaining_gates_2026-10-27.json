@@ -121,7 +121,7 @@
       "priority": "P1",
       "issue": 4,
       "title": "Faithfully implement budget-matched baselines and proposal parity",
-      "status": "TWO_SCOPED_SYNTHETIC_ADAPTIVE_REFERENCE_CONTROLS_NOT_EIGHT_FAITHFUL_MODELS",
+      "status": "THREE_SCOPED_SYNTHETIC_LOCAL_CONTROLS_NOT_EIGHT_FAITHFUL_EMPIRICAL_POLICIES",
       "deliverable": "blind search, fixed testing, BES independent/conditional, selective verifier, MCTS, replay audit",
       "exit_criteria": "identical assigned model/task/seed/tool/5-resource vector and documented fidelity deviations"
     },
@@ -148,7 +148,7 @@
       "priority": "P1",
       "issue": 6,
       "title": "Compile and visually review actual Springer sn-jnl PDF and update live Overleaf only with authenticated project access",
-      "status": "SOURCE_LINT_ONLY",
+      "status": "CITED_SEVEN_METHOD_LATEX_COMPARISON_SOURCE_LINT_ONLY_NO_COMPILED_PDF",
       "deliverable": "real PDF inspection, errors/warnings removed, author-approved final declarations",
       "exit_criteria": "PDF renders all tables/equations/figures/citations and live source not overwritten blindly"
     },
@@ -396,5 +396,35 @@
     "real_measured_policy_effects": 0,
     "original_six_model_eight_policy_rosters_unchanged": true,
     "ci": "check actual GitHub branch and merged main run"
+  },
+  "progress_2026_10_29_novelty_and_third_control": {
+    "scope": "GITHUB_SOURCE_ONLY_NO_LIVE_OVERLEAF_OR_REAL_EXPERIMENT",
+    "canonical_paper": "paper/overleaf/main.tex",
+    "new_related_work_table_label": "tab:prior-method-positioning",
+    "original_method_citation_count": 7,
+    "table_icons": "CHECK_CROSS_AND_DAGGER_DESCRIPTIVE_NOT_EFFICACY_RANKING",
+    "comparison_source_audit": "scripts/audit_overleaf_sources.py",
+    "comparison_adversarial_tests": "tests/test_comparison_table_integrity.py",
+    "third_synthetic_control": "src/ucode/uncertainty_only_reference.py",
+    "integrator": "src/ucode/adaptive_reference_replay.py",
+    "third_control_test": "tests/test_uncertainty_only_reference.py",
+    "third_control_smoke": "scripts/smoke_uncertainty_only_reference.py",
+    "reference_names": [
+      "fixed_testing",
+      "no_uncertainty_search",
+      "uncertainty_only"
+    ],
+    "offline_reference_count": 3,
+    "real_faithful_eight_policy_count": 0,
+    "independently_admitted_real_tasks": 0,
+    "independent_functional_oracles": 0,
+    "model_inference_results": 0,
+    "trusted_hardware_meter_attested": false,
+    "empirical_comparative_effects_measured": 0,
+    "source_only_overleaf_zip_expected_after_ci": true,
+    "live_overleaf_project_updated": false,
+    "springer_template_pdf_compiled": false,
+    "remaining_bottleneck": "P0_TASK_RIGHTS_HISTORICAL_SPEC_AND_SEALED_ORACLE_PLUS_INDEPENDENT_SANDBOX",
+    "final_merge_ci": "CHECK_POST_MERGE_GITHUB_ACTIONS"
   }
 }
