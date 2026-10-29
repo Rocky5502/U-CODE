@@ -1,6 +1,8 @@
 > **NEWER CANONICAL TAKEOVER (27 Oct 2026):** [V3 activation prompt and full research handoff](UCODE_NEW_CHAT_MASTER_HANDOFF_V3_2026-10-27.md); [structured pending-work register](../configs/ucode_work_remaining_gates_2026-10-27.json). This V2 file remains historical detail only. Always verify current `main` and CI before applying either snapshot.
 
 # U-CODE — MASTER RESEARCH HANDOFF AND NEW-CHAT SUPERPROMPT
+
+> **CURRENT STARTUP DOCUMENT:** [V4 full verified research handoff](UCODE_NEW_CHAT_MASTER_HANDOFF_V4_2026-10-29.md). This historical document preserves earlier background but is no longer the current activation prompt.
 **Handoff version:** 2026-10-26 (Asia/Singapore, user's local time)  
 **Project:** U-CODE — Uncertainty-Guided Search for Reliable AI-Generated Software  
 **Canonical GitHub repository:** https://github.com/Rocky5502/U-CODE  
