@@ -11,6 +11,8 @@ import hashlib
 import json
 from pathlib import Path
 
+from ucode.release_semantics import audit_release_semantics
+
 RELEASE_FILES = frozenset({
     "clean_metadata_120.csv", "language_strata.csv",
     "manual_review_12_NOT_EXECUTABLE.csv", "cleaning_report.json",
@@ -53,8 +55,10 @@ def verify_dataset_release(folder: str | Path) -> dict:
             or quality.get("approved_executable_tasks") != 0
             or quality.get("scientific_data_submission_ready") is not False):
         raise ValueError("dataset counts/task admission do not match release")
+    semantic = audit_release_semantics(root)
     return {
-        "status": "SHA256_CONSISTENT_METADATA_RELEASE_ONLY",
+        "status": "SHA256_AND_CROSS_FILE_SEMANTICS_CONSISTENT_METADATA_ONLY",
+        "semantic_audit": semantic,
         "files_verified": len(hashes),
         "metadata_record_count": 120,
         "independently_verified_tasks": 0,
