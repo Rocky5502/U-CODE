@@ -1,4 +1,24 @@
 # U-CODE — NEW-CHAT MASTER TAKEOVER PROMPT AND SCIENTIFIC HANDOVER (V3)
+> **29 OCT 2026 — DATASET RELEASE SEMANTICS AND SIX-METRIC REGISTRY:**
+> The 120-link source-free metadata release now undergoes cross-file
+> semantic revalidation (`src/ucode/release_semantics.py`) AFTER verifying
+> all seven SHA256 payload receipts. This catches self-rehashed but
+> contradictory PR keys, language strata, 12-item shortlist, triage
+> statuses, reports, pending reviewer flags and false gold/task admission.
+> A new `src/ucode/research_readiness.py` declares six end-point metrics
+> and explicitly exports every empirical value as **null / N/A**, not
+> 0%: full-task ITT success, release coverage, conditional wrong-release
+> risk, paired ITT effect, five-component realized resource cost and
+> infrastructure-missingness worst/best bounds.
+> [Methods/reproduction/report](DATASET_METRICS_RELEASE_AUDIT_2026-10-29.md)
+> and `scripts/export_research_readiness.py` produce reviewer-readable
+> and JSON artifacts via both Python CI jobs. Professional README and
+> canonical Springer LaTeX updated. 120 discoveries, 119 retrieved,
+> 62 source-path leads, 12 shortlisted, **0 admitted tasks, 0 true
+> functional oracles, 0 verified 6-model paired trials**. No live
+> Overleaf sync or actual publisher PDF compile. Recheck current main
+> SHA and CI, and treat historical test counts as dated snapshots.
+>
 > **29 OCT 2026 — OCI SANDBOX DRY-RUN PREFLIGHT (P0-2, NOT REAL ISOLATION):**
 > The [security specification](OCI_SANDBOX_LAUNCH_PREFLIGHT_2026-10-29.md),
 > `src/ucode/oci_sandbox_preflight.py`, adversarial tests and

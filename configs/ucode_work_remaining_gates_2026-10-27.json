@@ -472,5 +472,31 @@
     "latex_pdf_compiled": false,
     "live_overleaf_synced": false,
     "ci": "VERIFY_POST_MERGE_MAIN_RUN"
+  },
+  "progress_2026_10_29_dataset_semantic_and_metric_contract": {
+    "stage": "CROSS_FILE_RELEASE_SEMANTICS_AND_PROSPECTIVE_METRIC_DICTIONARY_NO_REAL_STUDY",
+    "dataset_semantic_validator": "src/ucode/release_semantics.py",
+    "dataset_verifier": "scripts/verify_dataset_release.py",
+    "dataset_adversarial_tests": "tests/test_release_semantics.py",
+    "metric_dictionary": "src/ucode/research_readiness.py",
+    "readiness_exporter": "scripts/export_research_readiness.py",
+    "metric_tests": "tests/test_research_readiness.py",
+    "technical_report": "docs/DATASET_METRICS_RELEASE_AUDIT_2026-10-29.md",
+    "paper": "paper/overleaf/main.tex",
+    "dataset_discovered_pr_links": 120,
+    "metadata_retrieved": 119,
+    "production_source_path_leads": 62,
+    "manual_review_queue": 12,
+    "planned_models": 6,
+    "planned_policies": 8,
+    "qualified_real_tasks": 0,
+    "independent_correctness_oracles": 0,
+    "real_model_runs": 0,
+    "real_performance_observations": 0,
+    "all_observed_metric_values": null,
+    "live_overleaf_synced": false,
+    "springer_pdf_compiled": false,
+    "scientific_dataset_ready": false,
+    "verified_ci": "VERIFY_CURRENT_MAIN_AFTER_MERGE"
   }
 }
