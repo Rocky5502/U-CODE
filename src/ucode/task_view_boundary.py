@@ -36,7 +36,7 @@ class AgentTaskView:
         # and unpaired surrogates can conceal or rewrite policy-visible text.
         # This is text-shape validation, NOT protection from prompt injection.
         if any(unicodedata.category(ch) in ("Cc", "Cf", "Cs")
-               and ch not in ("\\n", "\\t") for ch in self.prefixed_spec):
+               and ch not in ("\n", "\t") for ch in self.prefixed_spec):
             raise ValueError("policy-visible specification contains unsafe control or formatting character")
         if type(self.spec_sha256) is not str or not _SHA256.fullmatch(self.spec_sha256):
             raise ValueError("invalid specification digest")
