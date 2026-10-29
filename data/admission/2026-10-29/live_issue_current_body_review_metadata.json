@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0",
+  "stage": "LIVE_ISSUE_BODY_REVIEW_ONLY",
+  "observed_on": "2026-10-29",
+  "records": [
+    {
+      "candidate_id": 43,
+      "repository": "PlayHuai/eighty-point-huai-an",
+      "issue_url": "https://github.com/PlayHuai/eighty-point-huai-an/issues/29",
+      "source_kind": "CURRENT_LIVE_GITHUB_ISSUE",
+      "observed_at": "2026-10-29T09:00:00Z",
+      "observed_issue_updated_at": "2026-10-23T13:07:52Z",
+      "body_text_stored": false,
+      "original_body_verified": false,
+      "independent_spec_approval": false,
+      "task_admitted": false
+    },
+    {
+      "candidate_id": 104,
+      "repository": "mvdbos/php-spider",
+      "issue_url": "https://github.com/mvdbos/php-spider/issues/168",
+      "source_kind": "CURRENT_LIVE_GITHUB_ISSUE",
+      "observed_at": "2026-10-29T09:00:00Z",
+      "observed_issue_updated_at": "2026-10-22T23:03:40Z",
+      "body_text_stored": false,
+      "original_body_verified": false,
+      "independent_spec_approval": false,
+      "task_admitted": false
+    }
+  ]
+}
