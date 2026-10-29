@@ -66,10 +66,27 @@ class PairedDifference:
     cluster_bootstrap_ci_95: tuple[float, float] | None
 
 
+def _validate_task_lineages(outcomes: Sequence[EvaluationOutcome]) -> None:
+    """A repository task cannot switch fork/lineage groups across seeds or arms.
+
+    Otherwise the cluster bootstrap may count repeated versions of the SAME
+    task as independent repositories and report a misleading interval.
+    This structural check is NOT independent provenance authentication.
+    """
+    lineage_by_task: dict[str, str] = {}
+    for outcome in outcomes:
+        if not isinstance(outcome, EvaluationOutcome):
+            raise TypeError("typed evaluator outcomes required")
+        old = lineage_by_task.setdefault(outcome.task_id, outcome.lineage_group)
+        if old != outcome.lineage_group:
+            raise ValueError("task identity assigned inconsistent fork lineage across runs")
+
+
 def measure_policy(outcomes: Sequence[EvaluationOutcome]) -> PolicyMeasures:
     """Abstention counts in denominator but is not independently scored."""
     if not outcomes:
         raise ValueError("no evaluator outcomes")
+    _validate_task_lineages(outcomes)
     if len({(o.key, o.policy) for o in outcomes}) != len(outcomes):
         raise ValueError("duplicate policy/task/model/seed/budget evaluation")
     if len({o.policy for o in outcomes}) != 1:
@@ -97,12 +114,13 @@ def paired_verified_success(
     """
     if treatment_policy == control_policy or not treatment_policy or not control_policy:
         raise ValueError("two distinct named policies required")
-    if not isinstance(bootstrap_samples, int) or bootstrap_samples < 0:
+    if type(bootstrap_samples) is not int or bootstrap_samples < 0:
         raise ValueError("bootstrap_samples must be nonnegative integer")
     if type(seed) is not int:
         raise ValueError("seed must be an integer")
     if not outcomes:
         raise ValueError("outcome table empty")
+    _validate_task_lineages(outcomes)
     relevant = [o for o in outcomes if o.policy in (treatment_policy, control_policy)]
     if len(relevant) != len(outcomes):
         raise ValueError("only two compared policies are permitted")
