@@ -1924,8 +1924,27 @@ retain a repaired parent, and generate a symbolic candidate
 before planning a later diagnostic on that candidate.
 This is exact \emph{only within the supplied finite,
 candidate-factorized transition model and state cap}, not
-a solution of the general coding-agent POMDP. The approach
-is conceptually related to Bayes-adaptive planning
+a solution of the general coding-agent POMDP. As a
+mathematical regression check, a separate rational-arithmetic
+enumerator computes the depth-two Bellman value directly
+from latent Boolean candidate-truth assignments and all
+feasible visible diagnostic outcomes, without calling
+either implementation's posterior or terminal-utility
+helpers. Across 144 stipulated independent two-patch
+priors and probe-strength configurations, it compares
+the factorized and correlated planners to the same
+reference; 36 additionally stipulated joint-prior
+configurations test the correlated solver alone.
+A deterministic zero-probability branch and 24 mixed
+generation--diagnostic configurations verify that
+producing no patch still consumes generation resources,
+downstream tests are charged only when actually used,
+and an untouched incumbent remains releasable.
+These 205 \emph{synthetic model configurations}
+are software/mathematical checks, neither independent
+repository repair instances nor statistical evidence
+that any predictor or search policy is effective.
+The approach is conceptually related to Bayes-adaptive planning
 \cite{ross2011bayesadaptive} and sequential value of
 information across alternatives
 \cite{mes2011hierarchicalkg}, without inheriting their
