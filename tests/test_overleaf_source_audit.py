@@ -27,6 +27,18 @@ class SpringerOverleafSourceAuditTests(unittest.TestCase):
         self.assertFalse(r["real_rq_results_verified"])
         self.assertFalse(r["live_overleaf_modified"])
 
+    def test_double_escaped_latex_citation_and_emphasis_fail_closed(self):
+        # A double backslash is a LaTeX linebreak, not a citation command.
+        for token in (r"\cite{zainullina2025guided}",
+                      r"\cite{dakhama2025searchsys}",
+                      r"\emph{information-only diagnostics}"):
+            self.assertIn(token, self.paper)
+            tampered = self.paper.replace(token, "\\" + token, 1)
+            with self.subTest(token=token), self.assertRaisesRegex(
+                ValueError, "double-escaped LaTeX command"
+            ):
+                self.check(paper=tampered)
+
     def test_missing_bibliography_key_fails(self):
         with self.assertRaisesRegex(ValueError, "missing citations"):
             self.check(self.paper.replace(

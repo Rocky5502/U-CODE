@@ -95,6 +95,15 @@ def audit_manuscript(main_text: str, bib_text: str) -> dict:
     if re.search(r"\\input\{(?:/|\.\./)", paper):
         raise ValueError("unexpected out-of-tree manuscript input")
 
+    # LaTeX \\cite or \\emph is a linebreak followed by ordinary text,
+    # not a real command. A loose citation regex can otherwise match the
+    # second slash and silently approve malformed publication references.
+    if re.search(
+        r"(?<!\\)\\\\(?:cite[a-zA-Z]*|emph|ref|eqref|label|begin|end|section|subsection|paragraph)\b",
+        paper,
+    ):
+        raise ValueError("double-escaped LaTeX command: repair source before submission")
+
     # Comments after the real document are fine, but non-comment LaTeX
     # after or multiple document endings indicate a corrupted source edit.
     if (paper.count(r"\end{document}") != 1
