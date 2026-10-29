@@ -119,6 +119,8 @@ jobs:
         run: python -m scripts.smoke_adaptive_reference_replay
       - name: Reproduce third synthetic uncertainty-only confidence baseline (NO LLM or oracle)
         run: python -m scripts.smoke_uncertainty_only_reference
+      - name: Replan a two-probe conditional BES policy using the same synthetic public book (NO LLM)
+        run: python -m scripts.smoke_conditional_bes_public_replay
       - name: Validate prospective SBSE eight-policy six-checkpoint registration
         run: python -m scripts.validate_sbse_protocol
       - name: Validate all six AI Galaxy model hardware and startup gates (offline)
