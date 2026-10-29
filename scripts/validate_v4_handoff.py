@@ -41,7 +41,7 @@ def audit_v4_handoff(record: dict, *, root: Path = ROOT) -> dict:
         "COPY/PASTE ACTIVATION", "R0 Executive PI",
         "R16 Associate/Meta-Reviewer", "P0-1", "P0-2", "P0-3",
         "P0-4", "P1-9", "120", "119", "62", "12",
-        "1115", "1,115", "NO real", "no measured",
+        "1,115", "NO real", "no measured",
         "evaluator-only", "Overleaf", "A100", "2027",
         "RQ5 generalization", "RQ6 mechanistic",
     ]:
