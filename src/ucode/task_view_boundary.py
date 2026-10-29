@@ -6,6 +6,7 @@ absence of prompt-injection or solution leakage still require external review.
 from dataclasses import dataclass
 from hashlib import sha256
 import re
+import unicodedata
 from typing import Mapping
 
 _SHA40 = re.compile(r"[0-9a-f]{40}\Z")
@@ -30,6 +31,13 @@ class AgentTaskView:
         if (type(self.prefixed_spec) is not str or not self.prefixed_spec.strip()
                 or len(self.prefixed_spec.encode("utf-8")) > 65536):
             raise ValueError("invalid bounded pre-fix specification")
+        # Human-language and ordinary multiline task specs are permitted.
+        # C0/C1 controls, bidirectional override/zero-width format chars,
+        # and unpaired surrogates can conceal or rewrite policy-visible text.
+        # This is text-shape validation, NOT protection from prompt injection.
+        if any(unicodedata.category(ch) in ("Cc", "Cf", "Cs")
+               and ch not in ("\n", "\t") for ch in self.prefixed_spec):
+            raise ValueError("policy-visible specification contains unsafe control or formatting character")
         if type(self.spec_sha256) is not str or not _SHA256.fullmatch(self.spec_sha256):
             raise ValueError("invalid specification digest")
         if sha256(self.prefixed_spec.encode("utf-8")).hexdigest() != self.spec_sha256:

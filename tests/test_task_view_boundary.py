@@ -47,6 +47,31 @@ class AgentTaskViewBoundaryTests(unittest.TestCase):
             with self.subTest(key=key), self.assertRaises(ValueError):
                 parse_agent_task_view(dict(self.clean, **{key: bad}))
 
+    def test_policy_spec_rejects_bidi_zero_width_and_terminal_controls(self):
+        for injected in (chr(0), chr(27)+"[31m", chr(13), chr(0x202e),
+                         chr(0x2066), chr(0x200b), chr(0x85), chr(0xD800)):
+            with self.subTest(char=repr(injected)):
+                task_text="Review this normal task: "+injected+" hidden behavior."
+                rec=dict(self.clean, prefixed_spec=task_text)
+                try:
+                    rec["spec_sha256"]=hashlib.sha256(
+                        task_text.encode("utf-8")).hexdigest()
+                except UnicodeEncodeError:
+                    # Unpaired surrogates are rejected by the existing
+                    # UTF-8 byte-length check before any model request.
+                    with self.assertRaises((ValueError,UnicodeEncodeError)):
+                        parse_agent_task_view(rec)
+                    continue
+                with self.assertRaisesRegex(ValueError,"unsafe control"):
+                    parse_agent_task_view(rec)
+
+    def test_human_language_and_multiline_spec_remain_permitted(self):
+        statement="Maintain the existing API."+chr(10)+"支持中文功能。"+chr(9)+"नेपाली विवरण।"
+        record=dict(self.clean,prefixed_spec=statement,
+                    spec_sha256=hashlib.sha256(statement.encode()).hexdigest())
+        result=parse_agent_task_view(record)
+        self.assertEqual(result.prefixed_spec,statement)
+
     def test_dossier_is_never_policy_input(self):
         with self.assertRaisesRegex(ValueError, "exactly four"):
             parse_agent_task_view(dict(self.clean, gates=[], candidate_id=104))

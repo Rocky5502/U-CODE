@@ -75,6 +75,8 @@ jobs:
         run: python -m scripts.verify_php104_source_contracts
       - name: Check PHP #104 reviewer oracle blueprint (NO gold tests or PHP execution)
         run: python -m scripts.verify_php104_oracle_blueprint
+      - name: Audit independently unapproved prospective PHP task draft (NOT historical task or policy input)
+        run: python -m scripts.validate_php104_prospective_draft
       - name: Validate pinned pre-fix Git tree and toolchain path evidence (NO checkout)
         run: python -m scripts.verify_pre_fix_git_trees
       - name: Audit and package source-free 120-PR metadata dataset (NO executable tasks)

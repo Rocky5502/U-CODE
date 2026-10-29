@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "stage": "PROSPECTIVE_TASK_DRAFT_REVIEW_ONLY_NOT_POLICY_INPUT",
+  "candidate_id": 104,
+  "task_namespace": "prospective:source-lead:104",
+  "repository": "mvdbos/php-spider",
+  "base_sha": "25e9b1cf855669c24ba1609c7d4cfcda17ac6217",
+  "source_observations": [
+    {
+      "observation_id": "FILE_LAYOUT_PATH_COMPLETION",
+      "path": "src/PersistenceHandler/FilePersistenceHandler.php",
+      "git_blob_sha": "1edebb766b53d2117972a8bafaff27d716b55163"
+    },
+    {
+      "observation_id": "FILE_LAYOUT_BASENAME_ENCODING",
+      "path": "src/PersistenceHandler/FilePersistenceHandler.php",
+      "git_blob_sha": "1edebb766b53d2117972a8bafaff27d716b55163"
+    },
+    {
+      "observation_id": "SERIALIZED_RESOURCE_WRITER",
+      "path": "src/PersistenceHandler/FileSerializedResourcePersistenceHandler.php",
+      "git_blob_sha": "96d3e275e091c50d510687a3d9bbf75b4c69c369"
+    },
+    {
+      "observation_id": "CACHE_LOOKUP_AND_FRESHNESS",
+      "path": "src/Filter/Prefetch/CachedResourceFilter.php",
+      "git_blob_sha": "7674093fb5be90b082cbd2b35565cf506944d9fa"
+    },
+    {
+      "observation_id": "CACHE_TEST_FIXTURE_LAYOUT_DUPLICATION",
+      "path": "tests/Filter/Prefetch/CachedResourceFilterTest.php",
+      "git_blob_sha": "e6c9e6e2ad94c69b8ec55c77642f341626cf601e"
+    }
+  ],
+  "proposal_creation_date": "2026-10-29",
+  "requirement_statements": [
+    "This newly proposed task asks whether the original file persistence writer and cache lookup preserve their base-version URI-to-file mapping, including empty or root paths, nested paths and directory-ending URI paths.",
+    "The candidate implementation should maintain compatible basename encoding and path separator behavior across the pre-fix writer and reader interfaces without relying on post-fix source or copied PR-authored expected outputs.",
+    "Correct behavior should preserve separation of cache identities by spider identifier and preserve the original base-version cache freshness semantics for missing, fresh and expired resources.",
+    "The candidate should preserve the documented and observable supported protected naming extension behavior, subject to independent approval of the applicable PHP subclass contract.",
+    "An independent evaluator should assess actual serialized write-to-cache-read interoperability and a separately constructed legacy fixture; neither evaluator outputs nor oracle source may be included in the public task specification.",
+    "This is a new prospective review proposal derived from read-only base-source observations, NOT a reconstruction of the originally filed issue text, NOT a complete independently ratified behavior specification, and NOT an admitted full-repository experiment."
+  ],
+  "task_scope": "new_prospective_repository_repair",
+  "historical_original_issue_body_attested": false,
+  "proposed_spec_independently_reviewed": false,
+  "file_reuse_rights_cleared": false,
+  "hidden_oracle_independently_sealed": false,
+  "toolchain_verified": false,
+  "runner_physically_attested": false,
+  "five_resource_meters_attested": false,
+  "third_party_code_executed": false,
+  "experiment_eligible": false
+}
