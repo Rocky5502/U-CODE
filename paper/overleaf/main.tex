@@ -744,14 +744,12 @@ repository/fork groups is \emph{not} sufficient: to
 reduce class--repository confounding we now require
 at least two independently assigned training lineages
 for \emph{each} acceptability class at each fitted
-action--history context. Formally, for each observed
-row $(a,h)$ and $y\in\{0,1\}$,
-\begin{equation}
- G_{a,h,y}=\{g_i:(a_i,h_i,Y_i,g_i)=(a,h,y,g_i)\},
- \qquad |G_{a,h,y}|\ge 2,
- \label{eq:conditional-lineage-support}
-\end{equation}
-where this necessary support check is \emph{not}
+action--history context. For each observed row $(a,h)$
+and class $y\in\{0,1\}$, define the set of independent
+training lineages
+$G_{a,h,y}=\{g_i:(a_i,h_i,Y_i)=(a,h,y)\}$;
+the check requires $|G_{a,h,y}|\ge2$.
+This necessary support check is \emph{not}
 proof of sufficient statistical power, unbiased
 collection or transportable calibration. For each
 observed context, estimates are smoothed
