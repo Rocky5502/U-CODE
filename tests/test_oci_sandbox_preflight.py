@@ -24,7 +24,10 @@ def fake_inspect(plan):
                    "print('U-CODE synthetic OCI preflight fixture')"],
         },
         "HostConfig":{
-            "NetworkMode":"none","ReadonlyRootfs":True,
+            "NetworkMode":"none",
+            "PidMode":"private","IpcMode":"private",
+            "UTSMode":"private","CgroupnsMode":"private",
+            "ReadonlyRootfs":True,
             "Privileged":False,"CapAdd":[],"CapDrop":["ALL"],
             "SecurityOpt":["no-new-privileges"],
             "Binds":[],"Mounts":[],"Devices":[],"DeviceRequests":[],
@@ -64,7 +67,8 @@ class OciDryRunPreflightTests(unittest.TestCase):
         args=self.plan.argv
         for required in ("--network=none","--read-only","--cap-drop=ALL",
                          "--security-opt=no-new-privileges",
-                         "--user=65534:65534","--pull=never",
+                         "--pid=private","--ipc=private","--uts=private",
+                         "--cgroupns=private","--user=65534:65534","--pull=never",
                          "--tmpfs=/tmp:rw,nosuid,nodev,noexec,size=67108864,uid=65534,gid=65534",
                          "--memory=268435456","--memory-swap=268435456",
                          "--pids-limit=32","--ulimit=cpu=2:2"):
@@ -154,7 +158,9 @@ class OciDryRunPreflightTests(unittest.TestCase):
     def test_inspect_privilege_or_no_new_privileges_failure(self):
         for key,evil in (("Privileged",True),("CapAdd",["SYS_ADMIN"]),
                          ("CapDrop",[]),("SecurityOpt",[]),
-                         ("ReadonlyRootfs",False),("NetworkMode","host")):
+                         ("ReadonlyRootfs",False),("NetworkMode","host"),
+                         ("PidMode","host"),("IpcMode","host"),
+                         ("UTSMode","host"),("CgroupnsMode","host")):
             doc=fake_inspect(self.plan)
             doc["HostConfig"][key]=evil
             with self.subTest(key=key),self.assertRaises(ValueError):
