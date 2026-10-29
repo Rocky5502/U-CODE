@@ -85,7 +85,7 @@
       "priority": "P0",
       "issue": 2,
       "title": "Build secure rootless network-disabled reproducible third-party repo runner",
-      "status": "NOT_VERIFIED",
+      "status": "DRY_RUN_OCI_CANONICAL_FIRST_PARTY_PROFILE_NOT_EXECUTED_OR_ATTESTED",
       "deliverable": "pinned OS/build image, no network, read-only source snapshot, quotas and test isolation",
       "exit_criteria": "independent security approval and measured five-resource enforcement"
     },
@@ -449,5 +449,28 @@
     "live_overleaf_synced": false,
     "latex_pdf_compiled": false,
     "actual_ci": "VERIFY_LIVE_FINAL_MAIN_CI"
+  },
+  "progress_2026_10_29_oci_dryrun_preflight": {
+    "stage": "STRICT_FIRST_PARTY_DIGEST_SYNTAX_OCI_DRY_RUN_NO_DOCKER",
+    "component": "src/ucode/oci_sandbox_preflight.py",
+    "tests": "tests/test_oci_sandbox_preflight.py",
+    "smoke": "scripts/smoke_oci_sandbox_preflight.py",
+    "documentation": "docs/OCI_SANDBOX_LAUNCH_PREFLIGHT_2026-10-29.md",
+    "canonical_command_sha256_available": true,
+    "security_shape_checks": true,
+    "artificial_image_digest_placeholder_only": true,
+    "actual_docker_run": false,
+    "real_rootless_daemon_attested": false,
+    "real_network_disabled_observed": false,
+    "real_mount_isolation_observed": false,
+    "independent_resource_caps_enforced": false,
+    "external_task_allowed": false,
+    "actual_executable_task_count": 0,
+    "model_inference_count": 0,
+    "independent_oracles": 0,
+    "measured_rq_results": 0,
+    "latex_pdf_compiled": false,
+    "live_overleaf_synced": false,
+    "ci": "VERIFY_POST_MERGE_MAIN_RUN"
   }
 }
