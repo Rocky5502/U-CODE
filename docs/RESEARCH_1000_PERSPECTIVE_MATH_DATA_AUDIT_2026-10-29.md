@@ -192,7 +192,25 @@ strengthened to reject future doubled command prefixes.
 **This is source-level remediation, not a claim that the official
 Springer template has been compiled or visually approved.**
 
-## E. Next scientific priority
+## E. Full manuscript equation inventory — 33 labeled equations
+
+Run `python -m scripts.audit_manuscript_equations` to export
+`dist/ucode-equation-audit.json`. This source audit inventories **all 33**
+mathematically labeled equations in the current Springer `main.tex`.
+It records **7 narrowly scoped synthetic / rational calculation checks**
+and explicitly labels the other **26** as
+`PENDING_DERIVATION_REVIEW`.
+
+The seven checked targets are: `eq:evsi`, `eq:beszero`,
+`eq:bes`, `eq:conditional-bayes`, `eq:risk`,
+`eq:itt_missing_envelope`, and `eq:coverage_missing_envelope`.
+These are only tests of **specific assumptions and small finite cases**,
+not complete mathematical proofs of all equations, no universal
+Bayesian or statistical risk guarantee, and no 33-person expert review.
+All equation labels are required to stay unique and unchanged until
+an explicit manuscript audit amendment.
+
+## F. Next scientific priority
 
 Before obtaining any positive real RQ evidence:
 
