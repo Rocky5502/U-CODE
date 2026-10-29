@@ -1,15 +1,17 @@
-"""Adaptive, evaluator-blind SYNTHETIC replay for two reference policy choices.
+"""Adaptive, evaluator-blind SYNTHETIC replay for three scoped reference policies.
 
 Unlike a pre-scripted action trace, each policy selects its next action from
 the same public matched opportunity menu after reading only public diagnostic
 receipts. The resulting exact candidate-bound action receipts are consumed
 from one immutable ActionBoundBook.
 
-Only two scoped reference controls are implemented:
+Only three scoped local reference controls are implemented:
 * 'fixed_testing': generate one patch, test it once, release only after
   one positive public test, otherwise abstain.
 * 'no_uncertainty_search': existing bounded deterministic beam heuristic
   using public tests and fixed heuristic scores, not calibrated uncertainty.
+* 'uncertainty_only': frozen synthetic pre-outcome patch confidence and
+  one public test update, without optimized candidate search or repair.
 
 Neither is a faithful reproduction of all eight confirmatory algorithms.
 All input is first-party synthetic; no LLMs, repositories, hidden evaluators,
@@ -23,10 +25,11 @@ from .action_id_replay_bridge import ActionBoundBook
 from .matched_opportunities import choose_matched_baseline, matched_opportunities, opportunity_digest
 from .matched_session import SharedDecision, SharedSession, commit_shared
 from .optimized_search import SearchPolicy
+from .uncertainty_only_reference import SyntheticRiskRegister, choose_uncertainty_only_reference
 from .vector_policy import ResourceVector
 
-_SCOPED = frozenset(("fixed_testing", "no_uncertainty_search"))
-_STAGE = "SYNTHETIC_ADAPTIVE_TWO_REFERENCE_POLICIES_NOT_REAL_TRIAL"
+_SCOPED = frozenset(("fixed_testing", "no_uncertainty_search", "uncertainty_only"))
+_STAGE = "SYNTHETIC_ADAPTIVE_THREE_LOCAL_REFERENCES_NOT_REAL_TRIAL"
 
 
 @dataclass(frozen=True)
@@ -77,6 +80,7 @@ def run_adaptive_synthetic_reference(
     book: ActionBoundBook,
     *,
     baseline: SearchPolicy | None = None,
+    uncertainty_register: SyntheticRiskRegister | None = None,
     max_steps: int = 20,
     max_candidates: int = 8,
 ) -> AdaptiveReferenceResult:
@@ -90,7 +94,7 @@ def run_adaptive_synthetic_reference(
     if type(task_id) is not str or not task_id.startswith("SYNTHETIC_"):
         raise ValueError("only explicitly SYNTHETIC tasks can enter offline replay")
     if policy_name not in _SCOPED or type(policy_name) is not str:
-        raise ValueError("only two bounded reference policy names are implemented")
+        raise ValueError("only three scoped reference policy names are implemented")
     if not isinstance(initial_budget, ResourceVector) or initial_budget.is_free():
         raise ValueError("typed nonzero five-resource cap required")
     if not isinstance(book, ActionBoundBook):
@@ -101,6 +105,11 @@ def run_adaptive_synthetic_reference(
         raise ValueError("bounded candidate archive cap required")
     if baseline is not None and not isinstance(baseline, SearchPolicy):
         raise TypeError("bounded SearchPolicy required for the heuristic")
+    if policy_name == "uncertainty_only" and not isinstance(
+            uncertainty_register, SyntheticRiskRegister):
+        raise ValueError("uncertainty_only needs immutable synthetic confidence register")
+    if policy_name != "uncertainty_only" and uncertainty_register is not None:
+        raise ValueError("uncertainty register cannot leak into baseline controllers")
     policy = baseline if baseline is not None else SearchPolicy(max_candidates=max_candidates)
     if policy.max_candidates != max_candidates:
         raise ValueError("search configuration and session archive caps differ")
@@ -119,6 +128,8 @@ def run_adaptive_synthetic_reference(
     for _ in range(max_steps):
         if policy_name == "fixed_testing":
             choice = _fixed_testing(session, book)
+        elif policy_name == "uncertainty_only":
+            choice = choose_uncertainty_only_reference(session, book, uncertainty_register)
         else:
             choice = choose_matched_baseline(session, book.catalog, policy)
         if not isinstance(choice, SharedDecision):
