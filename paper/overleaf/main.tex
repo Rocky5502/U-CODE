@@ -169,6 +169,20 @@ issue-resolution tasks with programmatic evaluation, and SWE-agent
 establishes an interface for repository editing and test execution
 \cite{jimenez2024swebench,yang2024sweagent}. These precede U-CODE.
 
+Guided Search Strategies in Non-Serializable Environments
+investigates one-step lookahead and trajectory selection using a
+learned action-value estimator in software-agent environments
+where intermediate states are difficult to restore
+\\cite{zainullina2025guided}. It therefore directly challenges
+any claim that lookahead, candidate selection, or
+environment-aware search is new to U-CODE. Unlike a
+general trajectory-value selector, our prospective
+incremental question explicitly prices
+\\emph{information-only diagnostics} against
+\\emph{candidate-producing actions}, including redundant
+dependent tests, under five separately enforced caps.
+No head-to-head comparison has yet been performed.
+
 PATSSEL studies test-guided selection between debugging and
 regeneration \cite{kulkarni2026pats}; this choice alone is
 therefore not novel. Our narrower hypothesis concerns the
@@ -248,6 +262,16 @@ certify population risk after adaptive agent decisions. We measure
 both conditional wrong-release risk and release coverage and reserve
 formal guarantee language for a separately justified frozen
 end-to-end procedure.
+
+SearchSYS combines LLM-generated test inputs with
+search-based fuzzing for system simulators and reports real
+gem5 defects \\cite{dakhama2025searchsys}. This constitutes
+important precedent for LLM-enhanced SBSE with executable
+software feedback, but its objective is test generation and
+bug detection in a simulator rather than choosing
+between candidate patch creation and correlated
+diagnostic acquisition for repository-level repair.
+We will not use its defect counts as U-CODE outcomes.
 
 SWE-rebench V2 offers multilingual repository issue tasks
 \cite{badertdinov2026swerebench}. Such tasks are \emph{not}
