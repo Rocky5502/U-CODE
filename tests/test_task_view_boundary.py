@@ -48,14 +48,14 @@ class AgentTaskViewBoundaryTests(unittest.TestCase):
                 parse_agent_task_view(dict(self.clean, **{key: bad}))
 
     def test_policy_spec_rejects_bidi_zero_width_and_terminal_controls(self):
-        import unicodedata
-        for injected in ("\\x00", "\\x1b[31m", "\\r", "\\u202e",
-                         "\\u2066", "\\u200b", "\\u0085", "\\ud800"):
+        for injected in (chr(0), chr(27)+"[31m", chr(13), chr(0x202e),
+                         chr(0x2066), chr(0x200b), chr(0x85), chr(0xD800)):
             with self.subTest(char=repr(injected)):
-                text="Review this normal task: "+injected+" hidden behavior."
-                rec=dict(self.clean,prefixed_spec=text)
+                task_text="Review this normal task: "+injected+" hidden behavior."
+                rec=dict(self.clean, prefixed_spec=task_text)
                 try:
-                    rec["spec_sha256"]=hashlib.sha256(text.encode("utf-8")).hexdigest()
+                    rec["spec_sha256"]=hashlib.sha256(
+                        task_text.encode("utf-8")).hexdigest()
                 except UnicodeEncodeError:
                     # Unpaired surrogates are rejected by the existing
                     # UTF-8 byte-length check before any model request.
@@ -66,7 +66,7 @@ class AgentTaskViewBoundaryTests(unittest.TestCase):
                     parse_agent_task_view(rec)
 
     def test_human_language_and_multiline_spec_remain_permitted(self):
-        statement="Maintain the existing API.\\n支持中文功能。\\tनेपाली विवरण।"
+        statement="Maintain the existing API."+chr(10)+"支持中文功能。"+chr(9)+"नेपाली विवरण।"
         record=dict(self.clean,prefixed_spec=statement,
                     spec_sha256=hashlib.sha256(statement.encode()).hexdigest())
         result=parse_agent_task_view(record)
