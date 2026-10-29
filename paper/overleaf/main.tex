@@ -8,6 +8,11 @@
 \usepackage{url}
 \usepackage{graphicx}
 \usepackage{booktabs}
+\usepackage{tabularx,array}
+% Neutral, printer-friendly concept markers. They do not imply measured superiority.
+\newcommand{\methodYes}{\ensuremath{\checkmark}}
+\newcommand{\methodNo}{\ensuremath{\times}}
+\newcommand{\methodPlan}{\ensuremath{\checkmark^{\dagger}}}
 
 \begin{document}
 
@@ -251,6 +256,85 @@ model-generated solutions and naturalistic agent-authored PRs
 require distinct provenance, licensing and denominator definitions.
 Our evaluator-only hidden tests must be unavailable to
 generation, retrieval, risk estimation or search policies.
+
+\subsection{Positioning against related approaches}
+\label{sec:method-comparison}
+Table~\ref{tab:prior-method-positioning} compares the \emph{stated
+primary mechanisms} of closely related approaches, not their
+head-to-head performance. In particular, the existence of a
+cost-saving verifier or multi-objective search algorithm does
+not itself establish explicit planning over both
+code-producing and evidence-producing tool calls with a
+joint dependent-patch belief model. Conversely, an
+unreported capability is \emph{not} evidence that a method
+cannot support it. The SWE-Verifier reference is an
+October 2026 preprint; its reported results are those
+of its authors, not independently reproduced here.
+
+\begin{table*}[t]
+\centering
+\caption{Method-level positioning of U-CODE relative to closely
+related coding-agent research. This is \emph{not} a performance
+ranking or an experimentally validated superiority claim.
+\methodYes: explicit focus in the cited work;
+\methodNo: not an explicitly established central mechanism;
+\methodPlan: present only as a first-party, offline U-CODE
+reference/design, not evaluated on real tasks.
+S: adaptive search/candidate exploration;
+V: selectively choosing verification;
+J: shared online allocation between code production and
+heterogeneous evidence acquisition;
+D: modeled dependence across candidate correctness;
+B: five independent hard resource caps;
+R: reported empirical software-task evaluation.
+The literature rows reflect the cited methods'
+descriptions, not exhaustive code audits.}
+\label{tab:prior-method-positioning}
+\scriptsize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.22}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.38\textwidth}*{6}{>{\centering\arraybackslash}X}@{}}
+\toprule
+\textbf{Approach (year)} & \textbf{S} & \textbf{V} &
+\textbf{J} & \textbf{D} & \textbf{B} & \textbf{R}\\
+\midrule
+SWE-Search (2025)~\cite{antoniades2025swesearch}
+ & \methodYes & \methodNo & \methodNo & \methodNo & \methodNo & \methodYes\\
+GA4GC (2025)~\cite{gong2025ga4gc}
+ & \methodYes & \methodNo & \methodNo & \methodNo & \methodNo & \methodYes\\
+SWE-Replay (2026)~\cite{ding2026swereplay}
+ & \methodYes & \methodNo & \methodNo & \methodNo & \methodNo & \methodYes\\
+SWE-Verifier (2026)~\cite{zou2026sweverifier}
+ & \methodYes & \methodYes & \methodNo & \methodNo & \methodNo & \methodYes\\
+PATSSEL (2026)~\cite{kulkarni2026pats}
+ & \methodYes & \methodNo & \methodNo & \methodNo & \methodNo & \methodYes\\
+RETRACE (2026)~\cite{li2026retrace}
+ & \methodNo & \methodNo & \methodNo & \methodNo & \methodNo & \methodYes\\
+Dockerless (2026)~\cite{zeng2026dockerless}
+ & \methodNo & \methodNo & \methodNo & \methodNo & \methodNo & \methodYes\\
+\midrule
+\textbf{U-CODE (this study; prospective)}
+ & \methodPlan & \methodPlan & \methodPlan & \methodPlan & \methodPlan & \methodNo\\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\paragraph{What would make U-CODE stronger?}
+The proposed differentiation is an \emph{online,
+history-dependent evidence-versus-generation decision rule}
+that accounts for shared patch-error structure while
+enforcing five independent resource caps. This is
+orthogonal to, and potentially compatible with, individual
+verifiers such as RETRACE or Dockerless and could fail
+to outperform strong search or selective verification
+controls. A real advantage can be claimed only if the
+predeclared uncertainty-aware controller improves
+independently evaluated full-task success over a
+matched-budget no-uncertainty controller, without
+materially worsening release coverage, wrong-release
+risk or task-family robustness. Those experiments
+have not been conducted. The \methodPlan\ symbols
+do not denote a fully integrated real repository agent.
 
 \subsection{Proposed contribution and its falsifier}
 The proposed contribution is a calibrated, vector-budgeted decision
