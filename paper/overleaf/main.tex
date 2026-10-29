@@ -739,9 +739,28 @@ incomplete panels, duplicated task identities, overlap
 with validation/evaluation fork-lineage groups, missing
 model identity, nonchronological evidence, insufficient
 class support in a visible-history context, and absent
-conditional rows. For each observed context, estimates
-are smoothed class-conditional frequencies; sparse
-contexts are not silently backed off to independence.
+conditional rows. Importantly, a global count of distinct
+repository/fork groups is \emph{not} sufficient: to
+reduce class--repository confounding we now require
+at least two independently assigned training lineages
+for \emph{each} acceptability class at each fitted
+action--history context. Formally, for each observed
+row $(a,h)$ and $y\in\{0,1\}$,
+\begin{equation}
+ G_{a,h,y}=\{g_i:(a_i,h_i,Y_i,g_i)=(a,h,y,g_i)\},
+ \qquad |G_{a,h,y}|\ge 2,
+ \label{eq:conditional-lineage-support}
+\end{equation}
+where this necessary support check is \emph{not}
+proof of sufficient statistical power, unbiased
+collection or transportable calibration. For each
+observed context, estimates are smoothed
+class-conditional frequencies; sparse contexts are
+not silently backed off to independence. Source
+receipts now use versioned, canonical structured
+training-input fingerprints rather than ambiguous
+delimiter-concatenated identifiers. These SHA digests
+are reproducibility aids, not third-party attestations.
 A declared panel assignment is not proof that collection
 was unbiased: randomized or otherwise demonstrably
 ignorable ordering, correct event timestamps, and
