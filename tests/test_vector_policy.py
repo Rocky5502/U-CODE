@@ -39,6 +39,24 @@ class VectorBudgetPolicyTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             ResourcePrices(tokens=-.1)
 
+    def test_scalar_planning_cost_must_not_overflow_float_range(self):
+        # Both factors are finite, but their product is +inf in binary64.
+        # Returning +inf used to silently change action rankings.
+        huge = ResourceVector(gpu_seconds=1e308)
+        weights = ResourcePrices(gpu_seconds=1e308)
+        with self.assertRaisesRegex(ValueError, "overflowed"):
+            huge.total_price(weights)
+
+    def test_sum_of_individually_finite_resource_prices_must_be_finite(self):
+        costs = ResourceVector(gpu_seconds=1e308, cpu_seconds=1e308)
+        prices = ResourcePrices(gpu_seconds=1, cpu_seconds=1)
+        with self.assertRaisesRegex(ValueError, "overflowed"):
+            costs.total_price(prices)
+
+    def test_resource_scalarization_requires_typed_price_vector(self):
+        with self.assertRaisesRegex(TypeError, "typed"):
+            ResourceVector(tokens=1).total_price(object())
+
     def test_hypothetical_perfect_test_reduces_budget(self):
         test = DiagnosticForecast("test", 1, 1, ResourceVector(test_calls=1))
         choice = choose_next_intervention(.5, [test], self.budget,

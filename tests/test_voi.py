@@ -89,6 +89,14 @@ class EvidenceValueTests(unittest.TestCase):
         self.assertTrue(math.isfinite(r.posterior_positive))
         self.assertAlmostEqual(r.posterior_negative, 0.7)
 
+    def test_finite_diagnostic_cost_and_penalty_multiply_to_infinity(self):
+        # Both inputs individually satisfy finite-value validation, but
+        # the scalar penalty would overflow to infinity without a guard.
+        diag = DiagnosticAction("huge", 1, 1, 1e308)
+        rule = ReleaseRule(.1, unit_cost_penalty=1e308)
+        with self.assertRaisesRegex(ValueError, "nonfinite"):
+            value_of_diagnostic(.5, diag, rule)
+
     def test_reject_invalid_inputs(self):
         with self.assertRaises(ValueError):
             DiagnosticAction("bad", .5, .5, 0)

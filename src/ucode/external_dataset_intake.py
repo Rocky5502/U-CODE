@@ -88,10 +88,15 @@ def screen_swe_rebench_v2(rows, *, revision: str,
     """Canonical metadata-only projection. Never infer oracle correctness."""
     if not SHA40.fullmatch(revision):
         raise ValueError("immutable 40-hex dataset source revision required")
-    existing = {x.casefold() for x in existing_discovery_repositories}
+    # Materialize a one-pass iterator ONCE, then validate BEFORE casefold.
+    # The old two passes silently skipped validation on generators, and
+    # non-string values raised AttributeError instead of a controlled error.
+    existing_rows = tuple(existing_discovery_repositories)
     if any(type(x) is not str or not REPO.fullmatch(x)
-           for x in existing_discovery_repositories):
+           or any(part in (".", "..") for part in x.split("/"))
+           for x in existing_rows):
         raise ValueError("discovery repository identifiers malformed")
+    existing = {x.casefold() for x in existing_rows}
     seen_ids = set()
     kept, excluded = [], []
     base_clusters = defaultdict(list)

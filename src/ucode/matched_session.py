@@ -7,6 +7,7 @@ trusted hardware telemetry: a separate attested sandbox must enforce it.
 """
 from dataclasses import dataclass
 from hashlib import sha256
+from math import isclose
 import json
 from typing import Sequence
 
@@ -77,8 +78,13 @@ class SharedSession:
             raise ValueError("receipt/action chronology mismatch")
         sums = {f: sum(getattr(r.reported_cost, f) for r in self.receipts)
                 for f in RESOURCE_FIELDS}
-        if any(abs(getattr(self.initial_budget, f) - sums[f]
-                   - getattr(self.state.remaining, f)) > 1e-7
+        # A fixed 1e-7 absolute slack can exceed an entire legitimate
+        # microsecond-scale budget. Use relative rounding tolerance tied to
+        # the actual per-resource totals, with NO free absolute allowance.
+        if any(not isclose(
+                sums[f] + getattr(self.state.remaining, f),
+                getattr(self.initial_budget, f),
+                rel_tol=1e-12, abs_tol=0.0)
                for f in RESOURCE_FIELDS):
             raise ValueError("reported five-resource ledger does not reconcile")
         ids = {r.action_id: r for r in self.receipts}

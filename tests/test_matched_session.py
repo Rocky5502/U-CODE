@@ -50,6 +50,26 @@ def conditional(priors=((A, 0.5),), kernels=None, forecasts=()):
 
 
 class SharedArchiveTests(unittest.TestCase):
+    def test_microsecond_scale_budget_cannot_be_forged_by_absolute_tolerance(self):
+        budget = ResourceVector(gpu_seconds=1e-8)
+        # No receipts have been recorded: state.remaining MUST still equal
+        # initial budget, even if the difference is below old 1e-7 slack.
+        forged = SearchState(ResourceVector(gpu_seconds=5e-9))
+        with self.assertRaisesRegex(ValueError, "ledger does not reconcile"):
+            SharedSession(budget, forged)
+
+    def test_small_positive_reported_resource_exactly_reconciles(self):
+        budget = ResourceVector(gpu_seconds=1e-8)
+        s = SharedSession.empty(budget)
+        action = SearchAction("small", "generate",
+                              ResourceVector(gpu_seconds=1e-9))
+        d = SharedDecision("small", "generate", None, action.cost)
+        after = commit_shared(s, (action,), d,
+                              reported_cost=ResourceVector(gpu_seconds=3e-9))
+        self.assertEqual(after.receipts[0].reported_cost.gpu_seconds, 3e-9)
+        self.assertAlmostEqual(after.state.remaining.gpu_seconds, 7e-9,
+                               places=17)
+
     def test_baseline_consumes_reported_not_nominal_five_cost(self):
         s = SharedSession.empty(BUDGET)
         p = SearchPolicy(depth=1)

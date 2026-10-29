@@ -108,13 +108,16 @@ def value_of_diagnostic(
     # unlike ordinary unconstrained Bayes value, post-diagnostic value can
     # be LOWER. Preserve that negative result rather than clipping it.
     gain = after - before
+    net = gain - rule.unit_cost_penalty * action.cost
+    if not isfinite(gain) or not isfinite(net):
+        raise ValueError("nonfinite diagnostic information value or scalar cost")
     return DiagnosticValue(
         action=action.name, positive_probability=prob_pos,
         negative_probability=prob_neg, posterior_positive=post_pos,
         posterior_negative=post_neg, terminal_value_before=before,
         expected_terminal_value_after=after,
         gross_value_of_information=gain,
-        net_gain=gain - rule.unit_cost_penalty * action.cost,
+        net_gain=net,
     )
 
 

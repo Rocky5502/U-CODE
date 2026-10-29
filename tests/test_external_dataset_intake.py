@@ -84,6 +84,24 @@ class ExternalIntakeTests(unittest.TestCase):
                             == "POTENTIAL_OVERLAP_REVIEW"
                             for v in x.candidates))
 
+    def test_one_pass_discovery_iterator_preserves_overlap_detection(self):
+        # A generator is consumed exactly once, not silently ignored by
+        # a second validation pass after set construction.
+        source = (x for x in ("Test/Repo", "another/repository"))
+        out = screen_swe_rebench_v2(
+            [row("1", repo="test/repo")],
+            revision=REV, existing_discovery_repositories=source)
+        self.assertEqual(out.report["potential_source_repo_name_overlap_count"], 1)
+
+    def test_invalid_one_pass_discovery_identity_fails_closed(self):
+        for bad in (None, 77, "single-name", "org/..", "../repo", "org/."):
+            source = (x for x in ("Test/Repo", bad))
+            with self.subTest(bad=bad), self.assertRaisesRegex(
+                    ValueError, "repository identifiers malformed"):
+                screen_swe_rebench_v2(
+                    [row("1")], revision=REV,
+                    existing_discovery_repositories=source)
+
     def test_missing_repo_license_is_unapproved_exclusion(self):
         x = screen_swe_rebench_v2([row("1", license_id="")], revision=REV)
         self.assertEqual(x.report["metadata_candidate_rows_kept"], 0)

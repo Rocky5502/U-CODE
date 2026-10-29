@@ -48,8 +48,19 @@ class ResourceVector:
                                  for field in RESOURCE_FIELDS})
 
     def total_price(self, unit_prices: "ResourcePrices") -> float:
-        return sum(getattr(self, field) * getattr(unit_prices, field)
-                   for field in RESOURCE_FIELDS)
+        """Scalar planning cost; reject IEEE-754 overflow rather than using inf.
+
+        Individual resource quantities and prices can each be finite while
+        their product or sum is infinite. Such a value invalidates the
+        stated finite-utility planning assumptions and must fail closed.
+        """
+        if not isinstance(unit_prices, ResourcePrices):
+            raise TypeError("typed five-component resource prices required")
+        value = sum(getattr(self, field) * getattr(unit_prices, field)
+                    for field in RESOURCE_FIELDS)
+        if not isfinite(value):
+            raise ValueError("resource scalar cost overflowed to nonfinite value")
+        return value
 
     def is_free(self) -> bool:
         return all(getattr(self, field) == 0 for field in RESOURCE_FIELDS)
