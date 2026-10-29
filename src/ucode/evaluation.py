@@ -79,7 +79,7 @@ def _validate_task_lineages(outcomes: Sequence[EvaluationOutcome]) -> None:
             raise TypeError("typed evaluator outcomes required")
         old = lineage_by_task.setdefault(outcome.task_id, outcome.lineage_group)
         if old != outcome.lineage_group:
-            raise ValueError("task identity assigned inconsistent fork lineage across runs")
+            raise ValueError("different fork group: task identity assigned inconsistent fork lineage across runs")
 
 
 def measure_policy(outcomes: Sequence[EvaluationOutcome]) -> PolicyMeasures:
