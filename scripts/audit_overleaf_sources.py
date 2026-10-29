@@ -97,8 +97,8 @@ def audit_manuscript(main_text: str, bib_text: str) -> dict:
 
     # Comments after the real document are fine, but non-comment LaTeX
     # after or multiple document endings indicate a corrupted source edit.
-    if (paper.count(r"\\end{document}") != 1
-            or not paper.strip().endswith(r"\\end{document}")):
+    if (paper.count(r"\end{document}") != 1
+            or not paper.strip().endswith(r"\end{document}")):
         raise ValueError("manuscript has duplicate/premature end-of-document or trailing content")
 
     abstract = _ABSTRACT.search(main_text)
