@@ -181,16 +181,30 @@ def plan_conditional(
     rule: ReleaseRule,
     horizon: int = 2,
     max_states: int = 30000,
+    *,
+    outside_option: float = 0.0,
 ) -> ConditionalPlan:
     """DP over history-conditional evidence without independence assertions.
 
     All reachable branch contexts must be provided; missing contexts throw
     instead of substituting a naive independent Bayes factor.
+
+    outside_option is the fixed, nonnegative terminal utility obtainable by
+    releasing another, UNCHANGED candidate from the archive. Every terminal
+    branch chooses max(local release, outside_option, abstention). The
+    expected value is therefore E[max(V_local(Y), V_other)] -- NOT
+    max(E[V_local(Y)], V_other). This is exact for the specified finite
+    per-candidate conditional kernel while other candidates are fixed;
+    it is NOT joint cross-candidate belief updating or oracle correctness.
     """
     if type(horizon) is not int or not 1 <= horizon <= 4:
         raise ValueError("horizon must be integer 1 to 4")
     if type(max_states) is not int or max_states < 1:
         raise ValueError("max_states must be positive")
+    if (type(outside_option) not in (int, float)
+            or not isfinite(outside_option) or outside_option < 0):
+        raise ValueError("outside option must be finite nonnegative terminal utility")
+    outside_option = float(outside_option)
     if rule.unit_cost_penalty != 0:
         raise ValueError("charge costs with ResourcePrices only")
     probes = tuple(probes)
@@ -210,7 +224,9 @@ def plan_conditional(
         expanded[0] += 1
         if expanded[0] > max_states:
             raise ValueError("conditional search state cap exceeded")
-        stop = terminal_value(s.prior, rule)
+        # Keep the other archived candidate as a terminal alternative
+        # on EACH posterior branch, not only outside the expectation.
+        stop = max(terminal_value(s.prior, rule), outside_option)
         val, choice = stop, None
         if steps == 0:
             return val, choice
@@ -232,10 +248,14 @@ def plan_conditional(
                 val, choice = net, probe.action_id
         return val, choice
 
-    stop = terminal_value(state.prior, rule)
+    stop = max(terminal_value(state.prior, rule), outside_option)
     value, chosen = solve(state, horizon)
     if chosen is None:
-        action = "release" if stop > 0 else "abstain"
+        # A higher outside option belongs to another archived patch.
+        # In that case the local planner reports no local action; the
+        # archive adapter remains responsible for the actual release SHA.
+        local_stop = terminal_value(state.prior, rule)
+        action = "release" if local_stop > 0 and local_stop >= outside_option else "abstain"
         return ConditionalPlan(action, value, stop, 0, state.budget, expanded[0])
     probe = next(p for p in probes if p.action_id == chosen)
     return ConditionalPlan(chosen, value, stop, value-stop,
