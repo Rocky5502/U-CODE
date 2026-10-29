@@ -21,7 +21,7 @@ from .experiment_contract import (
     EvaluatorVerdict, FrozenStudy, PolicyRunReceipt,
     audit_confirmatory_run_matrix,
 )
-from .vector_policy import RESOURCE_FIELDS, ResourceVector
+from .vector_policy import RESOURCE_FIELDS
 
 
 @dataclass(frozen=True)
@@ -39,7 +39,7 @@ class ArmPostterminalMetrics:
     release_coverage_bounds: tuple[float, float]
     observed_wrong_release_risk: float | None
     wrong_release_risk_bounds: tuple[float, float] | None
-    mean_reported_cost_per_assignment: ResourceVector
+    mean_reported_cost_per_assignment: tuple[tuple[str, float], ...]
     # Missingness intervals and population-release risk are different objects.
     interval_kind: str = "WORST_BEST_MISSING_INFRA_NOT_CONFIDENCE_INTERVAL"
     authenticated_meter: bool = False
@@ -104,8 +104,8 @@ def _arm(
         release_coverage_bounds=coverage,
         observed_wrong_release_risk=observed_risk,
         wrong_release_risk_bounds=risk,
-        mean_reported_cost_per_assignment=ResourceVector(
-            **{k:consumed[k]/n for k in RESOURCE_FIELDS}
+        mean_reported_cost_per_assignment=tuple(
+            (k,consumed[k]/n) for k in RESOURCE_FIELDS
         ),
     )
 
@@ -126,6 +126,8 @@ def postterminal_contrast(
     independent authenticity. Do not use for synthetic data in paper Results.
     Bootstrap summary is suppressed if any arm has incomplete outcome.
     """
+    if not isinstance(study,FrozenStudy):
+        raise TypeError("frozen study required")
     if (type(treatment) is not str or type(control) is not str
             or treatment==control or treatment not in study.policies
             or control not in study.policies):
