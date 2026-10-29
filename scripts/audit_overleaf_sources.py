@@ -32,6 +32,58 @@ def uncomment(text: str) -> str:
                      for line in text.splitlines())
 
 
+COMPARISON_KEYS = (
+    "antoniades2025swesearch", "gong2025ga4gc",
+    "ding2026swereplay", "zou2026sweverifier",
+    "kulkarni2026pats", "li2026retrace", "zeng2026dockerless",
+)
+
+
+def audit_comparison_table(paper: str) -> dict:
+    """Keep the comparison descriptive, cited and explicitly pre-empirical.
+
+    Static checks cannot establish the literature characterization, compile
+    a publisher PDF or prove real benchmark performance.
+    """
+    match = re.search(
+        r"\\begin\{table\*\}\[t\](.*?)\\end\{table\*\}",
+        paper, flags=re.DOTALL)
+    if match is None:
+        raise ValueError("missing novelty comparison table")
+    table = match.group(1)
+    if (r"\label{tab:prior-method-positioning}" not in table or
+            r"\methodPlan" not in table or
+            r"\methodNo" not in table or
+            r"\methodYes" not in table):
+        raise ValueError("missing novelty table label or explanation of markers")
+    for key in COMPARISON_KEYS:
+        if r"\cite{"+key+"}" not in table:
+            raise ValueError("novelty table missing primary-source citation: "+key)
+    planned_row = (r"\textbf{U-CODE (this study; prospective)}" +
+                   " & ".join(["", r"\methodPlan", r"\methodPlan",
+                              r"\methodPlan", r"\methodPlan",
+                              r"\methodPlan", r"\methodNo"]))
+    # Whitespace may vary; evaluate only the U-CODE row, not nearby paper text.
+    row_match = re.search(
+        r"\\textbf\{U-CODE \(this study; prospective\)\}" +
+        r"(.*?)\\\\", table, flags=re.DOTALL)
+    if row_match is None:
+        raise ValueError("missing explicit prospective U-CODE table row")
+    row = [x.strip() for x in row_match.group(1).split("&")]
+    if row != ["", *([r"\methodPlan"] * 5), r"\methodNo"]:
+        raise ValueError("U-CODE methods planned and real results absent required")
+    for must in ("not a performance", "not experimentally", "not exhaustive"):
+        if must not in table.lower():
+            raise ValueError("novelty table lost non-superiority/evidence caveat")
+    if re.search(r"\b(?:U-CODE\s+(?:outperforms|surpasses|beats)|"
+                 r"best\s+performance|proven\s+superior)\b",
+                 table, flags=re.IGNORECASE):
+        raise ValueError("unmeasured superiority claim in novelty table")
+    return {"sources": len(COMPARISON_KEYS),
+            "real_ucode_results": 0,
+            "interpretation": "DESCRIPTIVE_METHOD_POSITIONING_ONLY"}
+
+
 def audit_manuscript(main_text: str, bib_text: str) -> dict:
     if not isinstance(main_text, str) or not isinstance(bib_text, str):
         raise TypeError("the paper and BibTeX must be UTF-8 text")
@@ -90,6 +142,7 @@ def audit_manuscript(main_text: str, bib_text: str) -> dict:
         raise ValueError("unclosed LaTeX environments")
     if paper.count("\\section{Results}") != 1:
         raise ValueError("exactly one explicitly marked Results section required")
+    comparison = audit_comparison_table(paper)
     if ("NO EMPIRICAL RQ RESULTS EXIST" not in main_text
             or "neither improved" not in paper.lower()
             or "independently" not in paper.lower()):
@@ -111,6 +164,7 @@ def audit_manuscript(main_text: str, bib_text: str) -> dict:
         "environment_delimiters_balanced": True,
         "real_rq_results_verified": False,
         "live_overleaf_modified": False,
+        "novelty_comparison": comparison,
     }
 
 
