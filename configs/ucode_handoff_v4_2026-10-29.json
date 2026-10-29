@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.0",
+  "snapshot_date": "2026-10-29",
+  "stage": "HANDOFF_ONLY_NO_NEW_REAL_TRIAL",
+  "repository": "Rocky5502/U-CODE",
+  "document": "docs/UCODE_NEW_CHAT_MASTER_HANDOFF_V4_2026-10-29.md",
+  "supersedes_startup_document": "docs/UCODE_NEW_CHAT_MASTER_HANDOFF_V3_2026-10-27.md",
+  "baseline_verified_main_sha": "56bf2e8ff31edb250e9d5f9cbc2219ddab235527",
+  "baseline_verified_ci_run_id": 40834818493,
+  "baseline_ci_conclusion": "success",
+  "offline_tests_per_python_version": 1115,
+  "python_versions": [
+    "3.10",
+    "3.12"
+  ],
+  "latest_scientific_pr_in_baseline": 21,
+  "original_expert_roles_count": 17,
+  "original_expert_roles": [
+    "R0",
+    "R1",
+    "R2",
+    "R3",
+    "R4",
+    "R5",
+    "R6",
+    "R7",
+    "R8",
+    "R9",
+    "R10",
+    "R11",
+    "R12",
+    "R13",
+    "R14",
+    "R15",
+    "R16"
+  ],
+  "observed_dataset": {
+    "discovered_pr_links": 120,
+    "pr_metadata_retrieved": 119,
+    "search_language_strata": 12,
+    "production_source_path_leads": 62,
+    "first_pass_metadata_leads": 14,
+    "manual_review_leads": 12,
+    "independently_approved_executable_tasks": 0,
+    "independent_functional_oracles": 0
+  },
+  "prospective_study": {
+    "model_names_count": 6,
+    "policy_slots_count": 8,
+    "primary_treatment": "ucode_conditional_bes",
+    "primary_comparator": "no_uncertainty_search",
+    "real_model_inferences_verified": 0,
+    "real_policy_effects_measured": 0,
+    "model_revisions_frozen": false,
+    "runner_security_attested": false,
+    "live_overleaf_synced": false,
+    "compiled_springer_pdf_reviewed": false
+  },
+  "five_resource_fields": [
+    "tokens",
+    "test_calls",
+    "gpu_seconds",
+    "cpu_seconds",
+    "wall_seconds"
+  ],
+  "priority_first_unblocked_sprint": "P0-1 task-era provenance and independent evaluator admission checklist; no untrusted execution",
+  "status_must_be_rechecked_on_next_chat": true,
+  "source_registry": "configs/ucode_work_remaining_gates_2026-10-27.json",
+  "study_registry": "configs/confirmatory_sbse_protocol_2026-10-25.json",
+  "notes": [
+    "Baseline SHA/CI is a historical authenticated GitHub-connector read; do not call it latest after committing V4",
+    "No evidence of independently admitted executable tasks; metadata-only data and synthetic unit tests",
+    "No live Overleaf write, model inference, verified secure sandbox, paid GPU approval, authentic oracle or empirical superiority"
+  ]
+}
