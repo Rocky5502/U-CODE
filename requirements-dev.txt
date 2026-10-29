@@ -1,0 +1,3 @@
+# Offline development/unit test environment.
+# All existing tests use Python's unittest/stdlib; no pytest or model engine needed.
+-r requirements.txt

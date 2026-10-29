@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: >-
+  If you use U-CODE's original research software or source-only metadata,
+  cite the repository and the exact version/commit used; do not cite it as
+  a completed experimental benchmark or a published journal article.
+title: "U-CODE: Uncertainty-Guided Search for Reliable AI-Generated Software"
+type: software
+authors:
+  - family-names: Sah
+    given-names: Chandan Kumar
+repository-code: "https://github.com/Rocky5502/U-CODE"
+url: "https://github.com/Rocky5502/U-CODE"
+license: MIT
+version: "0.1.0"

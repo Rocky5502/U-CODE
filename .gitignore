@@ -1,4 +1,4 @@
-# No downloaded corpora, model weights, tokens or generated results in git
+# Never commit private data, unreviewed upstream source, artifacts or model weights.
 data/derived/
 data/raw/
 data/cache/
@@ -6,7 +6,11 @@ outputs/
 runs/
 checkpoints/
 models/
+artifacts/
+hf_cache/
+huggingface_cache/
 .venv/
+venv/
 __pycache__/
 *.py[cod]
 *.egg-info/
@@ -15,6 +19,8 @@ build/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.coverage
+coverage.xml
 .env
 .env.*
 !.env.example
@@ -23,4 +29,15 @@ build/
 *.pt
 *.pth
 *.ckpt
+*.onnx
+*.parquet
+*.arrow
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+*.pem
+*.key
+id_rsa
+id_ed25519
 .DS_Store
