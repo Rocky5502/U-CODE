@@ -39,6 +39,42 @@ class TrainOnlyDiagnosticFitting(unittest.TestCase):
             for i in range(12)
         ]
 
+    def test_each_label_has_multiple_training_lineages(self):
+        fitted = fit_diagnostic_likelihood(
+            self.rows, self.groups, "pinned-model", "test")
+        self.assertEqual(fitted.acceptable_lineage_count, 2)
+        self.assertEqual(fitted.unacceptable_lineage_count, 2)
+
+    def test_global_lineage_count_does_not_hide_class_confounding(self):
+        rows = [
+            record(i, "repo-A" if i < 6 else "repo-B",
+                   1 if i < 6 else 0, i < 6)
+            for i in range(12)
+        ]
+        with self.assertRaisesRegex(ValueError, "lineages per acceptability class"):
+            fit_diagnostic_likelihood(rows, self.groups, "pinned-model", "test")
+
+    def test_structured_training_digest_distinguishes_delimiters(self):
+        from dataclasses import replace
+        delimiter = chr(9)
+        p = GroupPartitions(
+            frozenset(("repo-A", "repo-B", "charlie",
+                       "bravo" + delimiter + "charlie")),
+            frozenset(("repo-C",)), frozenset(("repo-D",)),
+        )
+        x = replace(self.rows[0],
+                    task_id="alpha" + delimiter + "bravo",
+                    lineage_group="charlie")
+        y = replace(self.rows[0],
+                    task_id="alpha",
+                    lineage_group="bravo" + delimiter + "charlie")
+        first = fit_diagnostic_likelihood(
+            [x, *self.rows[1:]], p, "pinned-model", "test")
+        second = fit_diagnostic_likelihood(
+            [y, *self.rows[1:]], p, "pinned-model", "test")
+        self.assertNotEqual(first.training_fingerprint,
+                            second.training_fingerprint)
+
     def test_fit_exact_smoothed_counts(self):
         fit = fit_diagnostic_likelihood(self.rows, self.groups,
                                         "pinned-model", "test")
