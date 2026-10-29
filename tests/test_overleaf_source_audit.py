@@ -83,8 +83,9 @@ class SpringerOverleafSourceAuditTests(unittest.TestCase):
         # Regression: an unsafe string replacement accidentally duplicated the
         # manuscript after an embedded end-of-document; never accept it again.
         broken=self.paper.replace(
-            r"\\section{Results}",
-            r"\\end{document}"+"\\n"+r"\\section{Results}",1)
+            r"\section{Results}",
+            r"\end{document}"+"\\n"+r"\section{Results}",1)
+        self.assertNotEqual(broken, self.paper)
         with self.assertRaisesRegex(ValueError,"duplicate/premature"):
             self.check(broken)
 
