@@ -36,6 +36,26 @@ specification, rights, sealed oracle and sandbox evidence are still required.
 
 The last pre-refactor `main` CI was green with 1,142 offline tests per Python version. **Always inspect the current [CI](https://github.com/Rocky5502/U-CODE/actions)** for the latest count, SHA and outcome.
 
+## Independent mathematical and 1,000-perspective review (29 October 2026)
+
+The [new source-grounded research audit](docs/RESEARCH_1000_PERSPECTIVE_MATH_DATA_AUDIT_2026-10-29.md)
+provides an independent exact-rational cross-check of Bayesian posterior,
+bounded two-step evidence search and infrastructure-missingness equations;
+a strict 120-PR/13-source dataset crosswalk; and a repair to malformed
+Springer citation syntax. Its [1,000-perspective review register](scripts/export_1000_research_lenses.py)
+is **20 scientific domains × 10 risks × 5 review roles**, all **PENDING**:
+it does not claim a thousand independent reviewers or completed experiments.
+
+```bash
+python -m scripts.audit_dataset_cohort_crosswalk
+python -m scripts.export_1000_research_lenses
+python -m scripts.audit_overleaf_sources
+python -m unittest discover -s tests -v
+```
+
+All math and dataset checks are **source-only/synthetic** and leave the
+first real executable task admission and hidden oracle **blocked**.
+
 ## Framework
 
 ![U-CODE framework: risk-aware policy loop, evidence acquisition and isolated evaluator lane](docs/figures/ucode-framework.svg)
