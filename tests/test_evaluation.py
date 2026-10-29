@@ -116,6 +116,38 @@ class SealedEvaluationTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             paired_verified_success(self.a, "ucode", "fixed", -1)
 
+    def test_same_task_cannot_switch_fork_lineage_across_seeds(self):
+        # Within each matched seed the two policies agree, but task t1
+        # is incorrectly relabeled as a NEW independent repository for seed 1.
+        # Previously this silently inflated bootstrap cluster count.
+        extra = [
+            replace(o, seed=1, lineage_group="fake-independent-fork")
+            if o.task_id == "t1" else replace(o, seed=1)
+            for o in self.a + self.b
+        ]
+        with self.assertRaisesRegex(ValueError, "inconsistent fork lineage"):
+            paired_verified_success(self.a + self.b + extra,
+                                    "ucode", "fixed", bootstrap_samples=100)
+        with self.assertRaisesRegex(ValueError, "inconsistent fork lineage"):
+            measure_policy(self.a + [extra[0]])
+
+    def test_same_task_cannot_change_lineage_across_models_or_budgets(self):
+        for alteration in ({"model_id": "model-b"},
+                           {"budget_id": "extended"}):
+            a = [replace(o, lineage_group="fake-fork", **alteration)
+                 for o in self.a if o.task_id == "t1"]
+            b = [replace(o, lineage_group="fake-fork", **alteration)
+                 for o in self.b if o.task_id == "t1"]
+            with self.subTest(alteration=alteration), self.assertRaisesRegex(
+                    ValueError, "inconsistent fork lineage"):
+                paired_verified_success(self.a + self.b + a + b,
+                                        "ucode", "fixed", bootstrap_samples=20)
+
+    def test_boolean_bootstrap_count_is_not_a_valid_sample_size(self):
+        with self.assertRaisesRegex(ValueError, "bootstrap_samples"):
+            paired_verified_success(self.a + self.b, "ucode", "fixed",
+                                    bootstrap_samples=True)
+
     def test_small_one_group_has_no_cluster_ci(self):
         a = [outcome("t1", "A", "u", True, True)]
         b = [outcome("t1", "A", "f", True, False)]
