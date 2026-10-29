@@ -36,6 +36,24 @@ specification, rights, sealed oracle and sandbox evidence are still required.
 
 The last pre-refactor `main` CI was green with 1,142 offline tests per Python version. **Always inspect the current [CI](https://github.com/Rocky5502/U-CODE/actions)** for the latest count, SHA and outcome.
 
+## Whole-archive Bellman search: independent mathematical cross-validation (30 October 2026)
+
+A new [exact-rational joint-search audit](docs/INDEPENDENT_JOINT_BELLMAN_RATIONAL_AUDIT_2026-10-30.md)
+compares both finite-horizon, candidate-aware Bayesian controllers against
+an independent `fractions.Fraction` reference enumerator. The standalone
+reference enumerates latent candidate-truth vectors and every binary
+diagnostic outcome without calling either planner's Bayes updater or
+terminal-value helper. It checks **205 authored mathematical model
+configurations**: 144 independent candidate-prior configurations, 36
+correlated-prior configurations, one zero-probability edge case, and
+24 mixed generation/verification cases with optional incumbent release.
+
+The tests target globally single-use diagnostics, exact branchwise
+posterior value, generation failure, surviving archived candidates and
+correct placement of action costs. **These are synthetic calculations,
+not 205 approved repository tasks or measured LLM performance**. The
+paper's Methods describe the checks, with no claim of real effectiveness.
+
 ## Training-only Bayesian diagnostics: lineage-support and hash hardening (29 October 2026)
 
 A [new scientific validity audit](docs/CLASS_CONDITIONAL_LINEAGE_SUPPORT_AUDIT_2026-10-29.md)
