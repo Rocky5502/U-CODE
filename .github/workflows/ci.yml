@@ -27,14 +27,14 @@ jobs:
         run: python -m scripts.audit_manuscript_equations --output dist/ucode-equation-audit.json
       - name: Upload complete equation-scope register (NOT theorem certification)
         if: matrix.python-version == '3.12'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ucode-33-manuscript-equations-review-status
           path: dist/ucode-equation-audit.json
           if-no-files-found: error
       - name: Publish prospective 1000-lens review checklist (ZERO completed reviews)
         if: matrix.python-version == '3.12'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ucode-1000-pending-research-review-lenses
           path: dist/ucode-review-1000-lenses.json
@@ -85,14 +85,14 @@ jobs:
         run: python -m scripts.export_research_readiness --output-dir dist/ucode-research-readiness
       - name: Upload metric dictionary and independently auditable research readiness summary
         if: matrix.python-version == '3.12'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ucode-research-readiness-metrics-v1
           path: dist/ucode-research-readiness/
           if-no-files-found: error
       - name: Publish clean metadata dataset for independent inspection
         if: matrix.python-version == '3.12'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ucode-pr-metadata-clean-v1
           path: dist/ucode-pr-metadata-clean/
@@ -103,7 +103,7 @@ jobs:
         run: python -m scripts.verify_lineage_review dist/ucode-lineage-review
       - name: Publish metadata-only lineage warnings for reviewer adjudication
         if: matrix.python-version == '3.12'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ucode-lineage-review-only-v1
           path: dist/ucode-lineage-review/
@@ -118,7 +118,7 @@ jobs:
         run: python -m scripts.check_task_admission --dossiers dist/ucode-admission-review-only/review_packet_12_PENDING.jsonl
       - name: Publish human-only pending admission review packet
         if: matrix.python-version == '3.12'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ucode-admission-review-only-v1
           path: dist/ucode-admission-review-only/
@@ -129,7 +129,7 @@ jobs:
         run: python -m scripts.verify_independent_review_forms dist/ucode-independent-reviewers-only
       - name: Publish independent pending reviewer worksheets for offline adjudication
         if: matrix.python-version == '3.12'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ucode-two-reviewer-forms-PENDING-v1
           path: dist/ucode-independent-reviewers-only/
@@ -179,7 +179,7 @@ jobs:
         run: python -m scripts.export_overleaf --output dist/UCODE_Overleaf_sources.zip
       - name: Attach Overleaf source-only ZIP to this CI run
         if: matrix.python-version == '3.12'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ucode-overleaf-sources
           path: dist/UCODE_Overleaf_sources.zip
