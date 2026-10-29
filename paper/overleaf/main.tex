@@ -2280,6 +2280,29 @@ for real trials are absent. An independent runner and signed, per-run
 five-resource evidence remain prerequisites for the prospective paired
 evaluation; no empirical model or task result is implied.
 
+\paragraph{OCI execution-boundary preflight (not yet a sandbox).}
+We additionally developed a strictly non-executing,
+first-party container-launch preflight for a
+hypothetical digest-pinned Python image. It produces
+a deterministic, shell-free Docker argument sequence
+with no network, a read-only root, a numeric non-root
+UID, no additional capabilities or host mounts, and
+explicit memory, process, CPU-rate and per-process
+CPU-time ceilings. A structural checker rejects
+untrusted inspection records declaring privileged or
+host-namespace execution, changed image/entrypoint,
+attached devices or mounts, or weaker limits.
+Neither a syntactically valid image digest nor a
+self-supplied \texttt{docker inspect} record authenticates
+the image or host daemon. The preflight does
+\emph{not} launch Docker; it lacks a trusted wall
+supervisor, sealed oracle, rootless-daemon proof,
+empirical network isolation evidence, and separately
+enforced token/test/GPU/total CPU/wall accounting.
+Accordingly this engineering contract cannot yet
+admit source code, certify a secure sandbox, or
+contribute real RQ3 outcome data.
+
 \section{Results}\label{sec:results}
 % NO EMPIRICAL RQ RESULTS EXIST AT THIS MANUSCRIPT STATE.
 % Add policy outcomes and uncertainty intervals ONLY after qualified
