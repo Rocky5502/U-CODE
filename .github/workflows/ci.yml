@@ -121,6 +121,8 @@ jobs:
         run: python -m scripts.smoke_uncertainty_only_reference
       - name: Replan a two-probe conditional BES policy using the same synthetic public book (NO LLM)
         run: python -m scripts.smoke_conditional_bes_public_replay
+      - name: Inspect bounded OCI first-party launch profile with fake digest (NO Docker execution)
+        run: python -m scripts.smoke_oci_sandbox_preflight
       - name: Validate prospective SBSE eight-policy six-checkpoint registration
         run: python -m scripts.validate_sbse_protocol
       - name: Validate all six AI Galaxy model hardware and startup gates (offline)
