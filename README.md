@@ -30,6 +30,10 @@
 | Runner | OCI launch-command **dry-run** and accounting interfaces | No independently attested isolation or five-resource physical meters |
 | Offline tests | Python **3.10 / 3.12** GitHub Actions | First-party checks, not third-party software executions |
 
+The two source-era PHP/Go pilot dossiers have **16/16 gates currently PENDING**;
+neither candidate is an admitted executable task. Independent source-era
+specification, rights, sealed oracle and sandbox evidence are still required.
+
 The last pre-refactor `main` CI was green with 1,142 offline tests per Python version. **Always inspect the current [CI](https://github.com/Rocky5502/U-CODE/actions)** for the latest count, SHA and outcome.
 
 ## Framework
@@ -131,5 +135,5 @@ tests or model outputs are stored in this repository.
   snippets are **distinct cohorts**; never pool them without an explicit design.
 
 **Contributing:** [CONTRIBUTING.md](CONTRIBUTING.md) · **Security reports:** [SECURITY.md](SECURITY.md) ·
-**Original project license:** [MIT](LICENSE) ·
+**Original project license:** [MIT](LICENSE) · **Citation:** [CITATION.cff](CITATION.cff) ·
 **Canonical Springer manuscript:** [main.tex](paper/overleaf/main.tex).
