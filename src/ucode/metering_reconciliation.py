@@ -11,6 +11,7 @@ measurement evidence, enforcement during execution and independent reviewer
 are prerequisites before reporting a measured confirmatory experiment.
 """
 from dataclasses import dataclass
+from math import isclose
 
 from .matched_session import SharedSession
 from .metering_attestation import (
@@ -87,7 +88,10 @@ def reconcile_metering_action(
     for name in RESOURCE_FIELDS:
         delta = (getattr(before_state.remaining, name)
                  - getattr(after_state.remaining, name))
-        if abs(delta - getattr(expected, name)) > 1e-7:
+        # Relative precision only: 1e-7 absolute allowance could conceal
+        # an entire small GPU/CPU/wall-time consumption record.
+        if not isclose(delta, getattr(expected, name),
+                       rel_tol=1e-12, abs_tol=0.0):
             raise MeteringAttestationError("shared five-vector budget delta mismatch")
     # Bind the digest of every event, not just the most recent reported vector.
     return MeteringLedgerBinding(
