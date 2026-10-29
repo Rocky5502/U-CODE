@@ -46,6 +46,47 @@ class HistoryConditionalFittingTests(unittest.TestCase):
             self.rows if rows is None else rows, self.partitions,
             "frozen-model", self.actions, **kw)
 
+    def test_per_context_and_per_label_lineage_support_is_reported(self):
+        result = self.fit()
+        self.assertEqual(result.minimum_lineages_per_context_class, 2)
+        self.assertEqual(result.weakest_class_context_lineages, 2)
+
+    def test_global_lineage_coverage_cannot_mask_sparse_history_class(self):
+        # Distinct lineages survive globally and in every root row.
+        # But (action=b, first observation a=True, Y=1) is now from g1
+        # alone. The old fitter accepted it with minimum_per_class=1.
+        rows = [
+            r for r in self.rows
+            if not (r.action_order == ("a", "b")
+                    and r.oracle_acceptable == 1
+                    and r.outcomes[0] is True
+                    and r.lineage_group == "g2")
+        ]
+        self.assertEqual(len({r.lineage_group for r in rows}), 2)
+        with self.assertRaisesRegex(
+                ValueError, "lineages per conditional context"):
+            self.fit(rows)
+
+    def test_structured_history_hash_distinguishes_separator_aliases(self):
+        from dataclasses import replace
+        p = GroupPartitions(
+            frozenset(("g1", "g2", "x", "g1|x")),
+            frozenset(("hold-val",)), frozenset(("hold-test",)))
+        candidate = panel(999, "x", ("a", "b"), (True, False), 1)
+        x = replace(candidate, task_id="new|g1", lineage_group="x")
+        y = replace(candidate, task_id="new", lineage_group="g1|x")
+        left = fit_history_conditional_kernel(
+            self.rows + [x], p, "frozen-model", self.actions)
+        right = fit_history_conditional_kernel(
+            self.rows + [y], p, "frozen-model", self.actions)
+        self.assertNotEqual(left.input_fingerprint, right.input_fingerprint)
+
+    def test_reject_invalid_per_context_lineage_threshold(self):
+        for bad in (0, 1, True):
+            with self.subTest(bad=bad), self.assertRaisesRegex(
+                    ValueError, "minimum_lineages_per_context_class"):
+                self.fit(minimum_lineages_per_context_class=bad)
+
     def test_full_panel_invented_fixture_estimates_six_contexts(self):
         manifest = self.fit()
         self.assertEqual(manifest.training_task_count, 16)
