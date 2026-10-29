@@ -23,6 +23,15 @@ jobs:
         run: python -m scripts.audit_dataset_cohort_crosswalk
       - name: Export 1000 pending scientific reviewer-perspective questions (NOT peer review)
         run: python -m scripts.export_1000_research_lenses --output dist/ucode-review-1000-lenses.json
+      - name: Inventory all 33 Springer labeled equations (7 limited checks; 26 pending)
+        run: python -m scripts.audit_manuscript_equations --output dist/ucode-equation-audit.json
+      - name: Upload complete equation-scope register (NOT theorem certification)
+        if: matrix.python-version == '3.12'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ucode-33-manuscript-equations-review-status
+          path: dist/ucode-equation-audit.json
+          if-no-files-found: error
       - name: Publish prospective 1000-lens review checklist (ZERO completed reviews)
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
