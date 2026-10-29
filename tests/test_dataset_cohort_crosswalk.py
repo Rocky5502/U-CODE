@@ -56,7 +56,7 @@ class DatasetCohortCrosswalkTests(unittest.TestCase):
                         ("split_status","TRAIN")):
             clean=deepcopy(self.clean)
             clean[0][key]=val
-            with self.subTest(key=key),self.assertRaisesRegex(ValueError,"cannot claim"):
+            with self.subTest(key=key),self.assertRaisesRegex(ValueError,"must not claim"):
                 self.check(clean=clean)
 
     def test_external_dataset_does_not_become_downloaded_by_edit(self):
