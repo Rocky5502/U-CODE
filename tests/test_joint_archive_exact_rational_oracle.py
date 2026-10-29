@@ -12,10 +12,12 @@ import unittest
 
 from ucode.conditional_bes import ConditionalKernel, ConditionalRow, Observation
 from ucode.correlated_archive_bes import (
-    CandidateProfile, FrozenCorrelatedInputs, TruthAtom, plan_correlated_archive,
+    CandidateProfile, CorrelatedProducerRow, FrozenCorrelatedInputs,
+    TruthAtom, plan_correlated_archive,
 )
 from ucode.joint_conditional_bes import (
-    CandidateBelief, FrozenJointInputs, plan_joint_archive,
+    CandidateBelief, FrozenJointInputs, ProducerForecast, ProducerOutcome,
+    plan_joint_archive,
 )
 from ucode.matched_session import SharedSession
 from ucode.optimized_search import SearchAction, SearchCandidate, SearchState
@@ -206,6 +208,87 @@ class IndependentJointBellmanOracleTests(unittest.TestCase):
     def test_finite_evidence_kernel_with_zero_mass_branch(self):
         atoms = (((False, False),F(1)),)
         self.check(atoms,(F(1),F(1),F(1),F(1)),factorized=True)
+
+
+class GenerationThenVerificationOracleTests(unittest.TestCase):
+    """Rational expected-max invariants across generation success/failure.
+
+    A hypothetical generator may produce a new patch or fail while still
+    consuming resources. A downstream diagnostic may be purchased only
+    if a candidate is actually produced, and a surviving old candidate
+    is always available as the terminal alternative.
+    """
+
+    def compare(self, q, p, *, with_incumbent):
+        gen=SearchAction("gen","generate",ResourceVector(tokens=1))
+        test=SearchAction("probe","test",ResourceVector(test_calls=1))
+        budget=ResourceVector(tokens=1,test_calls=1)
+        initial=((SearchCandidate(B,"initial"),) if with_incumbent else ())
+        session=SharedSession(
+            budget,SearchState(budget,initial,B if initial else None),
+            max_candidates=2,
+        )
+        prices=ResourcePrices(tokens=.01,test_calls=.02)
+        fresh=ConditionalKernel((ConditionalRow("probe",(),1,0),))
+        dull=ConditionalKernel((ConditionalRow("probe",(),.5,.5),))
+        kernels=((("stale",dull),) if with_incumbent else ()) + (
+            ("fresh",fresh),)
+        # Exact-rational expression: terminal fallback v is 0.84 if
+        # B survives; otherwise 0. For q>0, generator success makes
+        # a candidate with prior p. A perfect test on its child is
+        # worth p*1 + (1-p)*v - .02 if chosen; otherwise keep v.
+        # The generator's token fee .01 is ALWAYS charged even if
+        # production fails. The decision can abstain/release instead.
+        fallback=F(21,25) if with_incumbent else F(0)
+        after_child=max(
+            fallback, p*F(1)+(1-p)*fallback-F(1,50))
+        expected=max(
+            fallback,
+            (1-q)*fallback+q*after_child-F(1,100),
+        )
+        independent=FrozenJointInputs(
+            (CandidateBelief(B,.92,"stale"),) if with_incumbent else (),
+            kernels,
+            (ProducerForecast("gen","generate",None,(),(
+                ProducerOutcome(float(1-q),None),
+                ProducerOutcome(float(q),float(p),"fresh"),
+            )),),
+            prices,RULE,horizon=2,
+        )
+        prior=(
+            (TruthAtom((False,),.08),TruthAtom((True,),.92))
+            if with_incumbent else (TruthAtom((),1),)
+        )
+        correlated=FrozenCorrelatedInputs(
+            (CandidateProfile(B,"stale"),) if with_incumbent else (),
+            prior,kernels,
+            (CorrelatedProducerRow("gen","generate",None,(),
+                                   float(q),float(q),
+                                   float(p),float(p),"fresh"),),
+            prices,RULE,horizon=2,
+        )
+        a=plan_joint_archive(session,(gen,test),independent)
+        b=plan_correlated_archive(session,(gen,test),correlated)
+        self.assertAlmostEqual(a.expected_proxy_utility,
+                               float(expected),places=11)
+        self.assertAlmostEqual(b.expected_proxy_utility,
+                               float(expected),places=11)
+        self.assertEqual(a.decision,b.decision)
+        should_generate=expected>fallback
+        self.assertEqual(a.decision.action_id,
+                         "gen" if should_generate else
+                         ("release" if with_incumbent else "abstain"))
+        self.assertAlmostEqual(a.stop_utility,float(fallback))
+
+    def test_generated_child_with_conditional_test_cost(self):
+        for q,p in product(
+            (F(0),F(1,4),F(1,2),F(1)),
+            (F(1,4),F(1,2),F(3,4)),
+        ):
+            for incumbent in (False,True):
+                with self.subTest(q=q,p=p,incumbent=incumbent):
+                    self.compare(q,p,with_incumbent=incumbent)
+
 
 
 if __name__ == "__main__":
