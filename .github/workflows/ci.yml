@@ -19,6 +19,10 @@ jobs:
         run: python -m pip install -e .
       - name: Run offline unit tests
         run: python -m unittest discover -s tests -v
+      - name: Validate repository tracked files (NO private datasets, weights, or keys)
+        run: python -m scripts.audit_repository_hygiene
+      - name: Validate six-model eight-policy local preflight (BLOCKED; NO model execution)
+        run: python -m scripts.check_local_readiness
       - name: Audit Springer Overleaf source, references, abstract and non-results claims
         run: python -m scripts.audit_overleaf_sources
       - name: Validate new-chat handoff against model, task and study registries (no real trial)
