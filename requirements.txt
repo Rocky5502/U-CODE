@@ -1,0 +1,4 @@
+# Core U-CODE scientific reference and offline metadata tools.
+# Python 3.10 / 3.12. Zero third-party runtime dependencies.
+# This installs only the local package; it does not download models or datasets.
+-e .
