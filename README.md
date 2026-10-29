@@ -1,5 +1,54 @@
 # U-CODE
 
+**Uncertainty-Guided Search for Reliable AI-Generated Software**
+
+Research-stage, reproducible software-engineering framework investigating how
+coding agents should allocate limited computation between **producing patches**
+and **acquiring evidence** about patch correctness. The primary prospective
+test compares uncertainty-aware decision making with matched-budget search
+without calibrated uncertainty. No empirical superiority is claimed.
+
+### Verified research evidence — 29 October 2026 snapshot
+
+| Evidence | Source-grounded current status |
+|---|---|
+| PR-discovery metadata | **120** distinct PR/repository-name leads, **119** metadata records retrieved |
+| Search-language strata | **12** query strata; **not** 12 independently verified changed-source languages |
+| Production source-path leads | **62** metadata leads, **not** runnable tasks |
+| Human-review shortlist | **12** candidates; approval is pending |
+| Independent executable tasks / sealed functional oracles | **0 / 0** |
+| Confirmatory study | **6 model names × 8 planned policy slots**; no real model-study results |
+| Security | Non-executing OCI launch preflight; **not** a verified third-party sandbox |
+| Empirical correctness / risk effects | **N/A** — no eligible verified task outcome observations |
+
+**Start here:** [Dataset quality and provenance](data/curated/README.md) ·
+[Source-free metadata release validator](scripts/verify_dataset_release.py) ·
+[Research metric definitions and readiness exporter](scripts/export_research_readiness.py) ·
+[Canonical Springer manuscript](paper/overleaf/main.tex) ·
+[Research blockers](configs/ucode_work_remaining_gates_2026-10-27.json).
+
+### Reproduce offline checks
+
+```bash
+python -m pip install -e .
+python -m unittest discover -s tests -v
+python -m scripts.audit_dataset_quality --output-dir dist/ucode-pr-metadata-clean
+python -m scripts.verify_dataset_release dist/ucode-pr-metadata-clean
+python -m scripts.export_research_readiness --output-dir dist/ucode-research-readiness
+python -m scripts.audit_overleaf_sources
+```
+
+All commands run **offline** with first-party code and public, source-free
+metadata; none download model weights, execute discovered repositories or
+read sealed evaluation labels. The GitHub CI matrix runs Python 3.10 and
+3.12 and attaches the generated metadata, metrics, and source-only manuscript
+artifacts. Audit manifests and locally calculated SHA hashes establish
+internal reproducibility, **not** external publisher authenticity or source
+rights. A real experimental conclusion requires rights-cleared tasks, safe
+execution, independent oracles and verified per-policy resource accounting.
+
+---
+
 > **Continue in a new ChatGPT session (27 Oct 2026):** [U-CODE V3 research handoff and copy/paste activation prompt](docs/UCODE_NEW_CHAT_MASTER_HANDOFF_V3_2026-10-27.md) · [machine-readable remaining scientific gates](configs/ucode_work_remaining_gates_2026-10-27.json). This links the actual 120-PR metadata screen, six-model/8-policy frozen planning roster, source-only Overleaf manuscript and **unblocked next work**. Recheck GitHub HEAD/CI; the handoff's run number is a dated verified baseline, not a promise of future CI success. **0 independently admitted executable tasks and 0 measured six-model results** remain the boundary.
 
 
