@@ -36,6 +36,24 @@ specification, rights, sealed oracle and sandbox evidence are still required.
 
 The last pre-refactor `main` CI was green with 1,142 offline tests per Python version. **Always inspect the current [CI](https://github.com/Rocky5502/U-CODE/actions)** for the latest count, SHA and outcome.
 
+## Corrected archive-conditional Bayesian value of information (29 October 2026)
+
+The [incumbent-preserving Bellman audit](docs/CONDITIONAL_ARCHIVE_INCUMBENT_BELLMAN_FIX_2026-10-29.md)
+fixes a **scientific planning bug**: the conditional archive had
+computed `max(E[posterior patch utility], other-patch utility)` rather
+than preserving the best unchanged archive candidate at **each
+diagnostic outcome**. It now computes the correct
+`E[max(posterior patch utility, other-patch utility)]`
+under the finite per-patch kernel assumptions. A separate exact-rational
+oracle checks 1,152 hypothetical one-step cases, alongside tested
+positive/negative release-branch outcomes and five-resource budgets.
+The prospective manuscript Method section now discloses this fix.
+
+An illustrative **synthetic** two-candidate counterexample has
+stop utility `0.84` and corrected expected diagnostic value `0.91`.
+These are **not model inference or real code-repair results** and do
+not support a performance claim.
+
 ## First prospective task contract and evaluator-boundary hardening (29 October 2026)
 
 The [new prospective PHP #104 review contract](docs/NEW_PROSPECTIVE_PHP_TASK_BOUNDARY_AUDIT_2026-10-29.md)
