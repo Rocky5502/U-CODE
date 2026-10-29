@@ -9,6 +9,7 @@ Group partitions are explicit and disjoint; fitting fails closed if a
 validation/evaluation record is accidentally mixed into training.
 """
 from dataclasses import dataclass
+import json
 from hashlib import sha256
 from math import isfinite
 from typing import Sequence
@@ -90,6 +91,9 @@ class FrozenDiagnosticLikelihood:
     unacceptable_n: int
     train_group_count: int
     training_fingerprint: str
+    acceptable_lineage_count: int = 0
+    unacceptable_lineage_count: int = 0
+    minimum_class_lineages: int = 2
 
     def forecast(self, cost: ResourceVector) -> DiagnosticForecast:
         return DiagnosticForecast(self.action, self.sensitivity,
@@ -104,6 +108,8 @@ def fit_diagnostic_likelihood(
     minimum_per_class: int = 5,
     minimum_groups: int = 2,
     pseudocount: float = 1.0,
+    *,
+    minimum_class_lineages: int = 2,
 ) -> FrozenDiagnosticLikelihood:
     """Estimate likelihoods only from all and exclusively training rows.
 
@@ -118,6 +124,8 @@ def fit_diagnostic_likelihood(
         raise ValueError("minimum_per_class must be >=1")
     if type(minimum_groups) is not int or minimum_groups < 2:
         raise ValueError("minimum_groups must be >=2")
+    if type(minimum_class_lineages) is not int or minimum_class_lineages < 2:
+        raise ValueError("minimum_class_lineages must be >=2")
     if not isfinite(pseudocount) or pseudocount <= 0:
         raise ValueError("pseudocount must be positive finite")
     if not records:
@@ -125,6 +133,8 @@ def fit_diagnostic_likelihood(
 
     seen: set[str] = set()
     groups: set[str] = set()
+    positive_groups: set[str] = set()
+    negative_groups: set[str] = set()
     positives = negatives = true_positive = true_negative = 0
     for r in records:
         if partitions.partition(r.lineage_group) != "train":
@@ -137,26 +147,44 @@ def fit_diagnostic_likelihood(
         groups.add(r.lineage_group)
         if r.oracle_acceptable:
             positives += 1
+            positive_groups.add(r.lineage_group)
             true_positive += int(r.positive_evidence)
         else:
             negatives += 1
+            negative_groups.add(r.lineage_group)
             true_negative += int(not r.positive_evidence)
     if min(positives, negatives) < minimum_per_class:
         raise ValueError("too few independently labeled positive/negative training tasks")
     if len(groups) < minimum_groups:
         raise ValueError("too few independent repository/fork lineage groups")
+    # A global two-lineage count is insufficient: a single lineage could
+    # contain ALL acceptable records, with another containing ALL failures.
+    # Class-conditional likelihoods would then confound repository identity
+    # with the latent acceptability class.
+    if min(len(positive_groups), len(negative_groups)) < minimum_class_lineages:
+        raise ValueError("too few independent lineages per acceptability class")
 
     # Beta(pseudocount, pseudocount) posterior means: finite in sparse strata.
     sensitivity = (true_positive + pseudocount) / (positives + 2 * pseudocount)
     specificity = (true_negative + pseudocount) / (negatives + 2 * pseudocount)
-    # Hash stable row identifiers, timestamps and outcomes for immutable
-    # reproducibility; a hash is not a provenance attestation or a source license.
-    lines = sorted(
-        f"{r.task_id}\t{r.lineage_group}\t{r.model_id}\t{r.action}\t"
-        f"{int(r.positive_evidence)}\t{r.oracle_acceptable}\t"
-        f"{r.evidence_time}\t{r.oracle_time}\t{r.oracle_id}"
-        for r in records
+    # Canonical structured encoding avoids delimiter-injection collisions:
+    # task IDs, group names, model IDs and oracle IDs may legitimately
+    # contain tabs/newlines, which make string-concatenated row hashes
+    # ambiguous. SHA256 fingerprints are reproducibility checks, NOT proof
+    # of upstream authenticity or independence.
+    lines = sorted(json.dumps(
+        [r.task_id, r.lineage_group, r.model_id, r.action,
+         r.positive_evidence, r.oracle_acceptable,
+         r.evidence_time, r.oracle_time, r.oracle_id],
+        ensure_ascii=False, separators=(",", ":"),
+    ) for r in records)
+    payload = json.dumps(["ucode-diagnostic-fit-v2", lines],
+                         ensure_ascii=False, separators=(",", ":"))
+    fingerprint = sha256(payload.encode("utf-8")).hexdigest()
+    return FrozenDiagnosticLikelihood(
+        model_id, action, sensitivity, specificity, positives, negatives,
+        len(groups), fingerprint,
+        acceptable_lineage_count=len(positive_groups),
+        unacceptable_lineage_count=len(negative_groups),
+        minimum_class_lineages=minimum_class_lineages,
     )
-    fingerprint = sha256(("\n".join(lines) + "\n").encode("utf-8")).hexdigest()
-    return FrozenDiagnosticLikelihood(model_id, action, sensitivity, specificity,
-                                      positives, negatives, len(groups), fingerprint)
