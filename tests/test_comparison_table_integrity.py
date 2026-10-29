@@ -68,7 +68,7 @@ class NoveltyTableIntegrityTests(unittest.TestCase):
 
     def test_removed_table_fails(self):
         text=self.paper.replace(r"\begin{table*}[t]",r"\begin{figure*}[t]",1)
-        with self.assertRaisesRegex(ValueError,"novelty comparison table"):
+        with self.assertRaisesRegex(ValueError,"mismatched LaTeX environments|novelty comparison table"):
             self.check(text)
 
     def test_all_bib_references_already_resolve(self):
