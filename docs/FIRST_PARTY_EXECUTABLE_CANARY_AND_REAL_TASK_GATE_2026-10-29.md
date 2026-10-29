@@ -89,8 +89,9 @@ Read-only current public issue checks reaffirmed:
 
 **These timestamps do not attest the actual issue-body text at
 22:55:42 UTC.** GitHub's issue timeline lacks a trustworthy full
-historical text snapshot; the issue body was subsequently updated.
-Do not recover "original" requirements from the solution PR, cite
+historical text snapshot; issue metadata was updated after PR
+creation, which does **not** by itself establish whether the body was
+edited. Do not recover "original" requirements from the solution PR, cite
 the PR's own tests as an independent oracle, or silently promote
 PHP #104 to an admitted historical task.
 
