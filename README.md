@@ -1,5 +1,7 @@
 # U-CODE
 
+> **NEW CHAT / AUTHORITATIVE HANDOVER (29 October 2026):** [V4 verified takeover and activation prompt](docs/UCODE_NEW_CHAT_MASTER_HANDOFF_V4_2026-10-29.md). This supersedes V3 as the startup guide and retains the exact R0–R16 research roles, recent merged PRs, full code/data/metric state, publisher source, strict scientific blockers and first next-chat sprint. V4's CI SHA is a dated baseline; re-query latest `main` and both Python CI results before using it. **No independently qualified runnable tasks or verified real effectiveness results.**
+
 **Uncertainty-Guided Search for Reliable AI-Generated Software**
 
 Research-stage, reproducible software-engineering framework investigating how
