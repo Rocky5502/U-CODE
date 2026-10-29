@@ -1,0 +1,110 @@
+{
+  "schema_version": "1.0",
+  "status": "PROSPECTIVE_LOCAL_CONFIGURATION_ONLY_BLOCKED",
+  "created_on": "2026-10-29",
+  "authoritative_model_registry": "configs/accepted_six_model_study_2026-10-25.json",
+  "authoritative_protocol": "configs/confirmatory_sbse_protocol_2026-10-25.json",
+  "external_source_registry": "data/discovery/dataset_source_registry_v2_2026-10-24.csv",
+  "planned_model_ids": [
+    "Qwen/Qwen2.5-Coder-7B-Instruct",
+    "Qwen/Qwen3-Coder-30B-A3B-Instruct",
+    "mistralai/Devstral-Small-2-24B-Instruct-2512",
+    "deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct",
+    "google/codegemma-1.1-7b-it",
+    "meta-llama/Llama-3.1-8B-Instruct"
+  ],
+  "planned_policy_ids": [
+    "ucode_conditional_bes",
+    "ucode_unconditional_bes",
+    "no_uncertainty_search",
+    "uncertainty_only",
+    "fixed_testing",
+    "selective_verification",
+    "mcts_search",
+    "replay_search"
+  ],
+  "primary_treatment": "ucode_conditional_bes",
+  "primary_comparator": "no_uncertainty_search",
+  "training_or_trial_approved": false,
+  "allowed_to_download_weights": false,
+  "allowed_to_execute_upstream_code": false,
+  "allowed_to_access_sealed_oracle": false,
+  "local_server_address": "127.0.0.1",
+  "hardware_observation": {
+    "observed": false,
+    "gpu_name": null,
+    "actual_vram_gb": null,
+    "driver_version": null,
+    "engine_version": null
+  },
+  "gates": {
+    "independent_task_admission": false,
+    "independent_rights_review": false,
+    "source_era_spec_attested": false,
+    "hidden_oracle_sealed": false,
+    "runner_isolated_and_attested": false,
+    "five_resources_measured": false,
+    "full_model_licenses_approved": false,
+    "checkpoint_revisions_pinned": false,
+    "policy_implementations_faithful": false
+  },
+  "local_model_overrides": [
+    {
+      "model_id": "Qwen/Qwen2.5-Coder-7B-Instruct",
+      "checkpoint_revision": null,
+      "tokenizer_revision": null,
+      "local_weight_path": null,
+      "quantization": null,
+      "engine": null,
+      "load_test_verified": false
+    },
+    {
+      "model_id": "Qwen/Qwen3-Coder-30B-A3B-Instruct",
+      "checkpoint_revision": null,
+      "tokenizer_revision": null,
+      "local_weight_path": null,
+      "quantization": null,
+      "engine": null,
+      "load_test_verified": false
+    },
+    {
+      "model_id": "mistralai/Devstral-Small-2-24B-Instruct-2512",
+      "checkpoint_revision": null,
+      "tokenizer_revision": null,
+      "local_weight_path": null,
+      "quantization": null,
+      "engine": null,
+      "load_test_verified": false
+    },
+    {
+      "model_id": "deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct",
+      "checkpoint_revision": null,
+      "tokenizer_revision": null,
+      "local_weight_path": null,
+      "quantization": null,
+      "engine": null,
+      "load_test_verified": false
+    },
+    {
+      "model_id": "google/codegemma-1.1-7b-it",
+      "checkpoint_revision": null,
+      "tokenizer_revision": null,
+      "local_weight_path": null,
+      "quantization": null,
+      "engine": null,
+      "load_test_verified": false
+    },
+    {
+      "model_id": "meta-llama/Llama-3.1-8B-Instruct",
+      "checkpoint_revision": null,
+      "tokenizer_revision": null,
+      "local_weight_path": null,
+      "quantization": null,
+      "engine": null,
+      "load_test_verified": false
+    }
+  ],
+  "experiment_assignments": 0,
+  "outcomes_measured": false,
+  "notes": "Fail-closed study preflight only. All models, tasks, policies and safety gates remain prospective. Do not use this config to authorize execution or infer hardware."
+}
