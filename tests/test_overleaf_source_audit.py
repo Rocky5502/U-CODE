@@ -18,9 +18,9 @@ class SpringerOverleafSourceAuditTests(unittest.TestCase):
             self.paper if paper is None else paper,
             self.bib if bib is None else bib)
 
-    def test_source_lint_handles_real_22_reference_paper(self):
+    def test_source_lint_handles_real_24_reference_paper(self):
         r = self.check()
-        self.assertEqual(r["citations_used"], 22)
+        self.assertEqual(r["citations_used"], 24)
         self.assertEqual(r["undefined_crossreferences"], [])
         self.assertTrue(r["environment_delimiters_balanced"])
         self.assertEqual(r["keyword_count"], 6)
