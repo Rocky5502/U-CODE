@@ -89,10 +89,10 @@ class LiveIssueQuarantineTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "exactly two"):
             self.check(x)
 
-    def test_chronology_sha_independent_source_check_still_required(self):
+    def test_chronology_cutoff_must_postdate_issue_creation(self):
         # Negative stage cannot upgrade even if attacker edits unrelated fields.
         x = deepcopy(self.chronology)
-        x["records"][0]["pr_created_at"] = "2026-10-23T12:18:49Z"
+        x["records"][0]["pr_created_at"] = "2026-10-22T22:53:09Z"
         with self.assertRaisesRegex(ValueError, "did not precede"):
             self.check(chronology=x)
 
