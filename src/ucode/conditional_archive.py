@@ -100,7 +100,9 @@ def plan_conditional_archive(
 
     Terminal value = MAX frozen predicted net release utility over archived
     patches. Evidence planning on each patch is conditional and depth-bounded,
-    but ignores future diagnostics on OTHER patches. Generation forecasts
+    but ignores future diagnostics on OTHER patches. The current best
+    other patch is an explicitly branchwise available outside option.
+    Generation forecasts
     value the best new candidate vs retaining incumbent and do not generate
     actual patches. Never call this full multi-candidate Bellman optimality.
     """
@@ -153,16 +155,27 @@ def plan_conditional_archive(
                    for p in applicable):
                 raise ValueError("missing frozen kernel for feasible diagnostic")
             continue
+        # Archive-preserving per-patch evidence: after EACH observable
+        # outcome the policy can still release the best OTHER existing patch.
+        # max(E[local value], incumbent) is mathematically WRONG because
+        # it fails to evaluate the surviving incumbent on each branch.
+        # This assumes diagnostics on this candidate do NOT update other
+        # candidates; joint cross-candidate correlation needs the separate
+        # correlated_archive_bes planner instead.
+        incumbent_other = max(
+            (v for other_sha, v in scores.items() if other_sha != sha),
+            default=0.0,
+        )
         plan = plan_conditional(
             state, applicable, dict(inputs.kernels)[sha], inputs.prices,
             inputs.rule, horizon=inputs.horizon,
+            outside_option=incumbent_other,
         )
         expanded += plan.states_expanded
         if plan.action in ("release", "abstain"):
             continue
         act = tools[plan.action]
-        global_value = max(plan.expected_net_utility,
-                           max((v for s,v in scores.items() if s != sha), default=0.0))
+        global_value = plan.expected_net_utility
         proposal = SharedDecision(act.action_id, act.kind, sha, act.cost)
         if global_value > best_score + 1e-12 or (
                 abs(global_value-best_score) <= 1e-12 and

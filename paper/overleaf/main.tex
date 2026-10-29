@@ -1847,7 +1847,28 @@ requires equal initial tool catalog, archive and budget.
 A public SHA256 menu digest excludes policy-private predictions.
 
 We retain \texttt{conditional\_archive.py} as a backward-compatible
-\emph{per-patch} reference, but the new
+\emph{per-patch} reference, now with an explicitly preserved
+incumbent at \emph{each} diagnostic outcome. For a candidate $x$
+and fixed terminal utility $u_{-x}$ from the best unchanged
+alternative, a one-step probe with visible outcome $z$ has value
+$\sum_z P(z\mid x)\max\{U_{\mathrm{rel}}(p_x\mid z),u_{-x}\}
+-\boldsymbol\lambda^\top\mathbf c$.
+The incorrect alternative
+$\max\{\sum_zP(z\mid x)U_{\mathrm{rel}}(p_x\mid z),u_{-x}\}
+-\boldsymbol\lambda^\top\mathbf c$ exchanges the expectation and
+maximum, and can suppress a beneficial diagnostic.
+In a strictly hypothetical rational witness, an existing patch
+with belief $0.92$ has release utility $0.84$ under symmetric
+$+1/-1$ rewards; a second patch with belief $0.5$ and a
+perfect, cost-$0.01$ test yields expected branchwise archive
+utility $0.91$, exceeding the stop value $0.84$.
+An independent exact-rational enumerator checks this mechanism
+on a finite grid of stipulated likelihoods. This remains a
+per-patch, fixed-incumbent reference: it cannot update sibling
+beliefs, plan tests of different siblings, establish oracle
+independence or demonstrate real software-repair improvement.
+
+The new
 \texttt{joint\_conditional\_bes.py} implements finite-horizon
 \emph{whole-archive} dynamic programming. A planning state is
 \begin{equation}
