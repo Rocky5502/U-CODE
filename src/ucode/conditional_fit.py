@@ -7,6 +7,7 @@ Train/evaluation fork groups are strictly segregated. No hidden evaluator
 outcome is ever returned to the runtime action policy.
 """
 from dataclasses import dataclass
+import json
 from hashlib import sha256
 from math import isfinite
 from typing import Sequence
@@ -68,6 +69,8 @@ class ConditionalFitManifest:
     minimum_per_class: int
     input_fingerprint: str
     status: str = "training_only_not_independently_validated"
+    minimum_lineages_per_context_class: int = 2
+    weakest_class_context_lineages: int = 0
 
 
 def fit_history_conditional_kernel(
@@ -79,6 +82,7 @@ def fit_history_conditional_kernel(
     minimum_per_class: int = 1,
     minimum_lineages: int = 2,
     pseudocount: float = 1.0,
+    minimum_lineages_per_context_class: int = 2,
 ) -> ConditionalFitManifest:
     """Fit pre-oracle P(+|Y,h) only on complete training-group panels.
 
@@ -101,6 +105,9 @@ def fit_history_conditional_kernel(
         raise ValueError("minimum_per_class must be at least one")
     if type(minimum_lineages) is not int or minimum_lineages < 2:
         raise ValueError("minimum_lineages must be at least two")
+    if (type(minimum_lineages_per_context_class) is not int
+            or minimum_lineages_per_context_class < 2):
+        raise ValueError("minimum_lineages_per_context_class must be at least two")
     if type(pseudocount) not in (int, float) or not isfinite(pseudocount) or pseudocount <= 0:
         raise ValueError("smoothing must be positive finite")
     if not traces:
@@ -111,6 +118,9 @@ def fit_history_conditional_kernel(
     # For each (action, visible prefix), track acceptable/unacceptable counts
     # and positive outcomes separately, without any evaluation fold labels.
     counts: dict[tuple[str, tuple[Observation, ...]], list[int]] = {}
+    context_lineages: dict[
+        tuple[str, tuple[Observation, ...]], tuple[set[str], set[str]]
+    ] = {}
     fingerprints: list[str] = []
     for trace in traces:
         if not isinstance(trace, FullPanelTrainingTrace):
@@ -125,20 +135,25 @@ def fit_history_conditional_kernel(
             raise ValueError("duplicate task in training panel")
         used_tasks.add(trace.task_id)
         groups.add(trace.lineage_group)
-        fingerprints.append(
-            f"{trace.task_id}|{trace.lineage_group}|{trace.model_id}|"
-            f"{','.join(trace.action_order)}|"
-            f"{''.join('1' if b else '0' for b in trace.outcomes)}|"
-            f"{','.join(str(t) for t in trace.visible_times)}|"
-            f"{trace.oracle_acceptable}|{trace.oracle_time}|{trace.oracle_id}"
-        )
+        # Structured JSON avoids collisions when identifiers contain '|',
+        # commas or newlines. This is only an input-change fingerprint;
+        # no signature or independent source attestation is implied.
+        fingerprints.append(json.dumps(
+            [trace.task_id, trace.lineage_group, trace.model_id,
+             list(trace.action_order), list(trace.outcomes),
+             list(trace.visible_times), trace.oracle_acceptable,
+             trace.oracle_time, trace.oracle_id],
+            ensure_ascii=False, separators=(",", ":"),
+        ))
         hist: tuple[Observation, ...] = ()
         for action, positive in zip(trace.action_order, trace.outcomes):
             key = (action, hist)
             # indices: acceptable_total, unacceptable_total,
             # acceptable_positive, unacceptable_positive
             stats = counts.setdefault(key, [0, 0, 0, 0])
+            supports = context_lineages.setdefault(key, (set(), set()))
             label = trace.oracle_acceptable
+            supports[0 if label else 1].add(trace.lineage_group)
             stats[0 if label else 1] += 1
             if positive:
                 stats[2 if label else 3] += 1
@@ -147,20 +162,40 @@ def fit_history_conditional_kernel(
         raise ValueError("too few independent training repository lineages")
 
     rows = []
+    weakest_context = min(
+        min(len(supports[0]), len(supports[1]))
+        for supports in context_lineages.values()
+    )
     for (action, history), (good, bad, good_positive, bad_positive) in sorted(
         counts.items(), key=lambda z: (z[0][0], tuple(
             (h.action_id, h.positive) for h in z[0][1]))):
         if min(good, bad) < minimum_per_class:
             raise ValueError("sparse conditional context; no silent backoff is allowed")
+        # The existing global two-lineage gate cannot rule out that an
+        # action/history/label cell draws exclusively from one repository.
+        # Such an estimate could confound latent correctness with repository
+        # structure and make the sequential planner appear calibrated.
+        supports = context_lineages[(action, history)]
+        if min(len(supports[0]), len(supports[1])) < minimum_lineages_per_context_class:
+            raise ValueError(
+                "insufficient independent training lineages per conditional "
+                "context and acceptability class"
+            )
         rows.append(ConditionalRow(
             action, history,
             (good_positive + pseudocount)/(good + 2*pseudocount),
             (bad_positive + pseudocount)/(bad + 2*pseudocount),
         ))
-    fingerprint = sha256(("\n".join(sorted(fingerprints))+"\n").encode("utf-8")).hexdigest()
+    payload = json.dumps(
+        ["ucode-conditional-fit-v2", sorted(fingerprints)],
+        ensure_ascii=False, separators=(",", ":"),
+    )
+    fingerprint = sha256(payload.encode("utf-8")).hexdigest()
     return ConditionalFitManifest(
         kernel=ConditionalKernel(tuple(rows)),
         training_task_count=len(traces), lineage_count=len(groups),
         context_count=len(rows), minimum_per_class=minimum_per_class,
         input_fingerprint=fingerprint,
+        minimum_lineages_per_context_class=minimum_lineages_per_context_class,
+        weakest_class_context_lineages=weakest_context,
     )

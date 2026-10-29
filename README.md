@@ -36,6 +36,23 @@ specification, rights, sealed oracle and sandbox evidence are still required.
 
 The last pre-refactor `main` CI was green with 1,142 offline tests per Python version. **Always inspect the current [CI](https://github.com/Rocky5502/U-CODE/actions)** for the latest count, SHA and outcome.
 
+## Training-only Bayesian diagnostics: lineage-support and hash hardening (29 October 2026)
+
+A [new scientific validity audit](docs/CLASS_CONDITIONAL_LINEAGE_SUPPORT_AUDIT_2026-10-29.md)
+closes a gap in the diagnostic likelihood estimators. Requiring two
+repository/fork lineages *overall* cannot establish class-specific support
+when one source group supplies only acceptable cases and another only
+unacceptable ones. The conditional estimator now checks **at least
+two training lineages per class per observed action/history cell**;
+the unconditional estimator applies the same principle per
+correctness class. Sparse or source-confounded estimates fail closed.
+
+Both fitters also use versioned structured input fingerprints instead
+of ambiguous delimiter-concatenated identifiers. The source-only
+regressions and proposed Springer Methods are updated. **These changes
+do not establish empirical calibration or real model correctness**;
+independent task admission and held-out lineage validation remain blocked.
+
 ## Corrected archive-conditional Bayesian value of information (29 October 2026)
 
 The [incumbent-preserving Bellman audit](docs/CONDITIONAL_ARCHIVE_INCUMBENT_BELLMAN_FIX_2026-10-29.md)
