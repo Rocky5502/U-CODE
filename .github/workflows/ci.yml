@@ -51,6 +51,8 @@ jobs:
         run: python -m scripts.audit_dataset_quality --output-dir dist/ucode-pr-metadata-clean
       - name: Verify exported eight-file dataset SHA256 and no extra labels
         run: python -m scripts.verify_dataset_release dist/ucode-pr-metadata-clean
+      - name: Reproduce evaluator-only postterminal ITT and missingness bounds (synthetic, NO real oracle)
+        run: python -m scripts.smoke_postterminal_accounting
       - name: Export dataset-grounded metric definitions and study readiness with no invented results
         run: python -m scripts.export_research_readiness --output-dir dist/ucode-research-readiness
       - name: Upload metric dictionary and independently auditable research readiness summary
