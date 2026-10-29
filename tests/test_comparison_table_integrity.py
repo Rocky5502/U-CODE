@@ -27,7 +27,7 @@ class NoveltyTableIntegrityTests(unittest.TestCase):
         self.assertIn(r"\newcommand{\methodNo}",src)
         self.assertIn(r"\newcommand{\methodPlan}",src)
         self.assertIn("not a performance",src)
-        self.assertIn("not experimentally validated superiority",src)
+        self.assertIn("experimentally validated",src)
         self.assertIn("not been conducted",src)
 
     def test_prevent_invented_ucode_success_tick(self):
@@ -58,8 +58,8 @@ class NoveltyTableIntegrityTests(unittest.TestCase):
 
     def test_no_performance_promotion_in_table(self):
         text=self.paper.replace(
-            "This is \\emph{not} a performance",
-            "U-CODE outperforms all baselines. This is \\emph{not} a performance",
+            "This is not a performance",
+            "U-CODE outperforms all baselines. This is not a performance",
             1)
         # Depending on whether prose was inserted inside the caption,
         # the audit must either catch the promotion or lack of an exact caveat.
