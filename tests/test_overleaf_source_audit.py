@@ -79,6 +79,20 @@ class SpringerOverleafSourceAuditTests(unittest.TestCase):
         extra = self.paper + "\n% \\eqref{fake:fromcomment}\n"
         self.check(extra)
 
+    def test_corrupted_premature_document_end_rejected(self):
+        # Regression: an unsafe string replacement accidentally duplicated the
+        # manuscript after an embedded end-of-document; never accept it again.
+        broken=self.paper.replace(
+            r"\section{Results}",
+            r"\end{document}"+"\\n"+r"\section{Results}",1)
+        self.assertNotEqual(broken, self.paper)
+        with self.assertRaisesRegex(ValueError,"duplicate/premature"):
+            self.check(broken)
+
+    def test_trailing_noncomment_content_after_end_rejected(self):
+        with self.assertRaisesRegex(ValueError,"trailing content"):
+            self.check(self.paper+"\\n"+"UNAUTHORIZED SECOND MANUSCRIPT")
+
     def test_escape_percent_preserved_in_comment_strip(self):
         s = "valid 10\\% samples % private draft comment"
         self.assertIn("10\\% samples", uncomment(s))

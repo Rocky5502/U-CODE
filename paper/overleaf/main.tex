@@ -2335,6 +2335,51 @@ fully qualified task execution and evaluator-only
 oracle joins. The machine-readable status export is
 restricted to data quality and prospective readiness.
 
+\paragraph{Evaluator-side selective-release and attrition accounting.}
+To avoid success inflation from incomplete tool sessions, an
+additional post-terminal reporting contract requires the
+\emph{entire} frozen assignment matrix and the exact
+evaluator verdict for every released patch. Let $N_a$
+denote the number of policy-$a$ assigned cells, $r_a$
+observed releases with verdicts, $s_a$ independently
+judged successful releases, $w_a$ known erroneous
+releases, and $u_a$ infrastructure failures whose
+release and task correctness are unknown.
+Under no additional outcome assumptions, we report
+the following missingness envelopes:
+\begin{align}
+p_a^{\mathrm{ITT}} &\in
+ \bigl[s_a/N_a,\;(s_a+u_a)/N_a\bigr],
+ \label{eq:itt_missing_envelope}\\
+\mathrm{coverage}_a &\in
+ \bigl[r_a/N_a,\;(r_a+u_a)/N_a\bigr].
+ \label{eq:coverage_missing_envelope}
+\end{align}
+When $r_a+u_a>0$, the worst/best \emph{potential}
+conditional wrong-release fraction lies in
+$\bigl[w_a/(r_a+u_a),\;
+(w_a+u_a)/(r_a+u_a)\bigr]$.
+When no observed or potentially unknown run releases
+a patch, wrong-release risk is undefined, not zero.
+The observed-release-only fraction $w_a/r_a$
+is labeled separately and defined only for $r_a>0$.
+Measured timeouts and safety stops count as
+non-successes in the assigned-task denominator
+rather than disappearing from analysis. The five
+mean \emph{reported} resource components are
+kept separate, and are not authenticated metering
+simply because a caller marks a receipt as measured.
+
+The paired contrast retains task/model/seed/budget
+matching and conservative infrastructure missingness
+bounds. A descriptive bootstrap point estimate is
+suppressed when any registered arm has incomplete
+outcomes. These are \emph{partial-identification
+sensitivity bounds}, not confidence intervals,
+risk-control certificates or real experimental
+measurements. The current tests use fabricated,
+explicitly synthetic evaluator-verdict fixtures.
+
 \section{Results}\label{sec:results}
 % NO EMPIRICAL RQ RESULTS EXIST AT THIS MANUSCRIPT STATE.
 % Add policy outcomes and uncertainty intervals ONLY after qualified

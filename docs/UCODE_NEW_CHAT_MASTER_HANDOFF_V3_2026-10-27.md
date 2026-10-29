@@ -1,4 +1,24 @@
 # U-CODE — NEW-CHAT MASTER TAKEOVER PROMPT AND SCIENTIFIC HANDOVER (V3)
+> **29 OCT 2026 — POST-TERMINAL ITT, RELEASE RISK AND MISSINGNESS REPORTING:**
+> [Evaluation-side accounting](../src/ucode/postterminal_accounting.py),
+> [adversarial tests](../tests/test_postterminal_accounting.py) and
+> [synthetic smoke](../scripts/smoke_postterminal_accounting.py)
+> now preserve the full assigned task/model/seed/budget denominator,
+> separately count releases, abstentions, timeouts, safety stops,
+> infrastructure failures, reported five-component costs, and exact
+> evaluator SHA joins after termination. Missing infrastructure outcomes
+> receive worst/best ITT success, release-coverage and conditional
+> wrong-release sensitivity envelopes; an all-abstain policy has null
+> wrong-release risk, NOT a certified 0% risk. A paired point/cluster
+> interval is suppressed when the registered matrix includes attrition.
+> [Methodology](POSTTERMINAL_ITTS_RELEASE_AND_ATTRITION_2026-10-29.md),
+> professional README and Springer LaTeX updated, plus a manuscript
+> source-lint regression protecting against duplicated end-of-document.
+> **Every input verdict in the tests is SYNTHETIC**; no independent task,
+> real model call, signed gold verdict, measured physical five-vector or
+> paired effectiveness result now exists. No live Overleaf sync or PDF
+> compile. Recheck main CI before citing any test number.
+>
 > **29 OCT 2026 — DATASET RELEASE SEMANTICS AND SIX-METRIC REGISTRY:**
 > The 120-link source-free metadata release now undergoes cross-file
 > semantic revalidation (`src/ucode/release_semantics.py`) AFTER verifying

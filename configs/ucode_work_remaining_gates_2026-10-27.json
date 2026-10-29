@@ -498,5 +498,26 @@
     "springer_pdf_compiled": false,
     "scientific_dataset_ready": false,
     "verified_ci": "VERIFY_CURRENT_MAIN_AFTER_MERGE"
+  },
+  "progress_2026_10_29_postterminal_outcome_accounting": {
+    "stage": "SYNTHETIC_EVALUATOR_SIDE_REPORTING_ONLY_NOT_REAL_RQ3",
+    "module": "src/ucode/postterminal_accounting.py",
+    "tests": "tests/test_postterminal_accounting.py",
+    "smoke": "scripts/smoke_postterminal_accounting.py",
+    "method": "docs/POSTTERMINAL_ITTS_RELEASE_AND_ATTRITION_2026-10-29.md",
+    "paper": "paper/overleaf/main.tex",
+    "uses_full_frozen_assignment_matrix": true,
+    "requires_exact_released_patch_evaluator_join": true,
+    "preserves_abstain_timeout_safety_in_denominator": true,
+    "infra_unknown_coverage_and_wrong_release_bounds": true,
+    "mean_five_cost_dimensions_reported_but_not_attested": true,
+    "prevents_complete_case_point_when_partial": true,
+    "actual_authenticated_oracle_verdicts": 0,
+    "authenticated_resource_meter_runs": 0,
+    "real_paired_policy_effects": 0,
+    "approved_real_tasks": 0,
+    "springer_pdf_compiled": false,
+    "live_overleaf_synced": false,
+    "verified_ci": "RECHECK_POST_MERGE_MAIN"
   }
 }
