@@ -67,7 +67,9 @@ def _render(image_ref: str, limits: DryRunLimits) -> tuple[str, ...]:
     cpu = limits.cpu_seconds_per_process
     return (
         "docker", "run", "--rm", "--pull=never",
-        "--network=none", "--read-only", "--user=65534:65534",
+        "--network=none", "--pid=private", "--ipc=private",
+        "--uts=private", "--cgroupns=private",
+        "--read-only", "--user=65534:65534",
         "--cap-drop=ALL", "--security-opt=no-new-privileges",
         "--pids-limit=" + str(limits.max_pids),
         "--memory=" + str(memory),
@@ -152,7 +154,9 @@ def check_untrusted_inspect_shape(
     if not isinstance(cfg, dict) or not isinstance(host, dict):
         raise ValueError("Config and HostConfig required")
     expected={
-        "NetworkMode": "none", "ReadonlyRootfs": True,
+        "NetworkMode": "none", "PidMode": "private",
+        "IpcMode": "private", "UTSMode": "private",
+        "CgroupnsMode": "private", "ReadonlyRootfs": True,
         "Privileged": False, "CapAdd": [],
         "CapDrop": ["ALL"], "SecurityOpt": ["no-new-privileges"],
         "Binds": [], "Mounts": [], "Devices": [], "DeviceRequests": [],
