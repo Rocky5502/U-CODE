@@ -146,6 +146,26 @@
 > Check current GitHub `main` and postmerge CI; old counters below
 > are historical, not live!
 >
+> **29 OCT 2026 — CITED NOVELTY TABLE + THIRD SYNTHETIC REFERENCE:**
+> The canonical Springer source `paper/overleaf/main.tex` contains a
+> seven-cited-method neutral check/cross positioning table under Related
+> Work (`tab:prior-method-positioning`). A dagger on U-CODE ticks states
+> that these are **offline or prospective method features**, not measured
+> superiority; the U-CODE empirical-evidence cell remains X. The BibTeX
+> entries for SWE-Search, GA4GC, SWE-Replay, SWE-Verifier, PATSSEL,
+> RETRACE and Dockerless already exist and are checked by
+> `scripts/audit_overleaf_sources.py` + new adversarial paper tests.
+> Separate engineering: `uncertainty_only_reference.py` implements a
+> *third scoped local SYNTHETIC reference* using predeclared hypothetical
+> confidence and one public test, with no gold outcome, fitted calibration,
+> hidden oracle, real model or trusted resource meter. The three scoped
+> labels are fixed_testing / no_uncertainty_search / uncertainty_only;
+> **0 of 8 final research comparators is fidelity-approved for real tasks**.
+> Full research note:
+> `docs/NOVELTY_COMPARISON_THIRD_CONTROL_2026-10-29.md`.
+> Real experiment admission remains 0; source-only GitHub edits are not
+> a live Overleaf update or verified Springer PDF. Check main HEAD and CI.
+>
 **Version:** 3.0; prepared 27 October 2026.  
 **Repository:** https://github.com/Rocky5502/U-CODE (canonical working branch: main)  
 **Target:** Springer *Automated Software Engineering* — special issue *Search-Based Software Engineering in the Era of LLMs and Agentic Systems*. Planning deadline: **30 January 2027**, recheck the publisher.  

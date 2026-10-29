@@ -140,7 +140,7 @@ class AdaptiveReferencesTests(unittest.TestCase):
             run_adaptive_synthetic_reference("","fixed_testing",CAP,self.book)
 
     def test_no_forged_gold_result_or_policy_registrations(self):
-        with self.assertRaisesRegex(ValueError,"only two"):
+        with self.assertRaisesRegex(ValueError,"only three"):
             self.check("ucode_conditional_bes")
         with self.assertRaises(TypeError):
             run_adaptive_synthetic_reference(
