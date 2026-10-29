@@ -36,6 +36,24 @@ specification, rights, sealed oracle and sandbox evidence are still required.
 
 The last pre-refactor `main` CI was green with 1,142 offline tests per Python version. **Always inspect the current [CI](https://github.com/Rocky5502/U-CODE/actions)** for the latest count, SHA and outcome.
 
+## Executable first-party repair canary (29 October 2026)
+
+The [first-party executable canary and real-task admission report](docs/FIRST_PARTY_EXECUTABLE_CANARY_AND_REAL_TASK_GATE_2026-10-29.md)
+now exercises **actual trusted Python code** for two frozen public repair
+alternatives. The intentionally faulty fixture passes **4/7** and the
+corrected fixture **7/7** public cases; an independent seal, real
+repository task, LLM run and physically isolated sandbox are **not**
+claimed. The first-party subprocess smoke runs in CI.
+
+```bash
+python -m scripts.smoke_first_party_executable_canary
+```
+
+An optional [operator-only local rootless Docker probe](scripts/probe_local_oci_first_party.py)
+can validate a pre-reviewed, locally cached digest-pinned image with a
+fixed first-party print fixture. It is **not** called by CI; it cannot
+execute external repository tasks or grant real-study approval.
+
 ## Ten senior SE/AI research perspective audit (29 October 2026)
 
 The [ten-perspective source-code audit](docs/TEN_SENIOR_SE_AI_CODE_REVIEW_2026-10-29.md)
