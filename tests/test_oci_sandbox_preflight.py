@@ -76,7 +76,7 @@ class OciDryRunPreflightTests(unittest.TestCase):
         self.assertNotIn("--mount",args)
         self.assertNotIn("sh",args)
         self.assertNotIn("bash",args)
-        self.assertEqual(args[-5:-4],("-I",))
+        self.assertEqual(args[-4:-1],("-I","-S","-c"))
         self.assertTrue(args[-1].startswith("print("))
 
     def test_arg_order_and_hash_deterministic(self):
@@ -217,7 +217,7 @@ class OciDryRunPreflightTests(unittest.TestCase):
         self.assertFalse(res.approved_external_task_runner)
 
     def test_future_supervisor_deadline_is_not_silently_enforced(self):
-        self.assertIn("future_supervisor",self.plan.limits.__dict__)
+        self.assertIn("max_wall_seconds_for_future_supervisor",self.plan.limits.__dict__)
         self.assertFalse(self.plan.independently_attested_five_resource_limits)
 
 
