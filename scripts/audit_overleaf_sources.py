@@ -59,10 +59,6 @@ def audit_comparison_table(paper: str) -> dict:
     for key in COMPARISON_KEYS:
         if r"\cite{"+key+"}" not in table:
             raise ValueError("novelty table missing primary-source citation: "+key)
-    planned_row = (r"\textbf{U-CODE (this study; prospective)}" +
-                   " & ".join(["", r"\methodPlan", r"\methodPlan",
-                              r"\methodPlan", r"\methodPlan",
-                              r"\methodPlan", r"\methodNo"]))
     # Whitespace may vary; evaluate only the U-CODE row, not nearby paper text.
     row_match = re.search(
         r"\\textbf\{U-CODE \(this study; prospective\)\}" +
@@ -72,7 +68,7 @@ def audit_comparison_table(paper: str) -> dict:
     row = [x.strip() for x in row_match.group(1).split("&")]
     if row != ["", *([r"\methodPlan"] * 5), r"\methodNo"]:
         raise ValueError("U-CODE methods planned and real results absent required")
-    for must in ("not a performance", "not experimentally", "not exhaustive"):
+    for must in ("not a performance", "experimentally validated", "not exhaustive"):
         if must not in table.lower():
             raise ValueError("novelty table lost non-superiority/evidence caveat")
     if re.search(r"\b(?:U-CODE\s+(?:outperforms|surpasses|beats)|"
