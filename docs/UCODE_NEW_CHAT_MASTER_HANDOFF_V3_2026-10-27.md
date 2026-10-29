@@ -1,4 +1,22 @@
 # U-CODE — NEW-CHAT MASTER TAKEOVER PROMPT AND SCIENTIFIC HANDOVER (V3)
+> **29 OCT 2026 — OCI SANDBOX DRY-RUN PREFLIGHT (P0-2, NOT REAL ISOLATION):**
+> The [security specification](OCI_SANDBOX_LAUNCH_PREFLIGHT_2026-10-29.md),
+> `src/ucode/oci_sandbox_preflight.py`, adversarial tests and
+> `scripts/smoke_oci_sandbox_preflight.py` add a **non-executing**
+> digest-pinned Python image command-construction contract. It insists on
+> no network, read-only filesystem, numeric non-root container user,
+> dropped capabilities, no-new-privileges, private cgroup/IPC namespaces,
+> Docker-default private PID/UTS namespaces, limited memory/PIDs/CPU
+> and a fixed first-party print fixture. Security-relevant fields in a
+> *caller supplied* Docker-inspect-shaped dict are shape-audited, but
+> this CANNOT attest a genuine daemon. The CI image sha256 is FAKE;
+> Docker is NEVER invoked. A wall supervisor, actual cgroup/rootless
+> host security inspection, independent network denial and five true
+> resource-meter quotas remain missing. **Zero independently admitted
+> executable tasks, zero real model/tool evaluations, zero hidden oracles.**
+> The Springer LaTeX source is updated in GitHub only, not live Overleaf.
+> Check latest current main CI before reporting test count.
+>
 > **29 OCT 2026 — CONDITIONAL BES THROUGH MATCHED PUBLIC ACTION-ID REPLAY:**
 > The first-party reference now connects history-conditioned finite-horizon
 > diagnostic BES to the candidate-bound shared public response ledger:
