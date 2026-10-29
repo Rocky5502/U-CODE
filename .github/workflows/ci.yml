@@ -19,6 +19,17 @@ jobs:
         run: python -m pip install -e .
       - name: Run offline unit tests
         run: python -m unittest discover -s tests -v
+      - name: Cross-check 120 discovery PRs and 13 source leads (NO external downloads)
+        run: python -m scripts.audit_dataset_cohort_crosswalk
+      - name: Export 1000 pending scientific reviewer-perspective questions (NOT peer review)
+        run: python -m scripts.export_1000_research_lenses --output dist/ucode-review-1000-lenses.json
+      - name: Publish prospective 1000-lens review checklist (ZERO completed reviews)
+        if: matrix.python-version == '3.12'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ucode-1000-pending-research-review-lenses
+          path: dist/ucode-review-1000-lenses.json
+          if-no-files-found: error
       - name: Validate repository tracked files (NO private datasets, weights, or keys)
         run: python -m scripts.audit_repository_hygiene
       - name: Validate six-model eight-policy local preflight (BLOCKED; NO model execution)
