@@ -25,8 +25,8 @@ def fake_inspect(plan):
         },
         "HostConfig":{
             "NetworkMode":"none",
-            "PidMode":"private","IpcMode":"private",
-            "UTSMode":"private","CgroupnsMode":"private",
+            "PidMode":"","IpcMode":"private",
+            "UTSMode":"","CgroupnsMode":"private",
             "ReadonlyRootfs":True,
             "Privileged":False,"CapAdd":[],"CapDrop":["ALL"],
             "SecurityOpt":["no-new-privileges"],
@@ -67,8 +67,8 @@ class OciDryRunPreflightTests(unittest.TestCase):
         args=self.plan.argv
         for required in ("--network=none","--read-only","--cap-drop=ALL",
                          "--security-opt=no-new-privileges",
-                         "--pid=private","--ipc=private","--uts=private",
-                         "--cgroupns=private","--user=65534:65534","--pull=never",
+                         "--ipc=private","--cgroupns=private",
+                         "--user=65534:65534","--pull=never",
                          "--tmpfs=/tmp:rw,nosuid,nodev,noexec,size=67108864,uid=65534,gid=65534",
                          "--memory=268435456","--memory-swap=268435456",
                          "--pids-limit=32","--ulimit=cpu=2:2"):
@@ -76,6 +76,7 @@ class OciDryRunPreflightTests(unittest.TestCase):
         self.assertEqual(args[0:2],("docker","run"))
         self.assertNotIn("--privileged",args)
         self.assertNotIn("--network=host",args)
+        self.assertFalse(any(x.startswith("--pid=") or x.startswith("--uts=") for x in args))
         self.assertNotIn("-v",args)
         self.assertNotIn("--mount",args)
         self.assertNotIn("sh",args)
