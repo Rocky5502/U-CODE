@@ -27,6 +27,22 @@ without calibrated uncertainty. No empirical superiority is claimed.
 [Canonical Springer manuscript](paper/overleaf/main.tex) ·
 [Research blockers](configs/ucode_work_remaining_gates_2026-10-27.json).
 
+### Evaluator-only ITT and selective-release sensitivity analysis
+
+U-CODE now includes an explicit
+[post-terminal policy accounting module](src/ucode/postterminal_accounting.py)
+that audits the **entire assigned task/model/seed/budget matrix** before
+estimating full-task success, release coverage, conditional wrong-release
+risk, failures and average five-resource costs. Infrastructure failures
+produce worst/best missingness bounds rather than disappearing from the
+denominator; a policy that never releases has **undefined (N/A)** observed
+wrong-release risk, not `0%`.
+
+[Methods, mathematical definitions and limits](docs/POSTTERMINAL_ITTS_RELEASE_AND_ATTRITION_2026-10-29.md)
+· [Synthetic reproducibility smoke](scripts/smoke_postterminal_accounting.py).
+**All tests are first-party synthetic records, not real patch outcomes,
+authenticated evaluation evidence or risk guarantees.**
+
 ### Reproduce offline checks
 
 ```bash
