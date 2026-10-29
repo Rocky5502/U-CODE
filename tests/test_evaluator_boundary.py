@@ -157,6 +157,31 @@ class ProspectiveOracleBoundaryTests(unittest.TestCase):
         self.assertFalse(result["independently_admitted"])
 
 
+    def test_original_issue_must_belong_to_frozen_repository(self):
+        x=self.objects[1]
+        for bad in (
+            "https://github.com/other/project/issues/168",
+            "https://github.com/"+x.repository+"/pull/172",
+            "https://github.com/"+x.repository+"/issues/168?gold=test",
+            "https://github.com/"+x.repository+"/issues/168#oracle",
+            "https://github.com/"+x.repository+"/issues/0",
+            "https://github.com/"+x.repository+"/issues/168/extra",
+            "https://github.com.evil.example/"+x.repository+"/issues/168",
+            "http://github.com/"+x.repository+"/issues/168",
+            None, True,
+        ):
+            with self.subTest(bad=bad),self.assertRaisesRegex(
+                    ValueError,"original issue URL"):
+                replace(x,issue_ref=bad)
+
+    def test_invalid_repo_identity_cannot_define_policy_input(self):
+        x=self.objects[1]
+        for bad in ("../repo","owner/..","owner/.", "other/repo/name",
+                    "owner/repo?secret=1", 27, None):
+            with self.subTest(bad=bad),self.assertRaisesRegex(
+                    ValueError,"owner/repository"):
+                replace(x,repository=bad)
+
     def test_visible_spec_rejects_network_and_query_gold_smuggling(self):
         x = self.objects[0]
         refs = (
