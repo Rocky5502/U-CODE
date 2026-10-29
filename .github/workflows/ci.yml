@@ -51,6 +51,15 @@ jobs:
         run: python -m scripts.audit_dataset_quality --output-dir dist/ucode-pr-metadata-clean
       - name: Verify exported eight-file dataset SHA256 and no extra labels
         run: python -m scripts.verify_dataset_release dist/ucode-pr-metadata-clean
+      - name: Export dataset-grounded metric definitions and study readiness with no invented results
+        run: python -m scripts.export_research_readiness --output-dir dist/ucode-research-readiness
+      - name: Upload metric dictionary and independently auditable research readiness summary
+        if: matrix.python-version == '3.12'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ucode-research-readiness-metrics-v1
+          path: dist/ucode-research-readiness/
+          if-no-files-found: error
       - name: Publish clean metadata dataset for independent inspection
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4
