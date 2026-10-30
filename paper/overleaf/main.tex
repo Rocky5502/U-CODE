@@ -1008,6 +1008,68 @@ test-origins, repository lineages, scenario
 priors and negative-control policies must be
 independently frozen before a real study.
 
+\paragraph{Frozen evidence-model integrity and observational limits.}
+The two-level diagnostic reference now binds each
+policy-visible belief state to a versioned content
+digest of \emph{every} class-conditional likelihood
+row, its action and its ordered visible-history
+context. Replacing a likelihood table under the
+same scenario name between observations is
+rejected; the digest is an input-consistency
+mechanism, not a third-party training-data
+attestation or calibration certificate.
+
+For any two distinct latent explanation atoms
+$z=(\theta,y)$ and $z'=(\theta',y')$, define
+$\Delta(a,h)=|P(O_a=+\mid z,h)-
+P(O_a=+\mid z',h)|$.
+The new finite observability audit enumerates
+diagnostic sequences respecting global single-use
+actions and hard vector budgets, checking all
+public histories reachable under \emph{both}
+atoms. If every feasible conditional row has
+$\Delta(a,h)=0$, no adaptive policy restricted to
+those diagnostics can change the \emph{relative
+posterior odds} of $z$ and $z'$; Bayes updates
+multiply both masses by identical likelihoods.
+This does not imply unchanged individual
+masses in the full latent hypothesis ensemble.
+
+For a horizon of $H$ and
+$\epsilon_H=\max_{a,h}\Delta(a,h)$ over shared
+reachable prefixes, sequential maximal coupling
+also gives the deliberately conservative bound
+\[
+ {\rm TV}(P_z(\mathcal H_H),P_{z'}(\mathcal H_H))
+ \leq\min\{1,H\epsilon_H\}.
+\]
+Conditional on the prior being restricted and
+renormalized to these two atoms, when their
+correctness labels differ, any estimator of $Y$
+using only the admissible diagnostic transcript has
+Bayes classification error at least
+\[
+ \min\{\pi_z,\pi_{z'}\}
+ \max\{0,1-H\epsilon_H\}.
+\]
+This follows from the common-history coupling
+and the identity
+$\int\min(f_z,f_{z'})=1-{\rm TV}(f_z,f_{z'})$.
+It is a \emph{pair-conditional lower bound},
+not the whole-dataset error rate or a guarantee
+against out-of-model tool behavior. An independent
+exact-rational two-probe transcript enumerator
+checks the bound across a grid of 27 hypothetical
+configurations, in addition to exact-equality,
+zero-budget, delayed-witness and input-mutation
+falsifiers. For two probes with assumed positive
+likelihoods $5/8$ versus $3/8$, the exact transcript
+total variation is $1/4$, whereas the simple
+coupling bound is $1/2$: it must \emph{not} be
+reported as tight. These checks do not produce
+new code-repair accuracy, real-task calibration
+or a novel generic Bayes-adaptive POMDP theorem.
+
 \paragraph{Algorithmic completeness and limitations.}
 The one-step nominal, one-step finite-scenario,
 and diagnostic-only look-ahead implementations
