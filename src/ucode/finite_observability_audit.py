@@ -42,6 +42,9 @@ class ObservationalEquivalenceAudit:
     witness_action_id: str | None
     witness_history: tuple[Observation, ...] | None
     witness_positive_likelihoods: tuple[float, float] | None
+    maximum_shared_history_discrepancy: float = 0.0
+    adaptive_transcript_tv_upper_bound: float = 0.0
+    conditional_two_atom_error_lower_bound: float | None = None
     interpretation: str = "FINITE_FROZEN_DIAGNOSTIC_OBSERVABILITY_NOT_REAL_TASK_EVIDENCE"
     admitted_real_tasks: int = 0
 
@@ -97,6 +100,8 @@ def audit_latent_atom_observability(
         raise ValueError("globally duplicate diagnostic IDs")
     actions = tuple(sorted(actions, key=lambda x:x.action_id))
     seen_count = [0]
+    first_witness = [None]
+    maximum_delta = [0.0]
 
     def probability(action, history, model_idx, label):
         row = models[model_idx].get(action.action_id, history)
@@ -110,32 +115,52 @@ def audit_latent_atom_observability(
         if seen_count[0] > max_contexts:
             raise ValueError("finite observability context cap exceeded")
         if not remaining:
-            return None
+            return
         consumed = {o.action_id for o in history}
         for action in actions:
             if action.action_id in consumed or not budget.affordable(action.cost):
                 continue
             p_left = probability(action, history, li, left[1])
             p_right = probability(action, history, ri, right[1])
-            # Exact comparison of frozen represented probabilities:
-            # no epsilon relaxation that could certify distinct models.
-            if p_left != p_right:
-                return action.action_id, history, (p_left, p_right)
+            # Strict equality is required to CERTIFY exact equivalence.
+            # For nonidentical probabilities also compute a separate
+            # quantitative near-identifiability bound (not a certificate
+            # of the true, unobserved empirical distribution).
+            delta = abs(p_left-p_right)
+            maximum_delta[0] = max(maximum_delta[0], delta)
+            if delta and first_witness[0] is None:
+                first_witness[0] = (action.action_id, history,
+                                    (p_left,p_right))
             future_budget = budget.subtract(action.cost)
             for positive in (False, True):
-                # Because probabilities are equal, any nonzero outcome
-                # is reachable for both atoms, preserving equal odds.
-                if (p_left if positive else 1-p_left) == 0:
+                # A shared public prefix under maximal coupling must be
+                # reachable under BOTH proposed latent atoms. A branch
+                # impossible under either atom is already a divergence
+                # event covered by the Bernoulli TV discrepancy.
+                left_prob = p_left if positive else 1-p_left
+                right_prob = p_right if positive else 1-p_right
+                if left_prob <= 0 or right_prob <= 0:
                     continue
-                witness = visit(
-                    history + (Observation(action.action_id, positive),),
-                    future_budget, remaining-1,
-                )
-                if witness is not None:
-                    return witness
-        return None
+                visit(history + (Observation(action.action_id, positive),),
+                      future_budget, remaining-1)
 
-    witness = visit(state.history, state.budget, horizon)
+    visit(state.history, state.budget, horizon)
+    witness = first_witness[0]
+    # Sequential maximal coupling implies that, for ANY adaptive action
+    # policy with the same public history, the TV distance between its
+    # two possible diagnostic transcripts is at most T*epsilon, with
+    # epsilon the largest Bernoulli TV at any common reachable prefix.
+    # Conditioning on these TWO atoms (ignoring all other prior states),
+    # binary Bayes classification error >= min(pi0,pi1)*(1-TV).
+    # It only constrains correctness identification if their Y differ.
+    tv = min(1.0, horizon*maximum_delta[0])
+    weight_left = state.joint[li][int(left[1])]
+    weight_right = state.joint[ri][int(right[1])]
+    pair_mass = weight_left+weight_right
+    pair_error = (
+        min(weight_left,weight_right)/pair_mass*(1-tv)
+        if left[1] != right[1] else None
+    )
     return ObservationalEquivalenceAudit(
         left_atom=left, right_atom=right,
         indistinguishable=witness is None,
@@ -143,4 +168,7 @@ def audit_latent_atom_observability(
         witness_action_id=None if witness is None else witness[0],
         witness_history=None if witness is None else witness[1],
         witness_positive_likelihoods=None if witness is None else witness[2],
+        maximum_shared_history_discrepancy=maximum_delta[0],
+        adaptive_transcript_tv_upper_bound=tv,
+        conditional_two_atom_error_lower_bound=pair_error,
     )
