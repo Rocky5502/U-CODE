@@ -125,6 +125,24 @@ class CoherentHistoryReplayTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "fingerprint"):
             self.replay(self.after_cal, models=tuple(changed))
 
+    def test_kernel_drift_detected_before_first_observation(self):
+        changed = list(self.models)
+        changed[0] = EvidenceHypothesis(
+            "A", ConditionalKernel((
+                ConditionalRow("cal", (), .8, .8),
+            )),
+        )
+        with self.assertRaisesRegex(ValueError, "fingerprint"):
+            self.replay(self.start, models=tuple(changed))
+
+    def test_scenario_identity_mismatch_detected_even_without_history(self):
+        changed = (
+            EvidenceHypothesis("unexpected", self.models[0].kernel),
+            self.models[1],
+        )
+        with self.assertRaisesRegex(ValueError, "scenario ensemble"):
+            self.replay(self.start, models=changed)
+
     def test_different_frozen_start_cannot_validate_claim(self):
         another = initial_coherent_state(
             .7, self.models, (.5, .5),
