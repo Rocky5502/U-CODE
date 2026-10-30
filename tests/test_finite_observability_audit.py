@@ -83,7 +83,9 @@ class FrozenModelAndObservabilityTests(unittest.TestCase):
         self.assertTrue(blocked.indistinguishable)
 
     def test_observable_atom_odds_remain_invariant_under_common_likelihood(self):
-        hs=hypotheses(.75,.25,.8,.2)
+        # Binary-exact 0.75/0.25 values avoid decimal complement
+        # representation drift (1-0.8 is not stored identically to 0.2).
+        hs=hypotheses(.75,.25,.75,.25)
         s=initial_coherent_state(.5,hs,(.5,.5),BUDGET)
         initial_odds=s.joint[0][0]/s.joint[1][1]
         r=self.audit(hs=hs,state=s)
@@ -187,8 +189,14 @@ class FrozenModelAndObservabilityTests(unittest.TestCase):
                 self.s,(DIAG,),self.hs,
                 ("model-A",False),("model-A",False),
             )
+        # Force a shared non-deterministic root outcome before any
+        # distinguishing action; otherwise an immediate root witness
+        # legitimately finishes in just one visited context.
+        ambiguous=hypotheses(.5,.5,.75,.25)
+        astate=initial_coherent_state(.5,ambiguous,(.5,.5),BUDGET)
         with self.assertRaisesRegex(ValueError,"context cap"):
-            self.audit(probes=(CAL,DIAG),max_contexts=1)
+            self.audit(probes=(CAL,DIAG),state=astate,
+                       hs=ambiguous,max_contexts=1)
         with self.assertRaisesRegex(ValueError,"horizon"):
             self.audit(horizon=5)
 
