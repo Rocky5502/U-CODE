@@ -18,7 +18,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from functools import lru_cache
+from hashlib import sha256
+import json
 from math import isfinite
+import re
 from typing import Sequence
 
 from .conditional_bes import (
@@ -30,6 +33,34 @@ from .voi import ReleaseRule, terminal_value
 _TOL = 1e-9
 _MAX_HYPOTHESES = 8
 _MAX_PROBES = 6
+_DIGEST = re.compile(r"^[0-9a-f]{64}$")
+
+
+def kernel_fingerprint(kernel: ConditionalKernel) -> str:
+    """Canonical fingerprint of ALL frozen likelihood rows.
+
+    Includes each action, ordered visible history and both likelihoods.
+    Row-list permutations do not change the SHA256 digest. Fingerprints
+    bind trusted *in-process inputs*; they are NOT source attestations
+    or evidence of calibrated probabilities.
+    """
+    if not isinstance(kernel, ConditionalKernel):
+        raise TypeError("typed frozen conditional kernel required")
+    rows = []
+    for r in kernel.rows:
+        rows.append([
+            r.action_id,
+            [[o.action_id, o.positive] for o in r.history],
+            float(r.positive_if_acceptable).hex(),
+            float(r.positive_if_unacceptable).hex(),
+        ])
+    packed = json.dumps(
+        ["ucode-mcea-kernel-v1", sorted(
+            rows, key=lambda x: json.dumps(x, separators=(",", ":"),
+                                          ensure_ascii=False))],
+        ensure_ascii=False, separators=(",", ":"),
+    )
+    return sha256(packed.encode("utf-8")).hexdigest()
 
 
 @dataclass(frozen=True)
@@ -61,6 +92,7 @@ class CoherentBeliefState:
     joint: tuple[tuple[float, float], ...]
     budget: ResourceVector
     history: tuple[Observation, ...] = ()
+    kernel_fingerprints: tuple[str, ...] = ()
 
     def __post_init__(self):
         if (type(self.scenario_ids) is not tuple
@@ -81,6 +113,11 @@ class CoherentBeliefState:
             raise ValueError("joint model-truth mass must sum to one")
         if not isinstance(self.budget, ResourceVector):
             raise TypeError("typed remaining five-resource vector required")
+        if (type(self.kernel_fingerprints) is not tuple
+                or len(self.kernel_fingerprints) != len(self.scenario_ids)
+                or any(type(d) is not str or not _DIGEST.fullmatch(d)
+                       for d in self.kernel_fingerprints)):
+            raise ValueError("frozen kernel fingerprint required for each scenario")
         if (type(self.history) is not tuple
                 or any(not isinstance(h, Observation) for h in self.history)
                 or len({h.action_id for h in self.history}) != len(self.history)):
@@ -139,6 +176,7 @@ def initial_coherent_state(
         tuple(h.scenario_id for h in models),
         tuple(((1-prior_acceptable)*w, prior_acceptable*w) for w in weights),
         budget,
+        kernel_fingerprints=tuple(kernel_fingerprint(h.kernel) for h in models),
     )
 
 
@@ -153,7 +191,12 @@ def _aligned_models(
     lookup = {h.scenario_id: h.kernel for h in frozen}
     if len(lookup) != len(frozen) or set(lookup) != set(state.scenario_ids):
         raise ValueError("scenario identities must match frozen belief state exactly")
-    return tuple(lookup[x] for x in state.scenario_ids)
+    aligned = tuple(lookup[x] for x in state.scenario_ids)
+    if tuple(kernel_fingerprint(k) for k in aligned) != state.kernel_fingerprints:
+        raise ValueError(
+            "frozen kernel fingerprint drift after model-truth belief was constructed"
+        )
+    return aligned
 
 
 def _joint_observation(
@@ -208,6 +251,7 @@ def record_coherent_observation(
     return CoherentBeliefState(
         state.scenario_ids, posterior, state.budget.subtract(probe.cost),
         state.history + (Observation(probe.action_id, observed_positive),),
+        state.kernel_fingerprints,
     )
 
 
