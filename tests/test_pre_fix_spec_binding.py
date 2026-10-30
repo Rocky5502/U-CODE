@@ -136,7 +136,7 @@ class PinnedSpecSourceAuditTests(unittest.TestCase):
 
     def test_duplicate_original_tree_identity_rejected(self):
         trees=deepcopy(self.trees)
-        trees["records"][1]["candidate_id"]=43
+        trees["records"][0]["candidate_id"]=43
         with self.assertRaisesRegex(ValueError,"duplicate"):
             self.audit(trees=trees)
 
