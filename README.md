@@ -36,6 +36,36 @@ specification, rights, sealed oracle and sandbox evidence are still required.
 
 The last pre-refactor `main` CI was green with 1,142 offline tests per Python version. **Always inspect the current [CI](https://github.com/Rocky5502/U-CODE/actions)** for the latest count, SHA and outcome.
 
+## MCEA observability: can verification resolve the uncertainty? (30 October 2026)
+
+The new [finite-horizon observability and coupling audit](docs/MCEA_FINITE_OBSERVABILITY_AND_COUPLING_AUDIT_2026-10-30.md)
+tests whether two latent explanations (diagnostic-reliability model
+and patch acceptability) can be distinguished by ANY feasible sequence
+of the currently registered diagnostics. Its bounded search respects
+globally single-use actions, hard five-resource limits and frozen
+history-conditional evidence models.
+
+If every shared reachable history yields the same binary likelihood
+under both explanations, no admissible diagnostic sequence can
+distinguish them within the stated model. For near-identical models,
+a conservative transcript total-variation bound gives a conditional
+two-explanation classification-error lower bound. An independent
+exact-rational two-probe reference checks 27 parameterized model/horizon
+settings. These are **synthetic identifiability and mathematical
+validation tests**, not independent software-repair experiments.
+
+**Integrity correction:** MCEA's posterior now stores complete,
+versioned likelihood-kernel fingerprints. Replacing a diagnostic
+model under its old scenario ID between visible evidence observations
+fails closed; reordered but identical likelihood rows retain the
+same digest. Those hashes do not attest that the frozen probabilities
+were learned correctly.
+
+```bash
+python -m unittest discover -s tests -p 'test_finite_observability_audit.py' -v
+python -m unittest discover -s tests -p 'test_observability_coupling_bound.py' -v
+```
+
 ## Novelty candidate: model-coherent evidence acquisition (30 October 2026)
 
 We added a new **two-level Bayesian diagnostic search reference** that
