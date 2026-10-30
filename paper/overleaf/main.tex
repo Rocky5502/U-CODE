@@ -1090,6 +1090,30 @@ zero qualified tasks is an admissible finding.
 No third-party source files or repositories are
 bundled into the compact curated metadata.
 
+\paragraph{Pre-fix specification object identity is not oracle admission.}
+For a Go settlement/rank candidate in the read-only
+discovery pool, an independent Git tree lookup now
+cross-checks the registered design-document reference
+against the \emph{actual blob entry} under the fixed
+pre-fix Git tree. We record the original base commit,
+tree object, \texttt{docs/design.md} path, blob object ID,
+regular-file mode and observed byte size, and reject
+registration metadata if its purported immutable
+specification references a different file or object.
+The historical PHP source lead has only a mutable
+issue-page reference: no snapshot of its issue body
+at PR creation has been independently authenticated,
+so it remains explicitly quarantined. A separately
+dated prospective PHP task proposal must not be
+misrepresented as the historical issue specification.
+These structural provenance checks do \emph{not}
+establish that the Go design document resolves all
+task-specific business rules, that any task has
+independently approved behavior, or that reuse
+rights, a sealed oracle, an isolated runner or
+independently metered resources exist. Both candidate
+registrations remain ineligible for experiments.
+
 \paragraph{Metadata quality assurance and release integrity.}
 A separate source-free technical validation stage now
 performs strict one-to-one joins between the raw

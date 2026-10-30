@@ -36,6 +36,27 @@ specification, rights, sealed oracle and sandbox evidence are still required.
 
 The last pre-refactor `main` CI was green with 1,142 offline tests per Python version. **Always inspect the current [CI](https://github.com/Rocky5502/U-CODE/actions)** for the latest count, SHA and outcome.
 
+## First real-task provenance gate: pinned Go source-era specification file (30 October 2026)
+
+The [source-era Go #43 document binding audit](docs/GO43_PRE_FIX_DOCUMENT_GIT_TREE_BINDING_2026-10-30.md)
+now cross-checks the registered pre-fix design document against the
+actual immutable Git base-tree entry observed through read-only GitHub
+metadata. It requires the exact `docs/design.md` path, base commit, Git
+tree, blob SHA, regular-file mode and file size; wrong document links
+or plausible-looking but unrelated SHA40 values fail the evaluator
+registration audit. The historical PHP #104 issue remains quarantined:
+its current body is not a frozen historical pre-PR specification.
+
+This closes an important *source-identity* control gap without
+promoting either lead to experiment eligibility. File-level rights,
+independent behavior review, sealed tests, authenticated sandbox and
+five-resource enforcement are still absent; **qualified tasks remain 0**.
+
+```bash
+python -m scripts.check_evaluator_boundary
+python -m unittest discover -s tests -p 'test_pre_fix_spec_binding.py' -v
+```
+
 ## Whole-archive Bellman search: independent mathematical cross-validation (30 October 2026)
 
 A new [exact-rational joint-search audit](docs/INDEPENDENT_JOINT_BELLMAN_RATIONAL_AUDIT_2026-10-30.md)

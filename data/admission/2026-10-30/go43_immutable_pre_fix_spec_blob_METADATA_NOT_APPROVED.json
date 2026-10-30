@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "stage": "GO43_PRE_FIX_DOCUMENT_BLOB_METADATA_ONLY",
+  "observed_on": "2026-10-30",
+  "source_api": "GitHub REST git/trees/e53fb011857926632c4a4ec8752425e0f2b41559?recursive=1",
+  "candidate_id": 43,
+  "repository": "PlayHuai/eighty-point-huai-an",
+  "task_base_sha": "ec41b1b33f5a4d46a8398fb6ccc33f25336fdb8a",
+  "base_tree_sha": "e53fb011857926632c4a4ec8752425e0f2b41559",
+  "spec_path": "docs/design.md",
+  "spec_blob_sha": "b566ca7627b6518670a866a6a637bd5257e947f4",
+  "spec_blob_size_bytes": 16052,
+  "spec_blob_type": "blob",
+  "spec_blob_mode": "100644",
+  "source_tree_truncated": false,
+  "source_content_executed": false,
+  "pre_pr_issue_body_version_proven": false,
+  "document_normatively_approved_as_full_pr_spec": false,
+  "independent_oracle_sealed": false,
+  "source_file_rights_cleared": false,
+  "experiment_eligible": false
+}
