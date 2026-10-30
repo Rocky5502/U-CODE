@@ -218,9 +218,10 @@ class HypothesisCoherentEvidenceTests(unittest.TestCase):
         # Under this joint belief the pooled posterior is .95 but one
         # still-possible scenario has only .5 correctness probability.
         hs=make_hypotheses()
-        state=CoherentBeliefState(
-            ("model-A","model-B"),
-            ((.005,.895),(.05,.05)),CAP)
+        # Preserve the frozen kernel receipts while replacing only the
+        # authored hypothetical belief masses for this risk-gate witness.
+        state=replace(self.state(hs),
+                      joint=((.005,.895),(.05,.05)))
         all_gate=self.plan(hs,state=state,probes=(),gate="all_surviving_models")
         pooled=self.plan(hs,state=state,probes=(),gate="mixture_only")
         self.assertEqual(all_gate.action,"abstain")
