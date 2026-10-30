@@ -36,6 +36,34 @@ specification, rights, sealed oracle and sandbox evidence are still required.
 
 The last pre-refactor `main` CI was green with 1,142 offline tests per Python version. **Always inspect the current [CI](https://github.com/Rocky5502/U-CODE/actions)** for the latest count, SHA and outcome.
 
+## Novelty candidate: model-coherent evidence acquisition (30 October 2026)
+
+We added a new **two-level Bayesian diagnostic search reference** that
+models uncertainty about a patch's correctness **and** uncertainty about
+which frozen evidence-reliability model is generating the test results.
+Its joint posterior is updated only through visible diagnostic outcomes;
+the same hidden model identity persists across all observations. The
+planner allocates tests/retrieval/static analysis under the existing
+five hard resource caps and supports pooled-risk or all-surviving-model
+release gates.
+
+An [independent rational mathematical audit](docs/COHERENT_HYPOTHESIS_EVIDENCE_SEARCH_NOVELTY_2026-10-30.md)
+includes a counterexample: a perfect-versus-inverted diagnostic appears
+valuable when each hypothetical reliability model is treated as known,
+but cannot help at one step when its meaning is truly unknown. A
+calibration-then-diagnostic sequence has stipulated two-step net value
+**0.48**. Twenty additional exact-rational configurations and
+adversarial code tests check the restricted method.
+
+**Scope:** first-party synthetic algorithm only; not a fitted model,
+newly established theorem, real-task experiment, or measured software
+repair improvement. The original six RQs and eight planned policy arms
+are unchanged until a separate prospective protocol revision.
+
+```bash
+python -m unittest discover -s tests -p 'test_coherent_hypothesis_search.py' -v
+```
+
 ## First real-task provenance gate: pinned Go source-era specification file (30 October 2026)
 
 The [source-era Go #43 document binding audit](docs/GO43_PRE_FIX_DOCUMENT_GIT_TREE_BINDING_2026-10-30.md)

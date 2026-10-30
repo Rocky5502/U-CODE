@@ -936,6 +936,78 @@ synthetic forecasts, not evidence of calibration,
 true-model coverage, executable patch success,
 or improved human-developer outcomes.
 
+\paragraph{Exploratory model-coherent evidence acquisition.}
+The preceding one-step scenario audit computes each
+model's expected value as though its diagnostic
+likelihood were known when the resulting evidence
+is interpreted. It therefore cannot by itself
+quantify the deployable value of a test when
+\emph{the identity of the evidence model is unknown}.
+To expose that gap, a separate single-candidate
+reference now maintains a joint belief over
+fixed, latent diagnostic-reliability hypothesis
+$\Theta\in\{1,\dots,m\}$ and patch acceptability
+$Y\in\{0,1\}$:
+\[
+ b_t(k,y)=P(\Theta=k,Y=y\mid h_t),\qquad
+ b_{t+1}(k,y)=
+ \frac{b_t(k,y)L_a^{(k)}(o\mid y,h_t)}
+ {\sum_{j,z}b_t(j,z)L_a^{(j)}(o\mid z,h_t)}.
+\]
+The same $\Theta$ persists across observations;
+it is not redrawn for each test. The bounded
+finite-horizon controller uses expected branch
+utility under this coupled posterior, global
+single-use diagnostic IDs, the same hard
+five-dimensional resources and once-only scalar
+planning cost. Two prospective terminal rules
+are supported: a mixture-only predicted-failure
+gate and a conservative finite-hypothesis gate
+that permits release only if every still-possible
+$k$ satisfies
+\[
+ \frac{b_t(k,0)}{b_t(k,0)+b_t(k,1)}
+ \leq\delta .
+\]
+The latter is a \emph{preference under an assumed
+finite model family}, not a risk certificate or
+evidence that the real data-generating kernel is
+included in that family.
+
+A synthetic counterexample distinguishes the
+information states. With equal prior mass on
+two reliability hypotheses, a diagnostic
+is perfect under the first and perfectly
+\emph{inverted} under the second. The
+scenario-wise one-step known-kernel calculation
+assigns it predicted net gain $0.49$ at
+per-action price $0.01$, yet with the hypothesis
+identity still unknown the same observation
+cannot change marginal acceptability from
+$0.5$ and one-step coherent search abstains.
+A separate calibration probe can identify
+the reliability model, after which the
+diagnostic has its intended meaning. Buying
+both then has two-step synthetic expected
+net value $0.48$ under the stipulated reward
+and release rule. An independent rational
+Bellman enumerator checks 20 additional
+hypothesis/likelihood configurations against
+the implementation; other adversarial tests
+check posterior conservation, impossible
+observations, all-model release veto, missing
+history rows and budget bounds. This method
+is a restricted \emph{Bayes-adaptive
+hypothesis-learning reference}, not a novel
+general POMDP theorem, multi-candidate
+generative search, a fitted calibration model
+or any empirical code-repair success result.
+It remains \emph{exploratory and outside the
+six frozen confirmatory questions}; matched
+test-origins, repository lineages, scenario
+priors and negative-control policies must be
+independently frozen before a real study.
+
 \paragraph{Algorithmic completeness and limitations.}
 The one-step nominal, one-step finite-scenario,
 and diagnostic-only look-ahead implementations
