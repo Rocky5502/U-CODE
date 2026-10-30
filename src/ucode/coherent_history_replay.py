@@ -12,7 +12,7 @@ from typing import Sequence
 
 from .coherent_hypothesis_search import (
     CoherentBeliefState, CoherentEvidencePlan, EvidenceHypothesis,
-    plan_coherent_evidence, record_coherent_observation,
+    kernel_fingerprint, plan_coherent_evidence, record_coherent_observation,
 )
 from .conditional_bes import ConditionalProbe, Observation
 from .vector_policy import ResourcePrices
@@ -55,6 +55,18 @@ def replay_coherent_history(
     if (claimed.scenario_ids != frozen_start.scenario_ids
             or claimed.kernel_fingerprints != frozen_start.kernel_fingerprints):
         raise ValueError("frozen scenario or likelihood identity drift")
+    models = tuple(hypotheses)
+    if (len(models) != len(frozen_start.scenario_ids)
+            or any(not isinstance(model, EvidenceHypothesis) for model in models)
+            or len({model.scenario_id for model in models}) != len(models)
+            or set(model.scenario_id for model in models)
+               != set(frozen_start.scenario_ids)):
+        raise ValueError("frozen scenario ensemble identity mismatch")
+    model_by_id = {model.scenario_id: model for model in models}
+    for scenario_id, digest in zip(
+            frozen_start.scenario_ids, frozen_start.kernel_fingerprints):
+        if kernel_fingerprint(model_by_id[scenario_id].kernel) != digest:
+            raise ValueError("frozen kernel fingerprint drift")
     if any(not isinstance(obs, Observation) for obs in claimed.history):
         raise ValueError("public history contains an untyped observation")
 
