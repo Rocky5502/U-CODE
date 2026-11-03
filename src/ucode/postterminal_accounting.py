@@ -21,6 +21,7 @@ from .experiment_contract import (
     EvaluatorVerdict, FrozenStudy, PolicyRunReceipt,
     audit_confirmatory_run_matrix,
 )
+from .frozen_oracle_contract import FrozenOracleManifest
 from .vector_policy import RESOURCE_FIELDS
 
 
@@ -119,6 +120,7 @@ def postterminal_contrast(
     *,
     bootstrap_samples: int = 1000,
     seed: int = 2026,
+    frozen_oracles: FrozenOracleManifest | None = None,
 ) -> PostterminalContrast:
     """Return only structurally grounded metrics after terminal receipt audit.
 
@@ -138,14 +140,16 @@ def postterminal_contrast(
     # Require all assignments, all released-patch verdicts and exact identity
     # alignment even when infra failure is unobserved.
     audit=audit_confirmatory_run_matrix(
-        study,receipts,verdicts,require_complete=False)
+        study,receipts,verdicts,require_complete=False,
+        frozen_oracles=frozen_oracles)
     lookup={v.key:v for v in verdicts}
     a=_arm(treatment,tuple(r for r in receipts if r.policy==treatment),lookup)
     b=_arm(control,tuple(r for r in receipts if r.policy==control),lookup)
     if a.assigned!=b.assigned:
         raise ValueError("different treatment and control assigned populations")
     bounded=paired_effect_attrition_bounds(
-        study,receipts,verdicts,treatment,control)
+        study,receipts,verdicts,treatment,control,
+        frozen_oracles=frozen_oracles)
     if bounded.assigned_pairs!=a.assigned:
         raise AssertionError("paired assignment denominator drift")
     point=None
