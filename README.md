@@ -38,6 +38,20 @@ specification, rights, sealed oracle and sandbox evidence are still required.
 
 At the **3 November 2026 `main` merge commit `92810cf`**, [GitHub Actions](https://github.com/Rocky5502/U-CODE/actions/runs/41595339193) passed **1,323 offline tests on each of Python 3.10 and 3.12**; first-party/synthetic checks do not constitute real-task validation. **Inspect the latest [CI](https://github.com/Rocky5502/U-CODE/actions)** after subsequent commits for new counts and outcomes.
 
+## Task-scoped evaluator-oracle integrity (3 November 2026)
+
+The [evaluator consistency audit](docs/EVALUATOR_TASK_ORACLE_CONSISTENCY_2026-11-03.md)
+now rejects policy comparisons that silently substitute different evaluator
+oracle artifacts for the same task, even when individual verdicts correctly
+reference their released patches. It also rejects conflicting correctness
+labels for the identical task/patch under one declared deterministic oracle.
+Synthetic tests cover cross-policy, cross-model and cross-seed substitutions.
+
+This is **structural consistency only**; matching fingerprints are not
+authenticated pre-outcome commitments, sealed tests or real software-repair
+results. An independently protected evaluator/oracle registry is still
+required before task admission. Qualified external tasks remain **zero**.
+
 ## MCEA observability: can verification resolve the uncertainty? (30 October 2026)
 
 The new [finite-horizon observability and coupling audit](docs/MCEA_FINITE_OBSERVABILITY_AND_COUPLING_AUDIT_2026-10-30.md)

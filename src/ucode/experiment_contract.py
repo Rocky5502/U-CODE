@@ -234,6 +234,12 @@ def audit_confirmatory_run_matrix(
         if r.termination == "release":
             release_map[r.key] = r
     indexes = {}
+    # A single frozen hidden oracle must define the same task across *all*
+    # policies, models, seeds and budgets. Otherwise a favorable arm could
+    # quietly be graded against easier tests. This is structural consistency
+    # only: a common digest is NOT evidence of independent sealing/authorship.
+    oracle_by_task = {}
+    label_by_task_patch = {}
     for v in verdicts:
         if not isinstance(v, EvaluatorVerdict):
             raise ValueError("verdict must be typed")
@@ -243,6 +249,19 @@ def audit_confirmatory_run_matrix(
             raise ValueError("verdict for abstained, failed or unassigned patch")
         if v.patch_sha256 != release_map[v.key].patch_sha256:
             raise ValueError("evaluator received a patch different from released artifact")
+        prior_oracle = oracle_by_task.get(v.task_id)
+        if prior_oracle is not None and prior_oracle != v.oracle_artifact_sha256:
+            raise ValueError(
+                "task oracle artifact differs across policies, models, seeds or budgets"
+            )
+        oracle_by_task[v.task_id] = v.oracle_artifact_sha256
+        identity = (v.task_id, v.patch_sha256)
+        prior_label = label_by_task_patch.get(identity)
+        if prior_label is not None and prior_label is not v.oracle_passed:
+            raise ValueError(
+                "contradictory verdict for identical task and released patch"
+            )
+        label_by_task_patch[identity] = v.oracle_passed
         indexes[v.key] = v
     if set(indexes) != set(release_map):
         raise ValueError("released patch lacks independently recorded oracle verdict")
