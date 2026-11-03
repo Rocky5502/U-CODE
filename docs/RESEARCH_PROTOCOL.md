@@ -2,7 +2,9 @@
 
 **Title:** Uncertainty-Guided Search for Reliable AI-Generated Software
 
-**Target:** Springer Automated Software Engineering, [special issue](https://link.springer.com/collections/jjcfecffai) on SBSE, LLMs and agents; deadline **January 30, 2027**.
+**Target:** Springer Automated Software Engineering, [special issue](https://link.springer.com/collections/jjcfecffai) on SBSE, LLMs and agents; announced deadline **January 30, 2027**, subject to publisher updates.
+
+**Current registration crosswalk (3 November 2026):** this document began as the 24 October exploratory plan. The [25 October eight-arm confirmatory contract](../configs/confirmatory_sbse_protocol_2026-10-25.json) and [accepted six-checkpoint manifest](../configs/accepted_six_model_study_2026-10-25.json) supersede earlier example model/baseline lists below. The study is still **prospective**, with **zero** independently qualified executable tasks, model runs, or measured treatment effects.
 
 ## Hypothesis
 
@@ -25,8 +27,8 @@ verified correctness and selective reliability. Negative results count.
    intervals. Never peek at test labels during uncertainty estimation.
 3. **RQ3, search effectiveness:** at matched inference and test budgets,
    does uncertainty-aware multi-objective search increase independent
-   verified success relative to no-search, random, fixed-test, cost-first,
-   quality-only, and an optimized search controller without uncertainty?
+   verified success relative to the prospectively registered equal-budget no-uncertainty
+   search control, with other frozen arms as secondary comparisons?
    Primary estimand: paired difference in independent verified success.
 4. **RQ4, intervention:** when should an agent generate, retrieve, test,
    analyze, repair, ask, or abstain? Analyze action traces and randomized
@@ -41,8 +43,8 @@ verified correctness and selective reliability. Negative results count.
 
 ## Distinct cohorts: no unsafe pooling
 
-- Naturalistic **A**: linked agent-authored PR *patches* from the 120 candidate
-  GitHub repositories, potentially supplemented by AIDev. Merge status is
+- Naturalistic **A**: linked agent-authored PR *patches* from the 120 discovery
+  PR-link/repository-name leads (not 120 executable repositories), potentially supplemented by AIDev. Merge status is
   not functional correctness. Base/head SHA and independent verification matter.
 - Naturalistic **B**: SWE-chat session/commit traces after gated access approval.
   Session-level data do not equal independent source files.
@@ -95,17 +97,41 @@ acquisition utilities. No such advancement or empirical gain is yet claimed.
 8. Record reason-coded rejection; target 80–120 passing repositories **only if**
    evidence supports them. 2–5 GB is a target, not an observed size.
 
-## Experimental matrix: PROPOSED, not run
+## Experimental matrix: PROPOSED, not run (canonical crosswalk 3 November 2026)
 
-| Dimension | Proposed arms |
+| Dimension | Prospective design (not observed execution) |
 |---|---|
-| Models | Qwen2.5-Coder-7B, Qwen3-8B, Llama-3.1-8B, Granite-3.3-8B, DeepSeek-Coder-6.7B, Gemma-3-4B |
-| Programming languages | Python, JS, TS, Java, Go, Rust, C++, C, C#, Kotlin, PHP, Ruby |
-| Agent policies | no-search, random, cost-first, fixed-test, quality-only, search without uncertainty, U-CODE |
-| Uncertainty ablations | entropy, disagreement, self-consistency, metadata, confidence, calibrated fusion |
-| Budgets | fixed token cap, test calls, normalized accelerator time, wall clock |
-| Outcome | independent test pass, security warnings, risk-coverage, Brier, ECE, cost Pareto |
-| Seeds | 3+ proposed per sample; power and compute plan after pilot |
+| Models | Exactly **6** selected open-weight checkpoint IDs in the accepted manifest; full revision, tokenizer, license, inference-engine and hardware gates still pending |
+| Languages | Twelve **discovery-query strata**: Python, JS, TS, Java, Go, Rust, C++, C, C#, Kotlin, PHP, Ruby; independently runnable changed-language coverage **not established** |
+| Agent policies | Exactly **8** registered slots listed below; fidelity to original baselines and real-task integration **not yet established** |
+| Primary comparison | `ucode_conditional_bes` versus `no_uncertainty_search`; same assigned task/model/seed/public proposal opportunities and five hard budget caps |
+| Uncertainty | Calibrated correctness risk on training-only lineage groups is a hypothesis, not a measured score or guarantee |
+| Budgets | Five resource axes: tokens, test_calls, gpu_seconds, cpu_seconds, wall_seconds; illustrative caps are **not frozen** |
+| Primary outcome | Independent full-task verified success per *assigned* cell, intention-to-treat (abstention/timeouts included) |
+| Secondary outcomes | Coverage; wrong-release risk; risk–coverage; calibration (when labelled); paired effect; five-dimensional realized cost |
+| Seeds | Three illustrative values in contract; final seeds, budgets and preregistration still **unfrozen** |
+
+**Selected model IDs (exact immutable-for-planning identity; weights not loaded):**
+
+- `Qwen/Qwen2.5-Coder-7B-Instruct`
+- `Qwen/Qwen3-Coder-30B-A3B-Instruct`
+- `mistralai/Devstral-Small-2-24B-Instruct-2512`
+- `deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct`
+- `google/codegemma-1.1-7b-it`
+- `meta-llama/Llama-3.1-8B-Instruct`
+
+**Registered policy IDs (planning only; not eight real completed integrations):**
+
+- `ucode_conditional_bes`
+- `ucode_unconditional_bes`
+- `no_uncertainty_search`
+- `uncertainty_only`
+- `fixed_testing`
+- `selective_verification`
+- `mcts_search`
+- `replay_search`
+
+Do **not** silently reinstate earlier exploratory lists (e.g., Qwen3-8B, Granite-3.3-8B, Gemma-3-4B, or the seven-item baseline sketch) as the canonical confirmatory matrix. New arms require an explicit versioned protocol amendment. The present first-party references cannot support an empirical performance effect.
 
 Use task-paired comparisons and repository/fork-clustered bootstrap or hierarchical
 models. Pre-register primary budget and primary endpoint before repeated runs;
@@ -121,17 +147,19 @@ secrets, and pinned image digests. Archive prompts/seeds/model hashes/provenance
 and annotate impossible-to-check artifacts, never fill blanks with fabricated
 metrics.
 
-## Scientific stage gates
+## Scientific stage gates (updated issue tracker; not a completion claim)
 
-- M0: repository bootstrap + 120 **discovery** records + offline agent scaffold.
-- M1: perform read-only metadata triage for 12–24 PRs; manually inspect patch
-  and licenses; report actual passing/removed counts.
-- M2: one independently executable 3-model/40-task pilot including reliability
-  diagrams and matched-budget controls; full setup and seeds archived.
-- M3: implement/ablate an independently evaluated uncertainty-aware Pareto
-  acquisition function (not just heuristic action scoring).
-- M4: multilingual replication, security/performance analyses, paired statistics,
-  paper and artifacts. Do not draft result numbers before experiments.
+The 24 October sketch used an exploratory M0–M4 naming scheme. The current [research issue tracker](https://github.com/Rocky5502/U-CODE/issues) defines the actionable labels and **all listed acceptance gates remain open**:
+
+- **M1 / issue #1:** read-only PR metadata screening plus independently reviewed patch, rights and attribution checks; leads are not accepted executable tasks.
+- **M2 / issue #2:** independently reproducible, safely executable, rights-cleared and lineage-disjoint task benchmark; a small pilot precedes any forty-task study.
+- **M3 / issue #3:** train-only, held-out calibration and failure-risk estimates with independent oracle labels.
+- **M4 / issue #4:** real budget-aware multiobjective acquisition, paired equal-budget controls and uncertainty-mechanism ablations.
+- **M5 / issue #5:** six chosen checkpoints with immutable revision and license/runtime/hardware approval.
+- **M6 / issue #6:** evidence-grounded Springer manuscript and independently inspectable replication artifact.
+- **G5 / issue #7:** separate PHP/Go source-era independent-oracle and human admission gate, which currently blocks the first externally runnable task.
+
+Offline synthetic references, mathematical crosschecks and a first-party canary are useful groundwork **but close none of these real-world scientific gates on their own**. The [3 November verified checkpoint](UCODE_RESEARCH_PROGRESS_2026-11-03.md) gives a dated, source-audited progress denominator.
 
 ## Related research and source pages
 

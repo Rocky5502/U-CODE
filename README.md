@@ -13,6 +13,8 @@
 [Search-Based Software Engineering in the Era of LLMs and Agentic Systems](https://link.springer.com/collections/jjcfecffai)
 (submission deadline **30 January 2027**, subject to publisher updates).
 
+**Research progress (3 November 2026):** [source-audited checkpoint, readiness denominators and priority gates](docs/UCODE_RESEARCH_PROGRESS_2026-11-03.md) · [verified belief-history replay](docs/MCEA_HISTORY_REPLAY_BOUNDARY_2026-10-31.md).
+
 **Research handoff:** [V4 canonical scientific handoff](docs/UCODE_NEW_CHAT_MASTER_HANDOFF_V4_2026-10-29.md) ·
 [Scientific blockers](configs/ucode_work_remaining_gates_2026-10-27.json) ·
 [Springer source-era/novelty audit](docs/SPRINGER_V4_SOURCE_ERA_AND_NOVELTY_AUDIT_2026-10-29.md).
@@ -34,7 +36,7 @@ The two source-era PHP/Go pilot dossiers have **16/16 gates currently PENDING**;
 neither candidate is an admitted executable task. Independent source-era
 specification, rights, sealed oracle and sandbox evidence are still required.
 
-The last pre-refactor `main` CI was green with 1,142 offline tests per Python version. **Always inspect the current [CI](https://github.com/Rocky5502/U-CODE/actions)** for the latest count, SHA and outcome.
+At the **3 November 2026 `main` merge commit `92810cf`**, [GitHub Actions](https://github.com/Rocky5502/U-CODE/actions/runs/41595339193) passed **1,323 offline tests on each of Python 3.10 and 3.12**; first-party/synthetic checks do not constitute real-task validation. **Inspect the latest [CI](https://github.com/Rocky5502/U-CODE/actions)** after subsequent commits for new counts and outcomes.
 
 ## MCEA observability: can verification resolve the uncertainty? (30 October 2026)
 
