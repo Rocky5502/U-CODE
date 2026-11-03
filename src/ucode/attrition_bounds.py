@@ -14,6 +14,7 @@ from .experiment_contract import (
     EvaluatorVerdict, FrozenStudy, PolicyRunReceipt,
     audit_confirmatory_run_matrix,
 )
+from .frozen_oracle_contract import FrozenOracleManifest
 
 
 @dataclass(frozen=True)
@@ -39,6 +40,8 @@ def paired_effect_attrition_bounds(
     verdicts: tuple[EvaluatorVerdict, ...],
     treatment_policy: str,
     control_policy: str,
+    *,
+    frozen_oracles: FrozenOracleManifest | None = None,
 ) -> BoundedPairedEffect:
     """Task-level success difference with completely unknown infra failures.
 
@@ -52,7 +55,8 @@ def paired_effect_attrition_bounds(
     ):
         raise ValueError("distinct preregistered treatment and comparator required")
     audit_confirmatory_run_matrix(
-        study, receipts, verdicts, require_complete=False)
+        study, receipts, verdicts, require_complete=False,
+        frozen_oracles=frozen_oracles)
     indexed = {r.key: r for r in receipts}
     evaluator = {v.key: v.oracle_passed for v in verdicts}
     lows, highs = [], []

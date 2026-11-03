@@ -47,10 +47,13 @@ reference their released patches. It also rejects conflicting correctness
 labels for the identical task/patch under one declared deterministic oracle.
 Synthetic tests cover cross-policy, cross-model and cross-seed substitutions.
 
-This is **structural consistency only**; matching fingerprints are not
-authenticated pre-outcome commitments, sealed tests or real software-repair
-results. An independently protected evaluator/oracle registry is still
-required before task admission. Qualified external tasks remain **zero**.
+A separate [declared frozen oracle manifest](docs/FROZEN_TASK_ORACLE_MANIFEST_2026-11-03.md)
+can additionally bind each task—including tasks where all policies abstain—to
+one expected evaluator artifact digest *independently of the batch of verdicts*.
+Postterminal and attrition audits reject any mismatch. The manifest is **only
+an offline declaration**, not a trusted timestamp, human signature or real
+pre-outcome oracle attestation. Actual independent source, test and sandbox
+verification remain required. Qualified external tasks remain **zero**.
 
 ## MCEA observability: can verification resolve the uncertainty? (30 October 2026)
 
