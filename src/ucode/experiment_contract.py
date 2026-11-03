@@ -15,6 +15,7 @@ from .evaluation import (
     EvaluationOutcome, PolicyMeasures, PairedDifference,
     measure_policy, paired_verified_success,
 )
+from .frozen_oracle_contract import FrozenOracleManifest
 from .vector_policy import RESOURCE_FIELDS, ResourceVector
 
 SHA256 = re.compile(r"^[0-9a-f]{64}$")
@@ -169,6 +170,9 @@ class CompleteStudyAudit:
     consumed_by_policy: tuple[tuple[str, ResourceVector], ...]
     verified_oracle_receipts: int
     outcomes: tuple[EvaluationOutcome, ...]
+    # Only checks a DECLARED per-task manifest; never authenticates its source.
+    declared_frozen_oracle_bindings_match: bool = False
+    independently_authenticated_oracles: bool = False
 
 
 def audit_confirmatory_run_matrix(
@@ -177,6 +181,7 @@ def audit_confirmatory_run_matrix(
     verdicts: tuple[EvaluatorVerdict, ...],
     *,
     require_complete: bool = True,
+    frozen_oracles: FrozenOracleManifest | None = None,
 ) -> CompleteStudyAudit:
     """Reject silent pair attrition, budget abuse and gold/patch mismatches.
 
@@ -191,6 +196,15 @@ def audit_confirmatory_run_matrix(
         raise ValueError("immutable receipt/verdict collections required")
     if study.expected_runs > 250000:
         raise ValueError("experiment matrix exceeds bounded audit capacity")
+    # The manifest is supplied separately from verdicts and checked even
+    # for all-abstain tasks with no evaluator result. Its origin, timestamp
+    # and protection remain independently unverified by this function.
+    bound_oracles = None
+    if frozen_oracles is not None:
+        if not isinstance(frozen_oracles, FrozenOracleManifest):
+            raise TypeError("typed declared frozen oracle manifest required")
+        bound_oracles = frozen_oracles.require_exact_tasks(
+            tuple(task for task, _ in study.task_lineages))
     expected = set(product(
         (x for x, _ in study.task_lineages),
         study.model_ids, study.seeds,
@@ -249,6 +263,11 @@ def audit_confirmatory_run_matrix(
             raise ValueError("verdict for abstained, failed or unassigned patch")
         if v.patch_sha256 != release_map[v.key].patch_sha256:
             raise ValueError("evaluator received a patch different from released artifact")
+        if (bound_oracles is not None
+                and v.oracle_artifact_sha256 != bound_oracles[v.task_id]):
+            raise ValueError(
+                "evaluator verdict oracle differs from declared frozen task oracle"
+            )
         prior_oracle = oracle_by_task.get(v.task_id)
         if prior_oracle is not None and prior_oracle != v.oracle_artifact_sha256:
             raise ValueError(
@@ -289,6 +308,7 @@ def audit_confirmatory_run_matrix(
         ),
         verified_oracle_receipts=len(indexes),
         outcomes=tuple(outcomes),
+        declared_frozen_oracle_bindings_match=bound_oracles is not None,
     )
 
 
