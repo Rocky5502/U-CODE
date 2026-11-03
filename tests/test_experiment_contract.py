@@ -1,5 +1,6 @@
 """First-party SYNTHETIC receipts for software-engineering evaluation gates."""
 from dataclasses import replace
+from hashlib import sha256
 import unittest
 
 from ucode.experiment_contract import (
@@ -25,7 +26,8 @@ def fixture():
             for seed in study.seeds:
                 for policy in study.policies:
                     releasing = (policy == "ucode" or seed == 11)
-                    patch = "a"*64 if releasing else None
+                    patch = (sha256(f"{task}/{model}/{seed}/{policy}".encode("utf-8")).hexdigest()
+                             if releasing else None)
                     r = PolicyRunReceipt(
                         task, lineage, model, policy, seed, "tiny",
                         "c"*40, "f"*40, "1"*64, "2"*64,
@@ -178,6 +180,75 @@ class StrictEmpiricalContractTests(unittest.TestCase):
         forged = replace(self.verdicts[0], patch_sha256="9"*64)
         with self.assertRaisesRegex(ValueError, "different from released"):
             self.audit(verdicts=(forged,)+self.verdicts[1:])
+
+    def test_oracle_identity_must_be_shared_across_policies(self):
+        verdicts = list(self.verdicts)
+        index = next(i for i, v in enumerate(verdicts)
+                     if v.task_id == "task-a" and v.policy == "no-uncertainty")
+        verdicts[index] = replace(verdicts[index], oracle_artifact_sha256="9"*64)
+        with self.assertRaisesRegex(ValueError, "task oracle artifact differs"):
+            self.audit(verdicts=tuple(verdicts))
+
+    def test_oracle_identity_must_be_shared_across_models_and_seeds(self):
+        for predicate in (
+            lambda v: v.task_id == "task-a" and v.model_id == "model-two",
+            lambda v: v.task_id == "task-a" and v.seed == 17,
+        ):
+            verdicts = list(self.verdicts)
+            index = next(i for i, v in enumerate(verdicts) if predicate(v))
+            verdicts[index] = replace(
+                verdicts[index], oracle_artifact_sha256="9"*64)
+            with self.assertRaisesRegex(ValueError, "task oracle artifact differs"):
+                self.audit(verdicts=tuple(verdicts))
+
+    def test_identical_task_patch_cannot_receive_conflicting_labels(self):
+        runs = list(self.runs)
+        verdicts = list(self.verdicts)
+        selected = lambda row: (row.task_id == "task-b"
+                                and row.model_id == "model-one"
+                                and row.seed == 11)
+        treatment = next(r for r in runs
+                         if selected(r) and r.policy == "ucode")
+        control_index = next(i for i, r in enumerate(runs)
+                             if selected(r) and r.policy == "no-uncertainty")
+        verdict_index = next(i for i, v in enumerate(verdicts)
+                             if selected(v) and v.policy == "no-uncertainty")
+        self.assertTrue(any(v.oracle_passed for v in verdicts
+                            if selected(v) and v.policy == "ucode"))
+        self.assertFalse(verdicts[verdict_index].oracle_passed)
+        runs[control_index] = replace(
+            runs[control_index], patch_sha256=treatment.patch_sha256)
+        verdicts[verdict_index] = replace(
+            verdicts[verdict_index], patch_sha256=treatment.patch_sha256)
+        with self.assertRaisesRegex(ValueError, "contradictory verdict"):
+            self.audit(runs=tuple(runs), verdicts=tuple(verdicts))
+
+    def test_identical_task_patch_consistent_label_is_valid(self):
+        runs = list(self.runs)
+        verdicts = list(self.verdicts)
+        selected = lambda row: (row.task_id == "task-a"
+                                and row.model_id == "model-one"
+                                and row.seed == 11)
+        treatment = next(r for r in runs
+                         if selected(r) and r.policy == "ucode")
+        control_index = next(i for i, r in enumerate(runs)
+                             if selected(r) and r.policy == "no-uncertainty")
+        verdict_index = next(i for i, v in enumerate(verdicts)
+                             if selected(v) and v.policy == "no-uncertainty")
+        runs[control_index] = replace(
+            runs[control_index], patch_sha256=treatment.patch_sha256)
+        verdicts[verdict_index] = replace(
+            verdicts[verdict_index], patch_sha256=treatment.patch_sha256)
+        self.assertEqual(
+            self.audit(runs=tuple(runs), verdicts=tuple(verdicts)).expected_runs,
+            16)
+
+    def test_distinct_tasks_may_have_distinct_frozen_oracles(self):
+        verdicts = tuple(
+            replace(v, oracle_artifact_sha256="9"*64)
+            if v.task_id == "task-b" else v for v in self.verdicts)
+        self.assertEqual(self.audit(verdicts=verdicts).verified_oracle_receipts,
+                         12)
 
     def test_oracle_cannot_label_abstention(self):
         abstained = next(x for x in self.runs if x.termination == "abstain")
