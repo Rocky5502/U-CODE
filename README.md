@@ -55,6 +55,28 @@ an offline declaration**, not a trusted timestamp, human signature or real
 pre-outcome oracle attestation. Actual independent source, test and sandbox
 verification remain required. Qualified external tasks remain **zero**.
 
+## Exploratory DRPA algorithm and novelty audit (6 November 2026)
+
+A new **Dependence-Robust Pareto Acquisition (DRPA)** reference now bounds
+two-objective candidate hypervolume improvement without assuming reliability
+and safety marginal forecasts are independent. For **two-point marginal
+outcomes**, it evaluates both exact Frechet-compatible coupling extremes,
+uses all five resource caps, and can **STOP** when no robustly positive
+candidate-producing action exists. An independent Fraction-based grid oracle
+crosschecks the synthetic acquisition math. Diagnostics still use evidence
+value, never a fabricated new Pareto point.
+
+- [Algorithm, equations, synthetic ranking reversal and limitations](docs/DRPA_DEPENDENCE_ROBUST_ACQUISITION_2026-11-06.md)
+- [Recent-prior-art novelty and proposed ablation matrix](literature/DRPA_NOVELTY_MATRIX_2026-11-06.md)
+- `src/ucode/dependence_robust_acquisition.py` and `tests/test_dependence_robust_acquisition.py`
+
+**Research boundary:** an exploratory M4 mathematical ablation, **not**
+a validated new contribution, trained joint distribution, ninth registered
+policy, measured risk guarantee or real multi-model experiment. The
+independence of candidate validity and objective quality is an explicit
+untested assumption; model-conditional bounds cannot replace true held-out
+evaluation. The six-model/eight-policy study configuration is unchanged.
+
 ## MCEA observability: can verification resolve the uncertainty? (30 October 2026)
 
 The new [finite-horizon observability and coupling audit](docs/MCEA_FINITE_OBSERVABILITY_AND_COUPLING_AUDIT_2026-10-30.md)
