@@ -18,9 +18,20 @@ class SpringerOverleafSourceAuditTests(unittest.TestCase):
             self.paper if paper is None else paper,
             self.bib if bib is None else bib)
 
-    def test_source_lint_handles_real_24_reference_paper(self):
+    def test_source_lint_handles_extensible_cited_research_paper(self):
         r = self.check()
-        self.assertEqual(r["citations_used"], 24)
+        # Do not freeze a magic literature count: new source-grounded
+        # references should expand the paper without breaking source lint.
+        self.assertGreaterEqual(r["citations_used"], 28)
+        for key in (
+            "papamarkou2026bayesiancontrol",
+            "liu2026cats",
+            "deng2025ehvi",
+            "ma2026agenticverifier",
+        ):
+            with self.subTest(key=key):
+                self.assertIn(key, self.paper)
+                self.assertIn("@inproceedings{" + key + ",", self.bib)
         self.assertEqual(r["undefined_crossreferences"], [])
         self.assertTrue(r["environment_delimiters_balanced"])
         self.assertEqual(r["keyword_count"], 6)
