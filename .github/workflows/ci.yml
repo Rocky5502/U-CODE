@@ -142,6 +142,24 @@ jobs:
         run: python -m scripts.check_task_admission
       - name: Validate prospectively unsealed evaluator-only metadata (no oracle execution)
         run: python -m scripts.check_evaluator_boundary
+      - name: Export cross-ledger real PHP-Go pilot blocker report (no execution)
+        run: python -m scripts.compile_pilot_preflight --output dist/ucode-g5-pilot-preflight-PENDING.json
+      - name: Enforce strict pilot gate returns blocked (never execute PHP or Go)
+        run: |
+          set +e
+          python -m scripts.compile_pilot_preflight --require-ready > /dev/null
+          status=$?
+          if [ "$status" -ne 2 ]; then
+            echo "ERROR: strict pilot gate must remain blocked until external approvals"
+            exit 1
+          fi
+      - name: Publish G5/M4 candidate-source readiness blockers (NOT approved tasks)
+        if: matrix.python-version == '3.12'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ucode-g5-pilot-blocked-readiness-v1
+          path: dist/ucode-g5-pilot-preflight-PENDING.json
+          if-no-files-found: error
       - name: Reproduce independent mathematical odd-payout ambiguity witness
         run: python -m examples.pilot_oracle_boundary_smoke
       - name: Replay synthetic uncertainty-blind generation, diagnostic and repair trace

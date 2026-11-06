@@ -55,6 +55,35 @@ an offline declaration**, not a trusted timestamp, human signature or real
 pre-outcome oracle attestation. Actual independent source, test and sandbox
 verification remain required. Qualified external tasks remain **zero**.
 
+## G5-to-M4 real-source pilot activation preflight (6 November 2026)
+
+The PHP/Go candidate leads have a new **offline cross-ledger admission
+preflight** that validates their immutable PR identities, original changed
+source/test files, source-era specification observations, evaluator-only
+registration, and exact six-model/eight-policy study metadata. It refuses
+unapproved execution, fictional sealed oracles, fabricated inference runs,
+silent ninth-policy amendments, altered checkpoint claims, and result-table
+values. There are **two public source leads, sixteen pending admission
+gates, zero independently runnable tasks, and zero real-model outcomes**.
+
+- [Activation and independent reviewer handoff](docs/G5_M4_REAL_PILOT_ACTIVATION_2026-11-06.md)
+- `src/ucode/pilot_preflight.py`, `scripts/compile_pilot_preflight.py`,
+  `tests/test_pilot_preflight.py`
+
+From the repository root, run:
+
+```bash
+python -m scripts.compile_pilot_preflight
+python -m scripts.compile_pilot_preflight --require-ready
+# Strict mode deliberately exits with status 2 because the pilot is blocked.
+```
+
+The [Springer/Overleaf-tracked manuscript](paper/overleaf/main.tex) now
+contains the public-only activation protocol and an explicitly *nonempirical*
+PHP/Go gate-status table. This updates the **GitHub manuscript source**,
+not a separate live Overleaf cloud project; compilation and an
+independently verified execution runner remain separate steps.
+
 ## Exploratory DRPA algorithm and novelty audit (6 November 2026)
 
 A new **Dependence-Robust Pareto Acquisition (DRPA)** reference now bounds

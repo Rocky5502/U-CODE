@@ -1,4 +1,4 @@
-# U-CODE: Springer Nature / Overleaf working draft (updated 2026-10-27)
+# U-CODE: Springer Nature / Overleaf working draft (updated 2026-11-06)
 
 **Prospective LaTeX manuscript skeleton, NOT a submission-ready paper.**
 
@@ -95,6 +95,35 @@ Git metadata, secrets, and the publisher's external `sn-jnl.cls`. Within the
 **official Springer Nature Overleaf template**, upload/replace `main.tex` and
 `references.bib`. Retain the original publisher class and bibliography
 style. Source checks and GitHub CI do **not** equal an actual Overleaf compile.
+
+## 6 November 2026: DRPA and real-pilot activation additions
+
+The tracked `main.tex` now includes a restricted dependence-robust
+Pareto acquisition (DRPA) derivation, plus a **source-data-grounded**
+PHP/Go pilot activation procedure and a two-row, *not-yet-admitted*
+gate-status table. The added methods **do not** claim experimental
+success, a risk guarantee, source rights clearance or an independently
+sealed functional oracle. DRPA is explicitly exploratory and does not
+silently alter the registered six-model/eight-policy confirmatory study.
+
+The matching first-party script is:
+
+```bash
+python -m scripts.compile_pilot_preflight
+python -m scripts.compile_pilot_preflight --require-ready
+# The second command must exit status 2 while independent admission is blocked.
+```
+
+GitHub Actions' `offline-tests` job now publishes a public-only
+`ucode-g5-pilot-blocked-readiness-v1` artifact, and already publishes
+the current `ucode-overleaf-sources` ZIP artifact. Both are source
+or metadata outputs—not code execution results or automatically
+synced live Overleaf edits. Import `main.tex` and `references.bib`
+from the ZIP into a publisher-class-backed Overleaf project and
+recompile and visually review there.
+
+See [G5/M4 activation requirements](../../docs/G5_M4_REAL_PILOT_ACTIVATION_2026-11-06.md)
+and [DRPA assumptions](../../docs/DRPA_DEPENDENCE_ROBUST_ACQUISITION_2026-11-06.md).
 
 ## Direct Overleaf sync (not yet configured)
 
