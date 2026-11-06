@@ -492,6 +492,54 @@ problem. Predicted Pareto hypervolume is an optional auxiliary ranking
 criterion for actual candidate-producing interventions, not a proxy
 for verified software correctness.
 
+
+\paragraph{Exploratory dependence-robust Pareto acquisition (not evaluated).}
+Existing Bayesian coding-agent control, budget-aware test-time scaling and
+hypervolume acquisition are established prior art
+\cite{papamarkou2026bayesiancontrol,liu2026cats,deng2025ehvi,ma2026agenticverifier}.
+In particular, our original independent-marginal candidate-producing
+EHVI reference does not identify the joint dependence between predicted
+reliability and safety. We therefore introduce a restricted \emph{source-only}
+two-support-point stress test, not a new registered confirmatory arm.
+For a generate/repair action, let the low/high reliability states have
+high-state probability $p$, and low/high safety states probability $q$.
+Without assuming independence, $t=\Pr(R=r_1,S=s_1)$ must obey
+\[
+ \max\{0,p+q-1\}\ \le t \le\ \min\{p,q\}.
+\]
+For $g_{ij}$ equal to the fixed-reference hypervolume increase obtained
+by adding $(r_i,s_j)$ to the current patch archive, the feasible
+expected improvement is the affine function
+\[
+ G_a(t)=(1-p-q+t)g_{00}+(q-t)g_{01}
+       +(p-t)g_{10}+t g_{11}.
+\]
+Consequently its \emph{exact two-point coupling bounds} are obtained at
+the two interval endpoints, without a simulated copula:
+\[
+ [\underline{G}_a,\overline{G}_a]
+ = [\min_{t}G_a(t),\max_{t}G_a(t)].
+\]
+In this limited reference, an externally stipulated validity
+probability $v_a$ is assumed \emph{independent} of both objective outcomes.
+The exploratory maximin candidate-producing selector chooses
+\[
+ \arg\max_{a:\,\mathbf c(a)\preceq\mathbf b,\,
+   v_a\underline{G}_a-\boldsymbol\lambda^\top\mathbf c(a)>0}
+ \{v_a\underline{G}_a-\boldsymbol\lambda^\top\mathbf c(a)\},
+\]
+and stops if no positive feasible candidate action exists. Test,
+retrieval and static-analysis actions remain governed by separate
+information-value calculations; they cannot create Pareto points.
+A strict lower-versus-all-rival-upper comparison yields only
+\emph{model-conditional decision separation}, never a population risk
+certificate. Marginal forecasts and the independence of validity are
+unvalidated restrictions; strong fitted-joint acquisition controls and
+held-out executable tasks would be essential before attributing any
+practical benefit. The exact synthetic implementation and falsifiers are
+in the source repository; \emph{no empirical U-CODE performance result
+is introduced} by this derivation.
+
 \section{U-CODE Method: Prospective Design}\label{sec:method}
 The planned architecture separates generation and retrieval adapters,
 an independently trained uncertainty model, an action-outcome kernel,
