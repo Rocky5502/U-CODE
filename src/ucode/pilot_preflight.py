@@ -10,7 +10,6 @@ treat an output of this module as an execution permit.
 """
 from __future__ import annotations
 
-from hashlib import sha256
 import json
 from pathlib import Path
 
@@ -123,10 +122,21 @@ def build_pilot_preflight(root: Path = ROOT) -> dict:
             or protocol.get("seeds_frozen") is not False
             or protocol.get("final_budget_caps_frozen") is not False):
         raise ValueError("confirmatory protocol changed: requires explicit registration review")
-    # The separate model-study manifest must describe the selected six,
-    # without requiring future results in this current frozen gate check.
-    if type(models) is not dict:
-        raise ValueError("typed model study required")
+    # A selected model ID is not a runnable checkpoint. Cross-check the
+    # separately selected six and insist that source-only status remains
+    # unqualified; never turn model names into observed agent executions.
+    selected = models.get("models")
+    if (models.get("model_count") != 6
+            or type(selected) is not list
+            or len(selected) != 6
+            or tuple(x.get("model_id") for x in selected)
+               != tuple(protocol["model_ids"])
+            or any(x.get("checkpoint_revision") is not None
+                   or x.get("tokenizer_revision") is not None
+                   or x.get("inference_execution_status") != "NOT_RUN"
+                   or x.get("independently_verified_task_runs") != 0
+                   for x in selected)):
+        raise ValueError("model plan/experiment registry drift or unqualified checkpoint")
 
     leads = []
     for candidate_id in _EXPECTED_IDS:
