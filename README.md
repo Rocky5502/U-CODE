@@ -84,6 +84,31 @@ PHP/Go gate-status table. This updates the **GitHub manuscript source**,
 not a separate live Overleaf cloud project; compilation and an
 independently verified execution runner remain separate steps.
 
+## G5 reviewer evidence triage: private A/B handoff (7 November 2026)
+
+The frozen **12-candidate × 8-gate × 2-reviewer** inventory has a new
+**local-only completed-form audit**. It checks every filled A/B JSONL row
+against canonical public PR/candidate metadata and rejects unknown
+approval fields, wrong reviewer slots, duplicate JSON keys,
+malformed data, missing records and evidence-content/references
+mismatches. Previously two positive reviewer verdicts counted as
+agreement even if they pointed to different evidence digests;
+these now produce an **unresolved reconciliation status**.
+
+- [Private reviewer handoff, protocol and science boundaries](docs/G5_PRIVATE_REVIEW_TRIAGE_2026-11-07.md)
+- [Redacted offline audit CLI](scripts/audit_private_review_forms.py)
+- [Completed-form discrepancy logic](src/ucode/reviewer_adjudication.py)
+- [Synthetic adversarial privacy and non-admission tests](tests/test_private_review_inbox.py)
+
+**Never commit, upload or pass real completed reviewer forms to public
+CI or agent prompts.** The local command emits a redacted, source-ID
+and gate-only status report—not identities, reviewer free text,
+evidence URIs or content hashes. Even **96/96 matching positive
+reviewer claims do not admit any task**; independent source-era
+specification adjudication, rights, sealed evaluator and authenticated
+sandbox approval remain separate blocking steps. This new module
+does **not** contain actual independent human reviews.
+
 ## M4 code review and provenance hardening (7 November 2026)
 
 A focused [code review](docs/M4_JOINT_CODE_REVIEW_2026-11-07.md)
