@@ -23,6 +23,25 @@ jobs:
         run: python -m scripts.smoke_first_party_executable_canary
       - name: Cross-check 120 discovery PRs and 13 source leads (NO external downloads)
         run: python -m scripts.audit_dataset_cohort_crosswalk
+      - name: Audit all 13 external dataset source leads and ten code-readiness groups (NO downloads)
+        run: python -m scripts.audit_all_dataset_readiness --output-dir dist/ucode-all-datasets-readiness
+      - name: Confirm external dataset readiness still needs independent approval
+        run: |
+          set +e
+          python -m scripts.audit_all_dataset_readiness --require-runnable --output-dir dist/ucode-all-datasets-readiness > /dev/null
+          status=$?
+          if [ "$status" -ne 2 ]; then
+            echo "ERROR: unapproved source catalog must never become an executable benchmark"
+            exit 1
+          fi
+      - name: Publish public-only 13-source and code-readiness evidence register
+        if: matrix.python-version == '3.12'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ucode-all-13-datasets-code-readiness-NO-REAL-TASKS-v1
+          path: dist/ucode-all-datasets-readiness/
+          if-no-files-found: error
+
       - name: Export 1000 pending scientific reviewer-perspective questions (NOT peer review)
         run: python -m scripts.export_1000_research_lenses --output dist/ucode-review-1000-lenses.json
       - name: Inventory all 33 Springer labeled equations (7 limited checks; 26 pending)

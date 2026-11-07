@@ -53,5 +53,16 @@
   ],
   "evaluation": "repository/fork-group holdout with chronological cutoff, multiple seeds, independent verification, no gold patch leakage",
   "pilot": "40 executable tasks and 3 models only after dataset/ethics audit",
-  "warning": "Config is a prospective matrix, not a report of executed studies."
+  "warning": "Config is a prospective matrix, not a report of executed studies.",
+  "compatibility_notice": {
+    "status": "SUPERSEDED_NONAUTHORITATIVE_LEGACY_SKETCH",
+    "authoritative_registration": "configs/confirmatory_sbse_protocol_2026-10-25.json",
+    "must_not_use_for_confirmatory_runs": true,
+    "historical_policy_slots": 7,
+    "current_registered_policy_slots": 8,
+    "historical_budget_dimensions": 4,
+    "current_registered_resource_dimensions": 5,
+    "primary_contrast_frozen_in_authoritative_registration": true,
+    "rationale": "Historical planning artifact only; incompatible arms and resource dimensions. Never infer an executable study or overwrite the registered six-model/eight-policy protocol."
+  }
 }

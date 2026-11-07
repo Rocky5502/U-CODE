@@ -250,6 +250,32 @@ Overleaf project has not been accessed.
 
 [Read methods, private evidence-handling protocol and genuine blockers](../../docs/G5_SIGNED_EXTERNAL_EVIDENCE_CONTRACT_2026-11-07.md).
 
+## 7 November 2026: complete 13-source dataset + code eligibility audit
+
+The GitHub-tracked Springer `main.tex` now contains a narrowly
+scoped **source-only dataset eligibility and configuration** paragraph.
+It distinguishes the thirteen source entries (two naturalistic,
+four repository task candidates, three snippet-attribution,
+three auxiliary training, one efficiency) from the separate 120-PR
+discovery metadata frame. It explains that no external source
+has been independently rights-cleared, oracle-replayed or run in
+the U-CODE evaluation sandbox, and none may populate empirical
+effectiveness or cross-language outcome tables yet.
+
+A new [all-source/code readiness report](../../docs/ALL_DATASETS_AND_CODE_READINESS_2026-11-07.md)
+and [CLI](../../scripts/audit_all_dataset_readiness.py) verify catalog
+grains, source/file identity, representative code scaffolds, and
+the model/policy/pilot readiness registries. The old
+`configs/experiment_matrix.json` **seven-arm/four-resource**
+planning sketch is quarantined with a machine-readable
+non-authoritative notice. The registered **eight-arm/five-resource**
+confirmatory plan and primary comparison remain unchanged.
+
+CI source lint and the updated `ucode-overleaf-sources` ZIP confirm
+only that **GitHub LaTeX source files were updated**. The separate
+live Overleaf cloud project was not accessed, synchronized,
+publisher-class compiled or visually reviewed as a PDF.
+
 ## Direct Overleaf sync (not yet configured)
 
 Overleaf offers authenticated Git integration and GitHub synchronization for
