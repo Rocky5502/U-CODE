@@ -150,5 +150,8 @@
   "sandbox_attested": false,
   "execution_metering_attested": false,
   "task_admitted": false,
-  "go_executed": false
+  "go_executed": false,
+  "business_rules_document_path": "docs/淮安80分业务规则.md",
+  "business_rules_git_blob_sha40": "e71288e3127cb66f2471a5ddd2800092db0552cc",
+  "business_rules_bytes": 17069
 }
