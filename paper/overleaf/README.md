@@ -276,6 +276,31 @@ only that **GitHub LaTeX source files were updated**. The separate
 live Overleaf cloud project was not accessed, synchronized,
 publisher-class compiled or visually reviewed as a PDF.
 
+## 7 November 2026: Go #43 two-source pre-fix reviewer method
+
+The version-controlled Springer `main.tex` now documents the
+**original Go settlement microtask reviewer handoff**, based on two
+distinct artifacts pinned to the **same pre-fix Git commit**:
+`docs/design.md` and the Chinese-language business-rules file.
+The latter has higher normative priority when the source documents
+conflict. The paper records **12 proposed oracle review case families**
+and **six unresolved interpretation issues** (notably loss floors
+versus conserved point transfers and fractional multiplier rounding).
+
+This is a prospective **admission/evaluation methodology**, not
+a historical specification independently approved by an author,
+a confirmed runnable Go task, a measured experiment or a hidden
+evaluator. The original issue appeared only eight seconds
+before the PR and the issue body at PR creation was not sealed.
+The PHP and Go pilot both remain blocked (16/16 gates pending).
+The official six-model/eight-policy primary study is unchanged.
+
+Source review details:
+[Go 43 independent oracle handoff](../../docs/G5_GO43_SOURCE_ERA_ORACLE_REVIEW_2026-11-07.md).
+The latest `ucode-overleaf-sources` CI artifact contains the
+GitHub LaTeX update. The live Overleaf cloud project was **not**
+accessed or compiled in this task.
+
 ## Direct Overleaf sync (not yet configured)
 
 Overleaf offers authenticated Git integration and GitHub synchronization for
