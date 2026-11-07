@@ -67,7 +67,7 @@ The longest **dependency chain by number of milestones** in this plan is P0-1 â†
 
 ## Most important next action
 
-**P0-1: an independently admissible PHP or Go pilot.** For PHP #104, the historical issue-body-as-of-PR specification has not been approved. For Go #43, a pinned older design blob is a **microtask lead**, not permission to use it as ground truth for full-PR transaction/idempotency correctness. Both still need file-level rights/attribution, independently authored evaluator-only oracle, secure sandbox and separate authorization.
+**P0-1: an independently admissible PHP or Go pilot.** For PHP #104, the historical issue-body-as-of-PR specification has not been approved. For Go #43, **two** immutable pre-fix sources (the design and its higher-priority business rules) are pinned to one base tree and supply a **12-family prospective reviewer blueprint**; six open normative questions still need independent domain adjudication. This remains a **microtask lead**, not permission to use it as full-PR ground truth or an independently sealed functional oracle. See [Go #43 two-source review](G5_GO43_SOURCE_ERA_ORACLE_REVIEW_2026-11-07.md) and [the current V5 new-chat prompt](UCODE_NEW_CHAT_MASTER_HANDOFF_V5_2026-11-07.md). Both still need file-level rights/attribution, independently authored evaluator-only oracle, secure sandbox and separate authorization.
 
 Use [the offline private reviewer handoff](G5_PRIVATE_REVIEW_TRIAGE_2026-11-07.md) to review these without committing reviewer identities or hidden answer files to public GitHub. First-party test passes and the presence of SHA256 fields **cannot** attest a reviewer or independently seal an oracle.
 
