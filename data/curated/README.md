@@ -179,3 +179,23 @@ repos, issue duplicates, or shared hidden oracle assets.
 The dataset card and GitHub Overleaf source must cite exact
 CI-confirmed summary counts and distinguish metadata results from
 software reliability results.
+
+## 7 November 2026: complete external-source and code-readiness audit
+
+The original curated `120`-row PR dataset remains **metadata-only**.
+For the separately registered 13 external source leads, see the
+[complete source and code audit](../../docs/ALL_DATASETS_AND_CODE_READINESS_2026-11-07.md)
+and its executable read-only [exporter](../../scripts/audit_all_dataset_readiness.py).
+The 13 sources are classified into naturalistic/provenance, controlled
+repair candidates, snippet attribution, auxiliary training, and
+separate efficiency outcomes. Those grains are **not interchangeable**.
+All are still declared `not_executed` in the frozen catalog; no external
+payload has been independently approved as a locally reproducible
+and legally cleared runnable benchmark cohort.
+
+**Configuration warning:** `configs/experiment_matrix.json` is a historical
+**7-arm / 4-resource** sketch, now explicitly quarantined.
+Only `configs/confirmatory_sbse_protocol_2026-10-25.json`
+controls the registered **8-arm / 5-resource** primary study. Do not
+infer trained models, actual admission, an oracle or a research finding
+from catalog links, file hashes, or CI fixture tests.
