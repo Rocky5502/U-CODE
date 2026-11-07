@@ -187,6 +187,26 @@ The updated `main.tex` and `references.bib` are committed to GitHub and
 exported as `ucode-overleaf-sources` by CI. They have **not** been written
 into, compiled in or visually checked inside a separate live Overleaf project.
 
+## 7 November 2026: offline A/B reviewer evidence reconciliation
+
+The canonical `main.tex` now includes a methodological paragraph on
+**12 candidate PRs × eight admission gates × two independent reviewer
+slots** (192 source-review worksheet rows, 96 paired gate categories).
+The new local-only review audit distinguishes matching reviewer verdict
+categories from matching evidence digests or supporting references,
+and refuses to turn agreement into experiment admission.
+
+**No real reviewer submissions have been received or authenticated.**
+The mathematical/form validation tests use invented reviewer identities
+and fictional evidence; they do not verify ownership, legal rights,
+source-era task eligibility, independent oracle sealing or genuine
+execution. The separate cloud Overleaf project is **not** edited
+by the GitHub source update. CI exports only public manuscript
+sources, never private reviewer forms.
+
+Methods and privacy boundaries:
+[G5 private reviewer triage](../../docs/G5_PRIVATE_REVIEW_TRIAGE_2026-11-07.md).
+
 ## Direct Overleaf sync (not yet configured)
 
 Overleaf offers authenticated Git integration and GitHub synchronization for

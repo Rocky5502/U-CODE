@@ -130,16 +130,35 @@ def adjudicate_review_disagreement(packets, reviewer_a, reviewer_b) -> PairedRev
     outcomes = []
     paired_completed = 0
     pairs_agree = 0
+    divergent_positive_digests = 0
+    divergent_positive_refs = 0
     for item in expected["A"]:
         key = (item["candidate_id"], item["gate"])
         x, y = a[key], b[key]
         both = x["verdict"] != "PENDING" and y["verdict"] != "PENDING"
+        if not both:
+            status = "PENDING_REVIEWS"
+        elif x["verdict"] != y["verdict"]:
+            status = "REVIEWER_DISAGREEMENT_NEEDS_ADJUDICATION"
+        elif x["verdict"] == "EVIDENCE_PRESENT_NOT_ATTESTED":
+            # Same positive verdict is NOT agreement about the *evidence*:
+            # two identical booleans with incompatible artifact versions
+            # must be reconciled before any independent adjudication.
+            if x["evidence_sha256"] != y["evidence_sha256"]:
+                status = "EVIDENCE_DIGEST_MISMATCH_NEEDS_ADJUDICATION"
+                divergent_positive_digests += 1
+            elif set(x["evidence_refs"]) != set(y["evidence_refs"]):
+                status = "EVIDENCE_REFERENCES_DIFFER_NEEDS_ADJUDICATION"
+                divergent_positive_refs += 1
+            else:
+                status = "REVIEWERS_AGREE_NOT_ADJUDICATED"
+        else:
+            # Two reasoned 'insufficient' or 'rejected' verdicts agree
+            # on the verdict category, not on actual experiment approval.
+            status = "REVIEWERS_AGREE_NOT_ADJUDICATED"
         if both:
             paired_completed += 1
-            pairs_agree += (x["verdict"] == y["verdict"])
-        status = ("PENDING_REVIEWS" if not both else
-                  "REVIEWERS_AGREE_NOT_ADJUDICATED" if x["verdict"] == y["verdict"]
-                  else "REVIEWER_DISAGREEMENT_NEEDS_ADJUDICATION")
+            pairs_agree += status == "REVIEWERS_AGREE_NOT_ADJUDICATED"
         outcomes.append({
             "candidate_id": item["candidate_id"], "gate": item["gate"],
             "status": status, "independently_adjudicated": False,
@@ -155,6 +174,8 @@ def adjudicate_review_disagreement(packets, reviewer_a, reviewer_b) -> PairedRev
         "agreement_fraction_completed_pairs": (
             None if not paired_completed else pairs_agree/paired_completed),
         "disagreements_on_completed_pairs": paired_completed-pairs_agree,
+        "positive_evidence_digest_mismatches": divergent_positive_digests,
+        "positive_evidence_reference_mismatches": divergent_positive_refs,
         "unresolved_independent_adjudications": total,
         "independently_admitted_executable_tasks": 0,
         "oracle_runs": 0,
