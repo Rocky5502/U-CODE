@@ -1,0 +1,157 @@
+{
+  "schema_version": "1.0",
+  "stage": "GO43_PUBLIC_REVIEW_QUESTIONS_NOT_EXECUTABLE_ORACLE",
+  "candidate_id": 43,
+  "repository": "PlayHuai/eighty-point-huai-an",
+  "task_scope": "declared_microtask",
+  "base_commit": "ec41b1b33f5a4d46a8398fb6ccc33f25336fdb8a",
+  "base_tree_sha": "e53fb011857926632c4a4ec8752425e0f2b41559",
+  "source_document_path": "docs/design.md",
+  "source_document_git_blob_sha40": "b566ca7627b6518670a866a6a637bd5257e947f4",
+  "source_document_bytes": 16052,
+  "toolchain_go_mod_sha40": "0933c3551c51527a752bc5cca0bd47581fc304a5",
+  "external_business_rules_normativity_review": "PENDING",
+  "independent_source_era_scope_approved": false,
+  "oracle_case_families": [
+    {
+      "case_id": "GAP_TIER_EDGES",
+      "spec_sections": [
+        "3.2"
+      ],
+      "stage": "PROPOSED_REVIEW_ONLY_NO_TEST_CODE_OR_GOLD",
+      "gold_output_included": false
+    },
+    {
+      "case_id": "A_TWO_SINGLE_VS_SPRING",
+      "spec_sections": [
+        "3.2"
+      ],
+      "stage": "PROPOSED_REVIEW_ONLY_NO_TEST_CODE_OR_GOLD",
+      "gold_output_included": false
+    },
+    {
+      "case_id": "HALL_MULTIPLIER_CASES",
+      "spec_sections": [
+        "3.2"
+      ],
+      "stage": "PROPOSED_REVIEW_ONLY_NO_TEST_CODE_OR_GOLD",
+      "gold_output_included": false
+    },
+    {
+      "case_id": "LOW_BALANCE_SETTLEMENT",
+      "spec_sections": [
+        "3.2"
+      ],
+      "stage": "PROPOSED_REVIEW_ONLY_NO_TEST_CODE_OR_GOLD",
+      "gold_output_included": false
+    },
+    {
+      "case_id": "FRACTIONAL_HALL_MULTIPLIER",
+      "spec_sections": [
+        "3.2"
+      ],
+      "stage": "PROPOSED_REVIEW_ONLY_NO_TEST_CODE_OR_GOLD",
+      "gold_output_included": false
+    },
+    {
+      "case_id": "TEAM_DISTRIBUTION_AND_CONSERVATION",
+      "spec_sections": [
+        "3.2"
+      ],
+      "stage": "PROPOSED_REVIEW_ONLY_NO_TEST_CODE_OR_GOLD",
+      "gold_output_included": false
+    },
+    {
+      "case_id": "RANK_BOUNDARY_CROSSING",
+      "spec_sections": [
+        "3.3"
+      ],
+      "stage": "PROPOSED_REVIEW_ONLY_NO_TEST_CODE_OR_GOLD",
+      "gold_output_included": false
+    },
+    {
+      "case_id": "SETTLE_ONLY_ON_MATCH_COMPLETION",
+      "spec_sections": [
+        "1",
+        "3.1"
+      ],
+      "stage": "PROPOSED_REVIEW_ONLY_NO_TEST_CODE_OR_GOLD",
+      "gold_output_included": false
+    },
+    {
+      "case_id": "NATURAL_LEVEL_NO_DIRECT_POINT_CHANGE",
+      "spec_sections": [
+        "3.2",
+        "6.6"
+      ],
+      "stage": "PROPOSED_REVIEW_ONLY_NO_TEST_CODE_OR_GOLD",
+      "gold_output_included": false
+    },
+    {
+      "case_id": "ATOMIC_ALL_PLAYER_LEDGER",
+      "spec_sections": [
+        "7"
+      ],
+      "stage": "PROPOSED_REVIEW_ONLY_NO_TEST_CODE_OR_GOLD",
+      "gold_output_included": false
+    },
+    {
+      "case_id": "RETRY_IDEMPOTENCE",
+      "spec_sections": [
+        "7"
+      ],
+      "stage": "PROPOSED_REVIEW_ONLY_NO_TEST_CODE_OR_GOLD",
+      "gold_output_included": false
+    },
+    {
+      "case_id": "RECOVERY_AFTER_RECONNECT",
+      "spec_sections": [
+        "7"
+      ],
+      "stage": "PROPOSED_REVIEW_ONLY_NO_TEST_CODE_OR_GOLD",
+      "gold_output_included": false
+    }
+  ],
+  "ambiguity_register": [
+    {
+      "ambiguity_id": "ZERO_FLOOR_VS_TOTAL_CONSERVATION",
+      "spec_section": "3.2",
+      "status": "NEEDS_INDEPENDENT_SPEC_AUTHOR_RESOLUTION"
+    },
+    {
+      "ambiguity_id": "HALL_COEFFICIENT_FRACTIONAL_ROUNDING",
+      "spec_section": "3.2",
+      "status": "NEEDS_INDEPENDENT_SPEC_AUTHOR_RESOLUTION"
+    },
+    {
+      "ambiguity_id": "TEAM_PLAYER_SPLIT_AND_NONNEGATIVE_BALANCE",
+      "spec_section": "3.2",
+      "status": "NEEDS_INDEPENDENT_SPEC_AUTHOR_RESOLUTION"
+    },
+    {
+      "ambiguity_id": "SPRING_RULE_SOURCE_AND_SCOPE",
+      "spec_section": "3.2",
+      "status": "NEEDS_INDEPENDENT_SPEC_AUTHOR_RESOLUTION"
+    },
+    {
+      "ambiguity_id": "ATOMIC_RETRY_IDENTITY_AND_OBSERVABILITY",
+      "spec_section": "7",
+      "status": "NEEDS_INDEPENDENT_SPEC_AUTHOR_RESOLUTION"
+    },
+    {
+      "ambiguity_id": "EXTERNAL_BUSINESS_RULES_PRECEDENCE",
+      "spec_section": "intro",
+      "status": "NEEDS_INDEPENDENT_SPEC_AUTHOR_RESOLUTION"
+    }
+  ],
+  "source_file_rights_adjudicated": false,
+  "oracle_independently_authored": false,
+  "oracle_sealed_outside_repository": false,
+  "sandbox_attested": false,
+  "execution_metering_attested": false,
+  "task_admitted": false,
+  "go_executed": false,
+  "business_rules_document_path": "docs/淮安80分业务规则.md",
+  "business_rules_git_blob_sha40": "e71288e3127cb66f2471a5ddd2800092db0552cc",
+  "business_rules_bytes": 17069
+}
