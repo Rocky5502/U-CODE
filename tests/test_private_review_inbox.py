@@ -218,6 +218,20 @@ class LocalReviewerInboxTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "size"):
                 read_private_review_rows(x)
 
+    def test_redacted_output_cannot_overwrite_private_input(self):
+        a, b = self.make_forms()
+        with TemporaryDirectory() as tmp:
+            x, y = self.dump(tmp, a, b)
+            before = x.read_bytes()
+            with redirect_stdout(io.StringIO()), self.assertRaisesRegex(
+                    ValueError, "must not overwrite private"):
+                audit_cli([
+                    "--reviewer-a", str(x),
+                    "--reviewer-b", str(y),
+                    "--output", str(x),
+                ])
+            self.assertEqual(x.read_bytes(), before)
+
     def test_reader_rejects_invalid_unicode_and_private_summary_wont_contain_raw(self):
         a, b = self.make_forms()
         with TemporaryDirectory() as tmp:
