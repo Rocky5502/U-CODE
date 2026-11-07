@@ -111,6 +111,39 @@ PHP/Go gate-status table. This updates the **GitHub manuscript source**,
 not a separate live Overleaf cloud project; compilation and an
 independently verified execution runner remain separate steps.
 
+## All thirteen dataset sources + research code readiness (7 November 2026)
+
+The [full source-by-source and code-readiness review](docs/ALL_DATASETS_AND_CODE_READINESS_2026-11-07.md)
+crosschecks the **13 external dataset leads**, the frozen **120-PR
+metadata cohort**, the real PHP/Go **16 pending admission gates**,
+all six model-readiness declarations, the authoritative **eight
+policy/five-resource** study, and ten representative first-party
+code/test component groups.
+
+- [Deterministic audit/export CLI](scripts/audit_all_dataset_readiness.py)
+  and [typed audit implementation](src/ucode/dataset_code_readiness.py)
+  produce `ALL_DATASET_READINESS.json`, `ALL_DATASET_CODE_STATUS.md`
+  and a separate SHA256 receipt under the GitHub Actions artifact
+  `ucode-all-13-datasets-code-readiness-NO-REAL-TASKS-v1`.
+- [Adversarial audit tests](tests/test_all_dataset_code_readiness.py)
+  reject duplicate/missing source entries, forged task admission,
+  fake model inference or oracle approvals, and altered trial policy
+  identities.
+- **Important configuration repair:** `configs/experiment_matrix.json`
+  still contains a historical seven-arm/four-resource sketch, now
+  explicitly marked **non-authoritative and non-executable**.
+  The scientific registration remains
+  [six models, eight policies and five caps](configs/confirmatory_sbse_protocol_2026-10-25.json).
+  No preregistered hypothesis, model slot or primary contrast was changed.
+
+The full first-party CI validates code contracts; **no external
+dataset has been independently acquired, file-rights-approved,
+oracle-sealed or executed within U-CODE**. The original 120-PR
+metadata release is reproducible but is **not** a code-repair
+benchmark. No 13-source download, 12-language runnable dataset or
+real treatment effect is claimed. The source audit is *not* a local
+disk scan or a whole-repository security audit.
+
 ## M8 offline evidence-signature integrity and Springer source update (7 November 2026)
 
 The private independent reviewer workflow now has a
