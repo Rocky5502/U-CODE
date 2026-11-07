@@ -142,6 +142,9 @@ def main(argv=None) -> int:
     blob = json.dumps(report, sort_keys=True, indent=2) + "\n"
     if args.output:
         output = args.output
+        if output.resolve() in (args.reviewer_a.resolve(),
+                                args.reviewer_b.resolve()):
+            raise ValueError("redacted output must not overwrite private reviewer inputs")
         if output.is_symlink():
             raise ValueError("refusing to overwrite a symlinked summary path")
         output.parent.mkdir(parents=True, exist_ok=True)
