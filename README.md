@@ -111,6 +111,41 @@ PHP/Go gate-status table. This updates the **GitHub manuscript source**,
 not a separate live Overleaf cloud project; compilation and an
 independently verified execution runner remain separate steps.
 
+## First Go pilot qualification: two original requirements documents (7 November 2026)
+
+A new [Go #43 source-era independent-review handoff](docs/G5_GO43_SOURCE_ERA_ORACLE_REVIEW_2026-11-07.md)
+pins **two** Git blobs from the *same pre-fix commit/tree*:
+
+- `docs/design.md` — 16,052 original bytes, Git object
+  `b566ca7627b6518670a866a6a637bd5257e947f4`.
+- `docs/淮安80分业务规则.md` — 17,069 original bytes, Git
+  object `e71288e3127cb66f2471a5ddd2800092db0552cc`.
+  The design document explicitly defers to these business rules
+  when conflicts arise.
+
+The [public question blueprint](data/admission/2026-11-07/go43_pre_fix_oracle_review_blueprint_PUBLIC_NO_GOLD.json)
+contains **12 original-section-linked proposed oracle coverage families**
+and **six unresolved human-review questions**, including a real
+conflict between zero-floor player balances and conservation of points,
+plus underspecified fractional hall-multiplier rounding. We **do not**
+choose convenient outputs from the post-fix PR.
+
+[Typed verifier](src/ucode/go43_oracle_review_blueprint.py),
+[optional local raw-byte Git blob checker/CLI](scripts/compile_go43_review_handoff.py)
+and synthetic [regression tests](tests/test_go43_oracle_review_blueprint.py)
+fail closed on wrong source versions, missing business rules, inserted
+golds, or claimed approval. CI exports only source IDs and question
+categories: never original source contents, hidden tests, private
+reviewer forms, runnable Go binaries or model outcomes.
+
+**Still NOT executable:** Go issue #29 was created only eight seconds
+before PR #30 and its short issue wording was never independently
+archived at PR creation. Both original task documents require
+independent **scope/normativity** decisions, file-rights review,
+an evaluator-only sealed oracle and a trusted sandbox. Go's eight
+admission gates (and PHP's eight) remain pending. The registered
+six-model/eight-policy comparison is unchanged.
+
 ## All thirteen dataset sources + research code readiness (7 November 2026)
 
 The [full source-by-source and code-readiness review](docs/ALL_DATASETS_AND_CODE_READINESS_2026-11-07.md)
