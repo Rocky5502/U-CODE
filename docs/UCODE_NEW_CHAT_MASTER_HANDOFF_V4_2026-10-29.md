@@ -1,5 +1,8 @@
 # U-CODE — Verified V4 Research Handover and New-Chat Activation
 
+> **CURRENT RESUME PROMPT — 7 NOVEMBER 2026:** Use [V5 new-chat master handoff](UCODE_NEW_CHAT_MASTER_HANDOFF_V5_2026-11-07.md) as the first startup/next-sprint prompt. The 29 October V4 below is intentionally preserved as a **historical baseline and the original R0–R16 charter**, not rewritten to falsify its verified 1,115-test/PR #21 snapshot. V5 adds merged Go #43 PR #53 evidence, verified 1,515-test Python 3.10/3.12 CI, the 16 pending PHP/Go approval gates, the current 10-stage scientific critical path, and a full action backlog. Re-read the live GitHub `main` and CI on every new chat.
+
+
 **Handover issued:** 29 October 2026  
 **Canonical repository:** https://github.com/Rocky5502/U-CODE  
 **Current evidence baseline before this V4 document:** `main` = `56bf2e8ff31edb250e9d5f9cbc2219ddab235527`; GitHub Actions `40834818493` = **SUCCESS**; **1,115 offline tests on each of Python 3.10 and 3.12**. These are a dated, independently fetched *GitHub CI* baseline, NOT proof of experimental correctness, and this handoff will itself create a newer commit/run. **Refresh the latest main SHA, PRs and CI before any work or claim.**  
