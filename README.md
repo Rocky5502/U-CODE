@@ -84,6 +84,30 @@ PHP/Go gate-status table. This updates the **GitHub manuscript source**,
 not a separate live Overleaf cloud project; compilation and an
 independently verified execution runner remain separate steps.
 
+## M4 code review and provenance hardening (7 November 2026)
+
+A focused [code review](docs/M4_JOINT_CODE_REVIEW_2026-11-07.md)
+of the joint-frequency fitter and same-marginal acquisition controllers
+identified three consequential scientific-validity risks. These are
+now fixed and covered by independent regression cases:
+
+- **Candidate-data leakage:** prevent duplicate candidate proposal IDs
+  and duplicate public pre-outcome snapshots under different task IDs;
+  reject task/proposal/snapshot reuse across train and validation.
+- **Mixed model revisions:** require an explicitly declared lower-case
+  SHA256 **checkpoint identity** on each row, frozen predictor and
+  candidate comparison; reject competing fits within the same
+  frozen model/action/context.
+- **Repository-size domination in reported validation:** retain
+  task-micro Brier/log/marginal scores but additionally report
+  separately named **equal-lineage macro scores** and group-level
+  absolute marginal prevalence gaps.
+
+Hash strings and model timestamps are **not** independent authenticators.
+No real benchmark trial or trusted external checkpoint is unlocked by
+these safeguards. The registered six models, eight policies and the
+unchanged intention-to-treat primary comparison remain prospective.
+
 ## M4 next-stage: lineage-disjoint fitted-joint control (7 November 2026)
 
 A new **training-only, context-bucket-conditional eight-outcome frequency

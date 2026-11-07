@@ -59,6 +59,7 @@ class MatchedJointComparison:
     choices: tuple[tuple[str,str|None], ...]
     shared_resource_budget: ResourceVector
     source_model_id: str
+    source_model_checkpoint_sha256: str
     source_labeling_protocol_id: str
     eligible_candidate_count: int
     status: str = "FOUR_SCORES_SAME_MARGINALS_SOURCE_ONLY_NOT_REAL_TASK"
@@ -97,9 +98,22 @@ def compare_same_marginal_joint_controllers(
     # Compare one model + one independent labeling protocol only; no
     # cross-checkpoint result or label-protocol pooling disguised as parity.
     models={x.forecast.model_id for x in rows}
+    revisions={x.forecast.model_checkpoint_sha256 for x in rows}
     protocols={x.forecast.labeling_protocol_id for x in rows}
-    if len(models)!=1 or len(protocols)!=1:
-        raise ValueError("cross-model or cross-label-protocol comparison forbidden")
+    if len(models)!=1 or len(revisions)!=1 or len(protocols)!=1:
+        raise ValueError("cross-model or cross-label-protocol or checkpoint revision comparison forbidden")
+    # All candidates with the same model/action/context must reference
+    # the SAME frozen fit; otherwise implicit retraining per candidate
+    # (possibly on a different label set) can confound the controls.
+    fit_by_context={}
+    for row in rows:
+        f=row.forecast
+        key=(f.action,f.public_context_bucket,f.labeling_protocol_id)
+        previous=fit_by_context.setdefault(key,(
+            f.training_fingerprint_sha256,f.smoothing_per_atom,f.masses))
+        if previous!=(f.training_fingerprint_sha256,
+                      f.smoothing_per_atom,f.masses):
+            raise ValueError("inconsistent frozen joint fit within public context")
     for row in rows:
         p=row.proposal
         if p.action!=row.forecast.action:
@@ -109,13 +123,13 @@ def compare_same_marginal_joint_controllers(
         expected=row.forecast.marginal_high()
         if any(abs(a-b)>_TOL for a,b in zip(received,expected)):
             raise ValueError("marginal mismatch: unfair joint versus independent control")
+    baseline=hypervolume_2d(points,reference)
     scored=[]
     for row in sorted(rows,key=lambda x:x.proposal.action_id):
         p=row.proposal
         if not remaining_budget.affordable(p.cost):
             continue
         band=bound_joint_validity_hvi(points,p,unit_prices,reference)
-        baseline=hypervolume_2d(points,reference)
         two_support_r=(p.reliability.low,p.reliability.high)
         two_support_s=(p.safety.low,p.safety.high)
         deltas=[
@@ -150,5 +164,6 @@ def compare_same_marginal_joint_controllers(
         selections.append((name,chosen))
     return MatchedJointComparison(
         tuple(scored),tuple(selections),remaining_budget,
-        next(iter(models)),next(iter(protocols)),len(scored),
+        next(iter(models)),next(iter(revisions)),
+        next(iter(protocols)),len(scored),
     )

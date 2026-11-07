@@ -25,6 +25,7 @@ PARTS=GroupPartitions(
     frozenset(("val-1","val-2")),
     frozenset(("never-eval-1",)),
 )
+CHECKPOINT=sha256(b"SYNTHETIC_MODEL_CHECKPOINT_NOT_REAL_WEIGHTS").hexdigest()
 PRICES=ResourcePrices(tokens=.01)
 CAP=ResourceVector(tokens=10,test_calls=2,gpu_seconds=10,
                    cpu_seconds=9,wall_seconds=8)
@@ -32,13 +33,14 @@ CAP=ResourceVector(tokens=10,test_calls=2,gpu_seconds=10,
 
 def row(i, group, atom=(0,0,0), *,
         context="PREOUTCOME_BUCKET_A",model="synthetic-model",
-        action="generate", protocol="synthetic-label-v1"):
+        checkpoint=CHECKPOINT, action="generate",
+        protocol="synthetic-label-v1"):
     r,s,v=atom
     return JointOutcomeLabel(
         task_id="SYNTHETIC_TASK_%d"%i,
         lineage_group=group,
         proposal_id="SYNTHETIC_CANDIDATE_%d"%i,
-        model_id=model,action=action,
+        model_id=model,model_checkpoint_sha256=checkpoint,action=action,
         public_context_bucket=context,
         preoutcome_snapshot_sha256=sha256(
             ("SYNTHETIC_VISIBLE_%d"%i).encode()).hexdigest(),
@@ -68,7 +70,7 @@ def fit(rows=None,parts=PARTS,**kw):
     return fit_training_joint_frequency(
         training_rows() if rows is None else rows,parts,
         "synthetic-model","generate","PREOUTCOME_BUCKET_A",
-        "synthetic-label-v1",**kw,
+        "synthetic-label-v1",model_checkpoint_sha256=CHECKPOINT,**kw,
     )
 
 
@@ -215,6 +217,93 @@ class JointFrequencyTrainingTests(unittest.TestCase):
             validate_frozen_joint_frequency(
                 f,validation_rows()[:2],PARTS)
 
+    def test_training_candidate_identity_cannot_repeat_under_new_task(self):
+        rows=training_rows()
+        bad=rows.copy()
+        bad[1]=replace(bad[1],proposal_id=bad[0].proposal_id)
+        with self.assertRaisesRegex(ValueError,"duplicate candidate proposal"):
+            fit(bad)
+
+    def test_training_snapshot_cannot_repeat_under_new_candidate(self):
+        rows=training_rows()
+        bad=rows.copy()
+        bad[1]=replace(bad[1],
+                       preoutcome_snapshot_sha256=bad[0].preoutcome_snapshot_sha256)
+        with self.assertRaisesRegex(ValueError,"duplicate candidate public snapshot"):
+            fit(bad)
+
+    def test_validation_cannot_reuse_training_candidate_or_snapshot(self):
+        f=fit()
+        training=training_rows()
+        cases=(
+            {"proposal_id":training[0].proposal_id},
+            {"preoutcome_snapshot_sha256":training[0].preoutcome_snapshot_sha256},
+        )
+        for fields in cases:
+            data=validation_rows()
+            data[0]=replace(data[0],**fields)
+            with self.subTest(fields=fields),self.assertRaisesRegex(
+                ValueError,"train/validation .* overlap"):
+                validate_frozen_joint_frequency(f,data,PARTS)
+
+    def test_training_checkpoint_drift_is_rejected(self):
+        data=training_rows()
+        data[0]=replace(data[0],model_checkpoint_sha256="f"*64)
+        with self.assertRaisesRegex(ValueError,"mixing models/checkpoints"):
+            fit(data)
+        with self.assertRaisesRegex(ValueError,"checkpoint"):
+            replace(data[0],model_checkpoint_sha256="unverified")
+        self.assertEqual(fit().model_checkpoint_sha256,CHECKPOINT)
+
+    def test_lineage_macro_scores_do_not_hide_repository_size_imbalance(self):
+        f=fit()
+        data=(
+            [row(1000+i,"val-1",(0,0,0)) for i in range(20)]+
+            [row(2000+i,"val-2",(1,0,1)) for i in range(4)]
+        )
+        r=validate_frozen_joint_frequency(f,data,PARTS)
+        p=f.masses
+        independent_brier=lambda state: sum(
+            (p[j]-(1. if j==state else 0.))**2 for j in range(8))
+        score0=independent_brier(0)
+        score5=independent_brier(5)
+        self.assertAlmostEqual(
+            r.categorical_eight_class_brier,(20*score0+4*score5)/24)
+        self.assertAlmostEqual(
+            r.lineage_balanced_categorical_brier,(score0+score5)/2)
+        self.assertGreater(r.lineage_balanced_categorical_brier,
+                           r.categorical_eight_class_brier)
+        self.assertGreater(r.lineage_balanced_categorical_log_loss,
+                           r.categorical_log_loss)
+        self.assertAlmostEqual(
+            r.lineage_balanced_marginal_absolute_gap[0],.5)
+        self.assertGreater(r.lineage_balanced_marginal_absolute_gap[0],
+                           r.marginal_absolute_calibration_error[0])
+        self.assertEqual(r.validation_lineages,2)
+
+    def test_validation_macro_and_micro_equal_with_equal_group_sizes(self):
+        r=validate_frozen_joint_frequency(fit(),validation_rows(),PARTS)
+        self.assertAlmostEqual(
+            r.categorical_eight_class_brier,
+            r.lineage_balanced_categorical_brier)
+        self.assertAlmostEqual(
+            r.categorical_log_loss,
+            r.lineage_balanced_categorical_log_loss)
+        self.assertAlmostEqual(
+            r.marginal_brier_mean,
+            r.lineage_balanced_marginal_brier_mean)
+
+    def test_frozen_provenance_ledgers_must_be_unique_and_sorted(self):
+        f=fit()
+        for name in ("training_task_hashes","training_proposal_hashes",
+                     "training_snapshot_hashes"):
+            data=getattr(f,name)
+            for bad in (data[:-1],data[::-1],data[:-1]+data[0:1]):
+                with self.subTest(name=name,bad=bad[-1:]),self.assertRaisesRegex(
+                    ValueError,"unique sorted complete"):
+                    replace(f,**{name:bad})
+        self.assertEqual(len(f.training_proposal_hashes),f.training_task_count)
+
     def test_preoutcome_snapshot_and_training_label_are_not_public_output(self):
         f=fit()
         self.assertNotIn("training_label_ref",f.__dict__)
@@ -308,6 +397,20 @@ class MatchedJointControllerTests(unittest.TestCase):
                     JointForecastCandidate(
                         f.proposal("other",(.0,1.),(.0,1.),
                                    ResourceVector(tokens=1)),f)))
+
+    def test_mismatched_checkpoint_revision_refused(self):
+        other=replace(self.f,model_checkpoint_sha256="f"*64)
+        with self.assertRaisesRegex(ValueError,"checkpoint revision"):
+            self.compare((self.risky,JointForecastCandidate(
+                other.proposal("different",(.5,.5),(.5,.5),
+                               ResourceVector(tokens=1)),other)))
+
+    def test_same_context_cannot_stealthily_use_different_training_fit(self):
+        modified=replace(self.f,training_fingerprint_sha256="f"*64)
+        with self.assertRaisesRegex(ValueError,"inconsistent frozen joint fit"):
+            self.compare((self.risky,JointForecastCandidate(
+                modified.proposal("different",(.5,.5),(.5,.5),
+                                  ResourceVector(tokens=1)),modified)))
 
     def test_mismatched_action_refused(self):
         wrong=replace(self.f,action="repair")

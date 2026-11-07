@@ -16,12 +16,17 @@ from ucode.joint_frequency_controls import (
 )
 from ucode.vector_policy import ResourcePrices,ResourceVector
 
+SYNTHETIC_CHECKPOINT=sha256(
+    b"SYNTHETIC_MODEL_CHECKPOINT_NOT_REAL_WEIGHTS").hexdigest()
+
 
 def row(i, group, atom):
     return JointOutcomeLabel(
         task_id=f"SYNTHETIC_TASK_{i}",lineage_group=group,
         proposal_id=f"SYNTHETIC_CANDIDATE_{i}",
-        model_id="synthetic_model_not_loaded",action="generate",
+        model_id="synthetic_model_not_loaded",
+        model_checkpoint_sha256=SYNTHETIC_CHECKPOINT,
+        action="generate",
         public_context_bucket="SYNTHETIC_PREOUTCOME_BUCKET",
         preoutcome_snapshot_sha256=sha256(f"synthetic_{i}".encode()).hexdigest(),
         preoutcome_time=100+i,label_time=1000+i,
@@ -44,6 +49,7 @@ def demo():
     joint=fit_training_joint_frequency(
         train,groups,"synthetic_model_not_loaded","generate",
         "SYNTHETIC_PREOUTCOME_BUCKET","SYNTHETIC_PROTOCOL",
+        model_checkpoint_sha256=SYNTHETIC_CHECKPOINT,
     )
     validation=validate_frozen_joint_frequency(joint,val,groups)
     candidates=(
@@ -63,11 +69,14 @@ def demo():
         "stage":"SYNTHETIC_TRAIN_ONLY_FREQUENCY_FOUR_WAY_CONTROL_NOT_EVALUATION",
         "train_tasks_invented":len(train),
         "train_declared_lineages":len(groups.train),
+        "model_checkpoint_identity_is_synthetic":True,
         "heldout_validation_tasks_invented":len(val),
         "heldout_validation_lineages":validation.validation_lineages,
         "predicted_marginal_probabilities":joint.marginal_high(),
         "eight_atom_joint_mass":joint.masses,
         "categorical_brier_synthetic_validation":validation.categorical_eight_class_brier,
+        "lineage_balanced_categorical_brier_synthetic_validation":
+            validation.lineage_balanced_categorical_brier,
         "marginal_brier_synthetic_validation":validation.marginal_brier_mean,
         "policy_choices_on_matched_synthetic_candidates":choices,
         "registered_confirmatory_policy_arms_executed":0,
