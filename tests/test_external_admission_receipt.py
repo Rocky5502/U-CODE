@@ -279,7 +279,7 @@ class SyntheticExternalReviewReceiptTests(unittest.TestCase):
                   [asdict(x) for x in k.values()])
         paths=[Path(tmp,n) for n in names]
         for p,value in zip(paths,payloads):
-            p.write_text(json.dumps(value,sort_keys=True)+"\\n",encoding="utf-8")
+            p.write_text(json.dumps(value,sort_keys=True)+"\n",encoding="utf-8")
         return paths
 
     def test_private_cli_can_verify_synthetic_signatures_and_redact(self):
