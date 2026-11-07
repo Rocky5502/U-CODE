@@ -41,3 +41,19 @@ A **repository-agent-specific empirical and algorithmic synthesis**, not first u
 7. Can reviewers verify that the originality, if any, lies in a demonstrated coding-agent decision mechanism rather than repackaged Fréchet bounds?
 
 **Research readout:** mathematical ranking counterexample and source-integrity checks are achievable now; genuine algorithmic novelty and paper-level benefit are unresolved.
+
+## 7 November extension: validity is a third dependent outcome
+
+A source-only extension [`joint_validity_acquisition.py`](../src/ucode/joint_validity_acquisition.py) now removes the 6-Nov DRPA reference's *independent validity* multiplier. It computes exact sharp lower/upper usable-candidate HVI over **all 2×2×2 binary couplings** with frozen one-dimensional reliability, safety, and validity marginals, using at most 70 rational 4-column LP bases. The only mathematical addition to our source prototype is the extra modeled binary event and explicit ambiguity set; this must **not** be advertised as new optimal transport or novel Fréchet bounds. See the [formal derivation and 125 independent triple-intersection falsifiers](../docs/THREE_WAY_VALIDITY_COUPLING_2026-11-07.md).
+
+### New high-threat mathematical neighbor
+
+| Prior work | Established contribution | Overlap / threat | Required U-CODE distinction |
+|---|---|---|---|
+| Bartl et al. (2022), *Marginal and Dependence Uncertainty: Bounds, Optimal Transport, and Sharpness*, [SIAM J. Control Optim.](https://epubs.siam.org/doi/10.1137/21M144709X) | Sharp Fréchet-class dependence bounds and optimal transport duality | **Very high mathematical overlap:** joint ambiguity sets and sharp bounding are established theory | Treat the new code as a finite-support application; demonstrate its *incremental repository-agent action-selection significance* against valid fitted-joint EHVI and standard baselines, or report negative/null outcomes |
+
+### Falsification ablation now required
+
+Compare **(A)** original fully independent objective/value assumptions, **(B)** two-way reliability–safety DRPA with independently multiplied validity, **(C)** three-way *unrestricted* sharp coupling, and **(D)** a strongly fitted joint R/S/V distribution. Use the same pre-outcome marginal forecasts, patch proposal catalog, fixed Pareto reference point, actual five caps, train/test lineage split and independent evaluator. Report cases where the conservative (C) rule wrongly refrains from a genuinely helpful patch, not just cases where it saves resources.
+
+**No registered outcome or seventh model/ninth policy was added.** The eight-policy confirmatory design remains frozen at the existing planning level, and this is a separate methodological stress test pending admission.
