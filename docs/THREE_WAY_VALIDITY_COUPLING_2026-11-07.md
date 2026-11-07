@@ -6,7 +6,7 @@
 
 [The 2026-11-06 DRPA reference](DRPA_DEPENDENCE_ROBUST_ACQUISITION_2026-11-06.md) permitted arbitrary dependence between a candidate's predicted **reliability R** and **safety S**, but multiplied the lower/upper EHVI by a separately predicted **validity probability v**. That multiplication presupposes that V (whether the new candidate can be accepted/used) is *independent* of both objective outcomes. Such independence can fail in real software changes: invalid patches and regressions may co-occur with safety/security defects.
 
-The new `src/ucode/joint_validity_acquisition.py` drops that specific assumption. The resulting guarantee is exact *only for the supplied three Bernoulli marginal forecasts and four specified Pareto objective support points*. It is NOT a frequentist guarantee, not a fitted uncertainty model and not a new general-purpose optimal-transport theory. Fréchet classes and sharp coupling bounds are established mathematical concepts (e.g., Bartl et al., *Marginal and Dependence Uncertainty: Bounds, Optimal Transport, and Sharpness*, SIAM Journal on Financial Mathematics, 2022, DOI 10.1137/21M144709X).
+The new `src/ucode/joint_validity_acquisition.py` drops that specific assumption. The resulting guarantee is exact *only for the supplied three Bernoulli marginal forecasts and four specified Pareto objective support points*. It is NOT a frequentist guarantee, not a fitted uncertainty model and not a new general-purpose optimal-transport theory. Fréchet classes and sharp coupling bounds are established mathematical concepts (e.g., Bartl et al., *Marginal and Dependence Uncertainty: Bounds, Optimal Transport, and Sharpness*, SIAM Journal on Control and Optimization, 2022, DOI 10.1137/21M144709X).
 
 ## Precise finite-support setup
 
