@@ -168,6 +168,25 @@ source. The GitHub Actions `ucode-overleaf-sources` artifact contains
 the latest `main.tex` and `references.bib` bundle; the separate live
 Overleaf project is **not** automatically edited or compiled.
 
+## 7 November 2026: M4 joint-frequency code-review corrections
+
+The version-controlled Springer source now records fixes for candidate
+pseudoreplication and train/validation overlap, explicit model checkpoint
+SHA256 identity checks, and separate **task-weighted versus equal-lineage**
+validation Brier and log scoring. These revisions follow the
+[focused source review](../../docs/M4_JOINT_CODE_REVIEW_2026-11-07.md)
+and are backed by synthetic regression tests.
+
+**Critical limitation:** declared SHA256 identities are not independently
+authenticated artifact hashes. Real labelled tasks, a secure evaluator,
+true repository ancestry verification and actual model weights remain
+unavailable. The new manuscript paragraph describes methodology, not a
+measured improvement or acceptance-ready experiment.
+
+The updated `main.tex` and `references.bib` are committed to GitHub and
+exported as `ucode-overleaf-sources` by CI. They have **not** been written
+into, compiled in or visually checked inside a separate live Overleaf project.
+
 ## Direct Overleaf sync (not yet configured)
 
 Overleaf offers authenticated Git integration and GitHub synchronization for
