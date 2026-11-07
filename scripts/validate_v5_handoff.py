@@ -70,7 +70,7 @@ def audit_v5_handoff(record: dict | None = None, document: str | None = None,
     if document is None:
         document = (root / record["document"]).read_text("utf-8")
     for role in record["virtual_roles"]:
-        if not re.search(r"\b" + re.escape(role) + r"\b", document):
+        if not re.search(r"^\\| \\*\\*" + re.escape(role) + r" \\u2014", document, flags=re.MULTILINE):
             raise ValueError("V5 human-readable role missing: " + role)
     required = [
         "START — COPY/PASTE INTO A NEW CHAT",
