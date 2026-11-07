@@ -98,6 +98,25 @@ jobs:
           name: ucode-research-readiness-metrics-v1
           path: dist/ucode-research-readiness/
           if-no-files-found: error
+
+      - name: Cross-check independent PHP-Go admission, six-model blockers and ten scientific milestone exit criteria
+        run: python -m scripts.export_critical_path --output-dir dist/ucode-critical-path
+      - name: Enforce scientific work remains unqualified until independent external approvals
+        run: |
+          set +e
+          python -m scripts.export_critical_path --output-dir dist/ucode-critical-path --require-empirical-ready > /dev/null
+          status=$?
+          if [ "$status" -ne 2 ]; then
+            echo "ERROR: actual empirical readiness cannot be self-promoted"
+            exit 1
+          fi
+      - name: Publish public-only 10-milestone research critical path and SHA256 audit
+        if: matrix.python-version == '3.12'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ucode-research-critical-path-NO-EMPIRICAL-RESULTS-v1
+          path: dist/ucode-critical-path/
+          if-no-files-found: error
       - name: Publish clean metadata dataset for independent inspection
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4

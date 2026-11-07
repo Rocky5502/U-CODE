@@ -207,6 +207,22 @@ sources, never private reviewer forms.
 Methods and privacy boundaries:
 [G5 private reviewer triage](../../docs/G5_PRIVATE_REVIEW_TRIAGE_2026-11-07.md).
 
+## 7 November 2026: independently auditable research critical-path status
+
+The latest [U-CODE progress / remaining-work report](../../docs/UCODE_PROGRESS_CRITICAL_PATH_2026-11-07.md)
+is generated from canonical source registries and a verified external-task
+metadata preflight. It identifies the ten **full** scientific milestone
+exit criteria still lacking independent verification, with four highest
+priority P0 dependencies. The count is a **full-exit evidence count, not
+an overall percentage of engineering work**.
+
+This progress-management change does **not** insert fake experimental
+results into the Springer manuscript, replace trial evidence, or
+change the six-model/eight-policy registered primary contrast. The
+GitHub LaTeX sources can be exported as `ucode-overleaf-sources` in
+CI, but the separate live Overleaf cloud editor has **not** been
+synchronized or publisher-template-compiled/visually inspected.
+
 ## Direct Overleaf sync (not yet configured)
 
 Overleaf offers authenticated Git integration and GitHub synchronization for

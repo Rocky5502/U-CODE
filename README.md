@@ -19,6 +19,33 @@
 [Scientific blockers](configs/ucode_work_remaining_gates_2026-10-27.json) ·
 [Springer source-era/novelty audit](docs/SPRINGER_V4_SOURCE_ERA_AND_NOVELTY_AUDIT_2026-10-29.md).
 
+## Verified progress and remaining-work critical path (7 November 2026)
+
+The latest [source-linked research-progress audit](docs/UCODE_PROGRESS_CRITICAL_PATH_2026-11-07.md)
+separates completed **engineering preparation** from unverified
+**publication-critical scientific exit conditions**. Its
+[reproducible offline generator](scripts/export_critical_path.py)
+crosschecks the two PHP/Go pilot preflight dossiers, selected six-model
+manifest, registered eight-policy primary comparison, historical
+ten-workstream plan, and frozen PR-discovery denominators. GitHub CI
+publishes JSON, Markdown and SHA256 integrity files under
+`ucode-research-critical-path-NO-EMPIRICAL-RESULTS-v1`.
+
+**Remaining: 10/10 full major scientific exit criteria have no complete
+independent qualification**, including **four P0**, five P1 and one P2.
+This is **not** “0% of the software finished”: source code, mathematics,
+unit tests and reviewer tools exist and are progressing. What is still
+missing is external task rights/spec/oracle admission, physical sandbox
+and model qualification, end-to-end matched empirical evaluation,
+and final compiled/publisher-verified results. The two reviewed pilot
+leads still have 16/16 open admission checks; 0/6 model checkpoints
+and 0/8 real-policy arms are scientifically qualified.
+
+The report deliberately does **not** invent a percent-complete,
+calendar-time estimate, real task accuracy, measured risk, or
+independent human approvals. It also validates that no prospective
+protocol or model registry has been silently promoted into a real trial.
+
 ## At a glance
 
 | Area | Source-verified scope (29 October 2026) | Important limit |
