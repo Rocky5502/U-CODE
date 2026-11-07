@@ -174,6 +174,16 @@ class AllSourceCodeReadinessTests(unittest.TestCase):
             with self.subTest(field=field),self.assertRaisesRegex(ValueError,"pilot evidence"):
                 self.check(pilot=p)
 
+    def test_removed_legacy_config_quarantine_is_rejected(self):
+        old=deepcopy(self.experiment)
+        del old["compatibility_notice"]
+        with self.assertRaisesRegex(ValueError,"quarantine notice"):
+            self.check(legacy_matrix=old)
+        old=deepcopy(self.experiment)
+        old["compatibility_notice"]["must_not_use_for_confirmatory_runs"]=False
+        with self.assertRaisesRegex(ValueError,"quarantine notice"):
+            self.check(legacy_matrix=old)
+
     def test_legacy_matrix_promoted_to_executed_is_rejected(self):
         old=deepcopy(self.experiment)
         old["state"]="EXECUTED"
