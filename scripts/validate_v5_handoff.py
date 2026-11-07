@@ -80,7 +80,7 @@ def audit_v5_handoff(record: dict | None = None, document: str | None = None,
         "16/16", "1,515", "42368901886", "0059e8f",
         "independent", "not gold outputs", "Go #43", "PHP #104",
         "Overleaf", "R0–R16", "reviewer", "no fabricated",
-        "five hard", "intention", "main.tex",
+        "five hard", "ITT", "main.tex",
     ]
     for item in required + list(exact_blobs.values()) + protocol["model_ids"] + protocol["policy_ids"]:
         if item.casefold() not in document.casefold():
