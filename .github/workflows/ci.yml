@@ -98,6 +98,24 @@ jobs:
         run: python -m scripts.verify_php104_source_contracts
       - name: Check PHP #104 reviewer oracle blueprint (NO gold tests or PHP execution)
         run: python -m scripts.verify_php104_oracle_blueprint
+      - name: Check Go #43 two-source immutable pre-fix settlement reviewer questions (NO gold or Go execution)
+        run: python -m scripts.compile_go43_review_handoff --output dist/ucode-go43-source-era-PENDING.json
+      - name: Require Go #43 reviewer evidence remains blocked without real independent signoff
+        run: |
+          set +e
+          python -m scripts.compile_go43_review_handoff --require-admitted > /dev/null
+          status=$?
+          if [ "$status" -ne 2 ]; then
+            echo "ERROR: Go source-era review plan cannot grant task admission"
+            exit 1
+          fi
+      - name: Publish public-only Go #43 two-document review questions (NO original source, gold or private notes)
+        if: matrix.python-version == '3.12'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ucode-go43-source-era-review-NO-GOLD-v1
+          path: dist/ucode-go43-source-era-PENDING.json
+          if-no-files-found: error
       - name: Audit independently unapproved prospective PHP task draft (NOT historical task or policy input)
         run: python -m scripts.validate_php104_prospective_draft
       - name: Validate pinned pre-fix Git tree and toolchain path evidence (NO checkout)
