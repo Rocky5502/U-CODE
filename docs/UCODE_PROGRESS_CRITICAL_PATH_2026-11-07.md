@@ -36,7 +36,7 @@ There are several hundred first-party source and test files in the repository, i
 
 The canonical prospective plan has **10 major, independently assessed exit criteria**: **four P0**, **five P1**, and **one P2**. All **10 lack complete independently verified exit evidence**. This is **not** “0% finished” and does not imply that the engineering inside each milestone is absent; it means the strict *full* acceptance conditions remain unmet.
 
-<escape>###</escape> P0 — must establish independent prerequisites
+### P0 — must establish independent prerequisites
 
 | ID | Owner / type of evidence | Full exit condition |
 |---|---|---|
@@ -47,7 +47,7 @@ The canonical prospective plan has **10 major, independently assessed exit crite
 
 These four can be prepared **in parallel**. Source-only mathematical algorithm and workflow work has already begun, but their full independent acceptance requires external evidence.
 
-<escape>###</escape> P1 — experiments, comparators and paper quality
+### P1 — experiments, comparators and paper quality
 
 | ID | Depends on | Full exit condition |
 |---|---|---|
@@ -57,7 +57,7 @@ These four can be prepared **in parallel**. Source-only mathematical algorithm a
 | P1-8 | P1-5, P1-6, P1-7 | Real matched pilot and full paired ITT experiment, including abstentions/timeouts, released patches, sealed evaluator verdicts and uncertainty |
 | P1-9 | P1-8 for final submission-ready review | Compile and visually validate a publisher-template PDF, fill only measured findings, verify authors/ethics/licenses and update live Overleaf only through authenticated access |
 
-<escape>###</escape> P2 — archival replication package
+### P2 — archival replication package
 
 | ID | Depends on | Full exit condition |
 |---|---|---|
