@@ -4,7 +4,12 @@ Private keys are ephemeral and generated IN MEMORY during unit tests.
 Neither signatures, keys, hidden oracles nor completed reviewer forms are
 committed as external attestation or source-era task approval.
 """
-from dataclasses import replace
+from dataclasses import replace,asdict
+from pathlib import Path
+from tempfile import TemporaryDirectory
+from contextlib import redirect_stdout
+import io
+from scripts.check_external_review_receipts import audit_private_detached_claims,main as cli
 from copy import deepcopy
 from hashlib import sha256
 import json
@@ -263,6 +268,78 @@ class SyntheticExternalReviewReceiptTests(unittest.TestCase):
                          binding.canonical_bytes())
         self.assertEqual(binding.binding_sha256,sha256(serialized).hexdigest())
         self.assertTrue(serialized.startswith(b'{"candidate_id":'))
+
+    def fixture_files(self,tmp,binding=None,receipts=None,signers=None):
+        b=binding if binding is not None else self.binding()
+        r,k=self.synthetic_reviewers(b)
+        r=r if receipts is None else receipts
+        k=k if signers is None else signers
+        names=("binding.json","review_claims.json","keys.json")
+        payloads=(asdict(b),[asdict(x) for x in r],
+                  [asdict(x) for x in k.values()])
+        paths=[Path(tmp,n) for n in names]
+        for p,value in zip(paths,payloads):
+            p.write_text(json.dumps(value,sort_keys=True)+"\\n",encoding="utf-8")
+        return paths
+
+    def test_private_cli_can_verify_synthetic_signatures_and_redact(self):
+        with TemporaryDirectory() as tmp:
+            binding,claims,keys=self.fixture_files(tmp)
+            output=Path(tmp,"public_status.json")
+            with redirect_stdout(io.StringIO()) as sink:
+                self.assertEqual(cli([
+                    "--binding",str(binding),"--receipts",str(claims),
+                    "--trusted-public-keys",str(keys),
+                    "--verification-time-utc",CHECK,
+                    "--output",str(output)
+                ]),0)
+            report=json.loads(output.read_text())
+            self.assertEqual(report["signed_claims_verified"],16)
+            self.assertFalse(report["scientific_task_admitted"])
+            self.assertFalse(report["external_code_execution_authorized"])
+            self.assertEqual(sink.getvalue(),output.read_text())
+            self.assertNotIn("signer_key_id",sink.getvalue())
+            self.assertNotIn("signature_hex",sink.getvalue())
+            self.assertNotIn("source_era_spec_sha256",sink.getvalue())
+
+    def test_cli_explicit_auth_required_stays_blocked_after_valid_signatures(self):
+        with TemporaryDirectory() as tmp:
+            binding,claims,keys=self.fixture_files(tmp)
+            with redirect_stdout(io.StringIO()) as sink:
+                code=cli([
+                    "--binding",str(binding),"--receipts",str(claims),
+                    "--trusted-public-keys",str(keys),
+                    "--verification-time-utc",CHECK,
+                    "--require-authorized"
+                ])
+            self.assertEqual(code,2)
+            self.assertIn('"scientific_task_admitted": false',sink.getvalue())
+
+    def test_private_cli_cannot_overwrite_trust_input(self):
+        with TemporaryDirectory() as tmp:
+            binding,claims,keys=self.fixture_files(tmp)
+            original=keys.read_bytes()
+            with redirect_stdout(io.StringIO()),self.assertRaisesRegex(
+                    ValueError,"cannot overwrite private"):
+                cli(["--binding",str(binding),"--receipts",str(claims),
+                    "--trusted-public-keys",str(keys),
+                    "--verification-time-utc",CHECK,"--output",str(keys)])
+            self.assertEqual(keys.read_bytes(),original)
+
+    def test_cli_refuses_duplicate_json_fields_and_unknown_approval(self):
+        with TemporaryDirectory() as tmp:
+            binding,claims,keys=self.fixture_files(tmp)
+            data=json.loads(binding.read_text())
+            data["authorized_for_experiment"]=True
+            binding.write_text(json.dumps(data),encoding="utf-8")
+            with self.assertRaisesRegex(ValueError,"unexpected/missing"):
+                audit_private_detached_claims(binding,claims,keys,CHECK)
+            data.pop("authorized_for_experiment")
+            contents=json.dumps(data)
+            contents=contents[:-1]+',"candidate_id":104}'
+            binding.write_text(contents,encoding="utf-8")
+            with self.assertRaisesRegex(ValueError,"duplicate private"):
+                audit_private_detached_claims(binding,claims,keys,CHECK)
 
     def test_duplicate_two_slot_public_keys_for_same_role_fail(self):
         binding=self.binding()
