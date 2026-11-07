@@ -319,3 +319,13 @@ unless an authorized, paper-only Git workflow is explicitly set up.
 Do not place Overleaf authentication tokens in GitHub files, issues or chat.
 If an existing Overleaf document contains newer collaborator edits, reconcile
 those before replacing its main.tex. Do not force-push or overwrite blindly.
+
+## 7 November 2026: current research handoff (source-only)
+
+The [V5 new-chat master handoff](../../docs/UCODE_NEW_CHAT_MASTER_HANDOFF_V5_2026-11-07.md)
+updates research roles R0–R16, PHP/Go independent-admission gate status,
+the two pinned Go #43 pre-fix source documents, and the next real-pilot
+execution plan. This is **research navigation**, not new empirical evidence:
+no independently qualified third-party task, verified sealed oracle,
+real six-model/eight-policy results, or live Overleaf sync is implied.
+The older V4 handoff remains a dated historical charter.
