@@ -26,6 +26,9 @@ _TREE="e53fb011857926632c4a4ec8752425e0f2b41559"
 _BLOB="b566ca7627b6518670a866a6a637bd5257e947f4"
 _BYTES=16052
 _GO_MOD="0933c3551c51527a752bc5cca0bd47581fc304a5"
+_BUSINESS_PATH="docs/淮安80分业务规则.md"
+_BUSINESS_BLOB="e71288e3127cb66f2471a5ddd2800092db0552cc"
+_BUSINESS_BYTES=17069
 _REPO="PlayHuai/eighty-point-huai-an"
 _PATH="docs/design.md"
 _STAGE="GO43_PUBLIC_REVIEW_QUESTIONS_NOT_EXECUTABLE_ORACLE"
@@ -37,6 +40,8 @@ _TOP=frozenset((
     "base_commit","base_tree_sha","source_document_path",
     "source_document_git_blob_sha40","source_document_bytes",
     "toolchain_go_mod_sha40","external_business_rules_normativity_review",
+    "business_rules_document_path","business_rules_git_blob_sha40",
+    "business_rules_bytes",
     "independent_source_era_scope_approved",
     "oracle_case_families","ambiguity_register",
     "source_file_rights_adjudicated","oracle_independently_authored",
@@ -90,24 +95,23 @@ def git_blob_sha1(raw:bytes)->str:
     return sha1(b"blob "+str(len(raw)).encode("ascii")+b"\0"+raw).hexdigest()
 
 
-def inspect_go43_local_pref_fix_document(raw:bytes)->dict:
-    """Read-only offline witness; never include source text or gold outputs."""
+def _inspect_go43_source_bytes(raw:bytes, *, path:str, expected_blob:str,
+                               expected_length:int, headings:tuple[str,...])->dict:
     if type(raw) is not bytes or len(raw)>1_000_000:
-        raise ValueError("regular bounded pre-fix Git source file bytes required")
+        raise ValueError("bounded raw pre-fix document bytes required")
     git_id=git_blob_sha1(raw)
-    if len(raw)!=_BYTES or git_id!=_BLOB:
+    if len(raw)!=expected_length or git_id!=expected_blob:
         raise ValueError("source bytes do not match immutable pre-fix Git blob")
     try:
         source=raw.decode("utf-8")
     except UnicodeDecodeError as exc:
         raise ValueError("pre-fix source document must be valid UTF-8") from exc
-    # The blob ID already binds the content. These headings check that the
-    # expected functional *section types* are present and provide no test gold.
-    for token in ("3.2 积分结算规则","3.3 段位设计","7 全局非功能需求"):
+    for token in headings:
         if token not in source:
             raise ValueError("pinned source headings not found")
     return {
         "stage":"LOCAL_IMMUTABLE_GIT_BLOB_BYTES_MATCH_NOT_SPEC_APPROVAL",
+        "source_document_path":path,
         "source_document_git_blob_sha40":git_id,
         "source_document_sha256":sha256(raw).hexdigest(),
         "source_document_byte_count":len(raw),
@@ -120,9 +124,25 @@ def inspect_go43_local_pref_fix_document(raw:bytes)->dict:
     }
 
 
+def inspect_go43_local_pref_fix_document(raw:bytes)->dict:
+    """Validate frozen design.md bytes, never granting normative approval."""
+    return _inspect_go43_source_bytes(
+        raw,path=_PATH,expected_blob=_BLOB,expected_length=_BYTES,
+        headings=("3.2 积分结算规则","3.3 段位设计","7 全局非功能需求"))
+
+
+def inspect_go43_local_business_rules(raw:bytes)->dict:
+    """Validate separate higher-priority pre-fix rules bytes; no golds."""
+    return _inspect_go43_source_bytes(
+        raw,path=_BUSINESS_PATH,expected_blob=_BUSINESS_BLOB,
+        expected_length=_BUSINESS_BYTES,
+        headings=("### 8.4 春天","### 9.1"))
+
+
 def verify_go43_oracle_review_blueprint(
     blueprint:Mapping, source_meta:Mapping, pilot:dict,
     pre_fix_tree_inventory:Mapping, chronology:Mapping,
+    business_rules_meta:Mapping,
 )->dict:
     """Fail closed against false golden answers, source drift and scope inflation."""
     if (type(blueprint) is not dict or set(blueprint)!=_TOP or
@@ -147,6 +167,23 @@ def verify_go43_oracle_review_blueprint(
             "independent_oracle_sealed","source_file_rights_cleared",
             "experiment_eligible"))):
         raise ValueError("pre-fix source blob metadata drift or forged approval")
+    if (type(business_rules_meta) is not dict or
+        business_rules_meta.get("schema_version")!="1.0" or
+        business_rules_meta.get("stage")!="GO43_PRE_FIX_BUSINESS_RULES_BLOB_METADATA_ONLY" or
+        business_rules_meta.get("candidate_id")!=43 or
+        business_rules_meta.get("repository")!=_REPO or
+        business_rules_meta.get("task_base_sha")!=_BASE or
+        business_rules_meta.get("base_tree_sha")!=_TREE or
+        business_rules_meta.get("spec_path")!=_BUSINESS_PATH or
+        business_rules_meta.get("spec_blob_sha")!=_BUSINESS_BLOB or
+        business_rules_meta.get("spec_blob_size_bytes")!=_BUSINESS_BYTES or
+        business_rules_meta.get("source_tree_truncated") is not False or
+        business_rules_meta.get("pre_fix_higher_priority_rules_located") is not True or
+        any(business_rules_meta.get(k) is not False for k in (
+            "business_rule_versions_independently_adjudicated",
+            "oracle_independently_authored","independent_oracle_sealed",
+            "source_file_rights_cleared","experiment_eligible"))):
+        raise ValueError("higher-priority business-rule blob metadata drift or forged approval")
     if (type(pilot) is not dict or
         pilot.get("stage")!="REAL_PR_METADATA_PREFLIGHT_ONLY_BLOCKED_NO_EXECUTION" or
         pilot.get("qualified_executable_tasks")!=0 or
@@ -205,12 +242,14 @@ def verify_go43_oracle_review_blueprint(
         pr_at.utcoffset()!=timezone.utc.utcoffset(pr_at) or
         (pr_at-issue_at).total_seconds()!=8):
         raise ValueError("unverified Go issue-to-PR eight-second chronology")
-    expected=(43,_REPO,"declared_microtask",_BASE,_TREE,_PATH,_BLOB,_BYTES,_GO_MOD)
+    expected=(43,_REPO,"declared_microtask",_BASE,_TREE,_PATH,_BLOB,_BYTES,
+              _GO_MOD,_BUSINESS_PATH,_BUSINESS_BLOB,_BUSINESS_BYTES)
     observed=tuple(blueprint[k] for k in (
         "candidate_id","repository","task_scope","base_commit",
         "base_tree_sha","source_document_path",
         "source_document_git_blob_sha40","source_document_bytes",
-        "toolchain_go_mod_sha40",
+        "toolchain_go_mod_sha40","business_rules_document_path",
+        "business_rules_git_blob_sha40","business_rules_bytes",
     ))
     if observed!=expected:
         raise ValueError("Go public blueprint must bind exact immutable pre-fix microtask")
@@ -254,6 +293,9 @@ def verify_go43_oracle_review_blueprint(
         "stage":"SOURCE_PINNED_REVIEW_HANDOFF_NOT_EXECUTABLE",
         "candidate_id":43,"immutable_pre_fix_spec_blob_sha40":_BLOB,
         "immutable_document_bytes_observed_via_source_metadata":_BYTES,
+        "higher_priority_rules_git_blob_sha40":_BUSINESS_BLOB,
+        "higher_priority_rules_bytes_observed_via_source_metadata":_BUSINESS_BYTES,
+        "higher_priority_rules_hierarchy_reviewed":False,
         "actual_local_source_bytes_verified_by_this_step":False,
         "pre_pr_issue_to_pr_seconds":8,
         "public_review_case_families":len(cases),
