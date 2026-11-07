@@ -101,7 +101,7 @@ def compare_same_marginal_joint_controllers(
     revisions={x.forecast.model_checkpoint_sha256 for x in rows}
     protocols={x.forecast.labeling_protocol_id for x in rows}
     if len(models)!=1 or len(revisions)!=1 or len(protocols)!=1:
-        raise ValueError("cross-model/checkpoint or cross-label-protocol comparison forbidden")
+        raise ValueError("cross-model or cross-label-protocol or checkpoint revision comparison forbidden")
     # All candidates with the same model/action/context must reference
     # the SAME frozen fit; otherwise implicit retraining per candidate
     # (possibly on a different label set) can confound the controls.
