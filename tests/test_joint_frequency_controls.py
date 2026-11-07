@@ -25,6 +25,7 @@ PARTS=GroupPartitions(
     frozenset(("val-1","val-2")),
     frozenset(("never-eval-1",)),
 )
+CHECKPOINT=sha256(b"SYNTHETIC_MODEL_CHECKPOINT_NOT_REAL_WEIGHTS").hexdigest()
 PRICES=ResourcePrices(tokens=.01)
 CAP=ResourceVector(tokens=10,test_calls=2,gpu_seconds=10,
                    cpu_seconds=9,wall_seconds=8)
@@ -32,13 +33,14 @@ CAP=ResourceVector(tokens=10,test_calls=2,gpu_seconds=10,
 
 def row(i, group, atom=(0,0,0), *,
         context="PREOUTCOME_BUCKET_A",model="synthetic-model",
-        action="generate", protocol="synthetic-label-v1"):
+        checkpoint=CHECKPOINT, action="generate",
+        protocol="synthetic-label-v1"):
     r,s,v=atom
     return JointOutcomeLabel(
         task_id="SYNTHETIC_TASK_%d"%i,
         lineage_group=group,
         proposal_id="SYNTHETIC_CANDIDATE_%d"%i,
-        model_id=model,action=action,
+        model_id=model,model_checkpoint_sha256=checkpoint,action=action,
         public_context_bucket=context,
         preoutcome_snapshot_sha256=sha256(
             ("SYNTHETIC_VISIBLE_%d"%i).encode()).hexdigest(),
@@ -68,7 +70,7 @@ def fit(rows=None,parts=PARTS,**kw):
     return fit_training_joint_frequency(
         training_rows() if rows is None else rows,parts,
         "synthetic-model","generate","PREOUTCOME_BUCKET_A",
-        "synthetic-label-v1",**kw,
+        "synthetic-label-v1",model_checkpoint_sha256=CHECKPOINT,**kw,
     )
 
 
