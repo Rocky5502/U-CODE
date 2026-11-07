@@ -39,6 +39,11 @@ def _probability(value: float) -> bool:
     return type(value) in (int, float) and isfinite(value) and 0 <= value <= 1
 
 
+def _valid_sha256(value: str) -> bool:
+    return (type(value) is str and len(value) == 64
+            and all(c in "0123456789abcdef" for c in value))
+
+
 def _label_pair(name: str, value: int) -> None:
     if type(value) is not int or value not in (0,1):
         raise ValueError(name + " must be a binary integer 0/1, not bool or missing")
@@ -56,6 +61,7 @@ class JointOutcomeLabel:
     lineage_group: str
     proposal_id: str
     model_id: str
+    model_checkpoint_sha256: str
     action: str
     public_context_bucket: str
     preoutcome_snapshot_sha256: str
@@ -76,10 +82,10 @@ class JointOutcomeLabel:
                 raise ValueError(key + " requires bounded nonempty text")
         if self.action not in _ACTIONS:
             raise ValueError("only generate or repair candidate outcomes may be fitted")
-        h = self.preoutcome_snapshot_sha256
-        if (type(h) is not str or len(h)!=64
-                or any(c not in "0123456789abcdef" for c in h)):
+        if not _valid_sha256(self.preoutcome_snapshot_sha256):
             raise ValueError("pre-outcome snapshot requires lower-case SHA256")
+        if not _valid_sha256(self.model_checkpoint_sha256):
+            raise ValueError("immutable model checkpoint requires lower-case SHA256")
         if (type(self.preoutcome_time) is not int
                 or type(self.label_time) is not int
                 or self.preoutcome_time<0 or self.preoutcome_time>=self.label_time):
@@ -95,6 +101,7 @@ class JointOutcomeLabel:
 @dataclass(frozen=True)
 class FrozenJointFrequency:
     model_id: str
+    model_checkpoint_sha256: str
     action: str
     public_context_bucket: str
     labeling_protocol_id: str
@@ -104,11 +111,26 @@ class FrozenJointFrequency:
     smoothing_per_atom: float
     training_fingerprint_sha256: str
     training_task_hashes: tuple[str, ...]
+    training_proposal_hashes: tuple[str, ...]
+    training_snapshot_hashes: tuple[str, ...]
     status: str = _STATUS
 
     def __post_init__(self):
         if self.status != _STATUS:
             raise ValueError("this baseline cannot self-promote into an attested model")
+        if not _valid_sha256(self.model_checkpoint_sha256):
+            raise ValueError("frozen checkpoint requires 64-hex digest")
+        if not _valid_sha256(self.training_fingerprint_sha256):
+            raise ValueError("training fingerprint requires 64-hex digest")
+        for hashes in (self.training_task_hashes,
+                       self.training_proposal_hashes,
+                       self.training_snapshot_hashes):
+            if (type(hashes) is not tuple
+                    or len(hashes) != self.training_task_count
+                    or len(set(hashes)) != len(hashes)
+                    or tuple(sorted(hashes)) != hashes
+                    or any(not _valid_sha256(h) for h in hashes)):
+                raise ValueError("unique sorted complete SHA256 overlap ledger required")
         if (type(self.masses) is not tuple or len(self.masses)!=8
                 or any(not _probability(x) for x in self.masses)
                 or abs(sum(self.masses)-1.)>1e-10):
@@ -124,8 +146,6 @@ class FrozenJointFrequency:
                 or not isfinite(self.smoothing_per_atom)
                 or self.smoothing_per_atom<=0):
             raise ValueError("positive smoothing required")
-        if len(self.training_task_hashes)!=self.training_task_count:
-            raise ValueError("all training task hashes must be stored for overlap guard")
 
     def marginal_high(self) -> tuple[float,float,float]:
         return tuple(sum(m for m,atom in zip(self.masses,_ATOMS) if atom[d])
@@ -153,6 +173,7 @@ class FrozenJointFrequency:
 @dataclass(frozen=True)
 class JointValidationMetrics:
     model_id: str
+    model_checkpoint_sha256: str
     action: str
     public_context_bucket: str
     validation_tasks: int
@@ -161,12 +182,17 @@ class JointValidationMetrics:
     categorical_log_loss: float
     marginal_brier_mean: float
     marginal_absolute_calibration_error: tuple[float,float,float]
+    lineage_balanced_categorical_brier: float
+    lineage_balanced_categorical_log_loss: float
+    lineage_balanced_marginal_brier_mean: float
+    lineage_balanced_marginal_absolute_gap: tuple[float,float,float]
     status: str = _VALIDATION_STATUS
 
 
 def _canonical_row(row: JointOutcomeLabel) -> str:
     return json.dumps(
-        [row.task_id,row.lineage_group,row.proposal_id,row.model_id,row.action,
+        [row.task_id,row.lineage_group,row.proposal_id,row.model_id,
+         row.model_checkpoint_sha256,row.action,
          row.public_context_bucket,row.preoutcome_snapshot_sha256,
          row.preoutcome_time,row.label_time,row.labeling_protocol_id,
          row.reliability_high,row.safety_high,row.candidate_valid,
@@ -177,12 +203,17 @@ def _canonical_row(row: JointOutcomeLabel) -> str:
 
 def _selected_rows(
     rows: Sequence[JointOutcomeLabel], partitions: GroupPartitions,
-    model_id: str, action: str, bucket: str, protocol: str, fold: str,
+    model_id: str, checkpoint_sha256: str, action: str,
+    bucket: str, protocol: str, fold: str,
     min_rows: int, min_lineages: int,
     prohibited_task_hashes: frozenset[str] = frozenset(),
+    prohibited_proposal_hashes: frozenset[str] = frozenset(),
+    prohibited_snapshot_hashes: frozenset[str] = frozenset(),
 ) -> tuple[JointOutcomeLabel,...]:
     if not isinstance(partitions,GroupPartitions):
         raise TypeError("typed and separated repository/fork groups required")
+    if not _valid_sha256(checkpoint_sha256):
+        raise ValueError("frozen checkpoint SHA256 identity required")
     for v in (model_id,bucket,protocol):
         if type(v) is not str or not v.strip():
             raise ValueError("model, public context and fixed label protocol are required")
@@ -197,20 +228,33 @@ def _selected_rows(
         raise ValueError("empty outcome records")
     groups=set()
     tasks=set()
+    proposals=set()
+    snapshots=set()
     for row in seq:
         if not isinstance(row,JointOutcomeLabel):
             raise TypeError("typed joint outcome label required")
         if partitions.partition(row.lineage_group)!=fold:
             raise ValueError("validation/evaluation group labels forbidden in training or vice versa")
-        if (row.model_id,row.action,row.public_context_bucket,
-            row.labeling_protocol_id)!=(model_id,action,bucket,protocol):
-            raise ValueError("mixing models, actions, public contexts or labeling protocol is forbidden")
+        if (row.model_id,row.model_checkpoint_sha256,row.action,
+            row.public_context_bucket,row.labeling_protocol_id)!=(
+                model_id,checkpoint_sha256,action,bucket,protocol):
+            raise ValueError("mixing models/checkpoints, actions, public contexts or labeling protocol is forbidden")
         if row.task_id in tasks:
             raise ValueError("one prospectively fixed candidate per task; duplicate task")
+        if row.proposal_id in proposals:
+            raise ValueError("duplicate candidate proposal across distinct tasks")
+        if row.preoutcome_snapshot_sha256 in snapshots:
+            raise ValueError("duplicate candidate public snapshot across distinct tasks")
         tasks.add(row.task_id)
+        proposals.add(row.proposal_id)
+        snapshots.add(row.preoutcome_snapshot_sha256)
         groups.add(row.lineage_group)
         if _digest(row.task_id) in prohibited_task_hashes:
             raise ValueError("train/validation task overlap, even under renamed lineage")
+        if _digest(row.proposal_id) in prohibited_proposal_hashes:
+            raise ValueError("train/validation candidate overlap under different task ID")
+        if row.preoutcome_snapshot_sha256 in prohibited_snapshot_hashes:
+            raise ValueError("train/validation public snapshot overlap across task IDs")
     if len(seq)<min_rows or len(groups)<min_lineages:
         raise ValueError("insufficient per-context task or repository lineage support")
     return seq
@@ -219,7 +263,8 @@ def _selected_rows(
 def fit_training_joint_frequency(
     rows: Sequence[JointOutcomeLabel], partitions: GroupPartitions,
     model_id: str, action: str, public_context_bucket: str,
-    labeling_protocol_id: str, *, smoothing_per_atom: float=.25,
+    labeling_protocol_id: str, *, model_checkpoint_sha256: str,
+    smoothing_per_atom: float=.25,
     minimum_training_tasks: int=8,
     minimum_lineages: int=2,
     minimum_class_lineages: int=2,
@@ -238,8 +283,9 @@ def fit_training_joint_frequency(
     if type(minimum_class_lineages) is not int or minimum_class_lineages<2:
         raise ValueError("at least two lineages supporting each marginal class")
     seq=_selected_rows(
-        rows, partitions,model_id,action,public_context_bucket,
-        labeling_protocol_id,"train",minimum_training_tasks,minimum_lineages,
+        rows, partitions,model_id,model_checkpoint_sha256,
+        action,public_context_bucket,labeling_protocol_id,
+        "train",minimum_training_tasks,minimum_lineages,
     )
     grouped={}
     supports=[[set(),set()] for _ in range(3)]
@@ -264,9 +310,12 @@ def fit_training_joint_frequency(
         ensure_ascii=False,separators=(",",":"),
     ))
     return FrozenJointFrequency(
-        model_id,action,public_context_bucket,labeling_protocol_id,masses,
+        model_id,model_checkpoint_sha256,action,public_context_bucket,
+        labeling_protocol_id,masses,
         len(seq),len(grouped),float(smoothing_per_atom),fingerprint,
         tuple(sorted(_digest(r.task_id) for r in seq)),
+        tuple(sorted(_digest(r.proposal_id) for r in seq)),
+        tuple(sorted(r.preoutcome_snapshot_sha256 for r in seq)),
     )
 
 
@@ -284,10 +333,13 @@ def validate_frozen_joint_frequency(
     if not isinstance(forecast,FrozenJointFrequency):
         raise TypeError("frozen trained joint frequency required")
     seq=_selected_rows(
-        rows,partitions,forecast.model_id,forecast.action,
-        forecast.public_context_bucket,forecast.labeling_protocol_id,
+        rows,partitions,forecast.model_id,forecast.model_checkpoint_sha256,
+        forecast.action,forecast.public_context_bucket,
+        forecast.labeling_protocol_id,
         "validation",minimum_validation_tasks,minimum_validation_lineages,
         frozenset(forecast.training_task_hashes),
+        frozenset(forecast.training_proposal_hashes),
+        frozenset(forecast.training_snapshot_hashes),
     )
     prob=forecast.masses
     m=forecast.marginal_high()
@@ -300,12 +352,45 @@ def validate_frozen_joint_frequency(
         sum((m[i]-v)**2 for i,v in enumerate((
             row.reliability_high,row.safety_high,row.candidate_valid
         ))) for row in seq)/(3*n)
-    observed=[sum(getattr(row,key) for row in seq)/n for key in (
-        "reliability_high","safety_high","candidate_valid"
-    )]
+    fields=("reliability_high","safety_high","candidate_valid")
+    observed=[sum(getattr(row,key) for row in seq)/n for key in fields]
+
+    # Report BOTH task-weighted and equal-lineage-weighted diagnostics.
+    # Training fits one total vote per lineage. A pooled validation mean
+    # silently changes the estimand whenever repository sizes differ.
+    by_group: dict[str,list[JointOutcomeLabel]] = {}
+    for row in seq:
+        by_group.setdefault(row.lineage_group,[]).append(row)
+    group_brier=[]
+    group_log=[]
+    group_marginal=[]
+    group_gaps=[]
+    for lineage in sorted(by_group):
+        subset=by_group[lineage]
+        group_n=len(subset)
+        group_brier.append(sum(
+            sum((prob[j]-(1. if j==row.atom_index else 0.))**2
+                for j in range(8)) for row in subset)/group_n)
+        group_log.append(-sum(log(prob[row.atom_index])
+                              for row in subset)/group_n)
+        group_marginal.append(sum(
+            sum((m[i]-getattr(row,key))**2
+                for i,key in enumerate(fields))
+            for row in subset)/(3*group_n))
+        group_prevalence=[
+            sum(getattr(row,key) for row in subset)/group_n
+            for key in fields
+        ]
+        group_gaps.append(tuple(abs(m[i]-group_prevalence[i])
+                                for i in range(3)))
+    num_groups=len(by_group)
     return JointValidationMetrics(
-        forecast.model_id, forecast.action,forecast.public_context_bucket,
-        n,len({row.lineage_group for row in seq}),
-        brier,logloss,margin,
+        forecast.model_id, forecast.model_checkpoint_sha256,
+        forecast.action,forecast.public_context_bucket,
+        n,num_groups,brier,logloss,margin,
         tuple(abs(m[i]-observed[i]) for i in range(3)),
+        sum(group_brier)/num_groups,sum(group_log)/num_groups,
+        sum(group_marginal)/num_groups,
+        tuple(sum(gap[i] for gap in group_gaps)/num_groups
+              for i in range(3)),
     )
