@@ -287,7 +287,7 @@ class Go43IndependentOracleBlueprintTests(unittest.TestCase):
             p.write_text("not original")
             b=Path(td,"rules.txt")
             b.write_text("not original either")
-            with self.assertRaisesRegex(ValueError,"immutable pre-fix"):
+            with self.assertRaisesRegex(ValueError,"public status must not overwrite"):
                 cli(["--source-file",str(p),
                      "--business-rules-file",str(b),"--output",str(p)])
             self.assertEqual(p.read_text(),"not original")
