@@ -2780,6 +2780,45 @@ adjudicator, provenance checks, separate sealed evaluator
 and independently approved sandbox are still required
 outside this agent-visible repository.
 
+\paragraph{Detached evidence signatures and immutable pilot bindings (unexecuted).}
+To make the evidence handoff auditable without exposing evaluator
+answers, we additionally specify a detached, offline signature
+contract for the two source-era pilot candidates. For a proposed task,
+let $b$ denote a canonical versioned record binding its immutable
+PR and pre-fix base identity to separate SHA256 commitments for the
+historical task specification, prospective dossier, file-specific
+rights decision, evaluator-only functional oracle, repository-lineage
+split, pinned OCI sandbox image, dependency lock, and five-resource
+meter profile. These commitments identify \emph{claimed artifact
+versions}; they do not contain the corresponding hidden tests or
+authenticate historical authorship. Each evidence category
+$g\in\mathcal{G}$ requires two detached Ed25519 signatures,
+one for each reviewer slot $s\in\{A,B\}$, over
+a domain-separated canonical message containing
+$H(b)$, the category, reviewer slot, evidence digest,
+trusted key identifier and issue/expiry timestamps.
+A separately governed external trust registry must associate
+the verification key with its designated reviewer slot and
+category-specific review role. A provided key embedded in the
+untrusted worksheet is never sufficient. The verifier rejects
+a changed task binding, missing or duplicate category--slot
+pairs, key aliasing, wrong roles, malformed or expired records,
+and invalid signatures. These checks are cryptographic integrity
+conditions, \emph{not} evidence that a named reviewer is human
+or independent, that the cited evidence bytes match the digest,
+or that the source rights, oracle, sandbox and meters are correct.
+Most importantly, successful verification of all sixteen proposed
+reviewer signatures still produces
+\texttt{external\_code\_execution\_authorized = false};
+only an independently controlled runner-side authorization,
+external evidence inspection and oracle isolation could enable
+a future real study. The source-only implementation and tests
+use synthetic in-memory keys and fictional commitments, with
+no real signed human reviews, sealed oracles, verified physical
+execution or admission. This safeguard is distinct from the
+registered primary policy experiment and does not create
+experimental outcomes.
+
 \paragraph{Pilot and sample size.}
 A prospective feasibility pilot of approximately 40--60
 \emph{independently executable} tasks across multiple repositories,
