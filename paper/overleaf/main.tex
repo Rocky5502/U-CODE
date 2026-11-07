@@ -2792,7 +2792,8 @@ split, pinned OCI sandbox image, dependency lock, and five-resource
 meter profile. These commitments identify \emph{claimed artifact
 versions}; they do not contain the corresponding hidden tests or
 authenticate historical authorship. Each evidence category
-$g\in\mathcal{G}$ requires two detached Ed25519 signatures,
+$g\in\mathcal{G}$ requires two detached Ed25519 signatures
+following RFC~8032~\\cite{josefsson2017eddsa},
 one for each reviewer slot $s\in\{A,B\}$, over
 a domain-separated canonical message containing
 $H(b)$, the category, reviewer slot, evidence digest,
