@@ -230,10 +230,9 @@ class MatchedJointControllerTests(unittest.TestCase):
     def setUp(self):
         self.f=fit()
         self.risky=JointForecastCandidate(
-            self.f,self.f) if False else JointForecastCandidate(
-                self.f.proposal(
-                    "risky", (0.,1.),(0.,1.),ResourceVector(tokens=1)),
-                self.f)
+            self.f.proposal(
+                "risky", (0.,1.),(0.,1.),ResourceVector(tokens=1)),
+            self.f)
         self.stable=JointForecastCandidate(
             self.f.proposal(
                 "stable",(.5,.5),(.5,.5),ResourceVector(tokens=2)),
@@ -330,8 +329,10 @@ class MatchedJointControllerTests(unittest.TestCase):
         self.assertEqual(r.shared_resource_budget,cap)
 
     def test_deterministic_lexical_equal_scores(self):
-        a=self.f.proposal("a",(0.,1.),(0.,1.),ResourceVector(tokens=1))
-        b=self.f.proposal("b",(0.,1.),(0.,1.),ResourceVector(tokens=1))
+        # Positive HVI for *every* policy: both candidates have fixed
+        # R/S=.5, validity=.5, cost=.01. No robust STOP confound.
+        a=self.f.proposal("a",(.5,.5),(.5,.5),ResourceVector(tokens=1))
+        b=self.f.proposal("b",(.5,.5),(.5,.5),ResourceVector(tokens=1))
         r=self.compare((JointForecastCandidate(b,self.f),
                         JointForecastCandidate(a,self.f)))
         self.assertTrue(all(x=="a" for _,x in r.choices))
