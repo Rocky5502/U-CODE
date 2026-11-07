@@ -5,7 +5,7 @@ tests use fictional/source-free fixtures; tests NEVER run Go/MySQL or
 generate expected functional answers or sealed oracle data.
 """
 from copy import deepcopy
-from hashlib import sha1
+from hashlib import sha1,sha256
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from contextlib import redirect_stdout
@@ -15,7 +15,7 @@ import unittest
 
 from ucode.go43_oracle_review_blueprint import (
     git_blob_sha1,inspect_go43_local_pref_fix_document,
-    inspect_go43_local_business_rules,
+    inspect_go43_local_business_rules,_inspect_go43_source_bytes,
     verify_go43_oracle_review_blueprint,
 )
 from ucode.pilot_preflight import build_pilot_preflight,ROOT
@@ -241,6 +241,30 @@ class Go43IndependentOracleBlueprintTests(unittest.TestCase):
         self.assertNotEqual(git_blob_sha1(raw),sha1(raw).hexdigest())
         with self.assertRaises(TypeError):
             git_blob_sha1("not bytes")
+
+    def test_synthetic_genuine_byte_path_returns_hash_only_without_source_text(self):
+        # This is a deliberately invented UTF-8 fixture, NOT the Go repo.
+        data="Synthetic pre-fix demo\\nRequired title\\n".encode("utf-8")
+        audited=_inspect_go43_source_bytes(
+            data,path="fictional/Synthetic.md",
+            expected_blob=git_blob_sha1(data),expected_length=len(data),
+            headings=("Synthetic pre-fix demo","Required title"),
+        )
+        self.assertEqual(audited["source_document_git_blob_sha40"],git_blob_sha1(data))
+        self.assertEqual(audited["source_document_sha256"],sha256(data).hexdigest())
+        self.assertEqual(audited["source_document_byte_count"],len(data))
+        self.assertFalse(audited["source_document_content_returned"])
+        self.assertFalse(audited["experiment_task_admitted"])
+        self.assertNotIn("Synthetic pre-fix demo",str(audited))
+
+    def test_synthetic_authentic_blob_but_unexpected_headings_is_refused(self):
+        data="Synthetic pre-fix demo\\n".encode("utf-8")
+        with self.assertRaisesRegex(ValueError,"pinned source headings"):
+            _inspect_go43_source_bytes(
+                data,path="fictional/Synthetic.md",
+                expected_blob=git_blob_sha1(data),
+                expected_length=len(data),headings=("not in this file",),
+            )
 
     def test_wrong_or_oversized_local_document_is_rejected(self):
         for payload in (b"",b"hello",b"\x00"*16052,b"x"*1000001):
