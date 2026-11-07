@@ -32,11 +32,13 @@ class CriticalPathAuditTests(unittest.TestCase):
             "data/curated/2026-10-27/frozen_cleaning_summary.json")
 
     def report(self, **kwargs):
-        return cp.build_critical_path(
-            pilot=self.pilot, protocol=self.protocol,
-            selected=self.models,gate_register=self.gates,
-            metadata=self.metadata,**kwargs,
-        )
+        options={
+            "pilot":self.pilot, "protocol":self.protocol,
+            "selected":self.models, "gate_register":self.gates,
+            "metadata":self.metadata,
+        }
+        options.update(kwargs)
+        return cp.build_critical_path(**options)
 
     def test_exact_ten_major_exit_criteria_and_four_p0(self):
         r=self.report()
