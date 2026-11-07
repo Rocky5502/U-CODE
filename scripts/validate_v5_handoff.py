@@ -69,8 +69,9 @@ def audit_v5_handoff(record: dict | None = None, document: str | None = None,
         raise ValueError("V5 frozen six-model/eight-arm primary comparison drift")
     if document is None:
         document = (root / record["document"]).read_text("utf-8")
+    role_lines = document.splitlines()
     for role in record["virtual_roles"]:
-        if not re.search(r"^\\| \\*\\*" + re.escape(role) + r" \\u2014", document, flags=re.MULTILINE):
+        if not any(line.startswith("| **" + role + " —") for line in role_lines):
             raise ValueError("V5 human-readable role missing: " + role)
     required = [
         "START — COPY/PASTE INTO A NEW CHAT",
