@@ -146,6 +146,7 @@ def build_critical_path(
             or p.get("policy_implementations_faithfully_reproduced") is not False
             or p.get("results_measured") is not False
             or p.get("external_code_executions")!=0
+            or p.get("deadline")!="2027-01-30"
             or p.get("seeds_frozen") is not False
             or p.get("final_budget_caps_frozen") is not False):
         raise ValueError("cannot report promoted/unverified empirical science")
@@ -160,7 +161,12 @@ def build_critical_path(
         raise ValueError("six-model/eight-policy primary protocol drift")
     reports=validate_selected_manifest(
         s,_object(root,"configs/models_v2_2026-10-24.json"))
-    if len(reports)!=6 or any(r.runnable for r in reports):
+    if (len(reports)!=6 or any(r.runnable for r in reports)
+            or any(x.get("inference_execution_status")!="NOT_RUN"
+                   or x.get("independently_verified_task_runs")!=0
+                   or x.get("checkpoint_revision") is not None
+                   or x.get("tokenizer_revision") is not None
+                   for x in selected_models)):
         raise ValueError("model qualification claimed without external attestation")
     if (prep.get("candidate_count")!=2
             or [x.get("candidate_id") for x in prep.get("candidates",[])]!=[43,104]
