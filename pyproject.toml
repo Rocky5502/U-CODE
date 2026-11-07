@@ -13,6 +13,13 @@ license-files = ["LICENSE"]
 authors = [{name = "U-CODE Research Contributors"}]
 keywords = ["search-based software engineering", "software repair", "uncertainty", "coding agents", "reproducibility"]
 dependencies = []
+
+[project.optional-dependencies]
+# Ed25519 verification of OFFLINE external-review evidence claims only;
+# no public CI task admission, no private keys or model inference.
+admission = ["cryptography>=43,<50"]
+
+[project]
 classifiers = [
   "Development Status :: 2 - Pre-Alpha",
   "Intended Audience :: Science/Research",
