@@ -194,6 +194,17 @@ def audit_dataset_code_readiness(
     name_drift=set(historical["arms"])!=set(proto["policy_ids"])
     if not (changed_arm_count and changed_budget_count and name_drift):
         raise ValueError("legacy experiment sketch changed; re-audit authority before reuse")
+    notice=historical.get("compatibility_notice")
+    if (type(notice) is not dict
+        or notice.get("status")!="SUPERSEDED_NONAUTHORITATIVE_LEGACY_SKETCH"
+        or notice.get("authoritative_registration")!=REGISTRY_PATH
+        or notice.get("must_not_use_for_confirmatory_runs") is not True
+        or notice.get("historical_policy_slots")!=7
+        or notice.get("current_registered_policy_slots")!=8
+        or notice.get("historical_budget_dimensions")!=4
+        or notice.get("current_registered_resource_dimensions")!=5
+        or notice.get("primary_contrast_frozen_in_authoritative_registration") is not True):
+        raise ValueError("legacy config quarantine notice required; stop experiment config drift")
     # A legacy file can only be reported as NOT authoritative; no runner may
     # auto-import its policy IDs or resource ceilings.
     rows=[]
