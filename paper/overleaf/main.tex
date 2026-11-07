@@ -2847,6 +2847,49 @@ execution or admission. This safeguard is distinct from the
 registered primary policy experiment and does not create
 experimental outcomes.
 
+\paragraph{Go settlement pilot: two immutable pre-fix requirement sources (unapproved).}
+For candidate~43, the independently inspectable pre-fix tree of
+\texttt{PlayHuai/eighty-point-huai-an}
+(commit \texttt{ec41b1b33f5a4d46a8398fb6ccc33f25336fdb8a})
+contains two distinct public requirements artifacts:
+\texttt{docs/design.md} (Git blob
+\texttt{b566ca7627b6518670a866a6a637bd5257e947f4})
+and \texttt{docs/}\emph{[original Chinese-language business-rules file]}
+(Git blob \texttt{e71288e3127cb66f2471a5ddd2800092db0552cc}).
+The design document expressly subordinates conflicting
+statements to the separate business rules, so checking only
+the design would omit a normative dependency. The Git
+object identities establish pinned source-era file versions,
+not the correctness or legal use of those requirements.
+Issue~29 was created only eight seconds before PR~30
+and its short task text was not independently archived
+at PR creation. We therefore retain only the prospective
+\emph{settlement microtask} scope, not a full-PR oracle.
+
+The public review-only source contract lists twelve
+prospective oracle case families linked to pre-fix
+sections: tier boundaries, ordinary versus special
+termination, hall coefficients, nonnegative balances,
+team distribution, rank changes, end-of-match-only
+updates, natural-level advancement, transaction
+atomicity, retry idempotency and recovery. Six
+normative questions remain for independent adjudication.
+In particular, the source demands both a zero floor
+for losing players and conserved gain/loss totals;
+these can disagree if a loser has insufficient points.
+Fractional hall coefficients also require a frozen
+rounding convention. Neither a plausible allocation
+chosen by an agent nor later PR-authored tests establish
+historical ground truth. The source-only verifier can
+recompute Git-blob identities over two separately supplied
+local document files without returning their contents,
+but it cannot authenticate the original specification
+author, grant reuse rights, construct or seal functional
+oracle tests, or enable Go execution. All eight Go
+admission gates remain pending, as do the eight
+PHP pilot gates. No trial outcome in this manuscript
+is derived from these prospective reviewer questions.
+
 \paragraph{Pilot and sample size.}
 A prospective feasibility pilot of approximately 40--60
 \emph{independently executable} tasks across multiple repositories,
