@@ -146,6 +146,28 @@ sources and the CI-produced `ucode-overleaf-sources` ZIP. The separate
 cloud Overleaf editor still requires an authenticated project sync or
 carefully reviewed upload and publisher-class-backed PDF compilation.
 
+## 7 November 2026: training-only joint-frequency comparator
+
+GitHub `main.tex` now contains an additional **prospective**
+group-balanced eight-atom categorical joint model over R/S/V outcomes,
+lineage-disjoint train/validation guards, and a fair four-way acquisition
+comparison with identical marginal predictions, candidate menus and five
+resource caps. `references.bib` adds Gneiting and Raftery (2007) on
+proper probabilistic scoring rules.
+
+This controls for simple joint dependence but is **not** a
+high-capacity trained neural model or a calibrated coding-agent
+benchmark. All current test labels and policy disagreements are
+synthetic; the registered primary eight-arm study remains unchanged.
+The full modeling limits, including the risk that reliability/security
+is undefined for an invalid patch, are documented in
+[the M4 joint-frequency methods note](../../docs/M4_TRAIN_ONLY_JOINT_FREQUENCY_CONTROLS_2026-11-07.md).
+
+**Import/sync note:** this updates only the GitHub-tracked LaTeX
+source. The GitHub Actions `ucode-overleaf-sources` artifact contains
+the latest `main.tex` and `references.bib` bundle; the separate live
+Overleaf project is **not** automatically edited or compiled.
+
 ## Direct Overleaf sync (not yet configured)
 
 Overleaf offers authenticated Git integration and GitHub synchronization for
