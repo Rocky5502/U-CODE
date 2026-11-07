@@ -1,4 +1,4 @@
-# U-CODE: Springer Nature / Overleaf working draft (updated 2026-11-06)
+# U-CODE: Springer Nature / Overleaf working draft (updated 2026-11-07)
 
 **Prospective LaTeX manuscript skeleton, NOT a submission-ready paper.**
 
@@ -124,6 +124,27 @@ recompile and visually review there.
 
 See [G5/M4 activation requirements](../../docs/G5_M4_REAL_PILOT_ACTIVATION_2026-11-06.md)
 and [DRPA assumptions](../../docs/DRPA_DEPENDENCE_ROBUST_ACQUISITION_2026-11-06.md).
+
+## 7 November 2026: exact three-way DRPA validity sensitivity
+
+The source-controlled Springer `main.tex` and `references.bib` now include
+the separate exploratory **reliability–safety–validity coupling** formulation,
+an independent 2022 SIAM optimal-transport prior-art citation, and a
+mathematical source-only action-reversal witness. The new finite LP eliminates
+the previous assumption that a prospective candidate's validity is
+independent of its reliability and safety. It does **not** prove better
+software reliability or security, qualify any previously unapproved
+PHP/Go task, or alter the six-model/eight-policy confirmatory registry.
+
+Code and tests are in `src/ucode/joint_validity_acquisition.py`,
+`tests/test_joint_validity_acquisition.py` and
+`scripts/smoke_joint_validity_acquisition.py`.
+See [three-way derivation and limits](../../docs/THREE_WAY_VALIDITY_COUPLING_2026-11-07.md).
+
+**Live Overleaf limitation:** changes are in the GitHub-tracked LaTeX
+sources and the CI-produced `ucode-overleaf-sources` ZIP. The separate
+cloud Overleaf editor still requires an authenticated project sync or
+carefully reviewed upload and publisher-class-backed PDF compilation.
 
 ## Direct Overleaf sync (not yet configured)
 

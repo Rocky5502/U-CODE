@@ -84,6 +84,30 @@ PHP/Go gate-status table. This updates the **GitHub manuscript source**,
 not a separate live Overleaf cloud project; compilation and an
 independently verified execution runner remain separate steps.
 
+## M4 extension: three-way validity-aware DRPA (7 November 2026)
+
+The original candidate-producing DRPA reference handled uncertain dependence
+between predicted reliability and safety, but **assumed candidate validity was
+independent** of both. The new `src/ucode/joint_validity_acquisition.py` removes
+this additional unverified assumption in a **bounded binary model**. It
+enumerates at most 70 rational coupling bases for the exact sharp range of
+new-patch HVI under fixed reliability, safety and validity marginals, and
+then chooses a worst-case-positive `generate`/`repair` action within all five
+hard resource limits—or **STOP**. An independent 125-case triple-intersection
+test, witness mass checks, and adversarial action/assumption tests guard the
+mathematics.
+
+- [Three-way mathematical specification, limitations and falsifiers](docs/THREE_WAY_VALIDITY_COUPLING_2026-11-07.md)
+- [Implementation](src/ucode/joint_validity_acquisition.py)
+- [Independent reference tests](tests/test_joint_validity_acquisition.py)
+- [Updated prior-work/novelty matrix](literature/DRPA_NOVELTY_MATRIX_2026-11-06.md)
+
+**Evidence boundary:** this is **not** a statistically calibrated improvement,
+a verified software-security result, a population risk certificate, a real
+PHP/Go task run, or an added ninth registered policy. The registered
+six-model/eight-policy design and all G5 admission blockers are unchanged.
+A well-fit three-way joint model can outperform this conservative reference.
+
 ## Exploratory DRPA algorithm and novelty audit (6 November 2026)
 
 A new **Dependence-Robust Pareto Acquisition (DRPA)** reference now bounds

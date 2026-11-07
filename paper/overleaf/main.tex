@@ -540,6 +540,68 @@ practical benefit. The exact synthetic implementation and falsifiers are
 in the source repository; \emph{no empirical U-CODE performance result
 is introduced} by this derivation.
 
+
+\paragraph{Exploratory three-way validity coupling without an independence assumption.}
+The two-objective DRPA reference above multiplies its hypervolume bounds
+by a predicted patch-validity probability and thus implicitly requires
+validity to be independent of predicted reliability and safety. This is
+a potentially material restriction: for software changes, an invalid
+patch may also be systematically less reliable or less secure.
+Dependence ambiguity and Fr\'echet-type optimal transport are established
+mathematical methods \cite{bartl2022dependence}; our contribution here
+is an \emph{explicit coding-agent acquisition sensitivity audit},
+not invention of the underlying coupling theory.
+To remove the independent-validity assumption in the bounded pilot,
+let $V\in\{0,1\}$ denote candidate usability and
+$x_{ijk}=\Pr(R=r_i,S=s_j,V=k)$. We specify only
+the marginal probabilities $p,q,v$ and impose
+\[
+\begin{gathered}
+ x_{ijk}\ge0,\quad\sum_{ijk}x_{ijk}=1,\\
+ \sum_{jk}x_{1jk}=p,\quad
+ \sum_{ik}x_{i1k}=q,\quad
+ \sum_{ij}x_{ij1}=v.
+\end{gathered}
+\]
+With $g_{ij}$ the fixed-reference Pareto increment defined above,
+the usable-candidate improvement satisfies the sharp finite-support
+bounds
+\[
+\begin{split}
+ L_a &=\min_{\mathbf x\ge0,\;A\mathbf x=(1,p,q,v)^\top}
+        \sum_{ijk}x_{ijk}\,k\,g_{ij},\\
+ U_a &=\max_{\mathbf x\ge0,\;A\mathbf x=(1,p,q,v)^\top}
+        \sum_{ijk}x_{ijk}\,k\,g_{ij}.
+\end{split}
+\]
+The constraint system has eight atoms and four independent
+normalization/marginal equations. Every extreme point admits a basis
+with at most four nonzero atoms, so the bounded exact reference checks
+at most $\binom{8}{4}=70$ basic four-column systems using rational
+elimination. Generation/repair actions maximize the positive
+worst-case \emph{net} increment $L_a-\boldsymbol\lambda^\top\mathbf c(a)$
+subject to all five separately enforced budget caps; diagnostics
+remain outside the candidate Pareto frontier. The original
+independent-validity uncertainty class is a subset of this
+three-way class: its predicted lower improvement cannot be lower
+and its upper improvement cannot be higher.
+For the explicit synthetic zero/one-objective example with
+$p=q=v=0.7$, the three-way lower gross improvement is
+$\max(0,p+q+v-2)=0.1$, compared with $0.7\times0.4=0.28$
+under independent validity. With illustrative scalar action
+cost $0.2$, the old policy chooses generation and the three-way
+maximin rule stops. This is a \emph{constructed mathematical
+counterexample to invariance of the action choice}, not observed
+success, reliability, security, or optimal performance on real
+repositories. Because the marginal forecasts have not been calibrated
+against independently admitted training tasks, neither bound is a
+selective-risk certificate; a well-specified learned joint
+distribution may outperform the deliberately conservative rule.
+A separately qualified real pilot, matched candidate opportunities
+and five-resource budgets, plus strong joint-EHVI controls, remain
+necessary before making empirical or originality claims.
+The six-model/eight-policy primary confirmatory registry is unchanged.
+
 \section{U-CODE Method: Prospective Design}\label{sec:method}
 The planned architecture separates generation and retrieval adapters,
 an independently trained uncertainty model, an action-outcome kernel,
