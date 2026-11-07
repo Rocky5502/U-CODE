@@ -15,6 +15,7 @@ import unittest
 
 from ucode.go43_oracle_review_blueprint import (
     git_blob_sha1,inspect_go43_local_pref_fix_document,
+    inspect_go43_local_business_rules,
     verify_go43_oracle_review_blueprint,
 )
 from ucode.pilot_preflight import build_pilot_preflight,ROOT
@@ -38,11 +39,14 @@ class Go43IndependentOracleBlueprintTests(unittest.TestCase):
         cls.chronology=jload(
             "2026-10-27/two_candidate_issue_chronology_metadata.json")
         cls.pilot=build_pilot_preflight()
+        cls.business=jload(
+            "2026-11-07/go43_pre_fix_business_rules_blob_METADATA_NOT_APPROVED.json")
 
     def verify(self,**changed):
         v={"blueprint":self.plan,"source_meta":self.source,
            "pilot":self.pilot,"pre_fix_tree_inventory":self.tree,
-           "chronology":self.chronology}
+           "chronology":self.chronology,
+           "business_rules_meta":self.business}
         v.update(changed)
         return verify_go43_oracle_review_blueprint(**v)
 
@@ -52,6 +56,9 @@ class Go43IndependentOracleBlueprintTests(unittest.TestCase):
         self.assertEqual(r["pre_pr_issue_to_pr_seconds"],8)
         self.assertEqual(r["public_review_case_families"],12)
         self.assertEqual(r["unresolved_normative_ambiguities"],6)
+        self.assertEqual(r["higher_priority_rules_git_blob_sha40"],
+                         "e71288e3127cb66f2471a5ddd2800092db0552cc")
+        self.assertFalse(r["higher_priority_rules_hierarchy_reviewed"])
         self.assertEqual(r["qualified_executable_tasks"],0)
         self.assertEqual(r["independently_sealed_hidden_oracles"],0)
         self.assertEqual(r["policy_visible_gold_output_bytes"],0)
@@ -121,12 +128,30 @@ class Go43IndependentOracleBlueprintTests(unittest.TestCase):
             ("base_commit","f"*40),
             ("base_tree_sha","f"*40),
             ("toolchain_go_mod_sha40","f"*40),
+            ("business_rules_git_blob_sha40","f"*40),
+            ("business_rules_bytes",17070),
         ):
             plan=deepcopy(self.plan)
             plan[field]=value
             with self.subTest(field=field),self.assertRaisesRegex(
                     ValueError,"immutable pre-fix"):
                 self.verify(blueprint=plan)
+
+    def test_superior_business_rules_metadata_requires_actual_git_object(self):
+        for field,value in (
+            ("spec_blob_sha","f"*40),
+            ("spec_blob_size_bytes",17070),
+            ("spec_path","docs/stray_post_pr.md"),
+            ("base_tree_sha","0"*40),
+            ("business_rule_versions_independently_adjudicated",True),
+            ("source_file_rights_cleared",True),
+            ("experiment_eligible",True),
+        ):
+            b=deepcopy(self.business)
+            b[field]=value
+            with self.subTest(field=field),self.assertRaisesRegex(
+                    ValueError,"higher-priority business-rule"):
+                self.verify(business_rules_meta=b)
 
     def test_source_metadata_forged_approval_rejected(self):
         for field in ("document_normatively_approved_as_full_pr_spec",
@@ -222,12 +247,16 @@ class Go43IndependentOracleBlueprintTests(unittest.TestCase):
             with self.subTest(size=len(payload)),self.assertRaises(
                     ValueError):
                 inspect_go43_local_pref_fix_document(payload)
+            with self.subTest(size=len(payload)),self.assertRaises(
+                    ValueError):
+                inspect_go43_local_business_rules(payload)
 
     def test_read_only_report_does_not_embed_source_or_golds(self):
         report=compile_go43_public_handoff()
         self.assertEqual(len(report["case_categories_only_no_golds"]),12)
         self.assertEqual(len(report["normative_questions_still_open"]),6)
         self.assertIsNone(report["source_file_optional_external_witness"])
+        self.assertIsNone(report["business_rules_optional_external_witness"])
         self.assertTrue(report["all_original_go_admission_gates_pending"])
         public=json.dumps(report)
         for token in ("gold_patch","expected_output","private_oracle",
@@ -247,16 +276,34 @@ class Go43IndependentOracleBlueprintTests(unittest.TestCase):
         with TemporaryDirectory() as td:
             p=Path(td,"design.md")
             p.write_text("post-PR substitute",encoding="utf-8")
+            b=Path(td,"rules.md")
+            b.write_text("another fake rule")
             with self.assertRaisesRegex(ValueError,"immutable pre-fix Git blob"):
-                compile_go43_public_handoff(source_file=p)
+                compile_go43_public_handoff(source_file=p,business_rules_file=b)
 
     def test_public_status_cannot_overwrite_supplied_source_file(self):
         with TemporaryDirectory() as td,redirect_stdout(io.StringIO()):
             p=Path(td,"source.txt")
             p.write_text("not original")
+            b=Path(td,"rules.txt")
+            b.write_text("not original either")
             with self.assertRaisesRegex(ValueError,"immutable pre-fix"):
-                cli(["--source-file",str(p),"--output",str(p)])
+                cli(["--source-file",str(p),
+                     "--business-rules-file",str(b),"--output",str(p)])
             self.assertEqual(p.read_text(),"not original")
+
+    def test_one_source_only_does_not_claim_verified_normative_hierarchy(self):
+        with TemporaryDirectory() as td:
+            p=Path(td,"design.md");p.write_text("fake")
+            with self.assertRaisesRegex(ValueError,"both pre-fix"):
+                compile_go43_public_handoff(source_file=p)
+
+    def test_duplicate_source_and_business_paths_are_rejected(self):
+        with TemporaryDirectory() as td:
+            p=Path(td,"design.md");p.write_text("fake")
+            with self.assertRaisesRegex(ValueError,"distinct local"):
+                compile_go43_public_handoff(
+                    source_file=p,business_rules_file=p)
 
     def test_review_report_is_deterministic(self):
         x=compile_go43_public_handoff()
