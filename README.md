@@ -84,6 +84,41 @@ PHP/Go gate-status table. This updates the **GitHub manuscript source**,
 not a separate live Overleaf cloud project; compilation and an
 independently verified execution runner remain separate steps.
 
+## M4 next-stage: lineage-disjoint fitted-joint control (7 November 2026)
+
+A new **training-only, context-bucket-conditional eight-outcome frequency
+baseline** makes our DRPA research more falsifiable. The implementation
+checks pre-outcome feature timestamps and immutable source group splits,
+forbids validation/evaluation labels from fitting, enforces one prospectively
+selected candidate per task, and requires at least two training lineages
+supporting *each outcome class* of reliability, safety and candidate validity.
+Its eight cell probabilities are group-balanced so a single large
+repository cannot automatically dominate the fit. Separate validation-only
+Brier and log scores do not modify the trained model or grant risk guarantees.
+
+A same-marginal comparison now evaluates **four** acquisition rules on
+identical proposed patches, fixed predicted marginals, objectives, prices and
+**all five hard resource caps**: fully independent expected HVI, old two-way
+robust DRPA, three-way robust DRPA, and a fitted joint-frequency
+expectation. It refuses mismatched model/protocol identities or forecast
+marginals rather than making unfair performance claims.
+
+- [Formal train-only baseline, equations and incomplete-label caveat](docs/M4_TRAIN_ONLY_JOINT_FREQUENCY_CONTROLS_2026-11-07.md)
+- [Joint-frequency fitting and validation](src/ucode/joint_frequency_fit.py)
+- [Matched four-way source-only controls](src/ucode/joint_frequency_controls.py)
+- [Synthetic-only end-to-end demonstration](scripts/smoke_joint_frequency_controls.py)
+- [Adversarial integration tests](tests/test_joint_frequency_controls.py)
+
+**Important:** this is a deliberately **simple categorical joint-frequency
+control, not a state-of-the-art fitted neural joint model**. Every training
+row in CI is invented; **no independently authenticated repository-task
+training labels exist yet**. It establishes fairness and leakage
+engineering, not model performance, a strong new benchmark, or an
+additional registered confirmatory policy. The six selected model
+identities, eight registered arms and unchanged primary outcome remain
+prospective; external G5 pilot admission and genuine independent
+calibration/security assessment are still blocking.
+
 ## M4 extension: three-way validity-aware DRPA (7 November 2026)
 
 The original candidate-producing DRPA reference handled uncertain dependence
