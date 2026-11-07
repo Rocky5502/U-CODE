@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "stage": "GO43_PRE_FIX_BUSINESS_RULES_BLOB_METADATA_ONLY",
+  "observed_on": "2026-11-07",
+  "source_api": "GitHub REST git/trees/e53fb011857926632c4a4ec8752425e0f2b41559?recursive=1 and base-ref file lookup",
+  "candidate_id": 43,
+  "repository": "PlayHuai/eighty-point-huai-an",
+  "task_base_sha": "ec41b1b33f5a4d46a8398fb6ccc33f25336fdb8a",
+  "base_tree_sha": "e53fb011857926632c4a4ec8752425e0f2b41559",
+  "spec_path": "docs/淮安80分业务规则.md",
+  "spec_blob_sha": "e71288e3127cb66f2471a5ddd2800092db0552cc",
+  "spec_blob_size_bytes": 17069,
+  "source_tree_truncated": false,
+  "pre_fix_higher_priority_rules_located": true,
+  "rule_hierarchy_evidence": "design.md explicitly defers to higher-priority business-rule document in case of conflict; reviewer must independently determine normative interpretation",
+  "business_rule_versions_independently_adjudicated": false,
+  "oracle_independently_authored": false,
+  "independent_oracle_sealed": false,
+  "source_file_rights_cleared": false,
+  "experiment_eligible": false,
+  "warning": "Versioned Git blob identification is not independent spec approval, authenticated custody, rights permission, sealed test oracle or task admission."
+}
