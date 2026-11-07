@@ -24,6 +24,11 @@ classifiers = [
   "Topic :: Software Development :: Quality Assurance",
 ]
 
+[project.optional-dependencies]
+# Ed25519 verification of OFFLINE external-review evidence claims only;
+# no public CI task admission, no private keys or model inference.
+admission = ["cryptography>=43,<50"]
+
 [project.urls]
 Homepage = "https://github.com/Rocky5502/U-CODE"
 Repository = "https://github.com/Rocky5502/U-CODE"

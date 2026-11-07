@@ -223,6 +223,33 @@ GitHub LaTeX sources can be exported as `ucode-overleaf-sources` in
 CI, but the separate live Overleaf cloud editor has **not** been
 synchronized or publisher-template-compiled/visually inspected.
 
+## 7 November 2026: M8 source-era reviewer signature integrity
+
+The repository-tracked Springer `main.tex` now includes a prospective
+**detached Ed25519 evidence/immutable-task-binding** protocol directly
+after the independent A/B reviewer worksheet method. The code requires
+two role-appropriate independent-key signatures for each of eight
+source-era task review categories, bound to exact pre-fix repository
+identity and declared opaque digest commitments to rights, historical
+specification, hidden oracle, sandbox image, dependencies and five
+resource meters. `references.bib` contains RFC 8032
+(Josefsson and Liusvaara, 2017, DOI 10.17487/RFC8032).
+
+This source-only method and its unit tests use **invented in-memory
+reviewer keys and fictional evidence digests**. No human review has
+been authenticated. A successful signature check **never** qualifies
+a task for execution, opens a hidden evaluator, or changes the
+existing six-model/eight-policy prospective design. The PHP/Go
+admission report remains 16/16 open.
+
+Verification in CI now installs the optional `[admission]` Ed25519
+dependency, runs adversarial test cases and exports
+`ucode-overleaf-sources`. This is **not** a LaTeX PDF compile or live
+Overleaf edit. Source text was changed in GitHub; the separate online
+Overleaf project has not been accessed.
+
+[Read methods, private evidence-handling protocol and genuine blockers](../../docs/G5_SIGNED_EXTERNAL_EVIDENCE_CONTRACT_2026-11-07.md).
+
 ## Direct Overleaf sync (not yet configured)
 
 Overleaf offers authenticated Git integration and GitHub synchronization for

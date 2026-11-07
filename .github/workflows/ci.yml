@@ -15,8 +15,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install local project without third-party runtime dependencies
-        run: python -m pip install -e .
+      - name: Install first-party source and isolated Ed25519 review-verification extra
+        run: python -m pip install -e '.[admission]'
       - name: Run offline unit tests
         run: python -m unittest discover -s tests -v
       - name: Execute fixed first-party repair canary (public outputs, NOT real benchmark)
@@ -167,6 +167,8 @@ jobs:
         run: python -m scripts.check_evaluator_boundary
       - name: Export cross-ledger real PHP-Go pilot blocker report (no execution)
         run: python -m scripts.compile_pilot_preflight --output dist/ucode-g5-pilot-preflight-PENDING.json
+      - name: Assert offline signature-verification implementation never admits tasks
+        run: python -m unittest discover -s tests -p 'test_external_admission_receipt.py' -v
       - name: Enforce strict pilot gate returns blocked (never execute PHP or Go)
         run: |
           set +e

@@ -111,6 +111,35 @@ PHP/Go gate-status table. This updates the **GitHub manuscript source**,
 not a separate live Overleaf cloud project; compilation and an
 independently verified execution runner remain separate steps.
 
+## M8 offline evidence-signature integrity and Springer source update (7 November 2026)
+
+The private independent reviewer workflow now has a
+[domain-separated Ed25519 receipt checker](src/ucode/external_admission_receipt.py)
+and a [strict local-only verification CLI](scripts/check_external_review_receipts.py).
+The tool binds signed claims to a specific original PHP/Go source-era task,
+its pre-fix base/declared scope, reviewer-only specification, rights,
+hidden-oracle commitment, independent lineage split, OCI image, toolchain
+and five-resource meter profile. It rejects missing/duplicate A/B
+reviewer slots, role mismatches, aliased verifier keys, expired or invalid
+signatures and mismatched binding hashes. The signing scheme is standard
+Ed25519, **not** an independently novel algorithm.
+
+**Signature-valid is not admitted.** Even 16 perfectly matching signed
+synthetic claims leave `scientific_task_admitted: false` and
+`external_code_execution_authorized: false`. The externally approved
+key policy, the real human reviewers, file rights, oracle and runner
+attestation **have not** been independently authenticated. Do not copy
+private reviewer forms, verification keys, detached signatures or hidden
+oracles into this repository or CI.
+
+The Springer [main.tex](paper/overleaf/main.tex) methods and
+[references.bib](paper/overleaf/references.bib) include the conservative
+signature/immutable-binding protocol and authoritative RFC 8032 citation;
+the CI `ucode-overleaf-sources` ZIP contains the latest **GitHub source**
+(not a live Overleaf cloud sync or compiled publisher PDF).
+
+[Full code, reviewer handoff and limitations](docs/G5_SIGNED_EXTERNAL_EVIDENCE_CONTRACT_2026-11-07.md).
+
 ## G5 reviewer evidence triage: private A/B handoff (7 November 2026)
 
 The frozen **12-candidate × 8-gate × 2-reviewer** inventory has a new
