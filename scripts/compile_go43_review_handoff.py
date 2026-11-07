@@ -102,6 +102,14 @@ def main(argv=None)->int:
     parser.add_argument("--require-admitted",action="store_true",
                         help="Fail exit 2 until an independent external runner approves")
     args=parser.parse_args(argv)
+    # Reject output aliases BEFORE opening either original source file.
+    if args.output is not None and (
+            args.output.is_symlink() or
+            args.source_file is not None and
+            args.output.resolve()==args.source_file.resolve() or
+            args.business_rules_file is not None and
+            args.output.resolve()==args.business_rules_file.resolve()):
+        raise ValueError("public status must not overwrite private/source input")
     report=compile_go43_public_handoff(
         source_file=args.source_file,business_rules_file=args.business_rules_file)
     blob=json.dumps(report,sort_keys=True,indent=2)+"\n"
