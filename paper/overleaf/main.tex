@@ -2524,6 +2524,30 @@ the fraction of released patches, and the conditional error rate
 among releases. When coverage is zero, conditional wrong-release
 risk is \emph{undefined}, not zero.
 
+\paragraph{Leave-one-lineage-out sensitivity (prospective).}
+To detect whether the pooled assignment-level difference
+relies disproportionately on one repository or fork family,
+we will also omit all assigned comparisons from each
+independently reviewed lineage group $g$ in turn.
+Let $d_i=Y_i^{(U)}-Y_i^{(B)}$ and $n_g$ be the
+number of matched assignments in lineage $g$. Then
+\begin{equation}
+\widehat{\Delta}_{(-g)}
+=\frac{N\widehat{\Delta}_{U,B}
+-\sum_{i\in g}d_i}{N-n_g},\qquad N>n_g.
+\label{eq:lineage-omission}
+\end{equation}
+We will report $n_g$, the original-versus-omitted
+absolute change and any strict sign reversals; when a
+single lineage covers all assignments, the omitted estimate
+is \emph{undefined} rather than zero. Repeated seeds and
+model--budget variants remain in the assignment-level
+denominator while every observation from the omitted lineage
+is withheld together. First-party synthetic tests verify
+this arithmetic and exact matched-pair identity, but no
+source-group independence, valid population inference or
+real model effectiveness is claimed by this diagnostic.
+
 For the confirmatory study, a single primary budget regime and
 primary U-CODE-versus-no-uncertainty-search contrast must be frozen
 before inspecting independent held-out results. Secondary baseline
