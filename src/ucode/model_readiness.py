@@ -136,10 +136,16 @@ def require_full_six_model_readiness(
 ) -> None:
     """Forbid treating source-only readiness objects as six real model permits."""
     if (type(reports) is not tuple or len(reports) != 6
-            or any(type(x) is not ModelReadiness or not x.runnable
-                   for x in reports)):
-        blocked = [(x.model_id, x.blockers) for x in reports if not x.runnable]
-        raise ValueError(f"six-model experiment BLOCKED: {blocked}")
+            or any(type(x) is not ModelReadiness for x in reports)):
+        raise ValueError("six-model experiment BLOCKED: six typed planning reports required")
+    # Even six perfectly formed planning reports do not carry independent
+    # attestation or a runtime execution permit. Do not turn this source-only
+    # diagnostic into an authorization path by editing JSON or constructing
+    # ModelReadiness objects directly.
+    blocked = [(x.model_id, x.blockers) for x in reports]
+    raise ValueError(
+        f"six-model experiment BLOCKED: independently authenticated "
+        f"runner/model evidence is absent; planning reports={blocked}")
 
 
 if __name__ == "__main__":
