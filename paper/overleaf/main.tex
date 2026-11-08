@@ -2880,7 +2880,30 @@ these can disagree if a loser has insufficient points.
 Fractional hall coefficients also require a frozen
 rounding convention. Neither a plausible allocation
 chosen by an agent nor later PR-authored tests establish
-historical ground truth. The source-only verifier can
+historical ground truth.
+
+\paragraph{Conditional source-era consistency witness.}
+A source-only audit isolates the assumptions that yield
+a conflicting ledger outcome without selecting the
+intended game behavior: if two winners each receive
+a fixed nominal credit $t>0$, two losers with balances
+$b_1,b_2\geq0$ are individually capped at their available
+points, and no other transfers occur, the hypothetical
+change in total point mass is
+\[
+  \Delta_{\mathrm{toy}}=2t-\min\{b_1,t\}-\min\{b_2,t\}.
+\]
+A fictitious witness $t=5$, $b_1=b_2=2$ yields
+$\Delta_{\mathrm{toy}}=6$, hence fixed winner credit,
+capped debit and conservation cannot all hold under
+\emph{these conditional assumptions}. Likewise, the
+documented nominal $5\times1.5=15/2$ requires an
+independently chosen fractional-storage or rounding
+rule if the ledger unit is integral. These are
+reviewer questions, \emph{not} oracle labels, executed
+Go outcomes, or claims that the original game designer
+intended the stated conditional semantics. All Go/PHP
+task-admission gates remain pending. The source-only verifier can
 recompute Git-blob identities over two separately supplied
 local document files without returning their contents,
 but it cannot authenticate the original specification

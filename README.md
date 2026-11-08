@@ -148,6 +148,10 @@ an evaluator-only sealed oracle and a trusted sandbox. Go's eight
 admission gates (and PHP's eight) remain pending. The registered
 six-model/eight-policy comparison is unchanged.
 
+## Go #43 formal specification feasibility questions (8 November 2026)
+
+The [source-era Go settlement decision packet](docs/G5_GO43_SPEC_FEASIBILITY_DECISION_PACKET_2026-11-08.md) now contains an **exact-rational conditional witness** showing why fixed winner credits plus capped loser deductions cannot conserve total points for an underfunded toy case, together with a `5 × 1.5 = 7.5` hypothetical fractional-point example. Neither example is an expected oracle answer nor an imposed business rule. A source-pinned dependency map ties all **six unresolved independent reviewer decisions** to the **12 prospective test families**, without claiming approval. [Offline exporter](scripts/export_go43_spec_feasibility.py) and [adversarial checks](tests/test_go43_spec_feasibility.py) fail closed on fake task admission and gold injection; CI confirms the strict spec-ready gate still exits 2. Go/PHP admission remains **16/16 pending**, with no source execution or real-model experiment.
+
 ## All thirteen dataset sources + research code readiness (7 November 2026)
 
 The [full source-by-source and code-readiness review](docs/ALL_DATASETS_AND_CODE_READINESS_2026-11-07.md)
