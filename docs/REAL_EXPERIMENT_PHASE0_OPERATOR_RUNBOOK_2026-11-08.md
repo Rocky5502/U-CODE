@@ -24,6 +24,14 @@ The script checks the authoritative `configs/confirmatory_sbse_protocol_2026-10-
 
 This is a strict preparation command. No GitHub-network, model-weight download, untrusted module import, Docker invocation, model generation, hidden gold, task checkout, GPU allocation, third-party code, or reservation occurs.
 
+## 1a. Read-only six-model public metadata and BF16 storage audit (9 November 2026)
+
+The [new six-model public Hub-card audit](P0_3_PUBLIC_SIX_MODEL_CARD_AUDIT_2026-11-09.md) records public license tags, gated card status and **approximate** BF16 weight storage only, with the exact six planned IDs unchanged. The DeepSeek public Hub tag is other while the historical frozen planning record says deepseek-license: a human must review the actual license text rather than assuming one label supersedes the other. CodeGemma and Meta Llama are publicly gated; user/account access remains unknown. Three model families' rough BF16 weights exceed an illustrative 16 GiB card, while **under** 16 GiB does not imply load feasibility. Nothing was downloaded or executed.
+
+    python -m scripts.audit_six_public_model_cards
+    python -m scripts.audit_six_public_model_cards --require-six-ready
+    # This intentionally exits 2, preserving zero approved real-model checkpoints.
+
 ## 2. Command on user's own Windows/WSL Linux or rented A100 host
 
 Optional *read-only* host survey:

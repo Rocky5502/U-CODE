@@ -19,6 +19,24 @@ jobs:
         run: python -m pip install -e '.[admission]'
       - name: Run offline unit tests
         run: python -m unittest discover -s tests -v
+      - name: Validate public six-model card metadata, rights gaps and rough BF16 storage only (NO downloads)
+        run: mkdir -p dist && python -m scripts.audit_six_public_model_cards --output dist/ucode-six-model-PUBLIC-CARDS-NO-APPROVAL.json
+      - name: Strict P0-3 six-model card audit remains NOT a license or runtime approval
+        run: |
+          set +e
+          python -m scripts.audit_six_public_model_cards --require-six-ready > /dev/null
+          status=$?
+          if [ "$status" -ne 2 ]; then
+            echo "ERROR: model-card observations cannot approve weights, licenses or benchmark runs"
+            exit 1
+          fi
+      - name: Publish public six-model observation-only metadata (NO tokens or checkpoint weights)
+        if: matrix.python-version == '3.12'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ucode-six-model-card-P0-3-OBSERVATION-ONLY
+          path: dist/ucode-six-model-PUBLIC-CARDS-NO-APPROVAL.json
+          if-no-files-found: error
       - name: Cross-check real-trial phase-0 metadata and illustrative five-resource capacity (NO hardware probe or real trials)
         run: mkdir -p dist && python -m scripts.prepare_real_experiment_phase0 --output dist/ucode-real-trial-PHASE0-NOT-APPROVED.json
       - name: Assert source-only real-trial preflight never issues execution authorization
