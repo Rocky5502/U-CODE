@@ -90,7 +90,9 @@ class SixModelPreflightTests(unittest.TestCase):
             for x in self.check()
         ))
 
-    def test_one_model_can_become_ready_only_with_complete_audited_gates(self):
+    def test_plausible_manifest_fields_are_not_independent_authority(self):
+        # These values are fabricated for an adversarial synthetic test.
+        # They look complete but are still editable JSON declarations.
         x = self.plan["models"][0]
         x.update(
             full_license_review="APPROVED",
@@ -104,7 +106,10 @@ class SixModelPreflightTests(unittest.TestCase):
             passed_sandbox_security_review=True,
         )
         reports = self.check()
-        self.assertTrue(reports[0].runnable)
+        self.assertFalse(reports[0].runnable)
+        self.assertIn("self_reported_approval_not_authenticated", reports[0].blockers)
+        self.assertIn("independent_model_and_runtime_attestation_missing",
+                      reports[0].blockers)
         self.assertFalse(reports[1].runnable)
         with self.assertRaisesRegex(ValueError, "six-model experiment BLOCKED"):
             require_full_six_model_readiness(reports)
