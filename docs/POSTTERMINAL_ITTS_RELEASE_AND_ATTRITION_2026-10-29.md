@@ -79,6 +79,12 @@ assert undefined risk for all-abstain policies and nonintegral
 *mean* token/test-call usage even though individual counters are
 integers.
 
+## S02 added: sharp sign sensitivity and exhaustive denominator checks (9 November 2026)
+
+A separate [evaluator-only S02 diagnostic](../src/ucode/attrition_sign_sensitivity.py) now re-derives paired treatment-minus-control bounds **using integer observed-success and arm-specific infrastructure-missing counts**, then checks exact agreement with the existing paired attrition envelope. It reports attainable negative/zero/positive effect signs and whether the interval is point identified, without asserting a real effect or independent evaluator authenticity. If the full eight-policy matrix contains known timeout/safety failures, an arithmetic point effect can be identifiable while the canonical complete-case bootstrap remains **deliberately suppressed**. This distinction is now explicit.
+
+The [19 first-party falsification tests](../tests/test_attrition_sign_sensitivity.py) independently enumerate small hypothetical binary success completions for each policy and **all** three release states (no release / correct release / wrong release) for unknown infrastructure cells. The latter checks sharpness of the risk denominator bounds and the special r=0 cases. No original pilot task, model weights or independent reviewer oracle was executed. See the [mathematical definitions, examples and limitations](S02_ATTRITION_SIGN_FALSIFIERS_2026-11-09.md).
+
 ## Remaining scientific authorization gates
 
 The existing `PolicyRunReceipt.actual_costs_measured`, evaluator
