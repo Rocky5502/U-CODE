@@ -169,6 +169,12 @@ private inputs only, and CI runs the public blank-form mode without
 handling actual reviewer data. PHP/Go admission remains **16/16 pending**,
 with **zero** independently executable tasks.
 
+## U-CODE 10-stage research sprint: issues + evidence-based heartbeats (9 November 2026)
+
+The user-requested [10-stage sprint ledger](docs/UCODE_TEN_STAGE_HEARTBEAT_SPRINT_2026-11-09.md) links **10 substantive GitHub issues [#61–#70](https://github.com/Rocky5502/U-CODE/issues)** with a distinct self-heartbeat and falsifiable acceptance gate for each stage. The stages are **nominal 30-minute timeboxes, not running background sessions**: ChatGPT automations cannot execute every 30 minutes, and no such automation is active. Each heartbeat must record real PR/commit/test evidence, explicit blockers and completion state, not promises of continuous work.
+
+The first engineering stage adds [postterminal paired leave-one-lineage-out sensitivity analysis](src/ucode/lineage_influence.py) with [synthetic falsification tests](tests/test_lineage_influence.py). It checks whether an assignment-level verified-success contrast is dominated by one declared repository/fork lineage. This is **descriptive sensitivity, not a confidence interval or observed real coding-agent effect**. The actual six-model/eight-policy study and all independent oracle/rights/model gates remain pending.
+
 ## P0-3 fixed: editable model planning flags cannot certify execution (9 November 2026)
 
 A [dedicated model-readiness self-attestation audit](docs/P0_3_MODEL_READINESS_SELF_ATTESTATION_GUARD_2026-11-09.md) found that a fabricated planning JSON (license APPROVED, plausible 40-hex hashes, positive weights/sandbox flags and made-up VRAM) could previously make `ModelReadiness.runnable = true`. The planning validator and six-model acceptance check now **categorically refuse runtime authorization** from source-controlled declarations; both [phase-0](src/ucode/real_trial_phase0.py) and [critical-path](src/ucode/critical_path.py) audits enforce a missing-independent-attestation guard. **11 new adversarial synthetic tests** prevent the regression. This is a genuine source-validation fix, **not** evidence of independently approved weights, legal terms, hardware, model inference or admitted code-repair tasks.
