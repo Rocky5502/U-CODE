@@ -169,6 +169,10 @@ private inputs only, and CI runs the public blank-form mode without
 handling actual reviewer data. PHP/Go admission remains **16/16 pending**,
 with **zero** independently executable tasks.
 
+## S02 — Worst/best attrition sign and wrong-release denominator falsifiers (9 November 2026)
+
+The new [postterminal binary missingness-sign audit](src/ucode/attrition_sign_sensitivity.py) is a separate evaluator-only diagnostic for paired coding-agent comparisons, with [19 synthetic adversarial tests](tests/test_attrition_sign_sensitivity.py) and a [full mathematical/limitations note](docs/S02_ATTRITION_SIGN_FALSIFIERS_2026-11-09.md). It cross-checks the existing paired bounds against integer arm success counts, preserves all assigned tasks, exposes **treatment vs control missingness** and precisely reports which **effect signs remain attainable** without missing-at-random assumptions. Wrong-release conditional risk remains undefined when nobody released a patch. Exhaustive small-case enumeration validates that the potential wrong-release risk bounds are sharp *under unrestricted binary/release completion assumptions*. This adds **no empirical model success, real reviewer approval or hidden oracle**; Go/PHP admission, physical resource-meter evidence and six checkpoint qualification remain pending.
+
 ## U-CODE 10-stage research sprint: issues + evidence-based heartbeats (9 November 2026)
 
 The user-requested [10-stage sprint ledger](docs/UCODE_TEN_STAGE_HEARTBEAT_SPRINT_2026-11-09.md) links **10 substantive GitHub issues [#61–#70](https://github.com/Rocky5502/U-CODE/issues)** with a distinct self-heartbeat and falsifiable acceptance gate for each stage. The stages are **nominal 30-minute timeboxes, not running background sessions**: ChatGPT automations cannot execute every 30 minutes, and no such automation is active. Each heartbeat must record real PR/commit/test evidence, explicit blockers and completion state, not promises of continuous work.
