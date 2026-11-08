@@ -169,6 +169,42 @@ private inputs only, and CI runs the public blank-form mode without
 handling actual reviewer data. PHP/Go admission remains **16/16 pending**,
 with **zero** independently executable tasks.
 
+## Phase-0 before REAL U-CODE experiments: local hardware + matched-budget planning (8 November 2026)
+
+The [real-experiment operator runbook](docs/REAL_EXPERIMENT_PHASE0_OPERATOR_RUNBOOK_2026-11-08.md)
+now separates **permissioned first-party model/host smoke** from **independently
+qualified third-party task evaluation**. A new
+[read-only phase-0 CLI](scripts/prepare_real_experiment_phase0.py)
+cross-checks the frozen six-model, eight-policy, five-resource study against
+the blocked local preflight, all 13 public dataset leads and the PHP/Go
+pilot ledger. It never makes a task runnable and does not download weights,
+run code, start inference or import oracles:
+
+```bash
+python -m scripts.prepare_real_experiment_phase0
+python -m scripts.prepare_real_experiment_phase0 --hypothetical-tasks 1 --hypothetical-seeds 3
+python -m scripts.prepare_real_experiment_phase0 --require-real-ready # must exit 2
+# Only on your OWN intended machine: optional read-only inventory
+python -m scripts.prepare_real_experiment_phase0 --probe-gpu
+```
+
+The GPU survey uses an opt-in, bounded `nvidia-smi` query for only name,
+VRAM and driver version; local telemetry is NOT an independent security
+attestation and CI never probes hardware. The *unfrozen illustrative*
+30k-token/20-test/3600 GPU-second/1800 CPU-second/3600 wall-second caps
+imply a **48-arm, 1.44M-token, 48 GPU-hour summed ceiling** for one
+hypothetical task × six models × eight policies × one illustrative seed,
+but **not** actual compute requirements or a qualified task. Three
+illustrative seeds give 144 slots and a 144 GPU-hour summed ceiling.
+[Tests](tests/test_real_trial_phase0.py) check budget overflow/drift,
+forged approval, host-input hygiene and no unintended execution.
+
+**Real trial remains blocked:** no Go/PHP source-era task admission
+(16/16 outstanding), no sealed oracle, no measured six-model load,
+no authenticated sandbox/meters and no faithful eight-policy end-to-end
+evidence. Do **not** report synthetic examples as real improvements or
+treat the optional `--probe-gpu` as permission to rent GPUs.
+
 ## All thirteen dataset sources + research code readiness (7 November 2026)
 
 The [full source-by-source and code-readiness review](docs/ALL_DATASETS_AND_CODE_READINESS_2026-11-07.md)
