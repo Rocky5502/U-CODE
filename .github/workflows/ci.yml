@@ -136,6 +136,17 @@ jobs:
           name: ucode-go43-spec-feasibility-NO-GOLD-v1
           path: dist/ucode-go43-rule-feasibility-REVIEW-ONLY.json
           if-no-files-found: error
+      - name: Review Go #43 six-question A/B domain triage with PENDING synthetic-free blank forms (NO private human data)
+        run: python -m scripts.triage_go43_domain_decisions
+      - name: Require independent Go #43 domain adjudication remains blocked
+        run: |
+          set +e
+          python -m scripts.triage_go43_domain_decisions --require-adjudicated > /dev/null
+          status=$?
+          if [ "$status" -ne 2 ]; then
+            echo "ERROR: source-only reviewer-triage code cannot grant human approval"
+            exit 1
+          fi
       - name: Audit independently unapproved prospective PHP task draft (NOT historical task or policy input)
         run: python -m scripts.validate_php104_prospective_draft
       - name: Validate pinned pre-fix Git tree and toolchain path evidence (NO checkout)

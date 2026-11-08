@@ -1,6 +1,10 @@
 # U-CODE — V5 New-Chat Master Prompt and Scientifically Honest Continuation Plan
 
 **Snapshot date:** 7 November 2026 (UTC)  
+
+> **Post-snapshot P0-1 continuation (8 November 2026):** Before a new chat proceeds, also read [the Go #43 conditional feasibility packet](G5_GO43_SPEC_FEASIBILITY_DECISION_PACKET_2026-11-08.md) and [the private two-reviewer rule adjudication protocol](G5_GO43_PRIVATE_RULE_ADJUDICATION_PROTOCOL_2026-11-08.md). These are review **tools and prospective questions**, not independent human rulings. This V5 snapshot must still be refreshed against live GitHub commits and CI. Do not retroactively modify the frozen study or claim real task admission.
+
+
 **Canonical repository:** https://github.com/Rocky5502/U-CODE  
 **Target:** Springer *Automated Software Engineering*, special issue “Search-Based Software Engineering in the Era of LLMs and Agentic Systems” (working submission deadline **30 January 2027**; verify current call before committing to a date).  
 **Purpose:** Operational new-chat activation. This V5 updates **navigation and outstanding work only**; it does **not** change the preregistered study, retroactively edit source-era evidence, constitute independent ethics/rights review, or establish any real benchmark result.  
