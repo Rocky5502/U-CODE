@@ -8,7 +8,6 @@ only, no token, no redirects/proxy, no downloads of model or source files.
 """
 from __future__ import annotations
 
-from datetime import datetime
 from pathlib import Path
 import json
 import re
@@ -81,8 +80,9 @@ def _read_public_head_metadata(url: str) -> dict | None:
     arbitrary Python or third-party repository code. Never log response body.
     The connection origin is a fixed HTTPS Hub API path.
     """
-    if (type(url) is not str or not url.startswith(_URL_PREFIX)
-            or not url.endswith(_URL_SUFFIX)):
+    if (type(url) is not str or url not in {
+            _URL_PREFIX + model_id + _URL_SUFFIX for model_id in _selected_ids(ROOT)
+            }):
         raise ValueError("unexpected public hub endpoint")
     request = urllib.request.Request(
         url, headers={"Accept": "application/json",
@@ -102,9 +102,22 @@ def _read_public_head_metadata(url: str) -> dict | None:
         return None
     if not raw or len(raw) > _MAX_RESPONSE:
         return None
+    def reject_duplicate_keys(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError("ambiguous duplicate public Hub metadata key")
+            result[key] = value
+        return result
+
     try:
-        obj = json.loads(raw.decode("utf-8"))
-    except (UnicodeError, json.JSONDecodeError):
+        obj = json.loads(
+            raw.decode("utf-8"),
+            object_pairs_hook=reject_duplicate_keys,
+            parse_constant=lambda value: (_ for _ in ()).throw(
+                ValueError("nonfinite public JSON is invalid")),
+        )
+    except (UnicodeError, json.JSONDecodeError, ValueError):
         return None
     if type(obj) is not dict or type(obj.get("sha")) is not str:
         return None
