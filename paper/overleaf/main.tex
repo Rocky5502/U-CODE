@@ -2585,6 +2585,27 @@ assumed to finish within days on one accelerator;
 the actual sample-size and compute protocol must
 be re-registered after representative profiling.
 
+\paragraph{Public model-card labels are not readiness evidence.}
+A source-only observation of the six public Hugging Face
+model-card metadata records public parameter counts,
+architectures, license tags and access-gating indicators.
+The historical DeepSeek Coder V2 Lite planning record
+labels its license \texttt{deepseek-license}, whereas
+the observed Hub metadata tag is \texttt{other};
+neither tag establishes the applicable full license.
+CodeGemma and Llama~3.1 have publicly gated cards,
+but no account access has been authenticated.
+Using reported total parameters, the rough BF16
+weights-only storage scenario is
+$2N/2^{30}$~GiB for $N$ parameters; it deliberately
+excludes the execution engine, key/value cache, context,
+quantization and device allocations. Thus a value below
+a hypothetical 16\,GiB card is not a verified model fit.
+No model weights, checkpoint/tokenizer revisions,
+actual VRAM peaks or six-model outcomes are established
+by this metadata-only audit. Full license and runtime
+qualification remain separate independent study gates.
+
 \paragraph{Frozen factorial assignment and evaluator receipts.}
 We preregister a proposed eight-policy matrix:
 U-CODE with conditional diagnostic likelihoods,
