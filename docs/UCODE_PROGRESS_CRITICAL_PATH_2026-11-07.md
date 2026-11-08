@@ -12,6 +12,18 @@ python -m scripts.export_critical_path --require-empirical-ready
 
 The output contains `CRITICAL_PATH_STATUS.json`, `REMAINING_WORK.md`, and `CRITICAL_PATH_INTEGRITY.json` (SHA256 checksums). CI publishes **only** these public, redacted status files. The module reads no private reviewer worksheets, hidden evaluator oracles or model weights.
 
+## Phase-0 operator preparation added on 8 November 2026
+
+The [new real-experiment preparation runbook](REAL_EXPERIMENT_PHASE0_OPERATOR_RUNBOOK_2026-11-08.md)
+and [operator CLI](../scripts/prepare_real_experiment_phase0.py) audit
+the actual frozen model/policy/task registers, summarize the independently
+blocked conditions and expose illustrative 48- or 144-arm ceilings for one
+*future* task under example-only resources. The optional read-only
+`nvidia-smi` probe is **never run by GitHub CI** and does not certify
+model loading, rights, network isolation or physical five-resource meters.
+All 10 milestone **full exit criteria remain open**; this is preparation
+inside P0-2/P0-3/P0-4, not a newly admitted P0-1 task.
+
 ## Verified preparation — not empirically qualified task execution
 
 | Dimension | State of canonical frozen registries | What it does *not* mean |

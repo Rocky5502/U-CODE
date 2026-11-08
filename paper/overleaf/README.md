@@ -141,6 +141,18 @@ Code and tests are in `src/ucode/joint_validity_acquisition.py`,
 `scripts/smoke_joint_validity_acquisition.py`.
 See [three-way derivation and limits](../../docs/THREE_WAY_VALIDITY_COUPLING_2026-11-07.md).
 
+## 8 November 2026: real experiment phase-0 preparation (not results)
+
+The [phase-0 operator runbook](../../docs/REAL_EXPERIMENT_PHASE0_OPERATOR_RUNBOOK_2026-11-08.md)
+and [strict first-party metadata/GPU-inventory CLI](../../scripts/prepare_real_experiment_phase0.py)
+make the post-source-review handoff reproducible. Their illustrative six-model,
+eight-policy, five-resource budgets are **not measured**; the local host probe
+is strictly opt-in, read-only, and **never run in CI**. The new paper
+methods note distinguishes an exploratory matched pilot from the full
+confirmatory experiment. Zero independently runnable tasks, oracles,
+measured model results and authenticated hardware receipts exist in this
+source branch.
+
 **Live Overleaf limitation:** changes are in the GitHub-tracked LaTeX
 sources and the CI-produced `ucode-overleaf-sources` ZIP. The separate
 cloud Overleaf editor still requires an authenticated project sync or

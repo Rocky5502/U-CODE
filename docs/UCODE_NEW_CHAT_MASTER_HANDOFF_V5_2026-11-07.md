@@ -65,6 +65,21 @@ Specialist domains (Go settlement expert, PHP task curator, independent oracle s
 - **Exploratory DRPA / 3-way dependence / joint-frequency controls** are mathematical or synthetic first-party checks, NOT experimental superiority and NOT a silent ninth confirmatory arm. Comparison requires same proposal set, forecast marginal inputs, objectives, prices and caps; certify assumptions before claiming any theorem/guarantee.
 - Seeds, final budgets, real lineage cohorts and checkpoint revisions remain unfrozen. Any protocol amendment needs a dated, explicit and outcome-blind justification; never edit historical registry facts to make progress look complete.
 
+### Post-V5 current operational bridge: phase-0 before real experiments (8 November 2026)
+
+Read [the real-experiment phase-0 operator runbook](REAL_EXPERIMENT_PHASE0_OPERATOR_RUNBOOK_2026-11-08.md).
+The source-only CLI `python -m scripts.prepare_real_experiment_phase0`
+checks canonical 13-source/six-model/eight-policy/two-pilot evidence,
+exposes example-only matched assignment/resource envelopes, and cannot
+authorize model downloads or executable third-party tasks. On a **local**
+operator machine `--probe-gpu` optionally queries read-only NVIDIA GPU
+name, VRAM and driver metadata; never invoke this in CI or mistake locally
+declared hardware for independently attested security. The strict
+`--require-real-ready` MUST exit 2 until *independent* gates are addressed.
+A first exploratory 1-task/1-model/2-policy pilot would be **separately**
+authorized and not a change to the frozen intended full six-by-eight
+confirmatory study. No empirical outcome now exists.
+
 ### First real Go #43 pilot: immediate highest-value task
 
 Candidate #43 = `PlayHuai/eighty-point-huai-an`, [PR #30](https://github.com/PlayHuai/eighty-point-huai-an/pull/30), [issue #29](https://github.com/PlayHuai/eighty-point-huai-an/issues/29); pre-fix base `ec41b1b33f5a4d46a8398fb6ccc33f25336fdb8a`; original tree `e53fb011857926632c4a4ec8752425e0f2b41559`. Original `docs/design.md` blob `b566ca7627b6518670a866a6a637bd5257e947f4`; higher-priority `docs/淮安80分业务规则.md` blob `e71288e3127cb66f2471a5ddd2800092db0552cc`. The design defers to the business rules on conflicts. Issue #29 was created only **8 seconds before PR #30**; its source-era complete task instruction is NOT authenticated.
