@@ -6,11 +6,13 @@
 
 The user requested ten autonomous 30-minute stages and ten self-heartbeats. ChatGPT's scheduled tasks support at most one run per hour; **no 30-minute ChatGPT automation has been created**. The table below is an actionable GitHub backlog, not a claim that tasks are executing unattended or that they are finished. Each issue includes a heartbeat template to be filled only after actual work and verified CI. No silent background execution or five-hour compute reservation is promised. Existing unrelated automations are unchanged.
 
+**Actual baseline heartbeats:** 10 status messages have now been posted, one on each issue [#61](https://github.com/Rocky5502/U-CODE/issues/61) through [#70](https://github.com/Rocky5502/U-CODE/issues/70). They record S01's completed code/CI evidence, while the other nine work items remain **PENDING** or **BLOCKED**. They are not simulated clock-timed runs. This ledger is updated as a source-state snapshot after merge #71; the issues are the live per-stage history.
+
 **Heartbeat rule for every stage:** record the actual date/time, branch and merged PR or pending status; tests actually observed from CI; meaningful changed files; independent spec/oracle/model-security gates still outstanding; and an explicit DONE, PARTIAL or BLOCKED verdict. An open issue, passing synthetic unit test or a scheduled slot never means a real benchmark was completed.
 
 | Planned nominal slot | GitHub issue | Concrete objective | Current status / checkpoint evidence |
 |---|---|---|---|
-| 00:00–00:30 | [S01 #61](https://github.com/Rocky5502/U-CODE/issues/61) | Leave-one-repository-lineage-out paired intention-to-treat sensitivity | Engineering PR in progress; requires CI and merge |
+| 00:00–00:30 | [S01 #61](https://github.com/Rocky5502/U-CODE/issues/61) | Leave-one-repository-lineage-out paired intention-to-treat sensitivity | **DONE — engineering only:** [PR #71](https://github.com/Rocky5502/U-CODE/pull/71) merged at `7307ed020b58910a41c29728f7e7f960834f6954`; [post-merge CI](https://github.com/Rocky5502/U-CODE/actions/runs/42512923543) passed 1,651 tests on each Python 3.10 and 3.12; issue #61 heartbeat recorded. Not empirical task evidence |
 | 00:30–01:00 | [S02 #62](https://github.com/Rocky5502/U-CODE/issues/62) | Attrition, abstention and wrong-release denominators | PENDING / no execution |
 | 01:00–01:30 | [S03 #63](https://github.com/Rocky5502/U-CODE/issues/63) | Five-resource Pareto and budget diagnostics | PENDING / no execution |
 | 01:30–02:00 | [S04 #64](https://github.com/Rocky5502/U-CODE/issues/64) | Conditional value-of-information falsification | PENDING / no execution |
