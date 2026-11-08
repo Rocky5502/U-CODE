@@ -1,4 +1,4 @@
-"""Equation inventory is exhaustive by source label, not a claim of 33 proofs."""
+"""Equation inventory is exhaustive by source label, not a claim of 34 proofs."""
 import unittest
 from scripts.audit_manuscript_equations import (
     PAPER, EXPECTED_FROZEN_LABELS, LIMITED_CROSSCHECKS, audit_equations,
@@ -9,10 +9,10 @@ class EquationRegisterTests(unittest.TestCase):
     def setUpClass(cls):
         cls.tex=PAPER.read_text(encoding="utf-8")
 
-    def test_all_33_paper_equations_have_explicit_review_status(self):
+    def test_all_34_paper_equations_have_explicit_review_status(self):
         data=audit_equations(self.tex)
-        self.assertEqual(data["total_equations"],33)
-        self.assertEqual(data["limited_synthetic_crosschecks"],7)
+        self.assertEqual(data["total_equations"],34)
+        self.assertEqual(data["limited_synthetic_crosschecks"],8)
         self.assertEqual(data["pending_independent_derivation"],26)
         self.assertEqual(data["full_theorem_reviews_completed"],0)
         self.assertEqual(data["real_model_evaluations"],0)
@@ -34,7 +34,7 @@ class EquationRegisterTests(unittest.TestCase):
             audit_equations(self.tex.replace(
                 r"\label{eq:bes}",r"\label{eq:evsi}",1))
 
-    def test_seven_limited_checks_never_promoted_to_theorem_proofs(self):
+    def test_eight_limited_checks_never_promoted_to_theorem_proofs(self):
         data=audit_equations(self.tex)
         for r in data["equations"]:
             if r["equation_id"] in LIMITED_CROSSCHECKS:

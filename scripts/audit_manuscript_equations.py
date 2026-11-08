@@ -1,6 +1,6 @@
-"""Audit all 33 labeled Springer math equations without claiming proofs.
+"""Audit all 34 labeled Springer math equations without claiming proofs.
 
-A source label is not a validated theorem. The seven selected high-risk
+A source label is not a validated theorem. The eight selected high-risk
 equations have limited *synthetic/exact-arithmetic* cross-checks; all other
 labels remain pending independent derivation and external peer review.
 """
@@ -23,6 +23,7 @@ LIMITED_CROSSCHECKS={
     "eq:risk": "conditional wrong-release risks enumerated across missing cells",
     "eq:itt_missing_envelope": "exact finite integer missingness enumeration",
     "eq:coverage_missing_envelope": "exact finite integer missingness enumeration",
+    "eq:lineage-omission": "exact synthetic leave-one-lineage-out matched-pair arithmetic",
 }
 EXPECTED_FROZEN_LABELS={
     "eq:state","eq:budget","eq:success","eq:risk","eq:objective",
@@ -34,7 +35,8 @@ EXPECTED_FROZEN_LABELS={
     "eq:sensitivity","eq:specificity","eq:action-parity",
     "eq:blind-heuristic-beam","eq:joint-archive-state",
     "eq:archive-stop","eq:joint-archive-bellman",
-    "eq:joint-truth-update","eq:paired","eq:receipt-integrity",
+    "eq:joint-truth-update","eq:paired","eq:lineage-omission",
+    "eq:receipt-integrity",
     "eq:attrition-bounds","eq:itt_missing_envelope",
     "eq:coverage_missing_envelope",
 }
