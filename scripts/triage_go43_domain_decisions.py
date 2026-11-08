@@ -64,7 +64,7 @@ def _read_private(path: Path) -> tuple[dict, ...]:
         try:
             obj = json.loads(line.decode("utf-8"),
                 object_pairs_hook=_no_duplicates, parse_constant=_no_nonjson)
-        except (ValueError, UnicodeError) as exc:
+        except (json.JSONDecodeError, UnicodeError) as exc:
             raise ValueError("invalid private JSON reviewer record") from exc
         if type(obj) is not dict:
             raise ValueError("private reviewer row must be an object")
