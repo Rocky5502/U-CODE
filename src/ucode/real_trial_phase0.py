@@ -125,9 +125,24 @@ def build_real_trial_phase0(
             raise ValueError("caller cannot insert authenticated hardware claims")
         # Caller-supplied survey is always untrusted, even if it has a valid
         # shape. A trusted host must separately authenticate its own devices.
-        if (type(gpu_survey["local_gpu_report"]) is not list
-                or len(gpu_survey["local_gpu_report"]) > 16):
+        rows = gpu_survey["local_gpu_report"]
+        if (type(rows) is not list or len(rows) > 16
+                or (gpu_survey["state"] !=
+                    "LOCAL_UNAUTHENTICATED_HARDWARE_OBSERVATION_ONLY" and rows)
+                or (gpu_survey["state"] ==
+                    "LOCAL_UNAUTHENTICATED_HARDWARE_OBSERVATION_ONLY" and not rows)):
             raise ValueError("invalid locally reported GPU observation count")
+        for row in rows:
+            if (type(row) is not dict or set(row) != {
+                    "name_locally_reported", "memory_total_mib_locally_reported",
+                    "driver_locally_reported"
+                } or type(row["name_locally_reported"]) is not str
+                    or _MODEL.fullmatch(row["name_locally_reported"]) is None
+                    or type(row["memory_total_mib_locally_reported"]) is not int
+                    or not 512 <= row["memory_total_mib_locally_reported"] <= 1048576
+                    or type(row["driver_locally_reported"]) is not str
+                    or _DRIVER.fullmatch(row["driver_locally_reported"]) is None):
+                raise ValueError("invalid or private GPU observation fields")
     root = Path(root)
     protocol = _read_object(root, "configs/confirmatory_sbse_protocol_2026-10-25.json")
     models = _read_object(root, "configs/accepted_six_model_study_2026-10-25.json")
