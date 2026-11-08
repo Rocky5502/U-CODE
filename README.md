@@ -152,6 +152,23 @@ six-model/eight-policy comparison is unchanged.
 
 The [source-era Go settlement decision packet](docs/G5_GO43_SPEC_FEASIBILITY_DECISION_PACKET_2026-11-08.md) now contains an **exact-rational conditional witness** showing why fixed winner credits plus capped loser deductions cannot conserve total points for an underfunded toy case, together with a `5 × 1.5 = 7.5` hypothetical fractional-point example. Neither example is an expected oracle answer nor an imposed business rule. A source-pinned dependency map ties all **six unresolved independent reviewer decisions** to the **12 prospective test families**, without claiming approval. [Offline exporter](scripts/export_go43_spec_feasibility.py) and [adversarial checks](tests/test_go43_spec_feasibility.py) fail closed on fake task admission and gold injection; CI confirms the strict spec-ready gate still exits 2. Go/PHP admission remains **16/16 pending**, with no source execution or real-model experiment.
 
+## Go #43 independent human-rule review: private paired triage (8 November 2026)
+
+The [private Go domain-decision protocol](docs/G5_GO43_PRIVATE_RULE_ADJUDICATION_PROTOCOL_2026-11-08.md)
+introduces a local-only, six-question two-reviewer worksheet and redacted
+comparison of **unverified reviewer-supplied claims**. It distinguishes pending,
+divergent verdicts, mismatched rule-memo digests, differing source references,
+mutual scope rejection, and only *unadjudicated* agreement. This is a
+source-bound reviewer workflow **not an actual review**; no human identity,
+interpretation or hidden oracle has been authenticated. A future operator
+must store completed private worksheets **outside the public repository**.
+[Review CLI](scripts/triage_go43_domain_decisions.py) defaults to all six
+**PENDING**; `--require-adjudicated` strictly exits **2**.
+[Adversarial tests](tests/test_go43_domain_decision_triage.py) use fictional
+private inputs only, and CI runs the public blank-form mode without
+handling actual reviewer data. PHP/Go admission remains **16/16 pending**,
+with **zero** independently executable tasks.
+
 ## All thirteen dataset sources + research code readiness (7 November 2026)
 
 The [full source-by-source and code-readiness review](docs/ALL_DATASETS_AND_CODE_READINESS_2026-11-07.md)
