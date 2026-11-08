@@ -2524,6 +2524,30 @@ the fraction of released patches, and the conditional error rate
 among releases. When coverage is zero, conditional wrong-release
 risk is \emph{undefined}, not zero.
 
+\paragraph{Missingness asymmetry and sign sensitivity (prospective).}
+The postterminal evaluator separately records $u_U$ and $u_B$,
+the numbers of infrastructure-failure assignments in treatment
+and comparator, and $s_U,s_B$, the numbers of known verified
+successful releases. Under unrestricted binary completion
+of missing outcomes, the sharp arithmetic envelope for the
+assignment-level paired effect extends from
+$(s_U-s_B-u_B)/N$ to $(s_U-s_B+u_U)/N$;
+its width is $(u_U+u_B)/N$. Known abstentions, timeouts
+and safety stops remain zero-success assignments, not
+attrited denominators. We report exactly which negative,
+zero and positive effect signs are attainable, and never
+claim a positive effect if a nonpositive value remains
+possible. These are partial-identification emph{bounds},
+not confidence intervals, a significant finding or
+an assumption that infrastructure failures are missing at
+random. Separately, conditional wrong-release risk among
+observed released patches remains undefined when no
+patch is released; the potential risk under unobserved
+releases is examined only with an explicit nonzero
+release denominator. First-party exhaustive synthetic
+cases cross-check this sensitivity arithmetic, not
+real evaluator or model measurements.
+
 \paragraph{Leave-one-lineage-out sensitivity (prospective).}
 To detect whether the pooled assignment-level difference
 relies disproportionately on one repository or fork family,
