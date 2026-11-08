@@ -2619,6 +2619,19 @@ license acceptance, deployment compatibility or GPU memory.
 No such revision candidates are treated as completed model
 qualification or real-inference observations.
 
+\paragraph{Planning metadata does not authorize model inference.}
+An adversarial source-code audit found that syntactically valid
+weight/tokenizer commit hashes, a license-approval string,
+and self-reported hardware and sandbox flags in an editable
+planning register were previously sufficient to mark a
+model \texttt{runnable}. The planning-only model validation
+and associated phase-zero/critical-path checks now
+fail closed without independently authenticated execution
+evidence, even if all six prospective model records contain
+plausible-looking approval fields. This correction is
+a validation-boundary hardening, not a model-load,
+sandbox certification, signed approval or empirical result.
+
 \paragraph{Frozen factorial assignment and evaluator receipts.}
 We preregister a proposed eight-policy matrix:
 U-CODE with conditional diagnostic likelihoods,

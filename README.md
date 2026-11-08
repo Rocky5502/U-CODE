@@ -169,6 +169,10 @@ private inputs only, and CI runs the public blank-form mode without
 handling actual reviewer data. PHP/Go admission remains **16/16 pending**,
 with **zero** independently executable tasks.
 
+## P0-3 fixed: editable model planning flags cannot certify execution (9 November 2026)
+
+A [dedicated model-readiness self-attestation audit](docs/P0_3_MODEL_READINESS_SELF_ATTESTATION_GUARD_2026-11-09.md) found that a fabricated planning JSON (license APPROVED, plausible 40-hex hashes, positive weights/sandbox flags and made-up VRAM) could previously make `ModelReadiness.runnable = true`. The planning validator and six-model acceptance check now **categorically refuse runtime authorization** from source-controlled declarations; both [phase-0](src/ucode/real_trial_phase0.py) and [critical-path](src/ucode/critical_path.py) audits enforce a missing-independent-attestation guard. **11 new adversarial synthetic tests** prevent the regression. This is a genuine source-validation fix, **not** evidence of independently approved weights, legal terms, hardware, model inference or admitted code-repair tasks.
+
 ## P0-3 public Hugging Face revision-candidate capture (9 November 2026)
 
 The [model-SHA provenance preflight](docs/P0_3_HF_SHA_REVISION_CANDIDATES_2026-11-09.md) adds a **no-network default** six-model roster audit plus an **explicit opt-in, public HTTPS metadata-only** lookup for each exact registered model. It accepts only full lowercase 40-hex branch SHA candidates; abbreviated/stale GitHub or Hugging Face snippet hashes are not silently registered. All tokenizer, chat-template, individual model-weight integrity, full license/terms acceptance, hardware-load and independent attestation fields remain **false/unverified**. Only a separately authenticated operator can qualify a real checkpoint. CI exports an **offline six-row PENDING** packet, not model weights or access tokens.

@@ -35,6 +35,8 @@ The output contains only six known model IDs, fixed public URLs and optional bra
 
 **Security:** Never commit operator-specific credentials, signed rights notes, private gated-access evidence, license acceptance logs or downloaded model weight files to this repository. Public candidate SHA values may be reported in the metadata study with dates and separate trusted custody, but only after review.
 
+**Additional P0-3 protection (9 November 2026):** the [planning-manifest self-attestation guard](P0_3_MODEL_READINESS_SELF_ATTESTATION_GUARD_2026-11-09.md) now rejects the false shortcut in which source-controlled `APPROVED`, weight SHA strings, made-up VRAM and Boolean sandbox flags could mark a model ready. The planning report's runnable property cannot authorize execution, and phase-0/critical-path audits demand an explicit missing-external-attestation blocker. Authentic runtime approval must be separate from this repo's self-reported fields.
+
 ## Authenticated revision and model-readiness exit requirements
 
 After the authorized operator captures public candidate hashes, a separate review must:

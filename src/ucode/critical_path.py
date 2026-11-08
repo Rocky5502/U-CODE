@@ -22,7 +22,9 @@ import json
 from pathlib import Path
 from typing import Mapping
 
-from .model_readiness import validate_selected_manifest
+from .model_readiness import (
+    EXTERNAL_EVIDENCE_BLOCKER, validate_selected_manifest,
+)
 from .pilot_preflight import build_pilot_preflight
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -161,7 +163,9 @@ def build_critical_path(
         raise ValueError("six-model/eight-policy primary protocol drift")
     reports=validate_selected_manifest(
         s,_object(root,"configs/models_v2_2026-10-24.json"))
-    if (len(reports)!=6 or any(r.runnable for r in reports)
+    if (len(reports)!=6
+            or any(r.runnable or EXTERNAL_EVIDENCE_BLOCKER not in r.blockers
+                   for r in reports)
             or any(x.get("inference_execution_status")!="NOT_RUN"
                    or x.get("independently_verified_task_runs")!=0
                    or x.get("checkpoint_revision") is not None

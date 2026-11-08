@@ -16,7 +16,9 @@ import subprocess
 from typing import Mapping
 
 from scripts.check_local_readiness import validate_local_preflight
-from .model_readiness import validate_selected_manifest
+from .model_readiness import (
+    EXTERNAL_EVIDENCE_BLOCKER, validate_selected_manifest,
+)
 from .pilot_preflight import build_pilot_preflight, ROOT
 from .vector_policy import RESOURCE_FIELDS
 
@@ -174,7 +176,8 @@ def build_real_trial_phase0(
             or protocol.get("policy_implementations_faithfully_reproduced") is not False
             or protocol.get("results_measured") is not False
             or protocol.get("external_code_executions") != 0
-            or any(m.runnable for m in all_models)):
+            or any(m.runnable or EXTERNAL_EVIDENCE_BLOCKER not in m.blockers
+                   for m in all_models)):
         raise ValueError("canonical frozen study/real-pilot blocker inconsistency")
     illustrative = protocol.get("planned_resource_caps_example_not_executed")
     if (type(illustrative) is not dict

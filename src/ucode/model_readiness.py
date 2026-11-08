@@ -2,7 +2,9 @@
 
 Selecting a public model for study does NOT confer terms acceptance, a
 particular model snapshot, compatible memory, or permission to execute.
-The gate returns blockers; it does not download weights or run inference.
+All manifest approval fields are *self-reported*: they can identify future
+review work, but are NEVER independent model runner authorization. The
+gate returns planning blockers; it does not download weights or run inference.
 """
 from dataclasses import dataclass
 from pathlib import Path
@@ -24,6 +26,8 @@ CARD_LICENSES = {
 }
 SPECIAL_TERMS = {"gemma", "llama3.1"}
 NON_APACHE = {"deepseek-license", "gemma", "llama3.1"}
+# Non-negotiable provenance boundary for every report from editable JSON.
+EXTERNAL_EVIDENCE_BLOCKER = "independent_model_and_runtime_attestation_missing"
 
 
 @dataclass(frozen=True)
@@ -34,7 +38,14 @@ class ModelReadiness:
 
     @property
     def runnable(self) -> bool:
-        return self.accepted_for_planning and not self.blockers
+        """Always False for planning JSON: this class is not an execution permit.
+
+        Even a manually constructed ModelReadiness(model_id, True, ()) has no
+        independent rights, checkpoint, tokenizer, hardware, or sandbox
+        authentication. A separately governed runner must use independently
+        authenticated receipts, never this metadata-only convenience object.
+        """
+        return False
 
 
 def load_selected_models(path: Path = SELECTED) -> dict:
@@ -45,6 +56,8 @@ def validate_selected_manifest(
     selected: dict, source_inventory: dict,
 ) -> tuple[ModelReadiness, ...]:
     """Fail closed on changed scientific identities or false execution claims."""
+    if type(selected) is not dict or type(source_inventory) is not dict:
+        raise TypeError("typed model planning and source inventories required")
     entries = selected.get("models")
     originals = source_inventory.get("models")
     if (selected.get("phase") != "ALL_SIX_SELECTED_FOR_PLANNING_NOT_READY_FOR_INFERENCE"
@@ -66,11 +79,23 @@ def validate_selected_manifest(
             raise ValueError("selected model source URL/license conflicts with official card")
         if m.get("selection") != "user_selected_for_planning" or m.get("study_included") is not True:
             raise ValueError("all six requested models must be in the research plan")
-        if m.get("inference_execution_status") == "NOT_RUN" and m.get("independently_verified_task_runs") != 0:
-            raise ValueError("nonzero experiment count despite model never run")
-        if m.get("inference_execution_status") not in ("NOT_RUN", "COMPLETED_AND_AUDITED"):
+        status = m.get("inference_execution_status")
+        if status not in ("NOT_RUN", "COMPLETED_AND_AUDITED"):
             raise ValueError("unknown model execution state")
-        blockers = []
+        if status == "COMPLETED_AND_AUDITED":
+            raise ValueError(
+                "planning manifest cannot self-certify completed model inference")
+        runs = m.get("independently_verified_task_runs")
+        if type(runs) is not int or runs != 0:
+            raise ValueError("nonzero experiment count despite model never run")
+        blockers = [EXTERNAL_EVIDENCE_BLOCKER]
+        # A string APPROVED or Boolean True in an editable planning JSON is
+        # not a signed reviewer finding or an independently measured runner.
+        if (m.get("full_license_review") == "APPROVED"
+                or m.get("gated_terms_verified") is True
+                or m.get("model_weights_verified") is True
+                or m.get("passed_sandbox_security_review") is True):
+            blockers.append("self_reported_approval_not_authenticated")
         if m.get("full_license_review") != "APPROVED":
             blockers.append("license_text_not_approved")
         if m.get("card_license") in SPECIAL_TERMS and m.get("gated_terms_verified") is not True:
@@ -109,10 +134,18 @@ def preflight_selected_models(
 def require_full_six_model_readiness(
     reports: tuple[ModelReadiness, ...],
 ) -> None:
-    """Forbid silently dropping large or gated models from a claimed 6-model run."""
-    if len(reports) != 6 or any(not x.runnable for x in reports):
-        blocked = [(x.model_id, x.blockers) for x in reports if not x.runnable]
-        raise ValueError(f"six-model experiment BLOCKED: {blocked}")
+    """Forbid treating source-only readiness objects as six real model permits."""
+    if (type(reports) is not tuple or len(reports) != 6
+            or any(type(x) is not ModelReadiness for x in reports)):
+        raise ValueError("six-model experiment BLOCKED: six typed planning reports required")
+    # Even six perfectly formed planning reports do not carry independent
+    # attestation or a runtime execution permit. Do not turn this source-only
+    # diagnostic into an authorization path by editing JSON or constructing
+    # ModelReadiness objects directly.
+    blocked = [(x.model_id, x.blockers) for x in reports]
+    raise ValueError(
+        f"six-model experiment BLOCKED: independently authenticated "
+        f"runner/model evidence is absent; planning reports={blocked}")
 
 
 if __name__ == "__main__":
