@@ -19,6 +19,24 @@ jobs:
         run: python -m pip install -e '.[admission]'
       - name: Run offline unit tests
         run: python -m unittest discover -s tests -v
+      - name: Export six-model frozen-roster Hub SHA candidate gaps OFFLINE ONLY
+        run: mkdir -p dist && python -m scripts.capture_public_hf_sha_candidates --output dist/ucode-six-model-SHA-PENDING-NO-APPROVAL.json
+      - name: Assert public Hugging Face branch pointer is NOT approved model checkpoint
+        run: |
+          set +e
+          python -m scripts.capture_public_hf_sha_candidates --require-approved > /dev/null
+          status=$?
+          if [ "$status" -ne 2 ]; then
+            echo "ERROR: public SHA candidates cannot authorize checkpoint inference"
+            exit 1
+          fi
+      - name: Publish six-model P0-3 SHA gaps only (NO network requests or weights)
+        if: matrix.python-version == '3.12'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ucode-six-model-public-SHA-PENDING-NO-APPROVAL
+          path: dist/ucode-six-model-SHA-PENDING-NO-APPROVAL.json
+          if-no-files-found: error
       - name: Validate public six-model card metadata, rights gaps and rough BF16 storage only (NO downloads)
         run: mkdir -p dist && python -m scripts.audit_six_public_model_cards --output dist/ucode-six-model-PUBLIC-CARDS-NO-APPROVAL.json
       - name: Strict P0-3 six-model card audit remains NOT a license or runtime approval
