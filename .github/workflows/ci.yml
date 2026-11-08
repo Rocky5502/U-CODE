@@ -20,7 +20,7 @@ jobs:
       - name: Run offline unit tests
         run: python -m unittest discover -s tests -v
       - name: Cross-check real-trial phase-0 metadata and illustrative five-resource capacity (NO hardware probe or real trials)
-        run: python -m scripts.prepare_real_experiment_phase0 --output dist/ucode-real-trial-PHASE0-NOT-APPROVED.json
+        run: mkdir -p dist && python -m scripts.prepare_real_experiment_phase0 --output dist/ucode-real-trial-PHASE0-NOT-APPROVED.json
       - name: Assert source-only real-trial preflight never issues execution authorization
         run: |
           set +e
