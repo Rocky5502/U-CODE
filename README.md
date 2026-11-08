@@ -169,6 +169,10 @@ private inputs only, and CI runs the public blank-form mode without
 handling actual reviewer data. PHP/Go admission remains **16/16 pending**,
 with **zero** independently executable tasks.
 
+## P0-3 six-model public card and memory audit (9 November 2026)
+
+A [read-only public model-card audit](docs/P0_3_PUBLIC_SIX_MODEL_CARD_AUDIT_2026-11-09.md) now compares all six exact selected Hugging Face model IDs against the unchanged October registration, lists the **public** license/gated tags, and computes approximate **BF16 weights-only** storage needs under a hypothetical 16 GiB memory scenario. The historical DeepSeek planning label (deepseek-license) differs from its observed Hub license tag (other); neither is a reviewed legal license. CodeGemma and Llama are publicly gated, not verified accessible to the study account. Neither card labels nor rough storage estimates establish weights, terms, runtime feasibility, inference measurements or permission to use third-party tasks. The [offline CLI](scripts/audit_six_public_model_cards.py), [bounded observation file](data/admission/2026-11-09/six_model_public_hub_cards_OBSERVATION_ONLY.json) and [adversarial tests](tests/test_public_model_card_audit.py) keep **0/6** models independently qualified; the strict CLI deliberately exits 2. This is P0-3 documentation/engineering only, not model inference or a completed milestone.
+
 ## Phase-0 before REAL U-CODE experiments: local hardware + matched-budget planning (8 November 2026)
 
 The [real-experiment operator runbook](docs/REAL_EXPERIMENT_PHASE0_OPERATOR_RUNBOOK_2026-11-08.md)
