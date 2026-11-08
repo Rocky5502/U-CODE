@@ -8,7 +8,6 @@ built, imported, executed or exposed to the coding policy.
 from __future__ import annotations
 
 from collections import Counter
-from copy import deepcopy
 import re
 
 _STAGE = "GO43_SPEC_CONSISTENCY_REVIEW_ONLY_NOT_EXECUTABLE"
@@ -23,6 +22,14 @@ _FIELDS = frozenset((
     "normative_source_refs", "reviewer_note", "independent_approval",
 ))
 _SHA = re.compile(r"^[0-9a-f]{64}$")
+_ORIGINAL_QUESTIONS = {
+    "ZERO_FLOOR_VS_TOTAL_CONSERVATION": "3.2",
+    "HALL_COEFFICIENT_FRACTIONAL_ROUNDING": "3.2",
+    "TEAM_PLAYER_SPLIT_AND_NONNEGATIVE_BALANCE": "3.2",
+    "SPRING_RULE_SOURCE_AND_SCOPE": "3.2",
+    "ATOMIC_RETRY_IDENTITY_AND_OBSERVABILITY": "7",
+    "EXTERNAL_BUSINESS_RULES_PRECEDENCE": "intro",
+}
 
 
 def _require_packet(packet: dict) -> tuple[dict, ...]:
@@ -35,7 +42,11 @@ def _require_packet(packet: dict) -> tuple[dict, ...]:
             or packet.get("oracle_sealed") is not False
             or packet.get("external_execution_authorized") is not False
             or packet.get("independent_human_spec_resolution_received") is not False
-            or packet.get("case_expected_outputs_included") is not False):
+            or packet.get("case_expected_outputs_included") is not False
+            or packet.get("all_six_spec_questions_open") is not True
+            or packet.get("all_twelve_prospective_cases_require_normativity_review") is not True
+            or packet.get("external_code_executed") is not False
+            or packet.get("real_go_model_outcomes") != 0):
         raise ValueError("unapproved source-era packet cannot be promoted")
     docs = packet.get("pinned_original_documents")
     if type(docs) is not list or docs != [
@@ -54,8 +65,12 @@ def _require_packet(packet: dict) -> tuple[dict, ...]:
                 or set(entry) != {"ambiguity_id", "original_section", "status",
                                   "affected_prospective_case_families"}
                 or type(entry["ambiguity_id"]) is not str
-                or not entry["ambiguity_id"]
+                or entry["ambiguity_id"] not in _ORIGINAL_QUESTIONS
                 or entry["ambiguity_id"] in ids
+                or entry.get("original_section") != _ORIGINAL_QUESTIONS[entry["ambiguity_id"]]
+                or type(entry.get("affected_prospective_case_families")) is not list
+                or len(entry["affected_prospective_case_families"]) == 0
+                or len(entry["affected_prospective_case_families"]) != len(set(entry["affected_prospective_case_families"]))
                 or entry.get("status") != "AWAITING_INDEPENDENT_DOMAIN_DECISION"):
             raise ValueError("Go ambiguity register malformed or self-resolved")
         ids.add(entry["ambiguity_id"])
