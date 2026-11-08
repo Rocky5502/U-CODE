@@ -19,6 +19,24 @@ jobs:
         run: python -m pip install -e '.[admission]'
       - name: Run offline unit tests
         run: python -m unittest discover -s tests -v
+      - name: Cross-check real-trial phase-0 metadata and illustrative five-resource capacity (NO hardware probe or real trials)
+        run: python -m scripts.prepare_real_experiment_phase0 --output dist/ucode-real-trial-PHASE0-NOT-APPROVED.json
+      - name: Assert source-only real-trial preflight never issues execution authorization
+        run: |
+          set +e
+          python -m scripts.prepare_real_experiment_phase0 --require-real-ready > /dev/null
+          status=$?
+          if [ "$status" -ne 2 ]; then
+            echo "ERROR: phase-0 preparation is not an authorized real experiment"
+            exit 1
+          fi
+      - name: Publish public no-results real-trial phase-0 capacity preview (NO GPU/private receipts)
+        if: matrix.python-version == '3.12'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ucode-real-trial-phase0-NO-RESULTS-v1
+          path: dist/ucode-real-trial-PHASE0-NOT-APPROVED.json
+          if-no-files-found: error
       - name: Execute fixed first-party repair canary (public outputs, NOT real benchmark)
         run: python -m scripts.smoke_first_party_executable_canary
       - name: Cross-check 120 discovery PRs and 13 source leads (NO external downloads)
