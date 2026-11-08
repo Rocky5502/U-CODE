@@ -32,6 +32,17 @@ The [new six-model public Hub-card audit](P0_3_PUBLIC_SIX_MODEL_CARD_AUDIT_2026-
     python -m scripts.audit_six_public_model_cards --require-six-ready
     # This intentionally exits 2, preserving zero approved real-model checkpoints.
 
+## 1b. Optional six-model HEAD SHA metadata capture — *no model downloads*
+
+See [the source-pinned model SHA workflow](P0_3_HF_SHA_REVISION_CANDIDATES_2026-11-09.md). Its CLI defaults to offline six-model PENDING rows; only an explicit operator switch makes six fixed HTTPS requests for public model **metadata only**:
+
+    python -m scripts.capture_public_hf_sha_candidates
+    python -m scripts.capture_public_hf_sha_candidates --capture-public-heads --output /private-study-metadata/public_hub_heads.json
+    python -m scripts.capture_public_hf_sha_candidates --require-approved
+    # The final command must exit 2 regardless of candidate SHAs.
+
+A fetched 40-hex SHA names an *observed mutable main-branch target*, not a reviewed, fixed, downloaded or runnable checkpoint. The full model weights, per-file hashes, tokenizer/chat-template, full license and account terms, runtime and actual peak VRAM still require explicit independent approval. GitHub CI **never** uses the network capture flag.
+
 ## 2. Command on user's own Windows/WSL Linux or rented A100 host
 
 Optional *read-only* host survey:
