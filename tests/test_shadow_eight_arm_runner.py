@@ -204,6 +204,30 @@ class ShadowEightArmTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,"six planned models"):
             self.check(study=reduced)
 
+    def test_same_handler_registered_as_eight_algorithms_is_detected(self):
+        report = self.check()
+        self.assertEqual(report.distinct_handler_factory_objects, 1)
+        self.assertEqual(report.shared_factory_policy_groups,
+                         (tuple(sorted(self.policy_ids)),))
+        self.assertFalse(report.policy_fidelity_attested)
+        self.assertEqual(report.method_fidelity_review_status,
+                         "UNVERIFIED_EIGHT_POLICY_METHODS")
+
+    def test_distinct_factories_do_not_become_eight_faithful_baselines(self):
+        different = {}
+        for policy in self.policy_ids:
+            def make_factory(policy_name):
+                def factory(assignment):
+                    return lambda state: BlindAction("abstain", RV())
+                return factory
+            different[policy] = make_factory(policy)
+        report = self.check(handlers=different)
+        self.assertEqual(report.distinct_handler_factory_objects, 8)
+        self.assertEqual(report.shared_factory_policy_groups, ())
+        self.assertFalse(report.policy_fidelity_attested)
+        self.assertEqual(report.verified_model_inferences, 0)
+        self.assertEqual(report.real_task_successes, 0)
+
     def test_status_not_falsely_promoted_to_real_evaluation(self):
         x=self.check()
         self.assertIn("NOT_EIGHT_FAITHFUL_ALGORITHMS",x.stage)
