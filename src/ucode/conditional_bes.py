@@ -99,8 +99,12 @@ class ConditionalProbe:
     def __post_init__(self):
         if not isinstance(self.action_id, str) or not self.action_id.strip():
             raise ValueError("probe needs a nonempty action ID")
+        if self.action_id in ("release", "abstain"):
+            raise ValueError("reserved terminal action ID cannot label a probe")
         if self.kind not in DIAGNOSTICS:
             raise ValueError("only diagnostics are permitted in conditional model")
+        if type(self.cost) is not ResourceVector:
+            raise TypeError("probe needs typed five-resource cost")
         if self.cost.is_free():
             raise ValueError("nonterminal probe must consume resources")
 
@@ -114,6 +118,8 @@ class ConditionalState:
 
     def __post_init__(self):
         _probability(self.prior, "prior")
+        if type(self.budget) is not ResourceVector:
+            raise TypeError("conditional state requires typed five-resource budget")
         if not isinstance(self.history, tuple):
             raise ValueError("history must be immutable")
         ids = []
@@ -183,6 +189,7 @@ def plan_conditional(
     max_states: int = 30000,
     *,
     outside_option: float = 0.0,
+    require_order_coherence: bool = False,
 ) -> ConditionalPlan:
     """DP over history-conditional evidence without independence assertions.
 
@@ -197,6 +204,11 @@ def plan_conditional(
     per-candidate conditional kernel while other candidates are fixed;
     it is NOT joint cross-candidate belief updating or oracle correctness.
     """
+    if (type(state) is not ConditionalState or type(kernel) is not ConditionalKernel
+            or type(prices) is not ResourcePrices or type(rule) is not ReleaseRule):
+        raise TypeError("typed conditional state/kernel/prices/release rule required")
+    if type(require_order_coherence) is not bool:
+        raise TypeError("require_order_coherence must be an explicit boolean")
     if type(horizon) is not int or not 1 <= horizon <= 4:
         raise ValueError("horizon must be integer 1 to 4")
     if type(max_states) is not int or max_states < 1:
@@ -217,6 +229,13 @@ def plan_conditional(
         raise ValueError("duplicate probe IDs")
     if any(h.action_id not in ids for h in state.history):
         raise ValueError("history contains action outside frozen probe set")
+    if require_order_coherence and len(ids) >= 2:
+        # Optional strict research gate for plans allowed to choose both
+        # probe orders. A partial training table is not jointly identified.
+        from .conditional_kernel_coherence import audit_conditional_order_coherence
+        audit_conditional_order_coherence(
+            kernel, ids, require_complete=True,
+        )
     expanded = [0]
 
     @lru_cache(maxsize=None)

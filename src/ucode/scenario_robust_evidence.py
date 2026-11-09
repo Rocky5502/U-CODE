@@ -95,6 +95,11 @@ def choose_scenario_robust_probe(
     feasible probe. Never silently shrink the scenario set per action:
     such selective omission would bias robust comparisons.
     """
+    if (type(state) is not ConditionalState or type(prices) is not ResourcePrices
+            or type(rule) is not ReleaseRule):
+        raise TypeError("typed state, prices and release rule required")
+    if rule.unit_cost_penalty != 0:
+        raise ValueError("cost is charged once through five-vector prices only")
     if type(maximum_scenarios) is not int or maximum_scenarios < 1:
         raise ValueError("positive finite-scenario limit required")
     models = tuple(kernels)
