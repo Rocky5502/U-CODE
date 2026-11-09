@@ -7,6 +7,7 @@ import csv
 from hashlib import sha256
 import json
 from pathlib import Path
+from .lineage_risk_graph import RELATIONS, COMPONENT_FIELDS, EDGE_FIELDS
 
 EXPECTED = frozenset({
     "possible_lineage_components_NOT_SPLIT.csv",
@@ -43,6 +44,69 @@ def verify_lineage_review(folder):
             newline="", encoding="utf-8") as f:
         links = list(csv.DictReader(f))
     stats = json.loads(paths["lineage_graph_report.json"].read_text("utf-8"))
+    # A SHA256 digest in the SAME editable folder proves byte integrity
+    # against this manifest, NOT that graph claims are internally coherent
+    # or independently authenticated. Check semantic provenance invariants
+    # even if an adversary rewrites BOTH the CSV and its self-hash manifest.
+    if (any(set(row) != set(COMPONENT_FIELDS) for row in components)
+            or any(set(row) != set(EDGE_FIELDS) for row in links)):
+        raise ValueError("lineage CSV schema or hidden fields changed")
+    by_id = {row["candidate_id"]: row for row in components}
+    if set(by_id) != {str(i) for i in range(1, 121)}:
+        raise ValueError("candidate IDs missing, duplicated or forged")
+    component_members = {}
+    for row in components:
+        digest = row["potential_lineage_component_sha256"]
+        size = row["potential_lineage_component_size"]
+        if (len(digest) != 64 or any(c not in "0123456789abcdef" for c in digest)
+                or not size.isdecimal() or int(size) < 1
+                or row["lineage_review_status"] !=
+                    "PENDING_INDEPENDENT_ADJUDICATION"
+                or not row["repository"].strip()):
+            raise ValueError("invalid pending-review component declaration")
+        component_members.setdefault(digest, []).append(row)
+    if any(int(row["potential_lineage_component_size"]) != len(members)
+           for members in component_members.values() for row in members):
+        raise ValueError("lineage component counts do not match members")
+    if (stats.get("candidate_provenance_components") != len(component_members)
+            or stats.get("multi_candidate_provenance_components") !=
+                 sum(len(rows) > 1 for rows in component_members.values())):
+        raise ValueError("lineage component summary conflicts with CSV members")
+    edge_keys = set()
+    observed_counts = {relation: 0 for relation in RELATIONS}
+    for edge in links:
+        a, b, relation, role = (
+            edge["first_candidate_id"], edge["second_candidate_id"],
+            edge["relation"], edge["source_role"]
+        )
+        if (a not in by_id or b not in by_id
+                or int(a) >= int(b) or relation not in RELATIONS):
+            raise ValueError("invalid, reversed or unknown lineage graph edge")
+        key = (a, b, relation, role)
+        if key in edge_keys:
+            raise ValueError("duplicate lineage evidence edge")
+        edge_keys.add(key)
+        observed_counts[relation] += 1
+        if (edge["evidence_label"] !=
+                "SOURCED_METADATA_POTENTIAL_OVERLAP_NOT_PROVEN"
+                or edge["split_action"] != (
+                    "OWNER_ONLY_WARNING_DO_NOT_AUTO_GROUP"
+                    if relation == "SAME_REPOSITORY_OWNER_HINT"
+                    else "REVIEW_BEFORE_ANY_SPLIT"
+                )):
+            raise ValueError("lineage edge improperly claims independent adjudication")
+        # A strong provenance edge MUST be within the same candidate
+        # component; an owner-only warning is explicitly insufficient.
+        if (relation != "SAME_REPOSITORY_OWNER_HINT"
+                and by_id[a]["potential_lineage_component_sha256"] !=
+                    by_id[b]["potential_lineage_component_sha256"]):
+            raise ValueError("strong lineage edge crosses recorded components")
+    if stats.get("relation_counts") != observed_counts:
+        raise ValueError("edge relation summary does not match actual edge types")
+    if (stats.get("owner_only_edges_not_used_for_union") is not True
+            or stats.get("fork_and_git_edge_signals_not_confirmed_task_duplicates")
+               is not True):
+        raise ValueError("source-only lineage caution flags were changed")
     if (len(components) != 120
         or len({r["candidate_id"] for r in components}) != 120
         or any(r["experiment_eligible"] != "FALSE" or
