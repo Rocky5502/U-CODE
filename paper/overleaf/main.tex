@@ -2582,6 +2582,36 @@ search/reuse where faithful replication is feasible. We will
 disclose comparator deviations rather than relabeling simplified
 implementations as exact reproductions of published agents.
 
+\paragraph{Prospective matched quality--resource Pareto audit.}
+As a distinct descriptive endpoint from paired full-task
+success, we will additionally compare each prospectively
+frozen policy within a \emph{fixed model, budget, and common
+task--seed assignment set}. For policy $p$ let $N$ denote
+the number of assigned attempts, $s_p$ the number of
+independently evaluator-verified full-task successes,
+and $C_{p,j}$ the total consumed amount of resource
+$j$ over those $N$ attempts. With a strictly positive
+per-assignment resource cap $B_j$ for each of the five
+components, the six-component maximization vector
+is $(s_p/N,\,1-C_{p,1}/(NB_1),\ldots,
+1-C_{p,5}/(NB_5))$. A policy is nondominated only if
+no comparator is at least as successful and no more
+resource-intensive in every dimension, with strict
+improvement in at least one. We use the union, not the
+sum, of origin-anchored six-dimensional boxes for
+fixed-reference normalized hypervolume. Identical
+tradeoffs are reported as ties; a zero cap leaves
+normalization undefined, rather than permitting an
+arbitrary omitted dimension. The bounded first-party
+implementation supports eight preregistered policy
+slots and uses independent inclusion--exclusion
+on synthetic cases to audit the volume arithmetic.
+Hypervolume is conditional on its fixed reference
+budget and assignments; it is not a significance
+test or a matched-pair causal effect. No observed
+full-model Pareto frontier or independently metered
+resource measurements are yet available.
+
 \paragraph{Six-model resource provisioning and readiness.}
 The planned study fixes six distinct open-weight checkpoint
 identities (two Qwen coder models, Devstral Small~2,
