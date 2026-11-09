@@ -54,6 +54,7 @@ def audit_conditional_order_coherence(
     tolerance: float = 1e-10,
     max_history_length: int = 3,
     require_complete: bool = False,
+    fail_on_incoherence: bool = True,
 ) -> ConditionalCoherenceAudit:
     """Check P(a=x,b=y|Y,h) from two possible action acquisition orders.
 
@@ -85,8 +86,8 @@ def audit_conditional_order_coherence(
         raise ValueError("finite bounded numeric tolerance required")
     if type(max_history_length) is not int or not 0 <= max_history_length <= 3:
         raise ValueError("max_history_length must be integer 0 to 3")
-    if type(require_complete) is not bool:
-        raise TypeError("require_complete must be boolean")
+    if type(require_complete) is not bool or type(fail_on_incoherence) is not bool:
+        raise TypeError("completeness and fail_on_incoherence flags must be booleans")
     if len(kernel.rows) > 3000:
         raise ValueError("bounded conditional table exceeded 3000 rows")
     rows = {(r.action_id, r.history): r for r in kernel.rows}
@@ -168,11 +169,13 @@ def audit_conditional_order_coherence(
         violations=tuple(violations),
         status=status,
     )
-    if violations:
+    if violations and fail_on_incoherence:
+        first = violations[0]
         raise ValueError(
             "incoherent conditional diagnostic order: "
             f"{len(violations)} joint event-class discrepancies, "
-            f"max={largest:.8g} (first {a}/{b} violation)"
+            f"max={largest:.8g} "
+            f"(first {first.first_action}/{first.second_action} violation)"
         )
     if require_complete and (missing or not compared):
         raise ValueError(
