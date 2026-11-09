@@ -19,6 +19,24 @@ jobs:
         run: python -m pip install -e '.[admission]'
       - name: Run offline unit tests
         run: python -m unittest discover -s tests -v
+      - name: Cross-audit S05-S10 source-ledger fidelity, 120 PRs, Go/PHP, six-model cards and manuscript (NO real trials)
+        run: mkdir -p dist && python -m scripts.audit_remaining_sprint --output dist/ucode-S05-S10-SOURCE-ONLY-NO-REAL-RESULTS.json
+      - name: Assert source-only remaining-sprint checks NEVER authorize a real experiment
+        run: |
+          set +e
+          python -m scripts.audit_remaining_sprint --require-real-ready > /dev/null
+          status=$?
+          if [ "$status" -ne 2 ]; then
+            echo "ERROR: source-only issue crosscheck cannot grant external task/model rights"
+            exit 1
+          fi
+      - name: Publish S05-S10 PUBLIC ONLY no-results cross-ledger audit
+        if: matrix.python-version == '3.12'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ucode-s05-s10-PUBLIC-SOURCE-EVIDENCE-NO-RESULTS
+          path: dist/ucode-S05-S10-SOURCE-ONLY-NO-REAL-RESULTS.json
+          if-no-files-found: error
       - name: Export six-model frozen-roster Hub SHA candidate gaps OFFLINE ONLY
         run: mkdir -p dist && python -m scripts.capture_public_hf_sha_candidates --output dist/ucode-six-model-SHA-PENDING-NO-APPROVAL.json
       - name: Assert public Hugging Face branch pointer is NOT approved model checkpoint
