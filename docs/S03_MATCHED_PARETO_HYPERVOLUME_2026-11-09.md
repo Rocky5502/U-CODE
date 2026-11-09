@@ -35,6 +35,10 @@ The implementation uses deterministic recursive coordinate slicing across all si
 
 This score **depends on the fixed reference budget and task denominator**. Do not compare absolute hypervolumes across different model families, budget regimes or assignment sets and call them causal treatment effects. In particular, a normalized hypervolume of zero does not imply that every candidate was incorrect: consuming a full cap in any one resource forces a zero-volume rectangle in the six-dimensional score.
 
+### Difference from the pre-outcome DRPA reference
+
+The repository already contains [dependence-robust Pareto acquisition](../src/ucode/dependence_robust_acquisition.py), a **two-objective, pre-outcome candidate-production planning** reference whose reliability/safety outcomes are hypothetical. S03 does **not** replace that controller or suggest that Pareto optimization is newly introduced. It is a distinct **postterminal six-objective audit**: one axis is task success joined from separate evaluator verdicts only after policy completion and five axes are resource consumption, not forecasted risk/quality. Neither technique constitutes empirical validation before independent benchmark/runner admission.
+
 ## Evaluator-only structural admission and no false performance
 
 The [source module](../src/ucode/matched_pareto_audit.py) exposes two distinct entry points:
