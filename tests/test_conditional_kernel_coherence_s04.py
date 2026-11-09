@@ -210,7 +210,8 @@ class ConditionalCoherenceS04Tests(unittest.TestCase):
             with self.subTest(history=bad), self.assertRaises(ValueError):
                 audit(k, max_history_length=bad)
         with self.assertRaises(TypeError):
-            audit(k, require_complete="yes")
+            audit_conditional_order_coherence(
+                k, ("a", "b"), require_complete="yes")
         with self.assertRaises(TypeError):
             audit(k, fail_on_incoherence="no")
 
