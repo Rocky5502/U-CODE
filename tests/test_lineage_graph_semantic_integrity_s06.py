@@ -110,18 +110,36 @@ class SemanticGraphIntegrityTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "edge relation summary"):
             verify_lineage_review(self.root)
 
-    def test_strong_edge_components_must_be_identical(self):
+    def test_forged_strong_link_cannot_cross_distinct_components(self):
+        # The real 120-record metadata can have ZERO strong links. Do not
+        # invent a real link merely to make a regression pass. Forge one
+        # only inside a temporary first-party copy and rewrite its SHA.
         rows = self._read(EDGES)
-        members = {r["candidate_id"]: r for r in self._read(COMPONENTS)}
-        strong = [r for r in rows if r["relation"] !=
-                  "SAME_REPOSITORY_OWNER_HINT"]
-        self.assertTrue(strong)
-        first = strong[0]["first_candidate_id"]
-        second = strong[0]["second_candidate_id"]
-        self.assertEqual(
-            members[first]["potential_lineage_component_sha256"],
-            members[second]["potential_lineage_component_sha256"]
+        members = self._read(COMPONENTS)
+        first = members[0]
+        second = next(
+            r for r in members if
+            r["potential_lineage_component_sha256"] !=
+            first["potential_lineage_component_sha256"]
         )
+        template = dict(rows[0])
+        template.update({
+            "first_candidate_id": str(min(
+                int(first["candidate_id"]), int(second["candidate_id"]))),
+            "second_candidate_id": str(max(
+                int(first["candidate_id"]), int(second["candidate_id"]))),
+            "relation": "SAME_FORK_PARENT_HINT",
+            "source_role": "",
+            "evidence_label":
+                "SOURCED_METADATA_POTENTIAL_OVERLAP_NOT_PROVEN",
+            "split_action": "REVIEW_BEFORE_ANY_SPLIT",
+            "independently_adjudicated": "FALSE",
+        })
+        rows.append(template)
+        self._write_and_self_rehash(EDGES, rows)
+        with self.assertRaisesRegex(
+                ValueError, "strong lineage edge crosses recorded"):
+            verify_lineage_review(self.root)
 
     def test_hash_without_external_signature_does_not_prove_split(self):
         output = verify_lineage_review(self.root)
