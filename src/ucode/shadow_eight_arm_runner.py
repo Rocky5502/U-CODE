@@ -56,6 +56,12 @@ class ShadowMatrix:
     verified_model_inferences: int = 0
     policy_fidelity_attested: bool = False
     verified_hardware_metering: bool = False
+    # Diagnostic of registrations ONLY. Distinct function objects are NOT
+    # proof that eight methods differ, and shared objects prove they do not
+    # supply distinct policy-specific implementations by registration.
+    distinct_handler_factory_objects: int = 0
+    shared_factory_policy_groups: tuple[tuple[str, ...], ...] = ()
+    method_fidelity_review_status: str = "UNVERIFIED_EIGHT_POLICY_METHODS"
 
 
 def _visible_trace_digest(session: BlindSession) -> str:
@@ -119,6 +125,15 @@ def run_shadow_eight_arm_matrix(
         if not task_id.startswith("SYNTHETIC_") or not view.repository.startswith("synthetic/"):
             raise ValueError("shadow integration cannot accept real repository tasks")
         view_specs[task_id] = view
+    # Record explicit registration aliasing; never promote distinct callable
+    # identities to source-method fidelity. This uses object identity only,
+    # not callback inspection or third-party execution.
+    aliases = {}
+    for policy, factory in handler_factories.items():
+        aliases.setdefault(id(factory), []).append(policy)
+    shared_groups = tuple(sorted(
+        tuple(sorted(names)) for names in aliases.values() if len(names) > 1
+    ))
     # Audit the complete matrix before constructing policy callbacks,
     # to prevent partial execution on a malformed assignment grid.
     audit = audit_shadow_assignment_parity(study, assignments)
@@ -152,4 +167,6 @@ def run_shadow_eight_arm_matrix(
         declared_assignment_sha256=audit.declared_assignment_digest,
         total_shadow_arm_wirings=len(results),
         arms=tuple(results),
+        distinct_handler_factory_objects=len(aliases),
+        shared_factory_policy_groups=shared_groups,
     )
